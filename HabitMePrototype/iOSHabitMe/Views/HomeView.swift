@@ -218,7 +218,11 @@ struct HomeView: View {
             
             print("received from habitRepository fetch... \(habitRecords.count)")
             let habitRecords = habitRecords.sorted {
-                $0.completionDate > $1.completionDate
+                if $0.completionDate == $1.completionDate {
+                    return $0.creationDate > $1.creationDate
+                } else {
+                    return $0.completionDate > $1.completionDate
+                }
             }
             
             // Convert to a dictionary in order for us to an easier time in searching for dates
