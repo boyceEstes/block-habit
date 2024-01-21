@@ -53,7 +53,7 @@ struct HomeView: View {
             let _ = print("itemHeight: \(itemHeight)")
             
             VStack {
-                BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates)
+                BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates, selectedDay: $selectedDay)
                 HabitsMenu(
                     habits: $habits,
                     habitMenuHeight: habitMenuHeight,

@@ -13,6 +13,7 @@ struct BarView: View {
     let graphHeight: CGFloat
     
     @Binding var habitsOnDates: [HabitsOnDate]
+    @Binding var selectedDay: Date
 
     
     var body: some View {
@@ -28,13 +29,18 @@ struct BarView: View {
                     ForEach(0..<habitsOnDates.count, id: \.self) { i in
                         dateColumn(graphHeight: graphHeight, info: habitsOnDates[i])
                             .frame(width: columnWidth, height: graphHeight, alignment: .bottom)
+                            .id(habitsOnDates[i].funDate)
                     }
                 }
                 .frame(height: graphHeight)
             }
             .onChange(of: habitsOnDates) { oldValue, newValue in
                 DispatchQueue.main.async {
-                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
+                    // get days since january and then count back to get their ids, or I could
+                    // set the id as a date
+                    
+                    value.scrollTo(selectedDay, anchor: .center)
+//                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
                 }
             }
         }
@@ -61,8 +67,19 @@ struct BarView: View {
                 .frame(height: 1)
             
             Text("\(info.displayDate)")
-                .frame(maxWidth: .infinity, maxHeight: labelHeight )
+                .fontWeight(info.funDate == selectedDay ? .bold : .regular)
+                .frame(maxWidth: .infinity, maxHeight: labelHeight)
+                .onTapGesture {
+                    setSelectedDay(to: info.funDate)
+                }
 //                .background(Color.red)
         }
+    }
+    
+    
+    private func setSelectedDay(to date: Date) {
+        
+        guard let dateNoon = date.noon else { return }
+        selectedDay = dateNoon
     }
 }
