@@ -40,8 +40,10 @@ struct ContentView: View {
     let habitRepository: HabitRepository
     
     var body: some View {
-
-        HomeView(habitRepository: habitRepository)
+        
+        NavigationStack {
+            HomeView(habitRepository: habitRepository)
+        }
     }
 }
 

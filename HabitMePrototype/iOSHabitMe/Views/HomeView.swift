@@ -8,6 +8,11 @@
 import SwiftUI
 
 
+enum HabitRecordVisualMode {
+    case bar
+    case daily
+}
+
 struct HomeView: View {
     
     let habitRepository: HabitRepository
@@ -15,6 +20,7 @@ struct HomeView: View {
     @State private var habitsOnDates = [HabitsOnDate]()
     @State private var habits = [Habit]()
     @State private var isCreateHabitScreenDisplayed = false
+    @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     
     /*
      * I want to be able to have some way that I can monitor any changes to the database and when
@@ -72,7 +78,36 @@ struct HomeView: View {
             
             CreateHabitView(habitRepository: habitRepository)
         })
-        
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("Today")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                
+                // TODO: Some logic to dictate whether it is a bar button or a daily log button
+                switch habitRecordVisualMode {
+                case .bar:
+                    // Daily button
+                    Button {
+                        habitRecordVisualMode = .daily
+                    } label: {
+                        Image(systemName: "chart.bar.doc.horizontal")
+                            .fontWeight(.semibold)
+                    }
+                case .daily:
+                    // Chart button
+                    Button {
+                        habitRecordVisualMode = .bar
+                    } label: {
+                        Image(systemName: "chart.bar.xaxis")
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
+        }
     }
     
     

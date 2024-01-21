@@ -33,7 +33,9 @@ struct BarView: View {
                 .frame(height: graphHeight)
             }
             .onChange(of: habitsOnDates) { oldValue, newValue in
-                value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
+                DispatchQueue.main.async {
+                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
+                }
             }
         }
     }
