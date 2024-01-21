@@ -12,19 +12,24 @@ enum SpecialHabitError: Error {
     
 }
 
+
 protocol HabitRepository {
     
     typealias FetchAllHabitRecordsResult = [HabitRecord]
-    typealias InsertNewHabitRecordResult = SpecialHabitError?
+    typealias FetchAllHabitsResult = [Habit]
+    typealias InsertResult = SpecialHabitError?
     
     func fetchAllHabitRecords(completion: (FetchAllHabitRecordsResult) -> Void)
-    func insertNewHabitRecord(_ habitRecord: HabitRecord, completion: (InsertNewHabitRecordResult) -> Void)
+    func insertNewHabitRecord(_ habitRecord: HabitRecord, completion: (InsertResult) -> Void)
+    func fetchAllHabits(completion: (FetchAllHabitsResult) -> Void)
+    func insertNewHabit(habit: Habit, completion: (InsertResult) -> Void)
 }
 
 
 class InMemoryHabitRepository: HabitRepository {
     
     // We'll init it with some demo data
+    private var habits = Habit.habits
     private var habitRecords = HabitRecord.habitRecords {
         didSet {
             print("Updated habit records...")
@@ -40,11 +45,23 @@ class InMemoryHabitRepository: HabitRepository {
     }
     
     
-    func insertNewHabitRecord(_ habitRecord: HabitRecord, completion: (InsertNewHabitRecordResult) -> Void) {
+    func insertNewHabitRecord(_ habitRecord: HabitRecord, completion: (InsertResult) -> Void) {
         
         print("Adding Habit Record: \(habitRecord.habit.name) ")
         habitRecords.append(habitRecord)
         
+        completion(nil)
+    }
+    
+    
+    func fetchAllHabits(completion: (FetchAllHabitsResult) -> Void) {
+        
+        completion(habits)
+    }
+    
+    
+    func insertNewHabit(habit: Habit, completion: (InsertResult) -> Void) {
+        habits.append(habit)
         completion(nil)
     }
 }
@@ -286,17 +303,9 @@ struct BarView: View {
                     }
                 }
                 .frame(height: graphHeight)
-//                    .background(Color.green)
             }
-//            .onAppear {
-//                print("onAppear habitsOnDates: \(habitsOnDates)")
-//                value.scrollTo(habitsOnDates.count - 1)
-//            }
             .onChange(of: habitsOnDates) { oldValue, newValue in
-                print("changed habitsOnDates")
-                if oldValue.isEmpty {
-                    value.scrollTo(habitsOnDates.count - 1)
-                }
+                value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
             }
         }
     }
@@ -343,10 +352,10 @@ extension Date {
 struct HabitsMenu: View {
     
     // TODO: load habits from db
-    @State private var availableHabits = Habit.habits
+    @Binding var habits: [Habit]
     
-    let habitRepository: HabitRepository
     let habitMenuHeight: CGFloat
+    let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (Habit) -> Void
     
     
@@ -363,8 +372,13 @@ struct HabitsMenu: View {
                 Text("Habits")
                     .font(.title2)
                 Spacer()
-                Image(systemName: "plus.circle")
-                    .font(.title2)
+                Button {
+                    didTapCreateHabitButton()
+                } label: {
+                    Image(systemName: "plus.circle")
+                        .font(.title2)
+                }
+                .buttonStyle(.plain)
             }
             .fontWeight(.semibold)
             .padding(.horizontal)
@@ -373,9 +387,9 @@ struct HabitsMenu: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 25) {
-                    ForEach(0..<availableHabits.count, id: \.self) { i in
+                    ForEach(0..<habits.count, id: \.self) { i in
                         
-                        let habit = availableHabits[i]
+                        let habit = habits[i]
                         habitButton(habit: habit)
                     }
                 }
@@ -414,6 +428,8 @@ struct HomeView: View {
     let habitRepository: HabitRepository
     
     @State private var habitsOnDates = [HabitsOnDate]()
+    @State private var habits = [Habit]()
+    @State private var isCreateHabitScreenDisplayed = false
     
     /*
      * I want to be able to have some way that I can monitor any changes to the database and when
@@ -446,12 +462,39 @@ struct HomeView: View {
             
             VStack {
                 BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates)
-                HabitsMenu(habitRepository: habitRepository, habitMenuHeight: habitMenuHeight, didTapHabitButton: createHabitRecordOnDate)
+                HabitsMenu(
+                    habits: $habits,
+                    habitMenuHeight: habitMenuHeight,
+                    didTapCreateHabitButton: {
+                        print("hello world")
+                        isCreateHabitScreenDisplayed = true
+                    },
+                    didTapHabitButton: createHabitRecordOnDate
+                )
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .onAppear {
                 updateHabitsOnDates()
+                getHabits()
             }
+        }
+        .sheet(isPresented: $isCreateHabitScreenDisplayed, onDismiss: {
+            
+            updateHabitsOnDates() // Updating this purely so that I can trigger it to get reset to today
+            getHabits()
+            
+        }, content: {
+            
+            CreateHabitView(habitRepository: habitRepository)
+        })
+        
+    }
+    
+    
+    private func getHabits() {
+        
+        habitRepository.fetchAllHabits { habits in
+            self.habits = habits
         }
     }
     
@@ -473,42 +516,38 @@ struct HomeView: View {
         
         
         // TODO: Get ALL habit records (make sure they are sorted by date in ascending order oldest -> latest)
-        DispatchQueue.main.async {
-            habitRepository.fetchAllHabitRecords { habitRecords in
+        habitRepository.fetchAllHabitRecords { habitRecords in
+            
+            print("received from habitRepository fetch... \(habitRecords.count)")
+            let habitRecords = habitRecords.sorted {
+                $0.completionDate > $1.completionDate
+            }
+            
+            // Convert to a dictionary in order for us to an easier time in searching for dates
+            var dict = [Date: [HabitRecord]]()
+            
+            for record in habitRecords {
                 
-                print("received from habitRepository fetch... \(habitRecords.count)")
-                let habitRecords = habitRecords.sorted {
-                    $0.completionDate > $1.completionDate
+                guard let noonDate = record.completionDate.noon else { return }
+                if dict[noonDate] != nil {
+                    dict[noonDate]?.append(record)
+                } else {
+                    dict[noonDate] = [record]
                 }
+            }
+            
+            
+            // Maybe for now, lets just start at january 1, 2024 for the beginning.
+            for day in 0...days {
+                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
+                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
                 
-                // Convert to a dictionary in order for us to an easier time in searching for dates
-                var dict = [Date: [HabitRecord]]()
                 
-                for record in habitRecords {
-                    
-                    guard let noonDate = record.completionDate.noon else { return }
-                    if dict[noonDate] != nil {
-                        dict[noonDate]?.append(record)
-                    } else {
-                        dict[noonDate] = [record]
-                    }
+                if let habitRecordsForDate = dict[noonDate] {
+                    habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: habitRecordsForDate))
+                } else {
+                    habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: []))
                 }
-                
-                
-                // Maybe for now, lets just start at january 1, 2024 for the beginning.
-                for day in 0...days {
-                    // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                    guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
-                    
-                    
-                    if let habitRecordsForDate = dict[noonDate] {
-                        habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: habitRecordsForDate))
-                    } else {
-                        habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: []))
-                    }
-                }
-                
-                print("POST OPERATION: \(habitsOnDates)")
             }
         }
     }
@@ -558,6 +597,138 @@ struct HomeView: View {
 }
 
 
+struct CreateHabitView: View {
+    
+    let habitRepository: HabitRepository
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var nameTextFieldValue: String = ""
+    @State private var selectedColor: Color? = nil
+    
+    let allColors = [
+        Color.red,
+        Color.orange,
+        Color.yellow,
+        Color.green,
+        Color.mint,
+        Color.teal,
+        
+        Color.cyan,
+        Color.blue,
+        Color.indigo,
+        Color.purple,
+        Color.pink,
+        Color.brown
+    ]
+    
+    let rows = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Create New Habit")
+                    .font(.title2)
+                Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(Color(uiColor: .secondaryLabel))
+                        .font(.title2)
+                }
+            }
+            .padding()
+            .padding(.top)
+            
+            TextField("Name", text: $nameTextFieldValue)
+                .font(.headline)
+                .textFieldStyle(MyTextFieldStyle())
+            
+            VStack {
+                LazyHGrid(rows: rows, spacing: 30) {
+                    ForEach(allColors, id: \.self) { color in
+                        Circle()
+                            .fill(color)
+                            .stroke(Color.white, lineWidth: selectedColor == color ? 2 : 0)
+                            .frame(width: 30, height: 30)
+                            .onTapGesture {
+                                if selectedColor == color {
+                                    selectedColor = nil
+                                } else {
+                                    selectedColor = color
+                                }
+                            }
+                    }
+                }
+                .frame(height: 90)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical)
+            .background(Color(uiColor: .darkGray))
+            .clipShape(
+                RoundedRectangle(cornerRadius: 10))
+            .padding()
+            
+            
+            Button("Create Habit") {
+                
+                guard let selectedColor else { return }
+                let newHabit = Habit(name: nameTextFieldValue, color: selectedColor)
+                
+                
+                habitRepository.insertNewHabit(habit: newHabit) { error in
+                    if let error {
+                        fatalError("There was an issue \(error.localizedDescription)")
+                    }
+                    print("Insert new habit")
+                    DispatchQueue.main.async {
+                        dismiss()
+                    }
+                }
+            }
+            .font(.headline)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(isAbleToCreate ? Color.blue : Color.blue.opacity(0.5))
+            .foregroundStyle(isAbleToCreate ? Color.white : Color.white.opacity(0.5))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding()
+            .disabled(isAbleToCreate == true ? false : true)
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+        .presentationBackground(.regularMaterial)
+    }
+    
+    
+    var isAbleToCreate: Bool {
+        
+        if selectedColor != nil && !nameTextFieldValue.isEmpty {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+struct MyTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(Color(uiColor: .darkGray))
+//                .stroke(Color.blue, lineWidth: 1)
+        ).padding()
+    }
+}
+
 struct ContentView: View {
     
     let habitRepository: HabitRepository
@@ -587,6 +758,9 @@ class AppState {
         print("Go back in time")
     }
 }
+
+
+
 
 #Preview {
     ContentView(habitRepository: InMemoryHabitRepository())
