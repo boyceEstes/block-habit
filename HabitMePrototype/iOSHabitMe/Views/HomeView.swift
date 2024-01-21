@@ -53,7 +53,12 @@ struct HomeView: View {
             let _ = print("itemHeight: \(itemHeight)")
             
             VStack {
-                BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates, selectedDay: $selectedDay)
+                switch habitRecordVisualMode {
+                case .bar:
+                    BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates, selectedDay: $selectedDay)
+                case .daily:
+                    HabitRecordDayView(graphHeight: graphHeight, habitRecords: selectedDayHabitRecords)
+                }
                 HabitsMenu(
                     habits: $habits,
                     habitMenuHeight: habitMenuHeight,
@@ -120,6 +125,7 @@ struct HomeView: View {
                     // Chart button
                     Button {
                         habitRecordVisualMode = .bar
+//                        NotificationCenter.default.post(name: .resetBarGraphPosition, object: nil)
                     } label: {
                         Image(systemName: "chart.bar.xaxis")
                             .fontWeight(.semibold)
@@ -154,6 +160,16 @@ struct HomeView: View {
         default:
             return formatter.string(from: selectedDay)
         }
+    }
+    
+    
+    private var selectedDayHabitRecords: Binding<[HabitRecord]> {
+        
+        guard let habitRecords = $habitsOnDates.filter({ $0.wrappedValue.funDate == selectedDay }).first?.habits else {
+            return Binding.constant([])
+        }
+        
+        return habitRecords
     }
     
     

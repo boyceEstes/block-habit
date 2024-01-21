@@ -14,10 +14,42 @@
             filePath = "HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
             landmarkName = "createHabitRecordOnDate(habit:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5CBF983A-F54E-47FA-83EF-2E0EFA79D902 - e4c055120e36959b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HabitMePrototype.HomeView.createHabitRecordOnDate(habit: HabitMePrototype.Habit) -&gt; ()"
+                  moduleName = "HabitMePrototype"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "277"
+                  endingLineNumber = "277"
+                  offsetFromSymbolStart = "2244">
+               </Location>
+               <Location
+                  uuid = "5CBF983A-F54E-47FA-83EF-2E0EFA79D902 - e4c055120e36959b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HabitMePrototype.HomeView.createHabitRecordOnDate(habit: HabitMePrototype.Habit) -&gt; ()"
+                  moduleName = "HabitMePrototype"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "277"
+                  endingLineNumber = "277"
+                  offsetFromSymbolStart = "1368">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -30,8 +62,8 @@
             filePath = "HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
             landmarkName = "createHabitRecordOnDate(habit:)"
             landmarkType = "7">
          </BreakpointContent>

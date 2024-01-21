@@ -7,7 +7,30 @@
 
 import SwiftUI
 
+
+struct HabitRecordDayView: View {
+    
+    let graphHeight: CGFloat
+    
+    @Binding var habitRecords: [HabitRecord]
+    
+    var body: some View {
+        
+        List($habitRecords, id: \.self) { habitRecord in
+            Text("\(habitRecord.wrappedValue.habit.name)")
+        }
+        .frame(height: graphHeight)
+    }
+}
+
+//extension Notification.Name {
+//    
+//    static let resetBarGraphPosition = Notification.Name("reset.bar.graph.position")
+//}
+
 struct BarView: View {
+    
+//    let resetBarGraphPosition = NotificationCenter.default.publisher(for: .resetBarGraphPosition)
     
     let habitRepository: HabitRepository
     let graphHeight: CGFloat
@@ -35,14 +58,11 @@ struct BarView: View {
                 .frame(height: graphHeight)
             }
             .onChange(of: habitsOnDates) { oldValue, newValue in
-                DispatchQueue.main.async {
-                    // get days since january and then count back to get their ids, or I could
-                    // set the id as a date
-                    
-                    value.scrollTo(selectedDay, anchor: .center)
-//                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
-                }
+                scrollToSelectedDay(value: value)
             }
+//            .onReceive(resetBarGraphPosition) { output in
+//                scrollToSelectedDay(value: value)
+//            }
         }
     }
     
@@ -72,7 +92,6 @@ struct BarView: View {
                 .onTapGesture {
                     setSelectedDay(to: info.funDate)
                 }
-//                .background(Color.red)
         }
     }
     
@@ -81,5 +100,17 @@ struct BarView: View {
         
         guard let dateNoon = date.noon else { return }
         selectedDay = dateNoon
+    }
+    
+    
+    private func scrollToSelectedDay(value: ScrollViewProxy) {
+        
+        DispatchQueue.main.async {
+            // get days since january and then count back to get their ids, or I could
+            // set the id as a date
+            
+            value.scrollTo(selectedDay, anchor: .center)
+//                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
+        }
     }
 }

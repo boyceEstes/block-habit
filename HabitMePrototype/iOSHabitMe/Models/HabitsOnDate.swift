@@ -11,7 +11,7 @@ import Foundation
 struct HabitsOnDate: Hashable {
     
     let funDate: Date
-    let habits: [HabitRecord]
+    var habits: [HabitRecord]
     
     var displayDate: String {
         let formatter = DateFormatter()
