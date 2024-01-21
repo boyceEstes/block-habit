@@ -60,11 +60,14 @@ struct BarView: View {
             .onChange(of: habitsOnDates) { oldValue, newValue in
                 scrollToSelectedDay(value: value)
             }
+            .onChange(of: selectedDay) { oldValue, newValue in
+                scrollToSelectedDay(value: value)
+            }
 //            .onReceive(resetBarGraphPosition) { output in
 //                scrollToSelectedDay(value: value)
 //            }
             .onAppear {
-                scrollToSelectedDay(value: value)
+                scrollToSelectedDay(value: value, animate: false)
             }
         }
     }
@@ -84,6 +87,9 @@ struct BarView: View {
                 Rectangle()
                     .fill(j.habit.color)
                     .frame(width: itemWidth, height: itemHeight)
+                    .onTapGesture {
+                        setSelectedDay(to: info.funDate)
+                    }
             }
             Rectangle()
                 .fill(.ultraThickMaterial)
@@ -106,13 +112,18 @@ struct BarView: View {
     }
     
     
-    private func scrollToSelectedDay(value: ScrollViewProxy) {
+    private func scrollToSelectedDay(value: ScrollViewProxy, animate: Bool = true) {
         
         DispatchQueue.main.async {
             // get days since january and then count back to get their ids, or I could
             // set the id as a date
-            
-            value.scrollTo(selectedDay, anchor: .center)
+            if animate {
+                withAnimation(.easeInOut) {
+                    value.scrollTo(selectedDay, anchor: .center)
+                }
+            } else {
+                value.scrollTo(selectedDay, anchor: .center)
+            }
 //                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
         }
     }
