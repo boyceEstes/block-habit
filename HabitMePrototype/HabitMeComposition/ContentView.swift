@@ -64,6 +64,7 @@ class AppState {
     func setSelectedDateToPrevious() {
         
         print("Go back in time")
+        
     }
 }
 

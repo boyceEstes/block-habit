@@ -21,6 +21,7 @@ struct HomeView: View {
     @State private var habits = [Habit]()
     @State private var isCreateHabitScreenDisplayed = false
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
+    @State private var selectedDay: Date = Date().noon!
     
     /*
      * I want to be able to have some way that I can monitor any changes to the database and when
@@ -81,9 +82,27 @@ struct HomeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Text("Today")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                HStack {
+                    Button {
+                        goToPreviousDay()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .fontWeight(.semibold)
+                    }
+                    .disabled(isAllowedToGoToPreviousDay ? false : true)
+                    
+                    Text(displaySelectedDate)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    Button {
+                        goToNextDay()
+                    } label: {
+                        Image(systemName: "chevron.right")
+                            .fontWeight(.semibold)
+                    }
+                    .disabled(isAllowedToGoToNextDay ? false : true)
+                }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 
@@ -110,6 +129,65 @@ struct HomeView: View {
         }
     }
     
+    
+    private var displaySelectedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        
+        let today = Date().noon!
+        let yesterday = Date().noon!.adding(days: -1)
+        let twoDaysAgo = Date().noon!.adding(days: -2)
+        let threeDaysAgo = Date().noon!.adding(days: -3)
+        let fourDaysAgo = Date().noon!.adding(days: -4)
+        
+        switch selectedDay {
+        case today:
+            return "Today"
+        case yesterday:
+            return "Yesterday"
+        case twoDaysAgo:
+            return "2 Days Ago"
+        case threeDaysAgo:
+            return "3 Days Ago"
+        case fourDaysAgo:
+            return "4 Days Ago"
+        default:
+            return formatter.string(from: selectedDay)
+        }
+    }
+    
+    
+    private func goToNextDay() {
+        
+        if isAllowedToGoToNextDay {
+            selectedDay = selectedDay.adding(days: 1)
+        }
+    }
+    
+    
+    private var isAllowedToGoToNextDay: Bool {
+
+        guard let today = Date().noon else { return false }
+        return selectedDay != today ? true : false
+    }
+    
+    
+    private func goToPreviousDay() {
+        
+        if isAllowedToGoToPreviousDay {
+            selectedDay = selectedDay.adding(days: -1)
+        }
+    }
+    
+    
+    private var isAllowedToGoToPreviousDay: Bool {
+        
+        let calendar = Calendar.current
+        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon else { return false }
+        
+        return selectedDay != startOf2024 ? true : false
+    }
+
     
     private func getHabits() {
         
@@ -178,7 +256,7 @@ struct HomeView: View {
         
         let today = Date()
         let todayNoon = today.noon!
-        let selectedDay = AppState.shared.selectedDate
+        let selectedDay = selectedDay
         let selectedDateNoon = selectedDay.noon!
         
         var newHabitRecordCompletionDate: Date!
