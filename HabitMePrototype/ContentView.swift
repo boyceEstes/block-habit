@@ -24,17 +24,27 @@ protocol HabitRepository {
 
 class InMemoryHabitRepository: HabitRepository {
     
-    private var habitRecords = HabitRecord.habitRecords // We'll init it with some demo data
+    // We'll init it with some demo data
+    private var habitRecords = HabitRecord.habitRecords {
+        didSet {
+            print("Updated habit records...")
+            print(habitRecords)
+        }
+    }
     
     
     func fetchAllHabitRecords(completion: (FetchAllHabitRecordsResult) -> Void) {
         
+        print("fetching... \(habitRecords.count)")
         completion(habitRecords)
     }
     
     
     func insertNewHabitRecord(_ habitRecord: HabitRecord, completion: (InsertNewHabitRecordResult) -> Void) {
+        
+        print("Adding Habit Record: \(habitRecord.habit.name) ")
         habitRecords.append(habitRecord)
+        
         completion(nil)
     }
 }
@@ -64,6 +74,7 @@ struct HabitRecord: Hashable {
     // Creation date is for those times that we will have selected a past day and added a habit record
     // to it. We will be adding it at the last possible hour/minute of the day so that it populates at
     // the end, but if we do two of those, we want to order by the one that was created latest.
+    let creationDate: Date
     let completionDate: Date
     let habit: Habit
     
@@ -71,118 +82,146 @@ struct HabitRecord: Hashable {
         // Meditation logs
         // 16
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 16, hour: 8).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 16, hour: 8).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 16, hour: 9).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 16, hour: 9).date!,
             habit: Habit.journal
         ),
         // 17
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 8).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 8).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 9).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 9).date!,
             habit: Habit.walkTheCat
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 10).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 10).date!,
             habit: Habit.reading
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 17).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 17).date!,
             habit: Habit.journal
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 18).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 17, hour: 18).date!,
             habit: Habit.meditation
         ),
         // 18
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 8).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 8).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 9).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 9).date!,
             habit: Habit.walkTheCat
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 10).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 10).date!,
             habit: Habit.reading
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 14).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 14).date!,
             habit: Habit.journal
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 15).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 15).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 16).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 16).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 17).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 17).date!,
             habit: Habit.walkTheCat
         ),
         HabitRecord(
+            creationDate:  DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 18).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 18).date!,
             habit: Habit.reading
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 20).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 20).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 23).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 18, hour: 23).date!,
             habit: Habit.journal
         ),
         // 19
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 8).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 8).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 9).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 9).date!,
             habit: Habit.walkTheCat
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 18).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 18).date!,
             habit: Habit.reading
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 19).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 19).date!,
             habit: Habit.journal
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 20).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 20).date!,
             habit: Habit.meditation
         ),
         // 20
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 8).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 8).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 9).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 9).date!,
             habit: Habit.walkTheCat
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 18).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 18).date!,
             habit: Habit.reading
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 19).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 19).date!,
             habit: Habit.journal
         ),
         HabitRecord(
+            creationDate:DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 20).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 20, hour: 20).date!,
             habit: Habit.meditation
         ),
         HabitRecord(
+            creationDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 20).date!,
             completionDate: DateComponents(calendar: .current, timeZone: .current, year: 2024, month: 1, day: 19, hour: 20).date!,
             habit: Habit.reading
         )
@@ -249,8 +288,15 @@ struct BarView: View {
                 .frame(height: graphHeight)
 //                    .background(Color.green)
             }
-            .onChange(of: habitsOnDates.count) { oldValue, newValue in
-                value.scrollTo(habitsOnDates.count - 1)
+//            .onAppear {
+//                print("onAppear habitsOnDates: \(habitsOnDates)")
+//                value.scrollTo(habitsOnDates.count - 1)
+//            }
+            .onChange(of: habitsOnDates) { oldValue, newValue in
+                print("changed habitsOnDates")
+                if oldValue.isEmpty {
+                    value.scrollTo(habitsOnDates.count - 1)
+                }
             }
         }
     }
@@ -280,9 +326,6 @@ struct BarView: View {
 //                .background(Color.red)
         }
     }
-    
-    
-
 }
 
 
@@ -304,6 +347,7 @@ struct HabitsMenu: View {
     
     let habitRepository: HabitRepository
     let habitMenuHeight: CGFloat
+    let didTapHabitButton: (Habit) -> Void
     
     
     let columns = [
@@ -322,6 +366,7 @@ struct HabitsMenu: View {
                 Image(systemName: "plus.circle")
                     .font(.title2)
             }
+            .fontWeight(.semibold)
             .padding(.horizontal)
             .padding(.vertical, 30)
             
@@ -350,31 +395,16 @@ struct HabitsMenu: View {
     func habitButton(habit: Habit) -> some View {
         
         Button {
-            createHabitRecordOnDate(habit: habit, date: Date().noon!)
+            didTapHabitButton(habit)
         } label: {
             Text("\(habit.name)")
-                .fontWeight(.bold)
+                .fontWeight(.semibold)
                 .font(.system(size: 17))
                 .frame(width: 150, height: 50)
                 .background(habit.color)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .buttonStyle(.plain)
-    }
-    
-    
-    // logic
-    
-    private func createHabitRecordOnDate(habit: Habit, date: Date) {
-        print("Add \(habit.name) record to \(date)")
-        
-        let newHabitRecord = HabitRecord(completionDate: Date(), habit: habit)
-        
-        habitRepository.insertNewHabitRecord(newHabitRecord) { error in
-            if let error {
-                fatalError("There was an issue \(error.localizedDescription)")
-            }
-        }
     }
 }
 
@@ -416,7 +446,7 @@ struct HomeView: View {
             
             VStack {
                 BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates)
-                HabitsMenu(habitRepository: habitRepository, habitMenuHeight: habitMenuHeight)
+                HabitsMenu(habitRepository: habitRepository, habitMenuHeight: habitMenuHeight, didTapHabitButton: createHabitRecordOnDate)
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .onAppear {
@@ -426,47 +456,103 @@ struct HomeView: View {
     }
     
     
-    func updateHabitsOnDates() {
+    private func updateHabitsOnDates() {
         
-        guard let startOf2024 = DateComponents(calendar: .current, year: 2024, month: 1, day: 1).date?.noon,
+        habitsOnDates = []
+        
+        print("update habit records by loading them")
+        
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        calendar.locale = .current
+        
+        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
               let today = Date().noon,
-              let days = Calendar.current.dateComponents([.day], from: startOf2024, to: today).day
+              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
         else { return }
         
         
         // TODO: Get ALL habit records (make sure they are sorted by date in ascending order oldest -> latest)
-        habitRepository.fetchAllHabitRecords { habitRecords in
-            
-            let habitRecords = HabitRecord.habitRecords.sorted {
-                $0.completionDate > $1.completionDate
-            }
-            
-            // Convert to a dictionary in order for us to an easier time in searching for dates
-            var dict = [Date: [HabitRecord]]()
-            
-            for record in habitRecords {
+        DispatchQueue.main.async {
+            habitRepository.fetchAllHabitRecords { habitRecords in
                 
-                guard let noonDate = record.completionDate.noon else { return }
-                if dict[noonDate] != nil {
-                    dict[noonDate]?.append(record)
-                } else {
-                    dict[noonDate] = [record]
+                print("received from habitRepository fetch... \(habitRecords.count)")
+                let habitRecords = habitRecords.sorted {
+                    $0.completionDate > $1.completionDate
                 }
-            }
                 
-            
-            // Maybe for now, lets just start at january 1, 2024 for the beginning.
-            for day in 0...days {
-                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                guard let noonDate = Calendar.current.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
+                // Convert to a dictionary in order for us to an easier time in searching for dates
+                var dict = [Date: [HabitRecord]]()
                 
-                
-                if let habitRecordsForDate = dict[noonDate] {
-                    habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: habitRecordsForDate))
-                } else {
-                    habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: []))
+                for record in habitRecords {
+                    
+                    guard let noonDate = record.completionDate.noon else { return }
+                    if dict[noonDate] != nil {
+                        dict[noonDate]?.append(record)
+                    } else {
+                        dict[noonDate] = [record]
+                    }
                 }
+                
+                
+                // Maybe for now, lets just start at january 1, 2024 for the beginning.
+                for day in 0...days {
+                    // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
+                    guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
+                    
+                    
+                    if let habitRecordsForDate = dict[noonDate] {
+                        habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: habitRecordsForDate))
+                    } else {
+                        habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: []))
+                    }
+                }
+                
+                print("POST OPERATION: \(habitsOnDates)")
             }
+        }
+    }
+    
+    private func createHabitRecordOnDate(habit: Habit) {
+        
+        print("create habit record on selected date (for \(habit.name))")
+        
+        let today = Date()
+        let todayNoon = today.noon!
+        let selectedDay = AppState.shared.selectedDate
+        let selectedDateNoon = selectedDay.noon!
+        
+        var newHabitRecordCompletionDate: Date!
+        
+
+        if todayNoon == selectedDateNoon {
+            // we do this because we want the exact time, for ordering purposes, on the given day
+            newHabitRecordCompletionDate = today
+        } else {
+            // If the day has already passed (which is the only other option)
+            // then we do not care the exact completionDate, and we will not be giving
+            // we'll just get the latest most that we can come up with and make
+            // the creationDate accurate for any sorting ties later additions would
+            // make
+            
+            // Sets to the
+            var selectedDayDateComponents = Calendar.current.dateComponents(in: .current, from: selectedDay)
+            selectedDayDateComponents.hour = 23
+            selectedDayDateComponents.minute = 59
+            selectedDayDateComponents.second = 59
+            
+            newHabitRecordCompletionDate = selectedDayDateComponents.date!
+        }
+        
+        let newHabitRecord = HabitRecord(creationDate: today, completionDate: newHabitRecordCompletionDate, habit: habit)
+        
+        habitRepository.insertNewHabitRecord(newHabitRecord) { error in
+            if let error {
+                fatalError("There was an issue \(error.localizedDescription)")
+            }
+            
+            print("finished inserting without an error")
+            updateHabitsOnDates()
         }
     }
 }
@@ -479,6 +565,26 @@ struct ContentView: View {
     var body: some View {
 
         HomeView(habitRepository: habitRepository)
+    }
+}
+
+
+class AppState {
+    
+    static let shared = AppState()
+    
+    private init() {}
+    
+    private(set) var selectedDate = Date().noon!
+    
+    func setSelectedDateToNext() {
+        
+        print("Go forward in time unless its today")
+    }
+    
+    func setSelectedDateToPrevious() {
+        
+        print("Go back in time")
     }
 }
 
