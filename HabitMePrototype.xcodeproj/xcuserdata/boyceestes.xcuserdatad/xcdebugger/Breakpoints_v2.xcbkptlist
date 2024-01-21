@@ -7,65 +7,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5CBF983A-F54E-47FA-83EF-2E0EFA79D902"
+            uuid = "F4B6E116-50C9-48BC-A964-2079CB0659B0"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
+            filePath = "HabitMePrototype/iOSHabitMe/Views/BarView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
-            landmarkName = "createHabitRecordOnDate(habit:)"
-            landmarkType = "7">
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "body"
+            landmarkType = "24">
             <Locations>
                <Location
-                  uuid = "5CBF983A-F54E-47FA-83EF-2E0EFA79D902 - e4c055120e36959b"
+                  uuid = "F4B6E116-50C9-48BC-A964-2079CB0659B0 - 6179bc2c5554dfca"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "HabitMePrototype.HomeView.createHabitRecordOnDate(habit: HabitMePrototype.Habit) -&gt; ()"
+                  symbolName = "closure #3 (Foundation.Notification) -&gt; () in closure #1 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.onReceive&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Combine.Publisher, &#x3c4;_1_0.Failure == Swift.Never&gt;(_: &#x3c4;_1_0, perform: (&#x3c4;_1_0.Output) -&gt; ()) -&gt; some&gt;&gt;.0 in HabitMePrototype.BarView.body.getter : some"
                   moduleName = "HabitMePrototype"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/BarView.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "277"
-                  endingLineNumber = "277"
-                  offsetFromSymbolStart = "2244">
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "60">
                </Location>
                <Location
-                  uuid = "5CBF983A-F54E-47FA-83EF-2E0EFA79D902 - e4c055120e36959b"
+                  uuid = "F4B6E116-50C9-48BC-A964-2079CB0659B0 - bbbf53fe072bbe2e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "HabitMePrototype.HomeView.createHabitRecordOnDate(habit: HabitMePrototype.Habit) -&gt; ()"
+                  symbolName = "closure #3 (Foundation.Notification) -&gt; () in closure #1 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in HabitMePrototype.BarView.body.getter : some"
                   moduleName = "HabitMePrototype"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/BarView.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "277"
-                  endingLineNumber = "277"
-                  offsetFromSymbolStart = "1368">
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "60">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "065302E1-ACEF-494B-A334-24CCC5ABCA22"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HabitMePrototype/iOSHabitMe/Views/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
-            landmarkName = "createHabitRecordOnDate(habit:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

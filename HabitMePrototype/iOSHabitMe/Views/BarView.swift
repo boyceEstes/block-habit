@@ -63,6 +63,9 @@ struct BarView: View {
 //            .onReceive(resetBarGraphPosition) { output in
 //                scrollToSelectedDay(value: value)
 //            }
+            .onAppear {
+                scrollToSelectedDay(value: value)
+            }
         }
     }
     
