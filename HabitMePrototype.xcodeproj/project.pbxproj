@@ -77,13 +77,10 @@
 		B313EEB12B5C4C93002AE8CE /* HabitMePrototype */ = {
 			isa = PBXGroup;
 			children = (
-				B3C97F202B5CE8FA00211B4C /* iOSHabitMe */,
+				B3C97F2E2B5CEA4B00211B4C /* Supporting Files */,
 				B3C97F1A2B5CE88600211B4C /* HabitRepository */,
-				B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */,
-				B313EEB42B5C4C93002AE8CE /* ContentView.swift */,
-				B313EEB62B5C4C99002AE8CE /* Assets.xcassets */,
-				B313EEB82B5C4C99002AE8CE /* Preview Content */,
-				B3C97F062B5CE6F300211B4C /* HabitRepository.xcdatamodeld */,
+				B3C97F202B5CE8FA00211B4C /* iOSHabitMe */,
+				B3C97F2D2B5CEA2500211B4C /* HabitMeComposition */,
 			);
 			path = HabitMePrototype;
 			sourceTree = "<group>";
@@ -102,6 +99,7 @@
 				B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */,
 				B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */,
 				B3C97F122B5CE82C00211B4C /* CoreDataHabitRepository.swift */,
+				B3C97F062B5CE6F300211B4C /* HabitRepository.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -168,6 +166,24 @@
 				B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B3C97F2D2B5CEA2500211B4C /* HabitMeComposition */ = {
+			isa = PBXGroup;
+			children = (
+				B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */,
+				B313EEB42B5C4C93002AE8CE /* ContentView.swift */,
+			);
+			path = HabitMeComposition;
+			sourceTree = "<group>";
+		};
+		B3C97F2E2B5CEA4B00211B4C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B313EEB62B5C4C99002AE8CE /* Assets.xcassets */,
+				B313EEB82B5C4C99002AE8CE /* Preview Content */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
