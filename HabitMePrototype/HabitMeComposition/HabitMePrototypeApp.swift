@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SwiftData
+
 
 @main
 struct HabitMePrototypeApp: App {
@@ -16,5 +18,6 @@ struct HabitMePrototypeApp: App {
         WindowGroup {
             ContentView(habitRepository: habitRepository)
         }
+        .modelContainer(for: [DataHabit.self, DataHabitRecord.self])
     }
 }

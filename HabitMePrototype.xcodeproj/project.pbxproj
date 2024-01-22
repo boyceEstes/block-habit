@@ -24,6 +24,7 @@
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
 		B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F292B5CE99200211B4C /* HomeView.swift */; };
 		B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */; };
+		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
 		B3C97F292B5CE99200211B4C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitView.swift; sourceTree = "<group>"; };
+		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		B3C97F142B5CE83600211B4C /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				B3CC60AB2B5EA9380074ED41 /* SwiftData */,
 				B3C97F152B5CE84500211B4C /* InMemory */,
 				B3C97F112B5CE81300211B4C /* CoreData */,
 			);
@@ -184,6 +187,14 @@
 				B313EEB82B5C4C99002AE8CE /* Preview Content */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B3CC60AB2B5EA9380074ED41 /* SwiftData */ = {
+			isa = PBXGroup;
+			children = (
+				B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */,
+			);
+			path = SwiftData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +279,7 @@
 				B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */,
 				B3C97F1D2B5CE8AD00211B4C /* Habit.swift in Sources */,
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
+				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
 				B3C97F132B5CE82C00211B4C /* CoreDataHabitRepository.swift in Sources */,
 				B3C97F172B5CE85C00211B4C /* InMemoryHabitRepository.swift in Sources */,
 				B3C97F1F2B5CE8C900211B4C /* HabitRecord.swift in Sources */,
