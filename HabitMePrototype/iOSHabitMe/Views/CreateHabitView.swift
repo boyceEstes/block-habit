@@ -91,35 +91,20 @@ struct CreateHabitView: View {
             .padding()
             
             
-            Button("Create Habit") {
-                
-                guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
-                    return
-                }
-//                let newHabit = Habit(name: nameTextFieldValue, color: selectedColor)
-                
-
-                let newDataHabit = DataHabit(name: nameTextFieldValue, color: stringColorHex, habitRecords: [])
-                
-                modelContext.insert(newDataHabit)
-//                habitRepository.insertNewHabit(habit: newHabit) { error in
-//                    if let error {
-//                        fatalError("There was an issue \(error.localizedDescription)")
-//                    }
-//                    print("Insert new habit")
-                    DispatchQueue.main.async {
-                        dismiss()
-                    }
-//                }
-            }
-            .font(.headline)
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(isAbleToCreate ? Color.blue : Color.blue.opacity(0.5))
-            .foregroundStyle(isAbleToCreate ? Color.white : Color.white.opacity(0.5))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding()
-            .disabled(isAbleToCreate == true ? false : true)
+            HabitMePrimaryButton(title: "Create Habit", action: didTapButtonToCreateHabit, isAbleToTap: isAbleToCreate)
+//            Button {
+//                didTapButtonToCreateHabit()
+//            } label: {
+//                Text("Create Habit")
+//                    .font(.headline)
+//                    .frame(maxWidth: .infinity)
+//                    .frame(height: 50)
+//                    .background(isAbleToCreate ? Color.blue : Color.blue.opacity(0.5))
+//                    .foregroundStyle(isAbleToCreate ? Color.white : Color.white.opacity(0.5))
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//                    .padding()
+//                    .disabled(isAbleToCreate == true ? false : true)
+//            }
         }
         .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
@@ -133,6 +118,45 @@ struct CreateHabitView: View {
             return true
         } else {
             return false
+        }
+    }
+    
+    
+    func didTapButtonToCreateHabit() {
+        
+        guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
+            return
+        }
+
+        let newDataHabit = DataHabit(name: nameTextFieldValue, color: stringColorHex, habitRecords: [])
+        
+        modelContext.insert(newDataHabit)
+        DispatchQueue.main.async {
+            dismiss()
+        }
+    }
+}
+
+
+struct HabitMePrimaryButton: View {
+    
+    let title: String
+    let action: () -> Void
+    let isAbleToTap: Bool
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Text(title)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .background(isAbleToTap ? Color.blue : Color.blue.opacity(0.5))
+                .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding()
+                .disabled(isAbleToTap == true ? false : true)
         }
     }
 }
