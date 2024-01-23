@@ -111,11 +111,6 @@ struct HomeView: View {
             let habitMenuHeight = screenHeight * 0.3
             let itemHeight = graphHeight / 8
             
-//            let _ = print("safeAreaInsetTop: \(safeAreaInsetTop)")
-//            let _ = print("graphHeight: \(graphHeight)")
-//            let _ = print("screenHeight: \(screenHeight)")
-//            let _ = print("itemHeight: \(itemHeight)")
-//            
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:

@@ -10,9 +10,11 @@ import SwiftData
 
 struct HabitDetailView: View {
     
+    
     let habit: DataHabit
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
+    @Environment(\.modelContext) var modelContext
     @State private var selectedDay: Date = Date().noon ?? Date()
 //     Query to fetch all of the habit records for the habit
     @Query var dataHabitRecordsForHabit: [DataHabitRecord]
@@ -103,7 +105,7 @@ struct HabitDetailView: View {
                 )
                 
                 HabitMePrimaryButton(title: "Log New Record", color: Color(hex: habit.color)) {
-                    print("create habit record")
+                    SwiftDataHabitRepository.shared.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay, modelContext: modelContext)
                 }
                 .padding()
                 
