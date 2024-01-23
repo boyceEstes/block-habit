@@ -196,9 +196,8 @@ struct HabitsMenu: View {
         .buttonStyle(.plain)
         .contextMenu {
             Button("Delete Habit") {
-                
                 alertDetail = HabitsMenuAlert.areYouSure(yesAction: {
-                        print("destroy it")
+                        modelContext.delete(habit)
                     }
                 ).alertData()
                 showAlert = true
