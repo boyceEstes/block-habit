@@ -8,11 +8,15 @@
 import SwiftUI
 
 
+
+
+
 struct CreateHabitView: View {
     
     let habitRepository: HabitRepository
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
@@ -89,19 +93,24 @@ struct CreateHabitView: View {
             
             Button("Create Habit") {
                 
-                guard let selectedColor else { return }
-                let newHabit = Habit(name: nameTextFieldValue, color: selectedColor)
+                guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
+                    return
+                }
+//                let newHabit = Habit(name: nameTextFieldValue, color: selectedColor)
                 
+
+                let newDataHabit = DataHabit(name: nameTextFieldValue, color: stringColorHex, habitRecords: [])
                 
-                habitRepository.insertNewHabit(habit: newHabit) { error in
-                    if let error {
-                        fatalError("There was an issue \(error.localizedDescription)")
-                    }
-                    print("Insert new habit")
+                modelContext.insert(newDataHabit)
+//                habitRepository.insertNewHabit(habit: newHabit) { error in
+//                    if let error {
+//                        fatalError("There was an issue \(error.localizedDescription)")
+//                    }
+//                    print("Insert new habit")
                     DispatchQueue.main.async {
                         dismiss()
                     }
-                }
+//                }
             }
             .font(.headline)
             .frame(maxWidth: .infinity)

@@ -16,7 +16,7 @@ final class DataHabit: Hashable {
     @Attribute(.unique) var id: String = UUID().uuidString
     var name: String
     var color: String
-    var habitRecords: [DataHabitRecord]
+    @Relationship(deleteRule: .cascade, inverse: \DataHabitRecord.habit) var habitRecords: [DataHabitRecord]
     
     init(id: String = UUID().uuidString, name: String, color: String, habitRecords: [DataHabitRecord]) {
         self.name = name
@@ -32,7 +32,7 @@ final class DataHabitRecord {
     @Attribute(.unique) var id: String = UUID().uuidString
     var creationDate: Date
     var completionDate: Date
-    @Relationship(deleteRule: .cascade, inverse: \DataHabit.habitRecords) var habit: DataHabit
+    var habit: DataHabit
     
     
     init(creationDate: Date, completionDate: Date, habit: DataHabit) {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
 enum HabitRecordVisualMode {
@@ -16,6 +17,9 @@ enum HabitRecordVisualMode {
 struct HomeView: View {
     
     let habitRepository: HabitRepository
+    
+    @Environment(\.modelContext) var modelContext
+    @Query var dataHabits: [DataHabit]
     
     @State private var habitsOnDates = [HabitsOnDate]()
     @State private var habits = [Habit]()
@@ -37,6 +41,8 @@ struct HomeView: View {
      */
 
     var body: some View {
+        
+        let _ = print("data habits: \(dataHabits)")
         
         GeometryReader { proxy in
             

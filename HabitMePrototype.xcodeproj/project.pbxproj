@@ -11,6 +11,7 @@
 		B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB42B5C4C93002AE8CE /* ContentView.swift */; };
 		B313EEB72B5C4C99002AE8CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B313EEB62B5C4C99002AE8CE /* Assets.xcassets */; };
 		B313EEBA2B5C4C99002AE8CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B313EEB92B5C4C99002AE8CE /* Preview Assets.xcassets */; };
+		B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */; };
 		B3C97F082B5CE6F400211B4C /* HabitRepository.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F062B5CE6F300211B4C /* HabitRepository.xcdatamodeld */; };
 		B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */; };
 		B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */; };
@@ -33,6 +34,7 @@
 		B313EEB42B5C4C93002AE8CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B313EEB62B5C4C99002AE8CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B313EEB92B5C4C99002AE8CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		B3C97F072B5CE6F300211B4C /* HabitRepository.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitRepository.xcdatamodel; sourceTree = "<group>"; };
 		B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabitRecord.swift; sourceTree = "<group>"; };
 		B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabit.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 			children = (
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
+				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
 			);
 			path = iOSHabitMe;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
+				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,
 				B3C97F192B5CE87200211B4C /* HabitRepository.swift in Sources */,
 				B3C97F082B5CE6F400211B4C /* HabitRepository.xcdatamodeld in Sources */,
 				B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */,
