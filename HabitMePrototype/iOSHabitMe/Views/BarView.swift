@@ -27,7 +27,9 @@ struct BarView: View {
     
     @Environment(\.modelContext) var modelContext
     
+    let graphWidth: CGFloat
     let graphHeight: CGFloat
+    
     
     let dataHabitRecordsOnDate: [DataHabitRecordsOnDate]
     @Binding var selectedDay: Date
@@ -35,7 +37,8 @@ struct BarView: View {
     
     var body: some View {
         
-        let columnWidth = graphHeight / 5
+        // TODO: If the device is horizontal, do not use this calculation
+        let columnWidth = graphWidth / 5
         
         ScrollViewReader { value in
             

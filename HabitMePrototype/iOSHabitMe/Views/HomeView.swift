@@ -54,18 +54,8 @@ struct HomeView: View {
         else { return [] }
         
         
-        // TODO: Get ALL habit records (make sure they are sorted by date in ascending order oldest -> latest)
-//        habitRepository.fetchAllHabitRecords { habitRecords in
-            
             print("received from habitRepository fetch... \(dataHabitRecords.count)")
-//            let habitRecords = dataHabitRecords.sorted {
-//                if $0.completionDate == $1.completionDate {
-//                    return $0.creationDate > $1.creationDate
-//                } else {
-//                    return $0.completionDate > $1.completionDate
-//                }
-//            }
-//            
+//
             // Convert to a dictionary in order for us to an easier time in searching for dates
             var dict = [Date: [DataHabitRecord]]()
             
@@ -94,7 +84,6 @@ struct HomeView: View {
             }
             
             return _dataHabitRecordsOnDate
-//        }
     }
     /*
      * I want to be able to have some way that I can monitor any changes to the database and when
@@ -130,7 +119,7 @@ struct HomeView: View {
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:
-                    BarView(graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
+                    BarView(graphWidth: screenWidth, graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
                 case .daily:
                     HabitRecordDayView(graphHeight: graphHeight, habitRecords: dataHabitRecordsForSelectedDay)
                 }

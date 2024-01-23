@@ -196,7 +196,7 @@ struct HabitsMenu: View {
         .buttonStyle(.plain)
         .contextMenu {
             NavigationLink("Habit Details") {
-                HabitDetailView(habit: Habit(name: habit.name, color: Color(hex: habit.color) ?? .gray))
+                HabitDetailView(habit: habit)
             }
             Button("Delete Habit") {
                 alertDetail = HabitsMenuAlert.areYouSure(yesAction: {
