@@ -23,7 +23,7 @@ struct HomeView: View {
     @Query(sort: [
         SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
         SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-    ]) var dataHabitRecords: [DataHabitRecord]
+    ], animation: .default) var dataHabitRecords: [DataHabitRecord]
     
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.

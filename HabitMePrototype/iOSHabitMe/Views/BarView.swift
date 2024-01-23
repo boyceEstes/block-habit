@@ -25,6 +25,8 @@ struct HabitRecordDayView: View {
 
 struct BarView: View {
     
+    @Environment(\.modelContext) var modelContext
+    
     let habitRepository: HabitRepository
     let graphHeight: CGFloat
     
@@ -78,6 +80,8 @@ struct BarView: View {
                         setSelectedDay(to: info.funDate)
                     }
             }
+            
+            
             Rectangle()
                 .fill(.ultraThickMaterial)
                 .frame(height: 1)
@@ -89,6 +93,24 @@ struct BarView: View {
                     setSelectedDay(to: info.funDate)
                 }
         }
+        .contextMenu {
+            if habitCount > 0 {
+                Button("Delete Last Habit Record") {
+                    
+                    deleteLastHabitRecord(in: info.habits)
+                }
+            }
+        }
+    }
+    
+    
+    private func deleteLastHabitRecord(in habitRecords: [DataHabitRecord]) {
+        
+        // They are in reverse order so they will need to have the first (not the last) to fetch the
+        // most recent habit record
+        guard let lastHabitRecord = habitRecords.first else { return }
+        
+        modelContext.delete(lastHabitRecord)
     }
     
     
