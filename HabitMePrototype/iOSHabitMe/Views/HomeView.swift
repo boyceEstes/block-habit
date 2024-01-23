@@ -130,7 +130,7 @@ struct HomeView: View {
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:
-                    BarView(habitRepository: habitRepository, graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
+                    BarView(graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
                 case .daily:
                     HabitRecordDayView(graphHeight: graphHeight, habitRecords: dataHabitRecordsForSelectedDay)
                 }

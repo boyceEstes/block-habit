@@ -27,7 +27,6 @@ struct BarView: View {
     
     @Environment(\.modelContext) var modelContext
     
-    let habitRepository: HabitRepository
     let graphHeight: CGFloat
     
     let dataHabitRecordsOnDate: [DataHabitRecordsOnDate]
