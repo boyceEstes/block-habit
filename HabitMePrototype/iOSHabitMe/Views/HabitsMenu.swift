@@ -11,11 +11,11 @@ import SwiftUI
 struct HabitsMenu: View {
     
     // TODO: load habits from db
-    @Binding var habits: [Habit]
+    let habits: [DataHabit]
     
     let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
-    let didTapHabitButton: (Habit) -> Void
+    let didTapHabitButton: (DataHabit) -> Void
     
     
     let columns = [
@@ -65,7 +65,7 @@ struct HabitsMenu: View {
     }
     
     
-    func habitButton(habit: Habit) -> some View {
+    func habitButton(habit: DataHabit) -> some View {
         
         Button {
             didTapHabitButton(habit)
@@ -74,7 +74,7 @@ struct HabitsMenu: View {
                 .fontWeight(.semibold)
                 .font(.system(size: 17))
                 .frame(width: 150, height: 50)
-                .background(habit.color)
+                .background(Color(hex: habit.color))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .buttonStyle(.plain)

@@ -20,6 +20,15 @@ struct HomeView: View {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
+    @Query var dataHabitRecords: [DataHabitRecord]
+    
+    /*
+     * So now the goal is to setup all of the data record stuff here from SwiftData.
+     * The big problem is habitsOnDates is a little bit hairy. I wonder if it is better
+     * for me to be able to query all of the datahabits and then deliver them to the
+     * bar graphs... or maybe I should just decipher it here. This will be everything I should
+     * have so I think it should be fine.
+     */
     
     @State private var habitsOnDates = [HabitsOnDate]()
     @State private var habits = [Habit]()
@@ -27,6 +36,65 @@ struct HomeView: View {
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State private var selectedDay: Date = Date().noon!
     
+    
+    var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
+        
+        var _dataHabitRecordsOnDate = [DataHabitRecordsOnDate]()
+        
+        print("update habit records by loading them")
+        
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        calendar.locale = .current
+        
+        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
+              let today = Date().noon,
+              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
+        else { return [] }
+        
+        
+        // TODO: Get ALL habit records (make sure they are sorted by date in ascending order oldest -> latest)
+//        habitRepository.fetchAllHabitRecords { habitRecords in
+            
+            print("received from habitRepository fetch... \(dataHabitRecords.count)")
+            let habitRecords = dataHabitRecords.sorted {
+                if $0.completionDate == $1.completionDate {
+                    return $0.creationDate > $1.creationDate
+                } else {
+                    return $0.completionDate > $1.completionDate
+                }
+            }
+            
+            // Convert to a dictionary in order for us to an easier time in searching for dates
+            var dict = [Date: [DataHabitRecord]]()
+            
+            for record in habitRecords {
+                
+                guard let noonDate = record.completionDate.noon else { return [] }
+                if dict[noonDate] != nil {
+                    dict[noonDate]?.append(record)
+                } else {
+                    dict[noonDate] = [record]
+                }
+            }
+            
+            
+            // Maybe for now, lets just start at january 1, 2024 for the beginning.
+            for day in 0...days {
+                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
+                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
+                
+                
+                if let habitRecordsForDate = dict[noonDate] {
+                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: habitRecordsForDate))
+                } else {
+                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: []))
+                }
+            }
+            
+            return _dataHabitRecordsOnDate
+//        }
+    }
     /*
      * I want to be able to have some way that I can monitor any changes to the database and when
      * I detect a change, I will run the little refresh function and place everything in the right
@@ -61,12 +129,12 @@ struct HomeView: View {
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:
-                    BarView(habitRepository: habitRepository, graphHeight: graphHeight, habitsOnDates: $habitsOnDates, selectedDay: $selectedDay)
+                    BarView(habitRepository: habitRepository, graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
                 case .daily:
                     HabitRecordDayView(graphHeight: graphHeight, habitRecords: selectedDayHabitRecords)
                 }
                 HabitsMenu(
-                    habits: $habits,
+                    habits: dataHabits,
                     habitMenuHeight: habitMenuHeight,
                     didTapCreateHabitButton: {
                         print("hello world")
@@ -131,7 +199,6 @@ struct HomeView: View {
                     // Chart button
                     Button {
                         habitRecordVisualMode = .bar
-//                        NotificationCenter.default.post(name: .resetBarGraphPosition, object: nil)
                     } label: {
                         Image(systemName: "chart.bar.xaxis")
                             .fontWeight(.semibold)
@@ -276,7 +343,8 @@ struct HomeView: View {
         }
     }
     
-    private func createHabitRecordOnDate(habit: Habit) {
+    
+    private func createHabitRecordOnDate(habit: DataHabit) {
         
         print("create habit record on selected date (for \(habit.name))")
         
@@ -307,15 +375,11 @@ struct HomeView: View {
             newHabitRecordCompletionDate = selectedDayDateComponents.date!
         }
         
-        let newHabitRecord = HabitRecord(creationDate: today, completionDate: newHabitRecordCompletionDate, habit: habit)
+        print("tapped habit data")
         
-        habitRepository.insertNewHabitRecord(newHabitRecord) { error in
-            if let error {
-                fatalError("There was an issue \(error.localizedDescription)")
-            }
-            
-            print("finished inserting without an error")
-            updateHabitsOnDates()
-        }
+        let newHabitRecord = DataHabitRecord(creationDate: today, completionDate: newHabitRecordCompletionDate, habit: habit)
+        
+        modelContext.insert(newHabitRecord)
+
     }
 }

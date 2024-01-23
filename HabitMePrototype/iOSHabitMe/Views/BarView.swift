@@ -23,19 +23,12 @@ struct HabitRecordDayView: View {
     }
 }
 
-//extension Notification.Name {
-//    
-//    static let resetBarGraphPosition = Notification.Name("reset.bar.graph.position")
-//}
-
 struct BarView: View {
-    
-//    let resetBarGraphPosition = NotificationCenter.default.publisher(for: .resetBarGraphPosition)
     
     let habitRepository: HabitRepository
     let graphHeight: CGFloat
     
-    @Binding var habitsOnDates: [HabitsOnDate]
+    let dataHabitRecordsOnDate: [DataHabitRecordsOnDate]
     @Binding var selectedDay: Date
 
     
@@ -49,23 +42,17 @@ struct BarView: View {
                 
                 LazyHStack(spacing: 0) {
                     
-                    ForEach(0..<habitsOnDates.count, id: \.self) { i in
-                        dateColumn(graphHeight: graphHeight, info: habitsOnDates[i])
+                    ForEach(0..<dataHabitRecordsOnDate.count, id: \.self) { i in
+                        dateColumn(graphHeight: graphHeight, info: dataHabitRecordsOnDate[i])
                             .frame(width: columnWidth, height: graphHeight, alignment: .bottom)
-                            .id(habitsOnDates[i].funDate)
+                            .id(dataHabitRecordsOnDate[i].funDate)
                     }
                 }
                 .frame(height: graphHeight)
             }
-            .onChange(of: habitsOnDates) { oldValue, newValue in
-                scrollToSelectedDay(value: value)
-            }
             .onChange(of: selectedDay) { oldValue, newValue in
                 scrollToSelectedDay(value: value)
             }
-//            .onReceive(resetBarGraphPosition) { output in
-//                scrollToSelectedDay(value: value)
-//            }
             .onAppear {
                 scrollToSelectedDay(value: value, animate: false)
             }
@@ -74,7 +61,7 @@ struct BarView: View {
     
     
     @ViewBuilder
-    func dateColumn(graphHeight: Double, info: HabitsOnDate) -> some View {
+    func dateColumn(graphHeight: Double, info: DataHabitRecordsOnDate) -> some View {
         
         let habitCount = info.habits.count
         let labelHeight: CGFloat = 30
@@ -85,7 +72,7 @@ struct BarView: View {
         VStack(spacing: 0) {
             ForEach(info.habits, id: \.self) { j in
                 Rectangle()
-                    .fill(j.habit.color)
+                    .fill(Color(hex: j.habit.color) ?? .gray)
                     .frame(width: itemWidth, height: itemHeight)
                     .onTapGesture {
                         setSelectedDay(to: info.funDate)
@@ -124,7 +111,6 @@ struct BarView: View {
             } else {
                 value.scrollTo(selectedDay, anchor: .center)
             }
-//                    value.scrollTo(habitsOnDates.count - 1, anchor: .trailing)
         }
     }
 }
