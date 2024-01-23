@@ -91,20 +91,8 @@ struct CreateHabitView: View {
             .padding()
             
             
-            HabitMePrimaryButton(title: "Create Habit", action: didTapButtonToCreateHabit, isAbleToTap: isAbleToCreate)
-//            Button {
-//                didTapButtonToCreateHabit()
-//            } label: {
-//                Text("Create Habit")
-//                    .font(.headline)
-//                    .frame(maxWidth: .infinity)
-//                    .frame(height: 50)
-//                    .background(isAbleToCreate ? Color.blue : Color.blue.opacity(0.5))
-//                    .foregroundStyle(isAbleToCreate ? Color.white : Color.white.opacity(0.5))
-//                    .clipShape(RoundedRectangle(cornerRadius: 10))
-//                    .padding()
-//                    .disabled(isAbleToCreate == true ? false : true)
-//            }
+            HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
+                .padding()
         }
         .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
@@ -141,8 +129,19 @@ struct CreateHabitView: View {
 struct HabitMePrimaryButton: View {
     
     let title: String
-    let action: () -> Void
     let isAbleToTap: Bool
+    let color: Color
+    let buttonWidth: CGFloat?
+    let action: () -> Void
+    
+    init(title: String, isAbleToTap: Bool = true, color: Color? = nil, buttonWidth: CGFloat? = nil, action: @escaping () -> Void) {
+        
+        self.title = title
+        self.action = action
+        self.color = color ?? .blue
+        self.isAbleToTap = isAbleToTap
+        self.buttonWidth = buttonWidth
+    }
     
     var body: some View {
         Button {
@@ -150,12 +149,11 @@ struct HabitMePrimaryButton: View {
         } label: {
             Text(title)
                 .font(.headline)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: buttonWidth ?? .infinity)
                 .frame(height: 50)
-                .background(isAbleToTap ? Color.blue : Color.blue.opacity(0.5))
+                .background(isAbleToTap ? color : color.opacity(0.5))
                 .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding()
                 .disabled(isAbleToTap == true ? false : true)
         }
     }

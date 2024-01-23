@@ -183,17 +183,24 @@ struct HabitsMenu: View {
     
     func habitButton(habit: DataHabit) -> some View {
         
-        Button {
-            didTapHabitButton(habit)
-        } label: {
-            Text("\(habit.name)")
-                .fontWeight(.semibold)
-                .font(.system(size: 17))
-                .frame(width: 150, height: 50)
-                .background(Color(hex: habit.color))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-        .buttonStyle(.plain)
+        HabitMePrimaryButton(
+            title: "\(habit.name)",
+            color: Color(hex: habit.color),
+            buttonWidth: 150,
+            action: { didTapHabitButton(habit) }
+        )
+        
+//        Button {
+//            didTapHabitButton(habit)
+//        } label: {
+//            Text("\(habit.name)")
+//                .fontWeight(.semibold)
+//                .font(.system(size: 17))
+//                .frame(width: 150, height: 50)
+//                .background(Color(hex: habit.color))
+//                .clipShape(RoundedRectangle(cornerRadius: 10))
+//        }
+//        .buttonStyle(.plain)
         .contextMenu {
             NavigationLink("Habit Details") {
                 HabitDetailView(habit: habit)
