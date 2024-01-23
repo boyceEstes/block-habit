@@ -33,8 +33,6 @@ struct HomeView: View {
      * have so I think it should be fine.
      */
     
-    @State private var habitsOnDates = [HabitsOnDate]()
-    @State private var habits = [Habit]()
     @State private var isCreateHabitScreenDisplayed = false
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State private var selectedDay: Date = Date().noon!
@@ -124,17 +122,17 @@ struct HomeView: View {
             let habitMenuHeight = screenHeight * 0.3
             let itemHeight = graphHeight / 8
             
-            let _ = print("safeAreaInsetTop: \(safeAreaInsetTop)")
-            let _ = print("graphHeight: \(graphHeight)")
-            let _ = print("screenHeight: \(screenHeight)")
-            let _ = print("itemHeight: \(itemHeight)")
-            
+//            let _ = print("safeAreaInsetTop: \(safeAreaInsetTop)")
+//            let _ = print("graphHeight: \(graphHeight)")
+//            let _ = print("screenHeight: \(screenHeight)")
+//            let _ = print("itemHeight: \(itemHeight)")
+//            
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:
                     BarView(habitRepository: habitRepository, graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
                 case .daily:
-                    HabitRecordDayView(graphHeight: graphHeight, habitRecords: selectedDayHabitRecords)
+                    HabitRecordDayView(graphHeight: graphHeight, habitRecords: dataHabitRecordsForSelectedDay)
                 }
                 HabitsMenu(
                     habits: dataHabits,
@@ -147,17 +145,8 @@ struct HomeView: View {
                 )
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
-            .onAppear {
-                updateHabitsOnDates()
-                getHabits()
-            }
         }
-        .sheet(isPresented: $isCreateHabitScreenDisplayed, onDismiss: {
-            
-            updateHabitsOnDates() // Updating this purely so that I can trigger it to get reset to today
-            getHabits()
-            
-        }, content: {
+        .sheet(isPresented: $isCreateHabitScreenDisplayed , content: {
             
             CreateHabitView(habitRepository: habitRepository)
         })
@@ -193,7 +182,7 @@ struct HomeView: View {
                 case .bar:
                     // Daily button
                     Button {
-                        habitRecordVisualMode = .daily
+                        setHabitRecordViewMode(to: .daily)
                     } label: {
                         Image(systemName: "chart.bar.doc.horizontal")
                             .fontWeight(.semibold)
@@ -201,7 +190,7 @@ struct HomeView: View {
                 case .daily:
                     // Chart button
                     Button {
-                        habitRecordVisualMode = .bar
+                        setHabitRecordViewMode(to: .bar)
                     } label: {
                         Image(systemName: "chart.bar.xaxis")
                             .fontWeight(.semibold)
@@ -209,6 +198,24 @@ struct HomeView: View {
                 }
             }
         }
+    }
+
+    
+    private func setHabitRecordViewMode(to visualMode: HabitRecordVisualMode) {
+        
+        withAnimation(.easeOut) {
+            habitRecordVisualMode = visualMode
+        }
+    }
+    
+    
+    private var dataHabitRecordsForSelectedDay: [DataHabitRecord] {
+        
+        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habits else {
+            return []
+        }
+        
+        return dataHabitRecordsSelectedForDay
     }
     
     
@@ -236,16 +243,6 @@ struct HomeView: View {
         default:
             return formatter.string(from: selectedDay)
         }
-    }
-    
-    
-    private var selectedDayHabitRecords: Binding<[HabitRecord]> {
-        
-        guard let habitRecords = $habitsOnDates.filter({ $0.wrappedValue.funDate == selectedDay }).first?.habits else {
-            return Binding.constant([])
-        }
-        
-        return habitRecords
     }
     
     
@@ -280,72 +277,6 @@ struct HomeView: View {
         return selectedDay != startOf2024 ? true : false
     }
 
-    
-    private func getHabits() {
-        
-        habitRepository.fetchAllHabits { habits in
-            self.habits = habits
-        }
-    }
-    
-    
-    private func updateHabitsOnDates() {
-        
-        habitsOnDates = []
-        
-        print("update habit records by loading them")
-        
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = .current
-        
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-              let today = Date().noon,
-              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return }
-        
-        
-        // TODO: Get ALL habit records (make sure they are sorted by date in ascending order oldest -> latest)
-        habitRepository.fetchAllHabitRecords { habitRecords in
-            
-            print("received from habitRepository fetch... \(habitRecords.count)")
-            let habitRecords = habitRecords.sorted {
-                if $0.completionDate == $1.completionDate {
-                    return $0.creationDate > $1.creationDate
-                } else {
-                    return $0.completionDate > $1.completionDate
-                }
-            }
-            
-            // Convert to a dictionary in order for us to an easier time in searching for dates
-            var dict = [Date: [HabitRecord]]()
-            
-            for record in habitRecords {
-                
-                guard let noonDate = record.completionDate.noon else { return }
-                if dict[noonDate] != nil {
-                    dict[noonDate]?.append(record)
-                } else {
-                    dict[noonDate] = [record]
-                }
-            }
-            
-            
-            // Maybe for now, lets just start at january 1, 2024 for the beginning.
-            for day in 0...days {
-                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
-                
-                
-                if let habitRecordsForDate = dict[noonDate] {
-                    habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: habitRecordsForDate))
-                } else {
-                    habitsOnDates.append(HabitsOnDate(funDate: noonDate, habits: []))
-                }
-            }
-        }
-    }
-    
     
     private func createHabitRecordOnDate(habit: DataHabit) {
         

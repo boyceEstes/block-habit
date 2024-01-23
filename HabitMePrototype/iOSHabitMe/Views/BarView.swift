@@ -12,12 +12,12 @@ struct HabitRecordDayView: View {
     
     let graphHeight: CGFloat
     
-    @Binding var habitRecords: [HabitRecord]
+    var habitRecords: [DataHabitRecord]
     
     var body: some View {
         
-        List($habitRecords, id: \.self) { habitRecord in
-            Text("\(habitRecord.wrappedValue.habit.name)")
+        List(habitRecords, id: \.self) { habitRecord in
+            Text("\(habitRecord.habit.name)")
         }
         .frame(height: graphHeight)
     }
