@@ -96,8 +96,9 @@ struct BarView: View {
         .contextMenu {
             if habitCount > 0 {
                 Button("Delete Last Habit Record") {
-                    
-                    deleteLastHabitRecord(in: info.habits)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
+                        deleteLastHabitRecord(in: info.habits)
+                    }
                 }
             }
         }
