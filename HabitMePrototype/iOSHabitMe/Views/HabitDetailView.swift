@@ -92,7 +92,7 @@ struct HabitDetailView: View {
             let screenHeight = proxy.size.height
             let graphHeight = screenHeight * 0.3
 
-            VStack {
+            VStack(spacing: 0) {
                 BarView(
                     graphWidth: screenWidth,
                     graphHeight: graphHeight,
@@ -102,6 +102,10 @@ struct HabitDetailView: View {
                     selectedDay: $selectedDay
                 )
                 
+                HabitMePrimaryButton(title: "Log New Record", color: Color(hex: habit.color)) {
+                    print("create habit record")
+                }
+                .padding()
                 
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))

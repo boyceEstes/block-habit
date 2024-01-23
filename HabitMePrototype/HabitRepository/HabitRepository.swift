@@ -19,3 +19,4 @@ protocol HabitRepository {
     func insertNewHabit(habit: Habit, completion: (InsertResult) -> Void)
 }
 
+

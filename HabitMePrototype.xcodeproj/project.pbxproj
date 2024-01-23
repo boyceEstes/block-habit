@@ -13,6 +13,7 @@
 		B313EEBA2B5C4C99002AE8CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B313EEB92B5C4C99002AE8CE /* Preview Assets.xcassets */; };
 		B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */; };
 		B32947A42B601CD3007C8C1E /* HabitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947A32B601CD3007C8C1E /* HabitDetailView.swift */; };
+		B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947A52B606713007C8C1E /* SwiftDataHabitRepository.swift */; };
 		B3C97F082B5CE6F400211B4C /* HabitRepository.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F062B5CE6F300211B4C /* HabitRepository.xcdatamodeld */; };
 		B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */; };
 		B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */; };
@@ -37,6 +38,7 @@
 		B313EEB92B5C4C99002AE8CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		B32947A32B601CD3007C8C1E /* HabitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailView.swift; sourceTree = "<group>"; };
+		B32947A52B606713007C8C1E /* SwiftDataHabitRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataHabitRepository.swift; sourceTree = "<group>"; };
 		B3C97F072B5CE6F300211B4C /* HabitRepository.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitRepository.xcdatamodel; sourceTree = "<group>"; };
 		B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabitRecord.swift; sourceTree = "<group>"; };
 		B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabit.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */,
+				B32947A52B606713007C8C1E /* SwiftDataHabitRepository.swift */,
 			);
 			path = SwiftData;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				B3C97F1D2B5CE8AD00211B4C /* Habit.swift in Sources */,
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
+				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B3C97F132B5CE82C00211B4C /* CoreDataHabitRepository.swift in Sources */,
 				B3C97F172B5CE85C00211B4C /* InMemoryHabitRepository.swift in Sources */,
 				B3C97F1F2B5CE8C900211B4C /* HabitRecord.swift in Sources */,
