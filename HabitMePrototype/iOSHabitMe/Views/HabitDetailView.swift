@@ -93,12 +93,20 @@ struct HabitDetailView: View {
             let graphHeight = screenHeight * 0.3
 
             VStack {
-                BarView(graphWidth: screenWidth, graphHeight: graphHeight, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
+                BarView(
+                    graphWidth: screenWidth,
+                    graphHeight: graphHeight,
+                    numOfItemsToReachTop: 5,
+                    dataHabitRecordsOnDate:
+                        dataHabitRecordsOnDate,
+                    selectedDay: $selectedDay
+                )
                 
-                Text("Hello world")
+                
             }
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
-        .navigationTitle("Habit Details: \(habit.name)")
+        .navigationTitle("Habit Details")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -29,6 +29,7 @@ struct BarView: View {
     
     let graphWidth: CGFloat
     let graphHeight: CGFloat
+    let numOfItemsToReachTop: Double
     
     
     let dataHabitRecordsOnDate: [DataHabitRecordsOnDate]
@@ -47,7 +48,11 @@ struct BarView: View {
                 LazyHStack(spacing: 0) {
                     
                     ForEach(0..<dataHabitRecordsOnDate.count, id: \.self) { i in
-                        dateColumn(graphHeight: graphHeight, info: dataHabitRecordsOnDate[i])
+                        dateColumn(
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: numOfItemsToReachTop,
+                            info: dataHabitRecordsOnDate[i]
+                        )
                             .frame(width: columnWidth, height: graphHeight, alignment: .bottom)
                             .id(dataHabitRecordsOnDate[i].funDate)
                     }
@@ -65,13 +70,13 @@ struct BarView: View {
     
     
     @ViewBuilder
-    func dateColumn(graphHeight: Double, info: DataHabitRecordsOnDate) -> some View {
+    func dateColumn(graphHeight: Double, numOfItemsToReachTop: Double, info: DataHabitRecordsOnDate) -> some View {
         
         let habitCount = info.habits.count
         let labelHeight: CGFloat = 30
         // This will also be the usual height
-        let itemWidth = (graphHeight - labelHeight) / 8
-        let itemHeight = habitCount > 8 ? ((graphHeight - labelHeight) / Double(habitCount)) : itemWidth
+        let itemWidth = (graphHeight - labelHeight) / numOfItemsToReachTop
+        let itemHeight = habitCount > Int(numOfItemsToReachTop) ? ((graphHeight - labelHeight) / Double(habitCount)) : itemWidth
         
         VStack(spacing: 0) {
             ForEach(info.habits, id: \.self) { j in
