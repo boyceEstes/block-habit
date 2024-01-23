@@ -20,7 +20,10 @@ struct HomeView: View {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
-    @Query var dataHabitRecords: [DataHabitRecord]
+    @Query(sort: [
+        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
+        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
+    ]) var dataHabitRecords: [DataHabitRecord]
     
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.
@@ -57,18 +60,18 @@ struct HomeView: View {
 //        habitRepository.fetchAllHabitRecords { habitRecords in
             
             print("received from habitRepository fetch... \(dataHabitRecords.count)")
-            let habitRecords = dataHabitRecords.sorted {
-                if $0.completionDate == $1.completionDate {
-                    return $0.creationDate > $1.creationDate
-                } else {
-                    return $0.completionDate > $1.completionDate
-                }
-            }
-            
+//            let habitRecords = dataHabitRecords.sorted {
+//                if $0.completionDate == $1.completionDate {
+//                    return $0.creationDate > $1.creationDate
+//                } else {
+//                    return $0.completionDate > $1.completionDate
+//                }
+//            }
+//            
             // Convert to a dictionary in order for us to an easier time in searching for dates
             var dict = [Date: [DataHabitRecord]]()
             
-            for record in habitRecords {
+            for record in dataHabitRecords {
                 
                 guard let noonDate = record.completionDate.noon else { return [] }
                 if dict[noonDate] != nil {
