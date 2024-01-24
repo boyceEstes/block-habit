@@ -20,6 +20,7 @@ struct HabitDetailView: View {
     @Query var dataHabitRecordsForHabit: [DataHabitRecord]
     
     @State private var currentStreak = 0
+    @State private var avgRecordsPerDay: Double = 0
     @State private var bestStreak = 0
     
     var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
@@ -43,10 +44,17 @@ struct HabitDetailView: View {
         // Convert to a dictionary in order for us to an easier time in searching for dates
         var dict = [Date: [DataHabitRecord]]()
         // It is ordered from first date (jan. 1st) -> last date (today), the key is the last date in the streak
-        var streaks = [Date: Int]()
         var streakingCount = 0
         var lastStreakCount = 0
         var maxStreakCount = 0
+        
+        // average records / day
+        /*
+         * NOTE: This is being calculated for only the days that the record is done.
+         * I think it would be demoralizing to see if you fell off and were trying to get back on
+         */
+        var daysRecordHasBeenDone = 0
+        var recordsThatHaveBeenDone = 0
         
         
         for record in dataHabitRecordsForHabit {
@@ -65,15 +73,12 @@ struct HabitDetailView: View {
             // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
             guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
             
-            // streak logic
-            var dayBefore: Date?
-            if noonDate != startOf2024 {
-                dayBefore = noonDate.adding(days: -1)
-            }
-            
             if let habitRecordsForDate = dict[noonDate] {
                 // graph logic
                 _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: habitRecordsForDate))
+                
+                daysRecordHasBeenDone += 1
+                recordsThatHaveBeenDone += habitRecordsForDate.count
                 
                 // streak logic
                 streakingCount += 1
@@ -82,12 +87,6 @@ struct HabitDetailView: View {
                 _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: []))
                 
                 // streak logic
-                //                    if streakingCount > maxStreakCount {
-                //                        maxStreakCount = streakingCount
-                //                    }
-                if let dayBefore {
-                    streaks[dayBefore] = streakingCount
-                }
                 if streakingCount >= maxStreakCount {
                     maxStreakCount = streakingCount
                 }
@@ -106,7 +105,9 @@ struct HabitDetailView: View {
         }
         
         currentStreak = lastStreakCount
+        avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
         bestStreak = maxStreakCount
+        
         
         return _dataHabitRecordsOnDate
     }
@@ -159,12 +160,12 @@ struct HabitDetailView: View {
                 
                 Grid() {
                     GridRow {
-                        statBox(title: "Total Records", value: totalRecords)
-                        statBox(title: "Current Streak", value: "\(currentStreak)", units: "days")
+                        totalRecordsStatBox(totalRecords: totalRecords)
+                        currentStreakStatBox(currentStreak: currentStreak)
                     }
                     GridRow {
-//                        statBox(title: "Average Records / Day", value: "1.8", units: "rpd")
-                        statBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
+                        avgRecordsPerDayStatBox(avgRecordsPerDay: avgRecordsPerDay)
+                        bestStreakStatBox(bestStreak: bestStreak)
                     }
                 }
                 .padding()
@@ -178,8 +179,37 @@ struct HabitDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
-
     
+    func totalRecordsStatBox(totalRecords: String) -> some View {
+        statBox(title: "Total Records", value: totalRecords)
+    }
+
+    func currentStreakStatBox(currentStreak: Int) -> some View {
+        
+        if currentStreak == 1 {
+            statBox(title: "Current Streak", value: "\(currentStreak)", units: "day")
+        } else {
+            statBox(title: "Current Streak", value: "\(currentStreak)", units: "days")
+        }
+    }
+    
+    func avgRecordsPerDayStatBox(avgRecordsPerDay: Double) -> some View {
+        let title = "Average Records / Day"
+        if avgRecordsPerDay > 0 {
+            return statBox(title: title, value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
+        } else {
+            return statBox(title: title, value: "N/A")
+        }
+
+    }
+    
+    func bestStreakStatBox(bestStreak: Int) -> some View {
+        if bestStreak == 1 {
+            return statBox(title: "Best Streak", value: "\(bestStreak)", units: "day")
+        } else {
+            return statBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
+        }
+    }
     
     
     func statBox(title: String, value: String, units: String? = nil) -> some View {
