@@ -19,6 +19,8 @@ struct HabitDetailView: View {
 //     Query to fetch all of the habit records for the habit
     @Query var dataHabitRecordsForHabit: [DataHabitRecord]
     
+    @State private var currentStreak = 0
+    @State private var bestStreak = 0
     
     var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
         
@@ -36,36 +38,82 @@ struct HabitDetailView: View {
         else { return [] }
         
         
-            print("received from habitRepository fetch... \(dataHabitRecordsForHabit.count)")
-//
-            // Convert to a dictionary in order for us to an easier time in searching for dates
-            var dict = [Date: [DataHabitRecord]]()
+        print("received from habitRepository fetch... \(dataHabitRecordsForHabit.count)")
+        //
+        // Convert to a dictionary in order for us to an easier time in searching for dates
+        var dict = [Date: [DataHabitRecord]]()
+        // It is ordered from first date (jan. 1st) -> last date (today), the key is the last date in the streak
+        var streaks = [Date: Int]()
+        var streakingCount = 0
+        var lastStreakCount = 0
+        var maxStreakCount = 0
+        
+        
+        for record in dataHabitRecordsForHabit {
             
-            for record in dataHabitRecordsForHabit {
-                
-                guard let noonDate = record.completionDate.noon else { return [] }
-                if dict[noonDate] != nil {
-                    dict[noonDate]?.append(record)
-                } else {
-                    dict[noonDate] = [record]
-                }
+            guard let noonDate = record.completionDate.noon else { return [] }
+            if dict[noonDate] != nil {
+                dict[noonDate]?.append(record)
+            } else {
+                dict[noonDate] = [record]
+            }
+        }
+        
+        
+        // Maybe for now, lets just start at january 1, 2024 for the beginning.
+        for day in 0...days {
+            // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
+            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
+            
+            // streak logic
+            var dayBefore: Date?
+            if noonDate != startOf2024 {
+                dayBefore = noonDate.adding(days: -1)
             }
             
-            
-            // Maybe for now, lets just start at january 1, 2024 for the beginning.
-            for day in 0...days {
-                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
+            if let habitRecordsForDate = dict[noonDate] {
+                // graph logic
+                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: habitRecordsForDate))
                 
+                // streak logic
+                streakingCount += 1
                 
-                if let habitRecordsForDate = dict[noonDate] {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: habitRecordsForDate))
-                } else {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: []))
+            } else {
+                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: []))
+                
+                // streak logic
+                //                    if streakingCount > maxStreakCount {
+                //                        maxStreakCount = streakingCount
+                //                    }
+                if let dayBefore {
+                    streaks[dayBefore] = streakingCount
                 }
+                if streakingCount >= maxStreakCount {
+                    maxStreakCount = streakingCount
+                }
+                lastStreakCount = streakingCount
+                streakingCount = 0
             }
-            
-            return _dataHabitRecordsOnDate
+        }
+        
+        // streak logic
+        if streakingCount > 0 {
+            // Streak has continued to today
+            if streakingCount >= maxStreakCount {
+                maxStreakCount = streakingCount
+            }
+            lastStreakCount = streakingCount
+        }
+        
+        currentStreak = lastStreakCount
+        bestStreak = maxStreakCount
+        
+        return _dataHabitRecordsOnDate
+    }
+    
+    
+    var totalRecords: String {
+        return "\(dataHabitRecordsForHabit.count)"
     }
     
     
@@ -109,23 +157,20 @@ struct HabitDetailView: View {
                 }
                 .padding()
                 
-                VStack() {
-                    HStack {
-                        statBox()
-                        Spacer()
-                        statBox()
+                Grid() {
+                    GridRow {
+                        statBox(title: "Total Records", value: totalRecords)
+                        statBox(title: "Current Streak", value: "\(currentStreak)", units: "days")
                     }
-                    HStack {
-                        statBox()
-                        Spacer()
-                        statBox()
+                    GridRow {
+//                        statBox(title: "Average Records / Day", value: "1.8", units: "rpd")
+                        statBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
                     }
                 }
                 .padding()
                 .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
                  )
                 .padding([.horizontal, .bottom])
-
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
@@ -137,24 +182,28 @@ struct HabitDetailView: View {
     
     
     
-    func statBox() -> some View {
+    func statBox(title: String, value: String, units: String? = nil) -> some View {
         
-        VStack {
-            Text("Hello world")
-                .font(.callout)
+        VStack(spacing: 0) {
+            Text(title)
+                .font(.footnote)
                 .foregroundStyle(Color(uiColor: .secondaryLabel))
+                .lineLimit(2, reservesSpace: true)
+                .multilineTextAlignment(.center)
+            
             HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text("13")
+                Text(value)
                     .font(.title2)
                     .fontWeight(.semibold)
-                Text("days")
-                    .font(.callout)
-                
+                if let units {
+                    Text(units)
+                        .font(.callout)
+                }
             }
         }
-            .padding()
+        .padding(8)
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .systemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+            .background(Color(uiColor: .systemBackground), in: RoundedRectangle(cornerRadius: 10))
     }
 }
 
@@ -170,6 +219,12 @@ struct HabitDetailView: View {
     )
     container.mainContext.insert(dataHabit)
     
+
+    let dataHabitRecord0 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: 0),
+        habit: dataHabit
+    )
     let dataHabitRecord = DataHabitRecord(
         creationDate: Date(),
         completionDate: Date().adding(days: -1),
@@ -185,11 +240,38 @@ struct HabitDetailView: View {
         completionDate: Date().adding(days: -2),
         habit: dataHabit
     )
-    
+
+    container.mainContext.insert(dataHabitRecord0)
     container.mainContext.insert(dataHabitRecord)
     container.mainContext.insert(dataHabitRecord2)
     container.mainContext.insert(dataHabitRecord3)
     
+    
+    let dataHabitRecord4 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -8),
+        habit: dataHabit
+    )
+    let dataHabitRecord5 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -9),
+        habit: dataHabit
+    )
+    let dataHabitRecord6 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -10),
+        habit: dataHabit
+    )
+    let dataHabitRecord7 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -11),
+        habit: dataHabit
+    )
+    
+    container.mainContext.insert(dataHabitRecord4)
+    container.mainContext.insert(dataHabitRecord5)
+    container.mainContext.insert(dataHabitRecord6)
+    container.mainContext.insert(dataHabitRecord7)
     
     let habit = Habit.meditation
     return NavigationStack {
