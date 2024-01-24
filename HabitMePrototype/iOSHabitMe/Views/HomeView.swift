@@ -16,8 +16,6 @@ enum HabitRecordVisualMode {
 
 struct HomeView: View {
     
-    let habitRepository: HabitRepository
-    
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
     @Query(sort: [
@@ -137,7 +135,7 @@ struct HomeView: View {
         }
         .sheet(isPresented: $isCreateHabitScreenDisplayed , content: {
             
-            CreateHabitView(habitRepository: habitRepository)
+            CreateHabitView()
         })
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -267,3 +265,76 @@ struct HomeView: View {
     }
 }
 
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
+    
+    let dataHabit = DataHabit(
+        id: UUID().uuidString,
+        name: "Chugged Dew",
+        color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
+        habitRecords: []
+    )
+    let dataHabit2 = DataHabit(
+        id: UUID().uuidString,
+        name: "Smashed Taco",
+        color: Habit.habits[1].color.toHexString() ?? "#FFFFFF",
+        habitRecords: []
+    )
+    container.mainContext.insert(dataHabit)
+    container.mainContext.insert(dataHabit2)
+    
+    let dataHabitRecord = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -1),
+        habit: dataHabit
+    )
+    let dataHabitRecord2 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -2),
+        habit: dataHabit
+    )
+    let dataHabitRecord3 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -2),
+        habit: dataHabit
+    )
+    
+    container.mainContext.insert(dataHabitRecord)
+    container.mainContext.insert(dataHabitRecord2)
+    container.mainContext.insert(dataHabitRecord3)
+    
+    
+    let dataHabitRecord21 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: 0),
+        habit: dataHabit2
+    )
+    let dataHabitRecord22 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -1),
+        habit: dataHabit2
+    )
+    let dataHabitRecord23 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -1),
+        habit: dataHabit2
+    )
+    let dataHabitRecord24 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -2),
+        habit: dataHabit2
+    )
+    
+    container.mainContext.insert(dataHabitRecord21)
+    container.mainContext.insert(dataHabitRecord22)
+    container.mainContext.insert(dataHabitRecord23)
+    container.mainContext.insert(dataHabitRecord24)
+    
+    
+    let habit = Habit.meditation
+    return NavigationStack {
+        HomeView()
+        .modelContainer(container)
+    }
+}

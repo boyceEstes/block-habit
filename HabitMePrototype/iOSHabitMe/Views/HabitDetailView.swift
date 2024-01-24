@@ -109,22 +109,22 @@ struct HabitDetailView: View {
                 }
                 .padding()
                 
-                VStack(spacing: 20) {
+                VStack() {
                     HStack {
-                        Text("Statbox")
+                        statBox()
                         Spacer()
-                        Text("Statbox")
+                        statBox()
                     }
                     HStack {
-                        Text("Statbox")
+                        statBox()
                         Spacer()
-                        Text("Statbox")
+                        statBox()
                     }
                 }
                 .padding()
                 .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
                  )
-                .padding()
+                .padding([.horizontal, .bottom])
 
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
@@ -133,10 +133,28 @@ struct HabitDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
+
+    
+    
     
     func statBox() -> some View {
         
-        Text("Hello world")
+        VStack {
+            Text("Hello world")
+                .font(.callout)
+                .foregroundStyle(Color(uiColor: .secondaryLabel))
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text("13")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Text("days")
+                    .font(.callout)
+                
+            }
+        }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: .systemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
     }
 }
 
@@ -144,16 +162,38 @@ struct HabitDetailView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
+    let dataHabit = DataHabit(
+        id: UUID().uuidString,
+        name: "Chugging Dew",
+        color: Habit.habits.randomElement()?.color.toHexString() ?? "#FFFFFF",
+        habitRecords: []
+    )
+    container.mainContext.insert(dataHabit)
+    
+    let dataHabitRecord = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -1),
+        habit: dataHabit
+    )
+    let dataHabitRecord2 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -2),
+        habit: dataHabit
+    )
+    let dataHabitRecord3 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: -2),
+        habit: dataHabit
+    )
+    
+    container.mainContext.insert(dataHabitRecord)
+    container.mainContext.insert(dataHabitRecord2)
+    container.mainContext.insert(dataHabitRecord3)
+    
+    
     let habit = Habit.meditation
     return NavigationStack {
-        HabitDetailView(
-            habit: DataHabit(
-                id: UUID().uuidString,
-                name: habit.name,
-                color: habit.color.toHexString() ?? "#FFFFFF",
-                habitRecords: []
-            )
-        )
+        HabitDetailView(habit: dataHabit)
         .modelContainer(container)
     }
 }

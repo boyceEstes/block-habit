@@ -16,7 +16,7 @@ struct HabitMePrototypeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(habitRepository: habitRepository)
+            ContentView()
         }
         .modelContainer(for: [DataHabit.self, DataHabitRecord.self])
     }

@@ -13,8 +13,6 @@ import SwiftUI
 
 struct CreateHabitView: View {
     
-    let habitRepository: HabitRepository
-    
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     

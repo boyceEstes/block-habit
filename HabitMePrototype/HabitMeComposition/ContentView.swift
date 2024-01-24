@@ -37,12 +37,10 @@ struct MyTextFieldStyle: TextFieldStyle {
 
 struct ContentView: View {
     
-    let habitRepository: HabitRepository
-    
     var body: some View {
         
         NavigationStack {
-            HomeView(habitRepository: habitRepository)
+            HomeView()
         }
     }
 }
@@ -72,5 +70,5 @@ class AppState {
 
 
 #Preview {
-    ContentView(habitRepository: InMemoryHabitRepository())
+    ContentView()
 }
