@@ -109,17 +109,51 @@ struct HabitDetailView: View {
                 }
                 .padding()
                 
+                VStack(spacing: 20) {
+                    HStack {
+                        Text("Statbox")
+                        Spacer()
+                        Text("Statbox")
+                    }
+                    HStack {
+                        Text("Statbox")
+                        Spacer()
+                        Text("Statbox")
+                    }
+                }
+                .padding()
+                .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
+                 )
+                .padding()
+
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
-        .navigationTitle("Habit Details")
+        .navigationTitle("\(habit.name)")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    
+    func statBox() -> some View {
+        
+        Text("Hello world")
     }
 }
 
 #Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
+    
     let habit = Habit.meditation
     return NavigationStack {
-        HabitDetailView(habit: DataHabit(id: UUID().uuidString, name: habit.name, color: habit.color.toHexString() ?? "#FFFFFF", habitRecords: []))
+        HabitDetailView(
+            habit: DataHabit(
+                id: UUID().uuidString,
+                name: habit.name,
+                color: habit.color.toHexString() ?? "#FFFFFF",
+                habitRecords: []
+            )
+        )
+        .modelContainer(container)
     }
 }
