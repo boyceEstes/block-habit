@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DayView: View {
     
+    @Environment(\.modelContext) var modelContext
+    
     let graphHeight: CGFloat
     // We want this to keep the same itemHeight/width when presenting the squares in the list
     let numOfItemsToReachTop: Int
@@ -39,10 +41,29 @@ struct DayView: View {
                             .font(.footnote)
                             .foregroundStyle(Color.secondary)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button {
+                        deleteActivity(habitRecord: habitRecord)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                          .foregroundStyle(Color.blue)
+                    }
+                    .tint(Color(uiColor: .secondarySystemGroupedBackground))
                 }
             }
+//            .onDelete(perform: deleteActivities)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color(uiColor: .secondarySystemGroupedBackground))
+
         }
         .frame(height: graphHeight)
+//        .background(Color(uiColor: .systemGroupedBackground))
+//        .scrollContentBackground(.hidden)
+        .listStyle(.plain)
     }
     
     
@@ -67,6 +88,18 @@ struct DayView: View {
             return dateTimeDateFormatter.string(from: dateTimeToFormat).lowercased()
         }
     }
+    
+    
+    private func deleteActivity(habitRecord: DataHabitRecord) {
+        modelContext.delete(habitRecord)
+    }
+    
+//    private func deleteActivities(at offsets: IndexSet) {
+//        
+//        for i in offsets {
+//            modelContext.delete(habitRecords[i])
+//        }
+//    }
 }
 
 

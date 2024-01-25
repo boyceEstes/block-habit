@@ -104,9 +104,11 @@ struct HabitDetailView: View {
             lastStreakCount = streakingCount
         }
         
-        currentStreak = lastStreakCount
-        avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
-        bestStreak = maxStreakCount
+        DispatchQueue.main.async {
+            currentStreak = lastStreakCount
+            avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
+            bestStreak = maxStreakCount
+        }
         
         
         return _dataHabitRecordsOnDate
