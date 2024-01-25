@@ -11,6 +11,7 @@ struct DayView: View {
     
     @Environment(\.modelContext) var modelContext
     
+    /// We want this to determine the itemHeight, alternatively we could just set the item height/width
     let graphHeight: CGFloat
     // We want this to keep the same itemHeight/width when presenting the squares in the list
     let numOfItemsToReachTop: Int
@@ -22,6 +23,20 @@ struct DayView: View {
     
     var habitRecords: [DataHabitRecord]
     let selectedDay: Date
+    
+    
+    init(
+        graphHeight: CGFloat,
+        numOfItemsToReachTop: Int,
+        habitRecords: [DataHabitRecord],
+        selectedDay: Date
+    ) {
+        self.graphHeight = graphHeight
+        self.numOfItemsToReachTop = numOfItemsToReachTop
+        self.habitRecords = habitRecords
+        self.selectedDay = selectedDay
+    }
+    
     
     var body: some View {
         
@@ -77,6 +92,28 @@ struct DayView: View {
             return "Unknown"
         }
         
+        // TODO: We want to be able to change the completionDate of an activity later
+        /*
+         * But I don't want to ever change the creationDate - it should be a constant
+         * I don't care about how many times its edited though.
+         *
+         * Anyway, right now we are checking to see if the creation day is the same as the selected day
+         * but what I want to do in the future is a little more complicated
+         *
+         * The purpose: We want the user to only be able to edit a task's completionTime - and order
+         * properly when it is changed, despite the creationDate having an entirely different date
+         *
+         * if the completionDate's time == 23:59:59 && the creationDate is another day
+         *   -- We want to display the activity's creationDate
+         * else if completionDate's time != 23:59:59 && the creationDate is another day
+         *   -- We want to display the activity's completionDate (this would have been edited, 
+         *   so we want to sort it to where it should sit in the day according to the user's edit)
+         * else if creationDate is today {
+         *   -- We want to display the completionDate - it'll be set the same as the creationDate
+         *   unless edited, and even then, it can still be displayed without the day
+         * }
+         *
+         */
         if dayOfActivityCreation == selectedDay {
             // Format by only displaying the time, HH:mm a
             let timeToFormat = habitRecord.completionDate

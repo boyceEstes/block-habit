@@ -23,6 +23,8 @@ struct HabitDetailView: View {
     @State private var avgRecordsPerDay: Double = 0
     @State private var bestStreak = 0
     
+    let numOfItemsToReachTop = 5
+    
     var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
         
         var _dataHabitRecordsOnDate = [DataHabitRecordsOnDate]()
@@ -149,7 +151,7 @@ struct HabitDetailView: View {
                 BarView(
                     graphWidth: screenWidth,
                     graphHeight: graphHeight,
-                    numOfItemsToReachTop: 5,
+                    numOfItemsToReachTop: Double(numOfItemsToReachTop),
                     dataHabitRecordsOnDate:
                         dataHabitRecordsOnDate,
                     selectedDay: $selectedDay
