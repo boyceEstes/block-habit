@@ -14,8 +14,7 @@ struct HabitsOnDate: Hashable {
     var habits: [HabitRecord]
     
     var displayDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
+        let formatter: DateFormatter = .shortDate
         
         let today = Date().noon!
         let yesterday = Date().noon!.adding(days: -1)
@@ -46,8 +45,7 @@ struct DataHabitRecordsOnDate: Hashable {
     var habits: [DataHabitRecord]
     
     var displayDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
+        let formatter: DateFormatter = .shortDate
         
         let today = Date().noon!
         let yesterday = Date().noon!.adding(days: -1)

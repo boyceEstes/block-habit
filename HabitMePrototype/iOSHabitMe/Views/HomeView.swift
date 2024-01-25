@@ -32,7 +32,7 @@ struct HomeView: View {
      */
     
     @State private var isCreateHabitScreenDisplayed = false
-    @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
+    @State private var habitRecordVisualMode: HabitRecordVisualMode = .daily
     @State private var selectedDay: Date = Date().noon!
     
     
@@ -114,7 +114,7 @@ struct HomeView: View {
                 case .bar:
                     BarView(graphWidth: screenWidth, graphHeight: graphHeight, numOfItemsToReachTop: 8, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
                 case .daily:
-                    HabitRecordDayView(graphHeight: graphHeight, habitRecords: dataHabitRecordsForSelectedDay)
+                    DayView(graphHeight: graphHeight, numOfItemsToReachTop: 8, habitRecords: dataHabitRecordsForSelectedDay, selectedDay: selectedDay)
                 }
                 HabitsMenu(
                     habits: dataHabits,
@@ -207,8 +207,7 @@ struct HomeView: View {
     
     
     private var displaySelectedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
+        let formatter: DateFormatter = .shortDate
         
         let today = Date().noon!
         let yesterday = Date().noon!.adding(days: -1)

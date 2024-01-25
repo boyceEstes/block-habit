@@ -8,21 +8,6 @@
 import SwiftUI
 
 
-struct HabitRecordDayView: View {
-    
-    let graphHeight: CGFloat
-    
-    var habitRecords: [DataHabitRecord]
-    
-    var body: some View {
-        
-        List(habitRecords, id: \.self) { habitRecord in
-            Text("\(habitRecord.habit.name)")
-        }
-        .frame(height: graphHeight)
-    }
-}
-
 struct BarView: View {
     
     @Environment(\.modelContext) var modelContext
@@ -80,10 +65,11 @@ struct BarView: View {
         
         VStack(spacing: 0) {
             ForEach(info.habits, id: \.self) { j in
-                Rectangle()
-                    .fill(Color(hex: j.habit.color) ?? .gray)
-                    .frame(width: itemWidth, height: itemHeight)
-                    .onTapGesture {
+                
+                ActivityBlock(
+                    colorHex: j.habit.color,
+                    itemWidth: itemWidth,
+                    itemHeight: itemHeight) {
                         setSelectedDay(to: info.funDate)
                     }
             }
@@ -142,5 +128,29 @@ struct BarView: View {
                 value.scrollTo(selectedDay, anchor: .center)
             }
         }
+    }
+}
+
+
+struct ActivityBlock: View {
+    
+    let colorHex: String
+    let itemWidth: CGFloat
+    let itemHeight: CGFloat
+    let tapAction: () -> Void
+    
+    init(colorHex: String, itemWidth: CGFloat, itemHeight: CGFloat, tapAction: @escaping () -> Void = {}) {
+        self.colorHex = colorHex
+        self.itemWidth = itemWidth
+        self.itemHeight = itemHeight
+        self.tapAction = tapAction
+    }
+    
+    var body: some View {
+        
+        Rectangle()
+            .fill(Color(hex: colorHex) ?? .gray)
+            .frame(width: itemWidth, height: itemHeight)
+            .onTapGesture(perform: tapAction)
     }
 }
