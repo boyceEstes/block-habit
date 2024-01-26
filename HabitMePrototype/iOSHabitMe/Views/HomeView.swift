@@ -27,6 +27,7 @@ struct HomeView: View {
     let goToHabitDetail: (DataHabit) -> Void
     let goToCreateHabit: () -> Void
     let goToHabitRecordDetail: (DataHabitRecord) -> Void
+    let goToEditHabit: (DataHabit) -> Void
     
     
     /*
@@ -129,6 +130,7 @@ struct HomeView: View {
                 }
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
+//                    goToEditHabit: goToEditHabit,
                     habits: dataHabits,
                     habitMenuHeight: habitMenuHeight,
                     didTapCreateHabitButton: {
@@ -192,12 +194,6 @@ struct HomeView: View {
                 }
             }
         }
-    }
-    
-    
-    private func goToHabitRecordActivityView(for habitRecord: HabitRecord) {
-        
-        
     }
 
     
@@ -349,7 +345,8 @@ struct HomeView: View {
         HomeView(
             goToHabitDetail: { _ in },
             goToCreateHabit: { },
-            goToHabitRecordDetail: { _ in }
+            goToHabitRecordDetail: { _ in },
+            goToEditHabit: { _ in }
         )
         .modelContainer(container)
     }

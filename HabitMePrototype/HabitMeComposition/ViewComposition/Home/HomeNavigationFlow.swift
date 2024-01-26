@@ -8,6 +8,9 @@
 import SwiftUI
 
 
+// We can display many sheets on this one flow, as long as they are somewhere in this stack hierarchy -
+// if we want to display a sheet on a sheet or need a sheet to have its own stack hierarchy we will need another
+// "NavigationFlow" object for that object
 class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
     
     // MARK: - Properties
@@ -29,5 +32,6 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         
         case createHabit
         case habitRecordDetail(habitRecord: DataHabitRecord)
+        case editHabit(habit: DataHabit)
     }
 }

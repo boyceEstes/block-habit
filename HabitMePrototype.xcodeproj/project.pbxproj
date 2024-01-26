@@ -24,6 +24,8 @@
 		B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947BA2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift */; };
 		B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947BC2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift */; };
 		B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947BE2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift */; };
+		B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C32B64040B007C8C1E /* EditHabitView.swift */; };
+		B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C52B640431007C8C1E /* ContentView+EditHabitComposition.swift */; };
 		B3C97F082B5CE6F400211B4C /* HabitRepository.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F062B5CE6F300211B4C /* HabitRepository.xcdatamodeld */; };
 		B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */; };
 		B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */; };
@@ -59,6 +61,8 @@
 		B32947BA2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateHabitComposition.swift"; sourceTree = "<group>"; };
 		B32947BC2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+HabitDetailComposition.swift"; sourceTree = "<group>"; };
 		B32947BE2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+HabitRecordDetailComposition.swift"; sourceTree = "<group>"; };
+		B32947C32B64040B007C8C1E /* EditHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHabitView.swift; sourceTree = "<group>"; };
+		B32947C52B640431007C8C1E /* ContentView+EditHabitComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+EditHabitComposition.swift"; sourceTree = "<group>"; };
 		B3C97F072B5CE6F300211B4C /* HabitRepository.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitRepository.xcdatamodel; sourceTree = "<group>"; };
 		B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabitRecord.swift; sourceTree = "<group>"; };
 		B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabit.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 				B32947BA2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift */,
 				B32947BC2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift */,
 				B32947BE2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift */,
+				B32947C52B640431007C8C1E /* ContentView+EditHabitComposition.swift */,
 			);
 			path = ViewComposition;
 			sourceTree = "<group>";
@@ -227,6 +232,7 @@
 				B32947A32B601CD3007C8C1E /* HabitDetailView.swift */,
 				B32947A72B61E0E1007C8C1E /* DayView.swift */,
 				B32947AB2B62AD2E007C8C1E /* HabitRecordDetailView.swift */,
+				B32947C32B64040B007C8C1E /* EditHabitView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -353,12 +359,14 @@
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
 				B32947AA2B61E848007C8C1E /* DateFormatter+Reusable.swift in Sources */,
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
+				B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C97F132B5CE82C00211B4C /* CoreDataHabitRepository.swift in Sources */,
 				B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */,
 				B3C97F172B5CE85C00211B4C /* InMemoryHabitRepository.swift in Sources */,
 				B3C97F1F2B5CE8C900211B4C /* HabitRecord.swift in Sources */,
+				B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

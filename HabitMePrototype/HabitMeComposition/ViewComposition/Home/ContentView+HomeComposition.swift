@@ -18,7 +18,7 @@ extension ContentView {
             .flowNavigationDestination(flowPath: $homeNavigationFlowPath) { identifier in
                 switch identifier {
                 case let .habitDetail(habit):
-                    makeHabitDetailView(habit: habit)
+                    makeHabitDetailViewWithSheetyNavigation(habit: habit)
                 }
             }
     }
@@ -33,8 +33,12 @@ extension ContentView {
                 switch identifier {
                 case .createHabit:
                     makeCreateHabitView()
+                    
                 case let .habitRecordDetail(habitRecord):
                     makeHabitRecordDetailView(habitRecord: habitRecord)
+                    
+                case let .editHabit(habit):
+                    makeEditHabitView(habit: habit)
                 }
             }
     }
@@ -46,7 +50,8 @@ extension ContentView {
         HomeView(
             goToHabitDetail: goToHabitDetailFromHome,
             goToCreateHabit: goToCreateHabitFromHome,
-            goToHabitRecordDetail: goToHabitRecordDetailFromHome
+            goToHabitRecordDetail: goToHabitRecordDetailFromHome,
+            goToEditHabit: goToEditHabitFromHome
         )
     }
     
@@ -68,5 +73,11 @@ extension ContentView {
     private func goToHabitRecordDetailFromHome(habitRecord: DataHabitRecord) {
         
         homeNavigationFlowDisplayedSheet = .habitRecordDetail(habitRecord: habitRecord)
+    }
+    
+    
+    private func goToEditHabitFromHome(habit: DataHabit) {
+        
+        homeNavigationFlowDisplayedSheet = .editHabit(habit: habit)
     }
 }

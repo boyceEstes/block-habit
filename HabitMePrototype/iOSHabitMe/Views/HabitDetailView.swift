@@ -12,6 +12,7 @@ struct HabitDetailView: View {
     
     
     let habit: DataHabit
+    let goToEditHabit: () -> Void
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
     @Environment(\.modelContext) var modelContext
@@ -122,9 +123,10 @@ struct HabitDetailView: View {
     }
     
     
-    init(habit: DataHabit) {
+    init(habit: DataHabit, goToEditHabit: @escaping () -> Void) {
         
         self.habit = habit
+        self.goToEditHabit = goToEditHabit
         
         let habitID = habit.id
         
@@ -188,6 +190,15 @@ struct HabitDetailView: View {
         }
         .navigationTitle("\(habit.name)")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    goToEditHabit()
+                } label: {
+                    Image(systemName: "pencil.circle")
+                }
+            }
+        }
     }
     
     
@@ -316,7 +327,10 @@ struct HabitDetailView: View {
     
     let habit = Habit.meditation
     return NavigationStack {
-        HabitDetailView(habit: dataHabit)
+        HabitDetailView(
+            habit: dataHabit,
+            goToEditHabit: { }
+        )
         .modelContainer(container)
     }
 }
