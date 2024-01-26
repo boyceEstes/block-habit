@@ -11,6 +11,7 @@ struct DayView: View {
     
     @Environment(\.modelContext) var modelContext
     
+    let goToHabitRecordDetail: (DataHabitRecord) -> Void
     /// We want this to determine the itemHeight, alternatively we could just set the item height/width
     let graphHeight: CGFloat
     // We want this to keep the same itemHeight/width when presenting the squares in the list
@@ -28,11 +29,13 @@ struct DayView: View {
     
     
     init(
+        goToHabitRecordDetail: @escaping (DataHabitRecord) -> Void,
         graphHeight: CGFloat,
         numOfItemsToReachTop: Int,
         habitRecords: [DataHabitRecord],
         selectedDay: Date
     ) {
+        self.goToHabitRecordDetail = goToHabitRecordDetail
         self.graphHeight = graphHeight
         self.numOfItemsToReachTop = numOfItemsToReachTop
         self.habitRecords = habitRecords
@@ -70,6 +73,9 @@ struct DayView: View {
                           .foregroundStyle(Color.blue)
                     }
                     .tint(Color(uiColor: .secondarySystemGroupedBackground))
+                }
+                .onTapGesture {
+                    goToHabitRecordDetail(habitRecord)
                 }
             }
 //            .onDelete(perform: deleteActivities)

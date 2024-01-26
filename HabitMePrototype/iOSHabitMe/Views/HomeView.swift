@@ -26,6 +26,7 @@ struct HomeView: View {
     
     let goToHabitDetail: (DataHabit) -> Void
     let goToCreateHabit: () -> Void
+    let goToHabitRecordDetail: (DataHabitRecord) -> Void
     
     
     /*
@@ -118,7 +119,13 @@ struct HomeView: View {
                 case .bar:
                     BarView(graphWidth: screenWidth, graphHeight: graphHeight, numOfItemsToReachTop: 8, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
                 case .daily:
-                    DayView(graphHeight: graphHeight, numOfItemsToReachTop: 8, habitRecords: dataHabitRecordsForSelectedDay, selectedDay: selectedDay)
+                    DayView(
+                        goToHabitRecordDetail: goToHabitRecordDetail,
+                        graphHeight: graphHeight,
+                        numOfItemsToReachTop: 8,
+                        habitRecords: dataHabitRecordsForSelectedDay,
+                        selectedDay: selectedDay
+                    )
                 }
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
@@ -341,7 +348,8 @@ struct HomeView: View {
     return NavigationStack {
         HomeView(
             goToHabitDetail: { _ in },
-            goToCreateHabit: { }
+            goToCreateHabit: { },
+            goToHabitRecordDetail: { _ in }
         )
         .modelContainer(container)
     }

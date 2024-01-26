@@ -11,8 +11,8 @@ import SwiftUI
 extension ContentView {
     
     @ViewBuilder
-    func makeHabitRecordDetailView(dataHabitRecord: DataHabitRecord) -> some View {
+    func makeHabitRecordDetailView(habitRecord: DataHabitRecord) -> some View {
         
-        HabitRecordDetailView(dataHabitRecord: dataHabitRecord)
+        HabitRecordDetailView(habitRecord: habitRecord)
     }
 }

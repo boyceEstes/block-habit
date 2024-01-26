@@ -43,21 +43,9 @@ struct CreateHabitView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text("Create New Habit")
-                    .font(.title2)
-                Spacer()
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(Color(uiColor: .secondaryLabel))
-                        .font(.title2)
-                }
+            SheetTitleBar(title: "Create New Habit") {
+                HabitMeSheetDismissButton(dismiss: { dismiss() })
             }
-            .padding()
-            .padding(.top)
             
             TextField("Name", text: $nameTextFieldValue)
                 .font(.headline)
@@ -119,6 +107,60 @@ struct CreateHabitView: View {
         modelContext.insert(newDataHabit)
         DispatchQueue.main.async {
             dismiss()
+        }
+    }
+}
+
+
+
+struct SheetTitleBar<TitleButtonContent: View>: View {
+    
+    let title: String
+    let subtitle: String?
+    @ViewBuilder var titleButtonContent: () -> TitleButtonContent
+    
+    
+    init(title: String, subtitle: String? = nil, titleButtonContent: @escaping () -> TitleButtonContent) {
+        self.title = title
+        self.subtitle = subtitle
+        self.titleButtonContent = titleButtonContent
+    }
+    
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.title2)
+                if let subtitle {
+                    Text("\(subtitle)")
+                        .foregroundStyle(Color(uiColor: .secondaryLabel))
+                }
+            }
+            Spacer()
+            
+            titleButtonContent()
+
+        }
+        .padding()
+        .padding(.top)
+    }
+}
+
+
+struct HabitMeSheetDismissButton: View {
+    
+    let dismiss: () -> Void
+    
+    var body: some View {
+        
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(Color(uiColor: .secondaryLabel))
+                .font(.title)
         }
     }
 }
