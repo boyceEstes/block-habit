@@ -8,6 +8,26 @@
 import SwiftUI
 import SwiftData
 
+
+enum HabitDetailAlert {
+    case areYouSure(yesAction: () -> Void)
+    
+    func alertData() -> AlertDetail {
+        
+        switch self {
+        case let .areYouSure(yesAction):
+            return AlertDetail.destructiveAlert(
+                title: "Danger!",
+                message: "This will delete all of the habit's associated records as well 👀. All those logs for have made for this will be gone... forever.",
+                destroyTitle: "Destroy It All",
+                destroyAction: yesAction
+            )
+        }
+    }
+}
+
+
+
 struct HabitDetailView: View {
     
     
@@ -15,8 +35,11 @@ struct HabitDetailView: View {
     let goToEditHabit: () -> Void
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
+    @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     @State private var selectedDay: Date = Date().noon ?? Date()
+    @State private var showAlert: Bool = false
+    @State private var alertDetail: AlertDetail? = nil
 //     Query to fetch all of the habit records for the habit
     @Query var dataHabitRecordsForHabit: [DataHabitRecord]
     
@@ -191,22 +214,42 @@ struct HabitDetailView: View {
         .navigationTitle("\(habit.name)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                
                 Button {
                     goToEditHabit()
                 } label: {
                     Image(systemName: "pencil.circle")
                 }
+                
+                Button(role: .destructive) {
+                    print("Destroy the garbage")
+                    showAlert = true
+                    alertDetail = HabitDetailAlert.areYouSure(yesAction: removeHabit).alertData()
+                } label: {
+                    Image(systemName: "trash")
+                        .foregroundStyle(.red)
+                }
             }
+        }
+        .alert(showAlert: $showAlert, alertDetail: alertDetail)
+    }
+    
+    
+    private func removeHabit() {
+        
+        DispatchQueue.main.async {
+            dismiss()
+            modelContext.delete(habit)
         }
     }
     
     
-    func totalRecordsStatBox(totalRecords: String) -> some View {
+    private func totalRecordsStatBox(totalRecords: String) -> some View {
         statBox(title: "Total Records", value: totalRecords)
     }
 
-    func currentStreakStatBox(currentStreak: Int) -> some View {
+    private func currentStreakStatBox(currentStreak: Int) -> some View {
         
         if currentStreak == 1 {
             statBox(title: "Current Streak", value: "\(currentStreak)", units: "day")
@@ -215,7 +258,7 @@ struct HabitDetailView: View {
         }
     }
     
-    func avgRecordsPerDayStatBox(avgRecordsPerDay: Double) -> some View {
+    private func avgRecordsPerDayStatBox(avgRecordsPerDay: Double) -> some View {
         let title = "Average Records / Day"
         if avgRecordsPerDay > 0 {
             return statBox(title: title, value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
@@ -225,7 +268,7 @@ struct HabitDetailView: View {
 
     }
     
-    func bestStreakStatBox(bestStreak: Int) -> some View {
+    private func bestStreakStatBox(bestStreak: Int) -> some View {
         if bestStreak == 1 {
             return statBox(title: "Best Streak", value: "\(bestStreak)", units: "day")
         } else {
@@ -234,7 +277,7 @@ struct HabitDetailView: View {
     }
     
     
-    func statBox(title: String, value: String, units: String? = nil) -> some View {
+    private func statBox(title: String, value: String, units: String? = nil) -> some View {
         
         VStack(spacing: 0) {
             Text(title)
