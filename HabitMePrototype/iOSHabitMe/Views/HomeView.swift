@@ -130,7 +130,7 @@ struct HomeView: View {
                 }
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
-//                    goToEditHabit: goToEditHabit,
+                    goToEditHabit: goToEditHabit,
                     habits: dataHabits,
                     habitMenuHeight: habitMenuHeight,
                     didTapCreateHabitButton: {

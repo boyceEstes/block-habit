@@ -123,6 +123,7 @@ struct HabitsMenu: View {
     @Environment(\.modelContext) var modelContext
     
     let goToHabitDetail: (DataHabit) -> Void
+    let goToEditHabit: (DataHabit) -> Void
     
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
@@ -192,6 +193,9 @@ struct HabitsMenu: View {
             action: { didTapHabitButton(habit) }
         )
         .contextMenu {
+            Button("Edit Habit") {
+                goToEditHabit(habit)
+            }
             Button("Habit Details") {
                 goToHabitDetail(habit)
             }
