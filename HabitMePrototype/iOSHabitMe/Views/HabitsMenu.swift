@@ -193,13 +193,13 @@ struct HabitsMenu: View {
             action: { didTapHabitButton(habit) }
         )
         .contextMenu {
-            Button("Edit Habit") {
-                goToEditHabit(habit)
-            }
             Button("Habit Details") {
                 goToHabitDetail(habit)
             }
-            Button("Remove Habit") {
+            Button("Edit Habit") {
+                goToEditHabit(habit)
+            }
+            Button("Remove Habit", role: .destructive) {
                 alertDetail = HabitsMenuAlert.areYouSure(yesAction: {
                         modelContext.delete(habit)
                     }
