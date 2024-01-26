@@ -176,6 +176,13 @@ struct HabitDetailView: View {
                 .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
                  )
                 .padding([.horizontal, .bottom])
+                
+//                DayView(
+//                    graphHeight: 150,
+//                    numOfItemsToReachTop: numOfItemsToReachTop,
+//                    habitRecords: dataHabitRecordsForHabit,
+//                    selectedDay: selectedDay
+//                )
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
         }

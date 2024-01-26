@@ -25,6 +25,8 @@ struct DayView: View {
     let selectedDay: Date
     
     
+    
+    
     init(
         graphHeight: CGFloat,
         numOfItemsToReachTop: Int,

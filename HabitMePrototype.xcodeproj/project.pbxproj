@@ -17,6 +17,13 @@
 		B32947A82B61E0E1007C8C1E /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947A72B61E0E1007C8C1E /* DayView.swift */; };
 		B32947AA2B61E848007C8C1E /* DateFormatter+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947A92B61E848007C8C1E /* DateFormatter+Reusable.swift */; };
 		B32947AC2B62AD2E007C8C1E /* HabitRecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947AB2B62AD2E007C8C1E /* HabitRecordDetailView.swift */; };
+		B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947AE2B633DEB007C8C1E /* View+FlowNavigationDestination.swift */; };
+		B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947AF2B633DEB007C8C1E /* NavigationFlow.swift */; };
+		B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947B32B633E3F007C8C1E /* HomeNavigationFlow.swift */; };
+		B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947B52B633FA6007C8C1E /* ContentView+HomeComposition.swift */; };
+		B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947BA2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift */; };
+		B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947BC2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift */; };
+		B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947BE2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift */; };
 		B3C97F082B5CE6F400211B4C /* HabitRepository.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F062B5CE6F300211B4C /* HabitRepository.xcdatamodeld */; };
 		B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */; };
 		B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */; };
@@ -45,6 +52,13 @@
 		B32947A72B61E0E1007C8C1E /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
 		B32947A92B61E848007C8C1E /* DateFormatter+Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Reusable.swift"; sourceTree = "<group>"; };
 		B32947AB2B62AD2E007C8C1E /* HabitRecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRecordDetailView.swift; sourceTree = "<group>"; };
+		B32947AE2B633DEB007C8C1E /* View+FlowNavigationDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+FlowNavigationDestination.swift"; sourceTree = "<group>"; };
+		B32947AF2B633DEB007C8C1E /* NavigationFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationFlow.swift; sourceTree = "<group>"; };
+		B32947B32B633E3F007C8C1E /* HomeNavigationFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationFlow.swift; sourceTree = "<group>"; };
+		B32947B52B633FA6007C8C1E /* ContentView+HomeComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+HomeComposition.swift"; sourceTree = "<group>"; };
+		B32947BA2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateHabitComposition.swift"; sourceTree = "<group>"; };
+		B32947BC2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+HabitDetailComposition.swift"; sourceTree = "<group>"; };
+		B32947BE2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+HabitRecordDetailComposition.swift"; sourceTree = "<group>"; };
 		B3C97F072B5CE6F300211B4C /* HabitRepository.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitRepository.xcdatamodel; sourceTree = "<group>"; };
 		B3C97F092B5CE7BC00211B4C /* ManagedHabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabitRecord.swift; sourceTree = "<group>"; };
 		B3C97F0B2B5CE7BC00211B4C /* ManagedHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedHabit.swift; sourceTree = "<group>"; };
@@ -105,6 +119,35 @@
 				B313EEB92B5C4C99002AE8CE /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B32947AD2B633DEB007C8C1E /* Navigation Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B32947AE2B633DEB007C8C1E /* View+FlowNavigationDestination.swift */,
+				B32947AF2B633DEB007C8C1E /* NavigationFlow.swift */,
+			);
+			path = "Navigation Support Files";
+			sourceTree = "<group>";
+		};
+		B32947B22B633E33007C8C1E /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B32947B32B633E3F007C8C1E /* HomeNavigationFlow.swift */,
+				B32947B52B633FA6007C8C1E /* ContentView+HomeComposition.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		B32947B72B634636007C8C1E /* ViewComposition */ = {
+			isa = PBXGroup;
+			children = (
+				B32947B22B633E33007C8C1E /* Home */,
+				B32947BA2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift */,
+				B32947BC2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift */,
+				B32947BE2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift */,
+			);
+			path = ViewComposition;
 			sourceTree = "<group>";
 		};
 		B3C97F112B5CE81300211B4C /* CoreData */ = {
@@ -191,6 +234,8 @@
 		B3C97F2D2B5CEA2500211B4C /* HabitMeComposition */ = {
 			isa = PBXGroup;
 			children = (
+				B32947B72B634636007C8C1E /* ViewComposition */,
+				B32947AD2B633DEB007C8C1E /* Navigation Support Files */,
 				B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */,
 				B313EEB42B5C4C93002AE8CE /* ContentView.swift */,
 			);
@@ -289,22 +334,29 @@
 				B32947A82B61E0E1007C8C1E /* DayView.swift in Sources */,
 				B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */,
 				B32947A42B601CD3007C8C1E /* HabitDetailView.swift in Sources */,
+				B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,
 				B3C97F192B5CE87200211B4C /* HabitRepository.swift in Sources */,
 				B3C97F082B5CE6F400211B4C /* HabitRepository.xcdatamodeld in Sources */,
 				B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */,
+				B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */,
+				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
+				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
 				B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */,
 				B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */,
 				B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */,
 				B32947AC2B62AD2E007C8C1E /* HabitRecordDetailView.swift in Sources */,
 				B3C97F1D2B5CE8AD00211B4C /* Habit.swift in Sources */,
+				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
 				B32947AA2B61E848007C8C1E /* DateFormatter+Reusable.swift in Sources */,
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
+				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C97F132B5CE82C00211B4C /* CoreDataHabitRepository.swift in Sources */,
+				B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */,
 				B3C97F172B5CE85C00211B4C /* InMemoryHabitRepository.swift in Sources */,
 				B3C97F1F2B5CE8C900211B4C /* HabitRecord.swift in Sources */,
 			);

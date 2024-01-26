@@ -122,6 +122,8 @@ struct HabitsMenu: View {
     
     @Environment(\.modelContext) var modelContext
     
+    let goToHabitDetail: (DataHabit) -> Void
+    
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     
@@ -164,7 +166,7 @@ struct HabitsMenu: View {
                     ForEach(0..<habits.count, id: \.self) { i in
                         
                         let habit = habits[i]
-                        habitButton(habit: habit)
+                        habitButton(habit: habit, goToHabitDetail: goToHabitDetail)
                     }
                 }
                 .padding(.bottom)
@@ -181,7 +183,7 @@ struct HabitsMenu: View {
     }
     
     
-    func habitButton(habit: DataHabit) -> some View {
+    func habitButton(habit: DataHabit, goToHabitDetail: @escaping (DataHabit) -> Void) -> some View {
         
         HabitMePrimaryButton(
             title: "\(habit.name)",
@@ -202,10 +204,10 @@ struct HabitsMenu: View {
 //        }
 //        .buttonStyle(.plain)
         .contextMenu {
-            NavigationLink("Habit Details") {
-                HabitDetailView(habit: habit)
+            Button("Habit Details") {
+                goToHabitDetail(habit)
             }
-            Button("Delete Habit") {
+            Button("Remove Habit") {
                 alertDetail = HabitsMenuAlert.areYouSure(yesAction: {
                         modelContext.delete(habit)
                     }

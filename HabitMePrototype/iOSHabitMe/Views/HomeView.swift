@@ -23,6 +23,11 @@ struct HomeView: View {
         SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
     ], animation: .default) var dataHabitRecords: [DataHabitRecord]
     
+    
+    let goToHabitDetail: (DataHabit) -> Void
+    let goToCreateHabit: () -> Void
+    
+    
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.
      * The big problem is habitsOnDates is a little bit hairy. I wonder if it is better
@@ -31,7 +36,6 @@ struct HomeView: View {
      * have so I think it should be fine.
      */
     
-    @State private var isCreateHabitScreenDisplayed = false
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .daily
     @State private var selectedDay: Date = Date().noon!
     
@@ -104,10 +108,10 @@ struct HomeView: View {
             
             let screenWidth = proxy.size.width
             let screenHeight = proxy.size.height
-            let safeAreaInsetTop = proxy.safeAreaInsets.top
+//            let safeAreaInsetTop = proxy.safeAreaInsets.top
             let graphHeight = screenHeight * 0.5
             let habitMenuHeight = screenHeight * 0.3
-            let itemHeight = graphHeight / 8
+//            let itemHeight = graphHeight / 8
             
             VStack {
                 switch habitRecordVisualMode {
@@ -117,11 +121,11 @@ struct HomeView: View {
                     DayView(graphHeight: graphHeight, numOfItemsToReachTop: 8, habitRecords: dataHabitRecordsForSelectedDay, selectedDay: selectedDay)
                 }
                 HabitsMenu(
+                    goToHabitDetail: goToHabitDetail,
                     habits: dataHabits,
                     habitMenuHeight: habitMenuHeight,
                     didTapCreateHabitButton: {
-                        print("hello world")
-                        isCreateHabitScreenDisplayed = true
+                        goToCreateHabit()
                     }, didTapHabitButton: { habit in
                         SwiftDataHabitRepository.shared.createHabitRecordOnDate(
                             habit: habit,
@@ -133,10 +137,6 @@ struct HomeView: View {
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
-        .sheet(isPresented: $isCreateHabitScreenDisplayed , content: {
-            
-            CreateHabitView()
-        })
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -185,6 +185,12 @@ struct HomeView: View {
                 }
             }
         }
+    }
+    
+    
+    private func goToHabitRecordActivityView(for habitRecord: HabitRecord) {
+        
+        
     }
 
     
@@ -333,7 +339,10 @@ struct HomeView: View {
     
     let habit = Habit.meditation
     return NavigationStack {
-        HomeView()
+        HomeView(
+            goToHabitDetail: { _ in },
+            goToCreateHabit: { }
+        )
         .modelContainer(container)
     }
 }

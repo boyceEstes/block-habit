@@ -37,11 +37,12 @@ struct MyTextFieldStyle: TextFieldStyle {
 
 struct ContentView: View {
     
+    @State var homeNavigationFlowPath = [HomeNavigationFlow.StackIdentifier]()
+    @State var homeNavigationFlowDisplayedSheet: HomeNavigationFlow.SheetyIdentifier?
+    
     var body: some View {
-        
-        NavigationStack {
-            HomeView()
-        }
+        let _ = print("Hello world home view")
+        makeHomeViewWithSheetyStackNavigation()
     }
 }
 
