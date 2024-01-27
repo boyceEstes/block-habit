@@ -93,11 +93,13 @@ struct EditHabitView: View {
         // We shouldn't have any changes at this point since we only save if we hit the save button.
         // Check if there are any changes that were made and if there were, pop a warning
         if selectedColor?.toHexString() != habit.color || nameTextFieldValue != habit.name {
-            
+            print("Exiting but making a change")
             alertDetail = EditHabitAlert.unsavedChangesWarning(yesAction: {
                 dismiss()
             }).alertData()
             showAlert = true
+        } else {
+            dismiss()
         }
     }
 }

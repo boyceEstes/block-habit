@@ -91,7 +91,6 @@ struct CreateEditHabitContent: View {
     ]
     
     var body: some View {
-        
         TextField("Name", text: $nameTextFieldValue)
             .font(.headline)
             .textFieldStyle(MyTextFieldStyle())
@@ -101,10 +100,10 @@ struct CreateEditHabitContent: View {
                 ForEach(allColors, id: \.self) { color in
                     Circle()
                         .fill(color)
-                        .stroke(Color.white, lineWidth: selectedColor == color ? 2 : 0)
+                        .stroke(Color.white, lineWidth: isColorSelected(color) ? 2 : 0)
                         .frame(width: 30, height: 30)
                         .onTapGesture {
-                            if selectedColor == color {
+                            if isColorSelected(color) {
                                 selectedColor = nil
                             } else {
                                 selectedColor = color
@@ -120,6 +119,12 @@ struct CreateEditHabitContent: View {
         .clipShape(
             RoundedRectangle(cornerRadius: 10))
         .padding()
+    }
+    
+    
+    func isColorSelected(_ color: Color) -> Bool {
+        
+        selectedColor?.toHexString() == color.toHexString()
     }
     
     
