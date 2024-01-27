@@ -8,7 +8,21 @@
 import SwiftUI
 
 
+extension View {
+    
+    func createEditHabitSheetPresentation() -> some View {
+        modifier(CreateEditHabitSheetPresentation())
+    }
+}
 
+struct CreateEditHabitSheetPresentation: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+            .presentationBackground(.regularMaterial)
+    }
+}
 
 
 struct CreateHabitView: View {
@@ -19,27 +33,7 @@ struct CreateHabitView: View {
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     
-    let allColors = [
-        Color.red,
-        Color.orange,
-        Color.yellow,
-        Color.green,
-        Color.mint,
-        Color.teal,
-        
-        Color.cyan,
-        Color.blue,
-        Color.indigo,
-        Color.purple,
-        Color.pink,
-        Color.brown
-    ]
-    
-    let rows = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-    
+
     
     var body: some View {
         VStack {
@@ -47,42 +41,15 @@ struct CreateHabitView: View {
                 HabitMeSheetDismissButton(dismiss: { dismiss() })
             }
             
-            TextField("Name", text: $nameTextFieldValue)
-                .font(.headline)
-                .textFieldStyle(MyTextFieldStyle())
-            
-            VStack {
-                LazyHGrid(rows: rows, spacing: 30) {
-                    ForEach(allColors, id: \.self) { color in
-                        Circle()
-                            .fill(color)
-                            .stroke(Color.white, lineWidth: selectedColor == color ? 2 : 0)
-                            .frame(width: 30, height: 30)
-                            .onTapGesture {
-                                if selectedColor == color {
-                                    selectedColor = nil
-                                } else {
-                                    selectedColor = color
-                                }
-                            }
-                    }
-                }
-                .frame(height: 90)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical)
-            .background(Color(uiColor: .darkGray))
-            .clipShape(
-                RoundedRectangle(cornerRadius: 10))
-            .padding()
+            CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
             
             
             HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
                 .padding()
+            
+            Spacer()
         }
-        .presentationDetents([.medium])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(.regularMaterial)
+        .createEditHabitSheetPresentation()
     }
     
     
@@ -108,6 +75,70 @@ struct CreateHabitView: View {
         DispatchQueue.main.async {
             dismiss()
         }
+    }
+}
+
+
+struct CreateEditHabitContent: View {
+    
+    
+    @Binding var nameTextFieldValue: String
+    @Binding var selectedColor: Color?
+    
+    let rows = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    var body: some View {
+        
+        TextField("Name", text: $nameTextFieldValue)
+            .font(.headline)
+            .textFieldStyle(MyTextFieldStyle())
+        
+        VStack {
+            LazyHGrid(rows: rows, spacing: 30) {
+                ForEach(allColors, id: \.self) { color in
+                    Circle()
+                        .fill(color)
+                        .stroke(Color.white, lineWidth: selectedColor == color ? 2 : 0)
+                        .frame(width: 30, height: 30)
+                        .onTapGesture {
+                            if selectedColor == color {
+                                selectedColor = nil
+                            } else {
+                                selectedColor = color
+                            }
+                        }
+                }
+            }
+            .frame(height: 90)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical)
+        .background(Color(uiColor: .tertiarySystemGroupedBackground))
+        .clipShape(
+            RoundedRectangle(cornerRadius: 10))
+        .padding()
+    }
+    
+    
+    var allColors: [Color] {
+        [
+            Color.red,
+            Color.orange,
+            Color.yellow,
+            Color.green,
+            Color.mint,
+            Color.teal,
+            
+            Color.cyan,
+            Color.blue,
+            Color.indigo,
+            Color.purple,
+            Color.pink,
+            Color.brown
+        ]
     }
 }
 
@@ -197,4 +228,10 @@ struct HabitMePrimaryButton: View {
                 .disabled(isAbleToTap == true ? false : true)
         }
     }
+}
+
+
+#Preview {
+    
+    CreateHabitView()
 }

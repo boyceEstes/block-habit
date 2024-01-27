@@ -28,7 +28,7 @@ struct MyTextFieldStyle: TextFieldStyle {
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(uiColor: .darkGray))
+                .fill(Color(uiColor: .tertiarySystemGroupedBackground))
 //                .stroke(Color.blue, lineWidth: 1)
         ).padding()
     }
