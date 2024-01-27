@@ -28,6 +28,7 @@ struct HomeView: View {
     let goToCreateHabit: () -> Void
     let goToHabitRecordDetail: (DataHabitRecord) -> Void
     let goToEditHabit: (DataHabit) -> Void
+    let goToStatistics: () -> Void
     
     
     /*
@@ -38,8 +39,9 @@ struct HomeView: View {
      * have so I think it should be fine.
      */
     
-    @State private var habitRecordVisualMode: HabitRecordVisualMode = .daily
+    @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State private var selectedDay: Date = Date().noon!
+    @State private var datesWithHabitRecords = [Date: [DataHabitRecord]]()
     
     
     var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
@@ -112,7 +114,7 @@ struct HomeView: View {
             let screenHeight = proxy.size.height
 //            let safeAreaInsetTop = proxy.safeAreaInsets.top
             let graphHeight = screenHeight * 0.5
-            let habitMenuHeight = screenHeight * 0.3
+//            let habitMenuHeight = screenHeight * 0.3
 //            let itemHeight = graphHeight / 8
             
             VStack {
@@ -128,11 +130,11 @@ struct HomeView: View {
                         selectedDay: selectedDay
                     )
                 }
+                
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
                     habits: dataHabits,
-                    habitMenuHeight: habitMenuHeight,
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
@@ -171,7 +173,13 @@ struct HomeView: View {
                     .disabled(isAllowedToGoToNextDay ? false : true)
                 }
             }
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                
+                Button {
+                    goToStatistics()
+                } label: {
+                    Image(systemName: "chart.xyaxis.line")
+                }
                 
                 // TODO: Some logic to dictate whether it is a bar button or a daily log button
                 switch habitRecordVisualMode {
@@ -346,7 +354,8 @@ struct HomeView: View {
             goToHabitDetail: { _ in },
             goToCreateHabit: { },
             goToHabitRecordDetail: { _ in },
-            goToEditHabit: { _ in }
+            goToEditHabit: { _ in },
+            goToStatistics: { }
         )
         .modelContainer(container)
     }

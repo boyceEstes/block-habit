@@ -22,6 +22,7 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
     enum StackIdentifier: Hashable {
 
         case habitDetail(habit: DataHabit)
+        case statistics
     }
     
     

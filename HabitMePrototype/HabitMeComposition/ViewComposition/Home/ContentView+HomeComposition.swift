@@ -19,6 +19,8 @@ extension ContentView {
                 switch identifier {
                 case let .habitDetail(habit):
                     makeHabitDetailViewWithSheetyNavigation(habit: habit)
+                case .statistics:
+                    makeStatisticsView()
                 }
             }
     }
@@ -51,7 +53,8 @@ extension ContentView {
             goToHabitDetail: goToHabitDetailFromHome,
             goToCreateHabit: goToCreateHabitFromHome,
             goToHabitRecordDetail: goToHabitRecordDetailFromHome,
-            goToEditHabit: goToEditHabitFromHome
+            goToEditHabit: goToEditHabitFromHome,
+            goToStatistics: goToStatisticsFromHome
         )
     }
     
@@ -79,5 +82,11 @@ extension ContentView {
     private func goToEditHabitFromHome(habit: DataHabit) {
         
         homeNavigationFlowDisplayedSheet = .editHabit(habit: habit)
+    }
+    
+    
+    private func goToStatisticsFromHome() {
+        
+        homeNavigationFlowPath.append(.statistics)
     }
 }

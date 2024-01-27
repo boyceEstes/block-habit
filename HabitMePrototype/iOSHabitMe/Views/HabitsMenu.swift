@@ -118,6 +118,22 @@ enum HabitsMenuAlert {
 }
 
 
+extension View {
+    
+    func homeDetailTitle() -> some View {
+        modifier(HomeDetailTitle())
+    }
+}
+
+struct HomeDetailTitle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.title2)
+            .fontWeight(.semibold)
+    }
+}
+
+
 struct HabitsMenu: View {
     
     @Environment(\.modelContext) var modelContext
@@ -131,7 +147,7 @@ struct HabitsMenu: View {
     // TODO: load habits from db
     let habits: [DataHabit]
     
-    let habitMenuHeight: CGFloat
+//    let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (DataHabit) -> Void
     
@@ -147,17 +163,15 @@ struct HabitsMenu: View {
         VStack(spacing: 0) {
             HStack {
                 Text("Habits")
-                    .font(.title2)
                 Spacer()
                 Button {
                     didTapCreateHabitButton()
                 } label: {
                     Image(systemName: "plus.circle")
-                        .font(.title2)
                 }
                 .buttonStyle(.plain)
             }
-            .fontWeight(.semibold)
+            .homeDetailTitle()
             .padding(.horizontal)
             .padding(.vertical, 30)
             
