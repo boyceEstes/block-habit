@@ -246,54 +246,101 @@ struct HabitDetailView: View {
     
     
     private func totalRecordsStatBox(totalRecords: String) -> some View {
-        statBox(title: "Total Records", value: totalRecords)
+        StatBox(title: "Total Records", value: totalRecords)
     }
 
     private func currentStreakStatBox(currentStreak: Int) -> some View {
         
         if currentStreak == 1 {
-            statBox(title: "Current Streak", value: "\(currentStreak)", units: "day")
+            StatBox(title: "Current Streak", value: "\(currentStreak)", units: "day")
         } else {
-            statBox(title: "Current Streak", value: "\(currentStreak)", units: "days")
+            StatBox(title: "Current Streak", value: "\(currentStreak)", units: "days")
         }
     }
     
     private func avgRecordsPerDayStatBox(avgRecordsPerDay: Double) -> some View {
         let title = "Average Records / Day"
         if avgRecordsPerDay > 0 {
-            return statBox(title: title, value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
+            return StatBox(title: title, value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
         } else {
-            return statBox(title: title, value: "N/A")
+            return StatBox(title: title, value: "N/A")
         }
 
     }
     
     private func bestStreakStatBox(bestStreak: Int) -> some View {
         if bestStreak == 1 {
-            return statBox(title: "Best Streak", value: "\(bestStreak)", units: "day")
+            return StatBox(title: "Best Streak", value: "\(bestStreak)", units: "day")
         } else {
-            return statBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
+            return StatBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
         }
+    }
+}
+
+
+struct TextWithUnits: View {
+    
+    let text: String
+    let units: String?
+    
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 4) {
+            Text(text)
+                .font(.title2)
+                .fontWeight(.semibold)
+            if let units {
+                Text(units)
+                    .font(.callout)
+            }
+        }
+    }
+}
+
+extension View {
+    
+    func statTitle() -> some View {
+        modifier(StatTitle())
+    }
+}
+
+struct StatTitle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.footnote)
+            .foregroundStyle(Color(uiColor: .secondaryLabel))
+            .lineLimit(2, reservesSpace: true)
+            .multilineTextAlignment(.center)
+    }
+}
+
+
+struct StatBox: View {
+    
+    let title: String
+    let value: String
+    let units: String?
+    let subValue: String?
+    
+    init(title: String, value: String, units: String? = nil, subValue: String? = nil) {
+        self.title = title
+        self.value = value
+        self.units = units
+        self.subValue = subValue
     }
     
     
-    private func statBox(title: String, value: String, units: String? = nil) -> some View {
-        
+    var body: some View {
+            
         VStack(spacing: 0) {
             Text(title)
-                .font(.footnote)
-                .foregroundStyle(Color(uiColor: .secondaryLabel))
-                .lineLimit(2, reservesSpace: true)
-                .multilineTextAlignment(.center)
+                .statTitle()
             
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text(value)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                if let units {
-                    Text(units)
-                        .font(.callout)
-                }
+            TextWithUnits(text: value, units: units)
+            
+            if let subValue {
+                Text(subValue)
+                    .font(.footnote)
+                    .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
         }
         .padding(8)
@@ -301,6 +348,7 @@ struct HabitDetailView: View {
             .background(Color(uiColor: .systemBackground), in: RoundedRectangle(cornerRadius: 10))
     }
 }
+
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
