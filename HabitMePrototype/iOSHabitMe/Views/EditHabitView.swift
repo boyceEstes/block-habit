@@ -9,22 +9,22 @@ import SwiftUI
 import SwiftData
 
 
-//enum EditHabitAlert {
-//    case deleteHabit(yesAction: () -> Void)
-//    
-//    func alertData() -> AlertDetail {
-//        
-//        switch self {
-//        case let .deleteHabit(yesAction):
-//            return AlertDetail.destructiveAlert(
-//                title: "Are you sure?",
-//                message: "This will delete all of the habit's associated records as well 👀",
-//                destroyTitle: "Destroy It All",
-//                destroyAction: yesAction
-//            )
-//        }
-//    }
-//}
+enum EditHabitAlert {
+    case unsavedChangesWarning(yesAction: () -> Void)
+    
+    func alertData() -> AlertDetail {
+        
+        switch self {
+        case let .unsavedChangesWarning(yesAction):
+            return AlertDetail.destructiveAlert(
+                title: "Unsaved Changes",
+                message: "You're leaving without saving the changes you made! Are you sure that you want to do this?",
+                destroyTitle: "Confirm",
+                destroyAction: yesAction
+            )
+        }
+    }
+}
 
 
 struct EditHabitView: View {
@@ -43,14 +43,14 @@ struct EditHabitView: View {
         VStack {
             SheetTitleBar(title: "Edit Habit") {
                 HStack {
-                    HabitMeSheetDismissButton(dismiss: { dismiss() })
+                    HabitMeSheetDismissButton(dismiss: resetAndExit)
                 }
             }
             
             CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
             
             
-            HabitMePrimaryButton(title: "Save And Exit", action: didTapSaveAndExit)
+            HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
                 .padding()
             
             Spacer()
@@ -92,10 +92,13 @@ struct EditHabitView: View {
         
         // We shouldn't have any changes at this point since we only save if we hit the save button.
         // Check if there are any changes that were made and if there were, pop a warning
-//        if selectedColor?.toHexString() != habit.color || nameTextFieldValue != habit.name {
-//            
-//        }
-        dismiss()
+        if selectedColor?.toHexString() != habit.color || nameTextFieldValue != habit.name {
+            
+            alertDetail = EditHabitAlert.unsavedChangesWarning(yesAction: {
+                dismiss()
+            }).alertData()
+            showAlert = true
+        }
     }
 }
 

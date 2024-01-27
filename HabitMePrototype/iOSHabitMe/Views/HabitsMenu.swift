@@ -101,12 +101,12 @@ extension View {
 
 
 enum HabitsMenuAlert {
-    case areYouSure(yesAction: () -> Void)
+    case deleteHabit(yesAction: () -> Void)
     
     func alertData() -> AlertDetail {
         
         switch self {
-        case let .areYouSure(yesAction):
+        case let .deleteHabit(yesAction):
             return AlertDetail.destructiveAlert(
                 title: "Are you sure?",
                 message: "This will delete all of the habit's associated records as well 👀",
@@ -200,7 +200,7 @@ struct HabitsMenu: View {
                 goToEditHabit(habit)
             }
             Button("Remove Habit", role: .destructive) {
-                alertDetail = HabitsMenuAlert.areYouSure(yesAction: {
+                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
                         modelContext.delete(habit)
                     }
                 ).alertData()
