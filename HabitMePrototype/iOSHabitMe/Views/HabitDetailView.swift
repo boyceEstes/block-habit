@@ -10,12 +10,12 @@ import SwiftData
 
 
 enum HabitDetailAlert {
-    case areYouSure(yesAction: () -> Void)
+    case deleteHabit(yesAction: () -> Void)
     
     func alertData() -> AlertDetail {
         
         switch self {
-        case let .areYouSure(yesAction):
+        case let .deleteHabit(yesAction):
             return AlertDetail.destructiveAlert(
                 title: "Danger!",
                 message: "This will delete all of the habit's associated records as well 👀. All those logs for have made for this will be gone... forever.",
@@ -225,7 +225,7 @@ struct HabitDetailView: View {
                 Button(role: .destructive) {
                     print("Destroy the garbage")
                     showAlert = true
-                    alertDetail = HabitDetailAlert.areYouSure(yesAction: removeHabit).alertData()
+                    alertDetail = HabitDetailAlert.deleteHabit(yesAction: removeHabit).alertData()
                 } label: {
                     Image(systemName: "trash")
                         .foregroundStyle(.red)
