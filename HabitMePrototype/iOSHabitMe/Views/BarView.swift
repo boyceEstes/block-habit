@@ -70,10 +70,10 @@ struct StatisticsBarView: View {
             // set the id as a date
             if animate {
                 withAnimation(.easeInOut) {
-                    value.scrollTo(today, anchor: .center)
+                    value.scrollTo(today, anchor: .trailing)
                 }
             } else {
-                value.scrollTo(today, anchor: .center)
+                value.scrollTo(today, anchor: .trailing)
             }
         }
     }

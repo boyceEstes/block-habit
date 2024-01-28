@@ -31,7 +31,49 @@ struct StatisticsView: View {
     
     @State private var selectableHabits = [SelectableHabit]()
     @State private var datesWithHabitRecords = [Date: [DataHabitRecord]]()
-    @State private var selectedDay = Date()
+    private var selectedDay = Date() // This is just for scrolling to the end of the chart
+    
+    // Basic stats
+    private var totalRecords: Int { dataHabitRecords.count }
+    private var mostCompletions: (recordCount: Int, habit: DataHabit)? {
+        var maxRecords = 0
+        var maxHabit: DataHabit?
+        
+        for dataHabit in dataHabits {
+            let habitRecordCount = dataHabit.habitRecords.count
+            if habitRecordCount >= maxRecords {
+                maxRecords = habitRecordCount
+                maxHabit = dataHabit
+            }
+        }
+        
+        guard let maxHabit else { return nil }
+        return (maxRecords, maxHabit)
+    }
+    
+    
+    private var bestStreak: (habit: DataHabit, streakCount: Int)? {
+        
+        let bestStreakHabits: [DataHabit] = Array(bestStreaks.keys)
+        var maxStreakCount = 0
+        var maxStreakHabit: DataHabit?
+        
+        for bestStreakHabit in bestStreakHabits {
+            let habitStreak = bestStreaks[bestStreakHabit] ?? 0
+            
+            if habitStreak > maxStreakCount {
+                maxStreakCount = habitStreak
+                maxStreakHabit = bestStreakHabit
+            }
+        }
+        
+        guard let maxStreakHabit else { return nil }
+        return (maxStreakHabit, maxStreakCount)
+    }
+    
+    
+    @State private var avgRecordsPerDay: Double?
+    @State private var bestStreaks = [DataHabit: Int]()
     
     var body: some View {
         
@@ -41,15 +83,7 @@ struct StatisticsView: View {
                 
                 let screenHeight = proxy.size.height
                 let graphHeight = screenHeight * 0.3
-                
-//                BarView(
-//                    graphWidth: screenWidth,
-//                    graphHeight: graphHeight,
-//                    numOfItemsToReachTop: Double(numOfItemsToReachTop),
-//                    dataHabitRecordsOnDate:
-//                        dataHabitRecordsOnDate,
-//                    selectedDay: $selectedDay
-//                )
+
                 StatisticsBarView(
                     graphHeight: graphHeight,
                     numOfItemsToReachTop: 12,
@@ -82,12 +116,21 @@ struct StatisticsView: View {
                 Grid(alignment: .topLeading) {
                     
                     GridRow {
-                        StatBox(title: "Total Records", value: "150")
+                        StatBox(title: "Total Records", value: "\(totalRecords)")
                         StatBox(title: "Average Records / Day", value: "9.2", units: "rpd")
                     }
                     GridRow {
-                        StatBox(title: "Most Completions", value: "42", units: "records", subValue: "Journaling")
-                        StatBox(title: "Best Streak", value: "10", units: "days", subValue: "Meditation")
+                        if let mostCompletions {
+                            StatBox(title: "Most Completions", value: "\(mostCompletions.recordCount)", units: "records", subValue: "\(mostCompletions.habit.name)")
+                        } else {
+                            StatBox(title: "Most Completions", value: "N/A")
+                        }
+                        
+                        if let bestStreak {
+                            StatBox(title: "Best Streak", value: "\(bestStreak.streakCount)", units: "days", subValue: "\(bestStreak.habit.name)")
+                        } else {
+                            StatBox(title: "Best Streak", value: "N/A")
+                        }
                     }
                 }
                 .padding()
@@ -117,6 +160,19 @@ struct StatisticsView: View {
         
         var dict = [Date: [DataHabitRecord]]()
         
+        // average records / day
+        /*
+         * NOTE: This is being calculated for only the days that the record is done.
+         * I think it would be demoralizing to see if you fell off and were trying to get back on
+         */
+        var daysRecordHasBeenDone = 0
+        var recordsThatHaveBeenDone = 0
+        
+        // We want to have all habits that exist here so that we can easily test their streak values
+        var habitStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: dataHabits.map {($0, 0)} )
+        var habitBestStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: dataHabits.map {($0, 0)} )
+        
+        
         for record in dataHabitRecords {
             
             guard let noonDate = record.completionDate.noon else { return }
@@ -134,10 +190,54 @@ struct StatisticsView: View {
             
             if let habitRecordsForDate = dict[noonDate] {
                 datesWithHabitRecords[noonDate] = habitRecordsForDate
+                
+                // Best Streak logic
+                let uniqueHabitsForTheDay = Set(habitRecordsForDate.map { $0.habit })
+               
+                for habit in dataHabits {
+                    if uniqueHabitsForTheDay.contains(habit) {
+                        // The bang operator should be fine because of my initialization of this dictionary
+                        habitStreaks[habit]! += 1
+                    } else {
+                        let bestStreakForHabit = habitBestStreaks[habit] ?? 0
+                        let endedStreakForHabit = habitStreaks[habit] ?? 0
+                        if bestStreakForHabit < endedStreakForHabit {
+                            habitBestStreaks[habit] = endedStreakForHabit
+                        }
+                        habitStreaks[habit] = 0
+                    }
+                }
             } else {
                 datesWithHabitRecords[noonDate] = []
+                
+                // If there is nothing for this day, all streaks should be zeroed out
+                for habit in dataHabits {
+                    
+                    let bestStreakForHabit = habitBestStreaks[habit] ?? 0
+                    let endedStreakForHabit = habitStreaks[habit] ?? 0
+                    
+                    if bestStreakForHabit < endedStreakForHabit {
+                        habitBestStreaks[habit] = endedStreakForHabit
+                    }
+                    
+                    habitStreaks[habit] = 0
+                }
             }
         }
+        
+        // We do this again because we want to ensure that the last day is counted in the current max,
+        // We don't need to zero out the streak in this case, but it doesn't matter either way
+        for habit in dataHabits {
+            
+            let bestStreakForHabit = habitBestStreaks[habit] ?? 0
+            let endedStreakForHabit = habitStreaks[habit] ?? 0
+            
+            if bestStreakForHabit < endedStreakForHabit {
+                habitBestStreaks[habit] = endedStreakForHabit
+            }
+        }
+        
+        bestStreaks = habitBestStreaks
     }
 //
 //    private func filterButton(habit: DataHabit) -> some View {
@@ -225,4 +325,5 @@ struct StatisticsView: View {
     return NavigationStack {
         StatisticsView()
     }
+    .modelContainer(container)
 }
