@@ -18,7 +18,7 @@ struct DataHabitRecordsOnDate: Hashable {
 extension Date {
     
     var displayDate: String {
-        let formatter: DateFormatter = .shortDate
+        let formatter: DateFormatter = .monthDayDate
         
         let today = Date().noon!
         let yesterday = Date().noon!.adding(days: -1)

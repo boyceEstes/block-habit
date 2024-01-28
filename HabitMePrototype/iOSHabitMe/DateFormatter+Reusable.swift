@@ -10,6 +10,7 @@ import Foundation
 
 extension DateFormatter {
     
+    /// Ex: (depending on locale) `1/1/24`
     static let shortDate: DateFormatter = {
         
         let formatter = DateFormatter()
@@ -18,6 +19,16 @@ extension DateFormatter {
     }()
     
     
+    /// Ex: `Jan 1`, `Dec 25`
+    static let monthDayDate: DateFormatter = {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM D"
+        return formatter
+    }()
+    
+    
+    /// Ex: (depending on locale) `1:34 PM`
     static let shortTime: DateFormatter = {
         
         let formatter = DateFormatter()
@@ -26,6 +37,7 @@ extension DateFormatter {
     }()
     
     
+    /// Ex: (depending on locale) `1/1/24, 1:12 PM`
     static let shortDateShortTime: DateFormatter = {
         
         let formatter = DateFormatter()
