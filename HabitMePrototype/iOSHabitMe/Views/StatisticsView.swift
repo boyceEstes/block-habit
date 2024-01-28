@@ -16,7 +16,7 @@ import SwiftData
 
 struct SelectableHabit: Hashable {
     
-    let habit: DataHabit
+    var habit: DataHabit
     var isSelected: Bool = true
 }
 
@@ -28,13 +28,20 @@ struct StatisticsView: View {
     ], animation: .default) var dataHabitRecords: [DataHabitRecord]
     
     @Query var dataHabits: [DataHabit]
+    /// We are filtering on the habits that are selectable (which are built from the dataHabits query - other than setting up the selectableHabits, `dataHabits` should never be used
+    private var selectedHabits: [DataHabit] { 
+        let allSelectedHabits = selectableHabits.filter { $0.isSelected }.map { $0.habit }
+        return allSelectedHabits
+    }
     
+//    private var selectedHabitRecords: [DataHabitRecord] { }
     @State private var selectableHabits = [SelectableHabit]()
+    @State private var selectedHabitRecords = [DataHabitRecord]()
     @State private var datesWithHabitRecords = [Date: [DataHabitRecord]]()
     private var selectedDay = Date() // This is just for scrolling to the end of the chart
     
     // Basic stats
-    private var totalRecords: Int { dataHabitRecords.count }
+    private var totalRecords: Int { selectedHabitRecords.count }
     
     private var avgRecordsPerDay: Double {
         
@@ -46,7 +53,7 @@ struct StatisticsView: View {
         var maxRecords = 0
         var maxHabit: DataHabit?
         
-        for dataHabit in dataHabits {
+        for dataHabit in selectedHabits {
             let habitRecordCount = dataHabit.habitRecords.count
             if habitRecordCount > maxRecords {
                 maxRecords = habitRecordCount
@@ -99,23 +106,54 @@ struct StatisticsView: View {
                     )
                     .padding(.bottom)
                     
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 0) {
                         if !selectableHabits.isEmpty {
-                            LazyHStack {
-                                ForEach($selectableHabits, id: \.self) { selectableHabit in
-                                    Button {
-                                        print("tapped selectableHabit")
-                                        selectableHabit.wrappedValue.isSelected.toggle()
-                                    } label: {
-                                        Text("\(selectableHabit.wrappedValue.habit.name)")
+                            HStack {
+                                Text("Habits")
+                                    .font(.title3)
+                                
+                                Spacer()
+                                
+                                Button("Reset") {
+                                    for i in 0..<selectableHabits.count {
+                                        selectableHabits[i].isSelected = true
                                     }
                                 }
                             }
-                            Button("Reset") {
-                                print("Tapped Reset")
-                            }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
+                            
+                            
+                            ScrollView(.horizontal) {
+                                LazyHStack {
+                                    ForEach(0..<selectableHabits.count, id: \.self) { i in
+                                        
+                                        let selectableHabit = selectableHabits[i]
+                                        let isSelected = selectableHabit.isSelected
+                                        let name = selectableHabit.habit.name
+                                        let color = selectableHabit.habit.color
+                                        
+                                        Button {
+                                            print("tapped selectableHabit")
+                                            withAnimation {
+                                                selectableHabits[i].isSelected.toggle()
+                                            }
+                                        } label: {
+                                            Text("\(name)")
+                                                .foregroundStyle(Color.primary)
+                                        }
+                                        .padding(8)
+                                        .contentShape(RoundedRectangle(cornerRadius: 10))
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .fill(isSelected ? Color(hex: color) ?? Color.gray : .clear)
+                                                .stroke(isSelected ? Color.clear : Color(hex: color) ?? Color.gray, lineWidth: 3)
+                                        )
+                                        .padding(.vertical)
+                                    }
+                                }
+                                .padding(.leading)
+                            }
                         }
                     }
                     
@@ -157,7 +195,26 @@ struct StatisticsView: View {
         .navigationTitle("Statistics")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
+            setupSelectableHabits()
             calculateDatesWithHabitRecords()
+        }
+        .onChange(of: selectedHabits) {
+            selectedHabitRecords = dataHabitRecords.filter { habitRecord in
+                selectedHabits.contains(habitRecord.habit)
+            }
+            
+            calculateDatesWithHabitRecords()
+        }
+    }
+    
+    
+    private func setupSelectableHabits() {
+        
+        print("setup for selectable habits happens")
+        selectableHabits = dataHabits.map { SelectableHabit(habit: $0) }
+        
+        selectedHabitRecords = dataHabitRecords.filter { habitRecord in
+            selectedHabits.contains(habitRecord.habit)
         }
     }
     
@@ -183,11 +240,11 @@ struct StatisticsView: View {
         var recordsThatHaveBeenDone = 0
         
         // We want to have all habits that exist here so that we can easily test their streak values
-        var habitStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: dataHabits.map {($0, 0)} )
-        var habitBestStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: dataHabits.map {($0, 0)} )
+        var habitStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: selectedHabits.map {($0, 0)} )
+        var habitBestStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: selectedHabits.map {($0, 0)} )
         
-        
-        for record in dataHabitRecords {
+        // Only track the selected habit records
+        for record in selectedHabitRecords {
             
             guard let noonDate = record.completionDate.noon else { return }
             if dict[noonDate] != nil {
@@ -214,7 +271,7 @@ struct StatisticsView: View {
                 // Best Streak logic
                 let uniqueHabitsForTheDay = Set(habitRecordsForDate.map { $0.habit })
                
-                for habit in dataHabits {
+                for habit in selectedHabits {
                     if uniqueHabitsForTheDay.contains(habit) {
                         // The bang operator should be fine because of my initialization of this dictionary
                         habitStreaks[habit]! += 1
@@ -231,7 +288,7 @@ struct StatisticsView: View {
                 datesWithHabitRecords[noonDate] = []
                 
                 // If there is nothing for this day, all streaks should be zeroed out
-                for habit in dataHabits {
+                for habit in selectedHabits {
                     
                     let bestStreakForHabit = habitBestStreaks[habit] ?? 0
                     let endedStreakForHabit = habitStreaks[habit] ?? 0
@@ -247,7 +304,7 @@ struct StatisticsView: View {
         
         // We do this again because we want to ensure that the last day is counted in the current max,
         // We don't need to zero out the streak in this case, but it doesn't matter either way
-        for habit in dataHabits {
+        for habit in selectedHabits {
             
             let bestStreakForHabit = habitBestStreaks[habit] ?? 0
             let endedStreakForHabit = habitStreaks[habit] ?? 0
