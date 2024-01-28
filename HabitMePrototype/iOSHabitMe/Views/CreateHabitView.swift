@@ -202,6 +202,17 @@ struct HabitMeSheetDismissButton: View {
 }
 
 
+struct FunButtonPressStyle: ButtonStyle {
+    
+    func makeBody(configuration: Configuration) -> some View {
+        
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+    }
+}
+
+
 struct HabitMePrimaryButton: View {
     
     let title: String
@@ -232,6 +243,7 @@ struct HabitMePrimaryButton: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .disabled(isAbleToTap == true ? false : true)
         }
+        .buttonStyle(FunButtonPressStyle())
     }
 }
 
