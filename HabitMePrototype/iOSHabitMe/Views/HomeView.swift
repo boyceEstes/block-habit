@@ -41,7 +41,6 @@ struct HomeView: View {
     
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State private var selectedDay: Date = Date().noon!
-    @State private var datesWithHabitRecords = [Date: [DataHabitRecord]]()
     
     
     var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {

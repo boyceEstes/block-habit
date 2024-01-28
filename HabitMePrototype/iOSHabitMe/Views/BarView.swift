@@ -8,6 +8,78 @@
 import SwiftUI
 
 
+struct StatisticsBarView: View {
+    
+    let graphHeight: CGFloat
+    let numOfItemsToReachTop: Double
+    
+    let datesWithHabitRecords: [Date: [DataHabitRecord]]
+    
+    var body: some View {
+        
+        ScrollViewReader { value in
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 0) {
+                    ForEach(datesWithHabitRecords.sorted(by: { $0.key < $1.key}), id: \.key) { date, habitRecords in
+                        dateColumn(
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: numOfItemsToReachTop,
+                            date: date,
+                            habitRecords: habitRecords
+                        )
+                        .frame(height: graphHeight, alignment: .bottom)
+                        .id(date)
+                    }
+                }
+                .frame(height: graphHeight)
+            }
+            .onAppear {
+                scrollToToday(value: value)
+            }
+        }
+    }
+    
+    /// This will build a column without a selectable day
+    @ViewBuilder
+    func dateColumn(graphHeight: Double, numOfItemsToReachTop: Double, date: Date, habitRecords: [DataHabitRecord]) -> some View {
+        
+        let habitCount = habitRecords.count
+        let itemWidth = (graphHeight) / numOfItemsToReachTop
+        let itemHeight = habitCount > Int(numOfItemsToReachTop) ? ((graphHeight) / Double(habitCount)) : itemWidth
+        
+        VStack(spacing: 0) {
+            HabitRecordBlocksOnDate(habitRecords: habitRecords, itemWidth: itemWidth, itemHeight: itemHeight, didTapBlock: { })
+                .padding(.horizontal, 1)
+            
+            Rectangle()
+                .fill(.ultraThickMaterial)
+                .frame(height: 1)
+            
+            // This isn't very useful because it is too crunched to really be seen, need to think of a better way to group things.
+//            Text("\(date.displayDate)")
+//                .fontWeight(.regular)
+        }
+    }
+    
+    
+    private func scrollToToday(value: ScrollViewProxy, animate: Bool = true) {
+        
+        DispatchQueue.main.async {
+            guard let today = Date().noon else { return }
+            // get days since january and then count back to get their ids, or I could
+            // set the id as a date
+            if animate {
+                withAnimation(.easeInOut) {
+                    value.scrollTo(today, anchor: .center)
+                }
+            } else {
+                value.scrollTo(today, anchor: .center)
+            }
+        }
+    }
+}
+
+
 struct BarView: View {
     
     @Environment(\.modelContext) var modelContext
@@ -64,22 +136,20 @@ struct BarView: View {
         let itemHeight = habitCount > Int(numOfItemsToReachTop) ? ((graphHeight - labelHeight) / Double(habitCount)) : itemWidth
         
         VStack(spacing: 0) {
-            ForEach(info.habits, id: \.self) { j in
-                
-                ActivityBlock(
-                    colorHex: j.habit.color,
-                    itemWidth: itemWidth,
-                    itemHeight: itemHeight) {
-                        setSelectedDay(to: info.funDate)
-                    }
+
+            HabitRecordBlocksOnDate(
+                habitRecords: info.habits,
+                itemWidth: itemWidth,
+                itemHeight: itemHeight
+            ) {
+                setSelectedDay(to: info.funDate)
             }
-            
             
             Rectangle()
                 .fill(.ultraThickMaterial)
                 .frame(height: 1)
             
-            Text("\(info.displayDate)")
+            Text("\(info.funDate.displayDate)")
                 .fontWeight(info.funDate == selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)
                 .onTapGesture {
@@ -127,6 +197,27 @@ struct BarView: View {
             } else {
                 value.scrollTo(selectedDay, anchor: .center)
             }
+        }
+    }
+}
+
+
+struct HabitRecordBlocksOnDate: View {
+    
+    let habitRecords: [DataHabitRecord]
+    let itemWidth: CGFloat
+    let itemHeight: CGFloat
+    let didTapBlock: () -> Void
+    
+    var body: some View {
+        ForEach(habitRecords, id: \.self) { habitRecord in
+            
+            ActivityBlock(
+                colorHex: habitRecord.habit.color,
+                itemWidth: itemWidth,
+                itemHeight: itemHeight,
+                tapAction: didTapBlock
+            )
         }
     }
 }
