@@ -48,7 +48,7 @@ struct StatisticsView: View {
         
         for dataHabit in dataHabits {
             let habitRecordCount = dataHabit.habitRecords.count
-            if habitRecordCount >= maxRecords {
+            if habitRecordCount > maxRecords {
                 maxRecords = habitRecordCount
                 maxHabit = dataHabit
             }
@@ -86,73 +86,74 @@ struct StatisticsView: View {
         GeometryReader { proxy in
             ScrollView {
             
-                
+                let screenWidth = proxy.size.width
                 let screenHeight = proxy.size.height
                 let graphHeight = screenHeight * 0.3
 
-                StatisticsBarView(
-                    graphHeight: graphHeight,
-                    numOfItemsToReachTop: 12,
-                    datesWithHabitRecords: datesWithHabitRecords
-                )
-                .padding(.bottom)
-                
-                VStack(alignment: .leading) {
-                    if !selectableHabits.isEmpty {
-                        LazyHStack {
-                            ForEach($selectableHabits, id: \.self) { selectableHabit in
-                                Button {
-                                    print("tapped selectableHabit")
-                                    selectableHabit.wrappedValue.isSelected.toggle()
-                                } label: {
-                                    Text("\(selectableHabit.wrappedValue.habit.name)")
+                VStack(spacing: 0) {
+                    StatisticsBarView(
+                        graphWidth: screenWidth,
+                        graphHeight: graphHeight,
+                        numOfItemsToReachTop: 12,
+                        datesWithHabitRecords: datesWithHabitRecords
+                    )
+                    .padding(.bottom)
+                    
+                    VStack(alignment: .leading) {
+                        if !selectableHabits.isEmpty {
+                            LazyHStack {
+                                ForEach($selectableHabits, id: \.self) { selectableHabit in
+                                    Button {
+                                        print("tapped selectableHabit")
+                                        selectableHabit.wrappedValue.isSelected.toggle()
+                                    } label: {
+                                        Text("\(selectableHabit.wrappedValue.habit.name)")
+                                    }
                                 }
                             }
+                            Button("Reset") {
+                                print("Tapped Reset")
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
                         }
-                        Button("Reset") {
-                            print("Tapped Reset")
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.yellow)
-                        .padding(.horizontal)
                     }
-                }
-                
-                
-                Grid(alignment: .topLeading) {
                     
-                    GridRow {
-                        StatBox(title: "Total Records", value: "\(totalRecords)")
-                        StatBox(title: "Total Days", value: "\(totalDays)")
-                        StatBox(title: "Avg Records / Day", value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
-                            .gridCellColumns(2)
-                    }
-                    GridRow {
-                        if let mostCompletions {
-                            StatBox(title: "Most Completions", value: "\(mostCompletions.recordCount)", units: "records", subValue: "\(mostCompletions.habit.name)", subValueColor: Color(hex: mostCompletions.habit.color))
-                                .gridCellColumns(2)
-                        } else {
-                            StatBox(title: "Most Completions", value: "N/A")
-                                .gridCellColumns(2)
-                        }
-                            
+                    
+                    Grid(alignment: .topLeading) {
                         
-                        if let bestStreak {
-                            StatBox(title: "Best Streak", value: "\(bestStreak.streakCount)", units: "days", subValue: "\(bestStreak.habit.name)", subValueColor: Color(hex: bestStreak.habit.color))
-                                .gridCellColumns(2)
-                        } else {
-                            StatBox(title: "Best Streak", value: "N/A")
+                        GridRow {
+                            StatBox(title: "Total Records", value: "\(totalRecords)")
+                            StatBox(title: "Total Days", value: "\(totalDays)")
+                            StatBox(title: "Avg Records / Day", value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
                                 .gridCellColumns(2)
                         }
+                        GridRow {
+                            if let mostCompletions {
+                                StatBox(title: "Most Completions", value: "\(mostCompletions.recordCount)", units: "records", subValue: "\(mostCompletions.habit.name)", subValueColor: Color(hex: mostCompletions.habit.color))
+                                    .gridCellColumns(2)
+                            } else {
+                                StatBox(title: "Most Completions", value: "N/A")
+                                    .gridCellColumns(2)
+                            }
+                            
+                            
+                            if let bestStreak {
+                                StatBox(title: "Best Streak", value: "\(bestStreak.streakCount)", units: "days", subValue: "\(bestStreak.habit.name)", subValueColor: Color(hex: bestStreak.habit.color))
+                                    .gridCellColumns(2)
+                            } else {
+                                StatBox(title: "Best Streak", value: "N/A")
+                                    .gridCellColumns(2)
+                            }
+                        }
                     }
+                    .padding()
+                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+                    .padding([.horizontal, .bottom])
                 }
-                .padding()
-                .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
-                .padding([.horizontal, .bottom])
             }
         }
         .background(Color(uiColor: .secondarySystemGroupedBackground))
-//        .padding(.horizontal)
         .navigationTitle("Statistics")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {

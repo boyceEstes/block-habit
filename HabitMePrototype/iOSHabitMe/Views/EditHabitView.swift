@@ -40,20 +40,20 @@ struct EditHabitView: View {
     
     var body: some View {
         
-        VStack {
+        VStack(spacing: 0) {
             SheetTitleBar(title: "Edit Habit") {
-                HStack {
                     HabitMeSheetDismissButton(dismiss: resetAndExit)
-                }
             }
+            
+            Spacer()
             
             CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
             
+            Spacer()
             
             HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
                 .padding()
             
-            Spacer()
         }
         .createEditHabitSheetPresentation()
         .onAppear {

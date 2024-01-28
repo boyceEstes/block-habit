@@ -10,6 +10,7 @@ import SwiftUI
 
 struct StatisticsBarView: View {
     
+    let graphWidth: CGFloat
     let graphHeight: CGFloat
     let numOfItemsToReachTop: Double
     
@@ -19,7 +20,7 @@ struct StatisticsBarView: View {
         
         ScrollViewReader { value in
             ScrollView(.horizontal) {
-                LazyHStack(spacing: 0) {
+                LazyHStack(alignment: .bottom, spacing: 0) {
                     ForEach(datesWithHabitRecords.sorted(by: { $0.key < $1.key}), id: \.key) { date, habitRecords in
                         dateColumn(
                             graphHeight: graphHeight,
@@ -27,11 +28,10 @@ struct StatisticsBarView: View {
                             date: date,
                             habitRecords: habitRecords
                         )
-                        .frame(height: graphHeight, alignment: .bottom)
                         .id(date)
                     }
                 }
-                .frame(height: graphHeight)
+                .frame(height: graphHeight, alignment: .trailing)
             }
             .onAppear {
                 scrollToToday(value: value)
@@ -48,8 +48,15 @@ struct StatisticsBarView: View {
         let itemHeight = habitCount > Int(numOfItemsToReachTop) ? ((graphHeight) / Double(habitCount)) : itemWidth
         
         VStack(spacing: 0) {
-            HabitRecordBlocksOnDate(habitRecords: habitRecords, itemWidth: itemWidth, itemHeight: itemHeight, didTapBlock: { })
-                .padding(.horizontal, 1)
+            
+            if habitRecords.isEmpty {
+//                ActivityBlock(colorHex: UIColor.secondarySystemGroupedBackground.toHexString() ?? "#FFFFFF", itemWidth: itemWidth, itemHeight: itemHeight)
+                Rectangle()
+                    .frame(width: itemWidth, height: itemHeight).opacity(0)
+            } else {
+                HabitRecordBlocksOnDate(habitRecords: habitRecords, itemWidth: itemWidth, itemHeight: itemHeight, didTapBlock: { })
+                    .padding(.horizontal, 1)
+            }
             
             Rectangle()
                 .fill(.ultraThickMaterial)
@@ -150,6 +157,7 @@ struct BarView: View {
                 .frame(height: 1)
             
             Text("\(info.funDate.displayDate)")
+                .font(.footnote)
                 .fontWeight(info.funDate == selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)
                 .onTapGesture {

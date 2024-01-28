@@ -20,7 +20,7 @@ struct CreateEditHabitSheetPresentation: ViewModifier {
         content
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
-            .presentationBackground(.regularMaterial)
+            .presentationBackground(.background)
     }
 }
 
@@ -36,19 +36,22 @@ struct CreateHabitView: View {
 
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             SheetTitleBar(title: "Create New Habit") {
                 HabitMeSheetDismissButton(dismiss: { dismiss() })
             }
             
+            Spacer()
+            
             CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
             
+            Spacer()
             
             HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
                 .padding()
             
-            Spacer()
         }
+//        .frame(height: 400)
         .createEditHabitSheetPresentation()
     }
     
@@ -118,7 +121,7 @@ struct CreateEditHabitContent: View {
         .background(Color(uiColor: .tertiarySystemGroupedBackground))
         .clipShape(
             RoundedRectangle(cornerRadius: 10))
-        .padding()
+        .padding(.horizontal)
     }
     
     
@@ -178,7 +181,7 @@ struct SheetTitleBar<TitleButtonContent: View>: View {
             titleButtonContent()
 
         }
-        .padding()
+        .padding(.horizontal)
         .padding(.top)
     }
 }
@@ -231,6 +234,7 @@ struct HabitMePrimaryButton: View {
     }
     
     var body: some View {
+        
         Button {
             action()
         } label: {
@@ -241,6 +245,7 @@ struct HabitMePrimaryButton: View {
                 .background(isAbleToTap ? color : color.opacity(0.5))
                 .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10))
                 .disabled(isAbleToTap == true ? false : true)
         }
         .buttonStyle(FunButtonPressStyle())
