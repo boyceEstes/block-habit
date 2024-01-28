@@ -112,7 +112,7 @@ struct HomeView: View {
             let screenWidth = proxy.size.width
             let screenHeight = proxy.size.height
 //            let safeAreaInsetTop = proxy.safeAreaInsets.top
-            let graphHeight = screenHeight * 0.5
+            let graphHeight = screenHeight * 0.4
 //            let habitMenuHeight = screenHeight * 0.3
 //            let itemHeight = graphHeight / 8
             

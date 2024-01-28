@@ -169,11 +169,10 @@ struct HabitsMenu: View {
                 } label: {
                     Image(systemName: "plus.circle")
                 }
-                .buttonStyle(.plain)
             }
             .homeDetailTitle()
             .padding(.horizontal)
-            .padding(.vertical, 30)
+            .padding(.vertical)
             
             
             ScrollView {
@@ -187,10 +186,8 @@ struct HabitsMenu: View {
                 .padding(.bottom)
             }
             .padding(.horizontal)
-//            .frame(height: habitMenuHeight)
-//            .background(Color.indigo)
         }
-        .background(Color(uiColor: .systemGroupedBackground))
+        .background(Color(uiColor: .tertiarySystemGroupedBackground))
         .clipShape(
             RoundedRectangle(cornerRadius: 20))
         .padding()
