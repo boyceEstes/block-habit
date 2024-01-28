@@ -35,6 +35,13 @@ struct StatisticsView: View {
     
     // Basic stats
     private var totalRecords: Int { dataHabitRecords.count }
+    
+    private var avgRecordsPerDay: Double {
+        
+        guard totalDays != 0 else { return 0 }
+        return Double(totalRecords)/Double(totalDays)
+    }
+    
     private var mostCompletions: (recordCount: Int, habit: DataHabit)? {
         var maxRecords = 0
         var maxHabit: DataHabit?
@@ -71,8 +78,7 @@ struct StatisticsView: View {
         return (maxStreakHabit, maxStreakCount)
     }
     
-    
-    @State private var avgRecordsPerDay: Double?
+    @State private var totalDays = 0
     @State private var bestStreaks = [DataHabit: Int]()
     
     var body: some View {
@@ -117,19 +123,26 @@ struct StatisticsView: View {
                     
                     GridRow {
                         StatBox(title: "Total Records", value: "\(totalRecords)")
-                        StatBox(title: "Average Records / Day", value: "9.2", units: "rpd")
+                        StatBox(title: "Total Days", value: "\(totalDays)")
+                        StatBox(title: "Avg Records / Day", value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
+                            .gridCellColumns(2)
                     }
                     GridRow {
                         if let mostCompletions {
-                            StatBox(title: "Most Completions", value: "\(mostCompletions.recordCount)", units: "records", subValue: "\(mostCompletions.habit.name)")
+                            StatBox(title: "Most Completions", value: "\(mostCompletions.recordCount)", units: "records", subValue: "\(mostCompletions.habit.name)", subValueColor: Color(hex: mostCompletions.habit.color))
+                                .gridCellColumns(2)
                         } else {
                             StatBox(title: "Most Completions", value: "N/A")
+                                .gridCellColumns(2)
                         }
+                            
                         
                         if let bestStreak {
-                            StatBox(title: "Best Streak", value: "\(bestStreak.streakCount)", units: "days", subValue: "\(bestStreak.habit.name)")
+                            StatBox(title: "Best Streak", value: "\(bestStreak.streakCount)", units: "days", subValue: "\(bestStreak.habit.name)", subValueColor: Color(hex: bestStreak.habit.color))
+                                .gridCellColumns(2)
                         } else {
                             StatBox(title: "Best Streak", value: "N/A")
+                                .gridCellColumns(2)
                         }
                     }
                 }
@@ -183,13 +196,19 @@ struct StatisticsView: View {
             }
         }
         
+        totalDays = dict.keys.count
+        
         // Maybe for now, lets just start at january 1, 2024 for the beginning.
         for day in 0...days {
             // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
             guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
             
             if let habitRecordsForDate = dict[noonDate] {
+                
                 datesWithHabitRecords[noonDate] = habitRecordsForDate
+                
+                daysRecordHasBeenDone += 1
+                recordsThatHaveBeenDone += habitRecordsForDate.count
                 
                 // Best Streak logic
                 let uniqueHabitsForTheDay = Set(habitRecordsForDate.map { $0.habit })

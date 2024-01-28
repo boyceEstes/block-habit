@@ -320,12 +320,14 @@ struct StatBox: View {
     let value: String
     let units: String?
     let subValue: String?
+    let subValueColor: Color?
     
-    init(title: String, value: String, units: String? = nil, subValue: String? = nil) {
+    init(title: String, value: String, units: String? = nil, subValue: String? = nil, subValueColor: Color? = nil) {
         self.title = title
         self.value = value
         self.units = units
         self.subValue = subValue
+        self.subValueColor = subValueColor
     }
     
     
@@ -340,7 +342,8 @@ struct StatBox: View {
             if let subValue {
                 Text(subValue)
                     .font(.footnote)
-                    .foregroundStyle(Color(uiColor: .secondaryLabel))
+                    .foregroundStyle(subValueColor == nil ? Color(uiColor: .secondaryLabel) : subValueColor!)
+                    .multilineTextAlignment(.center)
             }
         }
         .padding(8)
