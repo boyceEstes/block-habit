@@ -176,14 +176,25 @@ struct HabitsMenu: View {
             
             
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 25) {
-                    ForEach(0..<habits.count, id: \.self) { i in
-                        
-                        let habit = habits[i]
-                        habitButton(habit: habit, goToHabitDetail: goToHabitDetail)
+                if !habits.isEmpty {
+                    LazyVGrid(columns: columns, spacing: 25) {
+                        ForEach(0..<habits.count, id: \.self) { i in
+                            
+                            let habit = habits[i]
+                            habitButton(habit: habit, goToHabitDetail: goToHabitDetail)
+                        }
                     }
+                    .padding(.bottom)
+                } else {
+                    
+                    VStack {
+                        Spacer()
+                        Text("Try adding a habit to start the Block Party! 🎉")
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+                    .frame(width: 200, height: 250)
                 }
-                .padding(.bottom)
             }
             .padding(.horizontal)
         }
