@@ -51,7 +51,6 @@ struct CreateHabitView: View {
                 .padding()
             
         }
-//        .frame(height: 400)
         .createEditHabitSheetPresentation()
     }
     
@@ -246,9 +245,10 @@ struct HabitMePrimaryButton: View {
                 .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10))
-                .disabled(isAbleToTap == true ? false : true)
+                
         }
         .buttonStyle(FunButtonPressStyle())
+        .disabled(isAbleToTap == true ? false : true)
     }
 }
 
