@@ -212,7 +212,7 @@ struct HabitsMenu: View {
             }
             Button("Remove Habit", role: .destructive) {
                 alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-                        modelContext.delete(habit)
+                        modelContext.delete(habit: habit)
                     }
                 ).alertData()
                 showAlert = true

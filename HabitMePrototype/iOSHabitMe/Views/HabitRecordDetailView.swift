@@ -41,7 +41,7 @@ struct HabitRecordDetailView: View {
     var body: some View {
         VStack(spacing: 20) {
             SheetTitleBar(
-                title: habitRecord.habit.name,
+                title: habitRecord.habit?.name ?? "Could Not Find Habit",
                 subtitle: DateFormatter.shortDate.string(from: habitRecord.completionDate)
             ) {
                 HStack(spacing: 20) {

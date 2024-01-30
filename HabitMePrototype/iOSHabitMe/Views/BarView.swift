@@ -136,7 +136,7 @@ struct BarView: View {
     @ViewBuilder
     func dateColumn(graphHeight: Double, numOfItemsToReachTop: Double, info: DataHabitRecordsOnDate) -> some View {
         
-        let habitCount = info.habits.count
+        let habitCount = info.habitsRecords.count
         let labelHeight: CGFloat = 30
         // This will also be the usual height
         let itemWidth = (graphHeight - labelHeight) / numOfItemsToReachTop
@@ -145,7 +145,7 @@ struct BarView: View {
         VStack(spacing: 0) {
 
             HabitRecordBlocksOnDate(
-                habitRecords: info.habits,
+                habitRecords: info.habitsRecords,
                 itemWidth: itemWidth,
                 itemHeight: itemHeight
             ) {
@@ -168,7 +168,7 @@ struct BarView: View {
             if habitCount > 0 {
                 Button("Delete Last Habit Record") {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
-                        deleteLastHabitRecord(in: info.habits)
+                        deleteLastHabitRecord(in: info.habitsRecords)
                     }
                 }
             }
@@ -220,8 +220,11 @@ struct HabitRecordBlocksOnDate: View {
     var body: some View {
         ForEach(habitRecords, id: \.self) { habitRecord in
             
+            let _ = print("-- completionDate: \(habitRecord.completionDate)")
+            let _ = print("-- creationDate: \(habitRecord.creationDate)")
+            
             ActivityBlock(
-                colorHex: habitRecord.habit.color,
+                colorHex: habitRecord.habit?.color ?? UIColor.black.toHexString()!,
                 itemWidth: itemWidth,
                 itemHeight: itemHeight,
                 tapAction: didTapBlock

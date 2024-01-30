@@ -41,7 +41,24 @@ struct HabitDetailView: View {
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
 //     Query to fetch all of the habit records for the habit
-    @Query var dataHabitRecordsForHabit: [DataHabitRecord]
+    @Query(sort: [
+        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
+        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
+    ],
+        animation: .default
+    ) var dataHabitRecordsForHabit: [DataHabitRecord]
+    
+    
+    var filteredDatahabitRecordsForHabit: [DataHabitRecord] {
+        
+        dataHabitRecordsForHabit.filter {
+            
+            guard let habitForHabitRecord = $0.habit else { return false }
+            
+            let habitID = habit.id
+            return habitForHabitRecord.id == habitID
+        }
+    }
     
     @State private var currentStreak = 0
     @State private var avgRecordsPerDay: Double = 0
@@ -65,7 +82,7 @@ struct HabitDetailView: View {
         else { return [] }
         
         
-        print("received from habitRepository fetch... \(dataHabitRecordsForHabit.count)")
+        print("received from habitRepository fetch... \(filteredDatahabitRecordsForHabit.count)")
         //
         // Convert to a dictionary in order for us to an easier time in searching for dates
         var dict = [Date: [DataHabitRecord]]()
@@ -83,7 +100,7 @@ struct HabitDetailView: View {
         var recordsThatHaveBeenDone = 0
         
         
-        for record in dataHabitRecordsForHabit {
+        for record in filteredDatahabitRecordsForHabit {
             
             guard let noonDate = record.completionDate.noon else { return [] }
             if dict[noonDate] != nil {
@@ -101,7 +118,7 @@ struct HabitDetailView: View {
             
             if let habitRecordsForDate = dict[noonDate] {
                 // graph logic
-                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: habitRecordsForDate))
+                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: habitRecordsForDate))
                 
                 daysRecordHasBeenDone += 1
                 recordsThatHaveBeenDone += habitRecordsForDate.count
@@ -110,7 +127,7 @@ struct HabitDetailView: View {
                 streakingCount += 1
                 
             } else {
-                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: []))
+                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: []))
                 
                 // streak logic
                 if streakingCount >= maxStreakCount {
@@ -151,16 +168,18 @@ struct HabitDetailView: View {
         self.habit = habit
         self.goToEditHabit = goToEditHabit
         
-        let habitID = habit.id
+//        let habitID = habit.id
         
-        _dataHabitRecordsForHabit = Query(
-            filter: #Predicate {
-                $0.habit.id == habitID
-            }, sort: [
-                SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-                SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-            ], animation: .default
-        )
+//        _dataHabitRecordsForHabit = Query(
+//            filter: #Predicate {
+//                guard let habitForHabitRecord = $0.habit else { return false }
+//                
+//                habitForHabitRecord.id == habitID
+//            }, sort: [
+//                SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
+//                SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
+//            ], animation: .default
+//        )
     }
     
     
@@ -183,7 +202,7 @@ struct HabitDetailView: View {
                 )
                 
                 HabitMePrimaryButton(title: "Log New Record", color: Color(hex: habit.color)) {
-                    SwiftDataHabitRepository.shared.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay, modelContext: modelContext)
+                    modelContext.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay)
                 }
                 .padding()
                 
@@ -240,7 +259,7 @@ struct HabitDetailView: View {
         
         DispatchQueue.main.async {
             dismiss()
-            modelContext.delete(habit)
+            modelContext.delete(habit: habit)
         }
     }
     

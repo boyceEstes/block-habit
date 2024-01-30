@@ -82,9 +82,9 @@ struct HomeView: View {
                 
                 
                 if let habitRecordsForDate = dict[noonDate] {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: habitRecordsForDate))
+                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: habitRecordsForDate))
                 } else {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habits: []))
+                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: []))
                 }
             }
             
@@ -105,7 +105,7 @@ struct HomeView: View {
 
     var body: some View {
         
-        let _ = print("data habits: \(dataHabits)")
+        let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
         
         GeometryReader { proxy in
             
@@ -137,11 +137,7 @@ struct HomeView: View {
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
-                        SwiftDataHabitRepository.shared.createHabitRecordOnDate(
-                            habit: habit,
-                            selectedDay: selectedDay,
-                            modelContext: modelContext
-                        )
+                        modelContext.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay)
                     }
                 )
             }
@@ -214,7 +210,7 @@ struct HomeView: View {
     
     private var dataHabitRecordsForSelectedDay: [DataHabitRecord] {
         
-        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habits else {
+        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habitsRecords else {
             return []
         }
         

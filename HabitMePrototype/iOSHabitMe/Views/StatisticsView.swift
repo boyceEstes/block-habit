@@ -200,7 +200,8 @@ struct StatisticsView: View {
         }
         .onChange(of: selectedHabits) {
             selectedHabitRecords = dataHabitRecords.filter { habitRecord in
-                selectedHabits.contains(habitRecord.habit)
+                guard let habitForHabitRecord = habitRecord.habit else { return false }
+                return selectedHabits.contains(habitForHabitRecord)
             }
             
             calculateDatesWithHabitRecords()
@@ -214,7 +215,8 @@ struct StatisticsView: View {
         selectableHabits = dataHabits.map { SelectableHabit(habit: $0) }
         
         selectedHabitRecords = dataHabitRecords.filter { habitRecord in
-            selectedHabits.contains(habitRecord.habit)
+            guard let habitForHabitRecord = habitRecord.habit else { return false }
+            return selectedHabits.contains(habitForHabitRecord)
         }
     }
     

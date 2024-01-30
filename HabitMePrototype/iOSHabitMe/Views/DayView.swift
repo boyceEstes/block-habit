@@ -50,13 +50,13 @@ struct DayView: View {
                 HStack(spacing: 16) {
                     
                     ActivityBlock(
-                        colorHex: habitRecord.habit.color,
+                        colorHex: habitRecord.habit?.color ?? UIColor.black.toHexString()!,
                         itemWidth: itemWidth,
                         itemHeight: itemHeight
                     )
                     
                     VStack(alignment: .leading) {
-                        Text("\(habitRecord.habit.name)")
+                        Text("\(habitRecord.habit?.name ?? "Could Not Find Habit")")
                         Text("\(displayDate(for: habitRecord))")
                             .font(.footnote)
                             .foregroundStyle(Color.secondary)

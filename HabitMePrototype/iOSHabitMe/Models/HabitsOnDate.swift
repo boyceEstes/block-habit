@@ -12,7 +12,7 @@ import Foundation
 struct DataHabitRecordsOnDate: Hashable {
     
     let funDate: Date
-    var habits: [DataHabitRecord]
+    var habitsRecords: [DataHabitRecord]
 }
 
 extension Date {
