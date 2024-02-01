@@ -46,6 +46,8 @@
 		B3C9E51C2B699BC900153158 /* ModelContext+InsertHabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E51B2B699BC900153158 /* ModelContext+InsertHabitRecord.swift */; };
 		B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */; };
 		B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionView.swift */; };
+		B3C9E5442B6BD9FE00153158 /* ActivityDetailSeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */; };
+		B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +92,8 @@
 		B3C9E51B2B699BC900153158 /* ModelContext+InsertHabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+InsertHabitRecord.swift"; sourceTree = "<group>"; };
 		B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailSelectionView.swift; sourceTree = "<group>"; };
 		B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+AddDetailSelectionView.swift"; sourceTree = "<group>"; };
+		B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ActivityDetailSeedData.json; sourceTree = "<group>"; };
+		B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataActivityDetail.swift; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +189,7 @@
 		B3C97F142B5CE83600211B4C /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				B3C9E5422B6BD9B500153158 /* SeedData */,
 				B3CC60AB2B5EA9380074ED41 /* SwiftData */,
 				B3C97F152B5CE84500211B4C /* InMemory */,
 				B3C97F112B5CE81300211B4C /* CoreData */,
@@ -275,10 +280,27 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		B3CC60AB2B5EA9380074ED41 /* SwiftData */ = {
+		B3C9E5422B6BD9B500153158 /* SeedData */ = {
+			isa = PBXGroup;
+			children = (
+				B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */,
+			);
+			path = SeedData;
+			sourceTree = "<group>";
+		};
+		B3C9E5452B6BDC8100153158 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */,
+				B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B3CC60AB2B5EA9380074ED41 /* SwiftData */ = {
+			isa = PBXGroup;
+			children = (
+				B3C9E5452B6BDC8100153158 /* Models */,
 				B32947A52B606713007C8C1E /* SwiftDataHabitRepository.swift */,
 				B3C9E5172B698C7D00153158 /* ModelContext+DeleteHabit.swift */,
 				B3C9E51B2B699BC900153158 /* ModelContext+InsertHabitRecord.swift */,
@@ -347,6 +369,7 @@
 			files = (
 				B313EEBA2B5C4C99002AE8CE /* Preview Assets.xcassets in Resources */,
 				B313EEB72B5C4C99002AE8CE /* Assets.xcassets in Resources */,
+				B3C9E5442B6BD9FE00153158 /* ActivityDetailSeedData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +391,7 @@
 				B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsCompositionView.swift in Sources */,
+				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,
 				B3C97F192B5CE87200211B4C /* HabitRepository.swift in Sources */,

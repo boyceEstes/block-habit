@@ -337,13 +337,11 @@ struct StatisticsView: View {
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
     let dataHabit = DataHabit(
-        id: UUID().uuidString,
         name: "Chugged Dew",
         color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     let dataHabit2 = DataHabit(
-        id: UUID().uuidString,
         name: "Smashed Taco",
         color: Habit.habits[1].color.toHexString() ?? "#FFFFFF",
         habitRecords: []

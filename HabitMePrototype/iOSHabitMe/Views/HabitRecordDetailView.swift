@@ -125,7 +125,6 @@ struct HabitMeDeleteButton: View {
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
     let dataHabit = DataHabit(
-        id: UUID().uuidString,
         name: "Chugged Dew",
         color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
         habitRecords: []

@@ -26,15 +26,6 @@ struct CreateEditHabitSheetPresentation: ViewModifier {
 }
 
 
-enum HabitDetailType: String, CaseIterable, Identifiable {
-    
-    case number = "Number"
-    case text = "Text"
-    
-    var id: HabitDetailType { self }
-}
-
-
 struct DetailUnit: Hashable {
     
     let name: String
@@ -99,7 +90,7 @@ struct HabitDetail: Hashable, Identifiable {
     
     let id = UUID().uuidString
     var name: String
-    var valueType: HabitDetailType
+    var valueType: ActivityDetailType
     var unit: DetailUnit // lb, meters, etc. for number
     
     
@@ -128,9 +119,9 @@ struct CreateHabitView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                SheetTitleBar(title: "Create New Habit") {
-                    HabitMeSheetDismissButton(dismiss: { dismiss() })
-                }
+//                SheetTitleBar(title: "Create New Habit") {
+//                    HabitMeSheetDismissButton(dismiss: { dismiss() })
+//                }
                 
                 CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
                 
@@ -142,6 +133,13 @@ struct CreateHabitView: View {
         }
         .createEditHabitSheetPresentation()
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("Create New Habit")
+                    .font(.title2)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                HabitMeSheetDismissButton(dismiss: { dismiss() })
+            }
             ToolbarItem(placement: .bottomBar) {
                 HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
                     .padding()
@@ -193,20 +191,22 @@ struct CreateHabitDetailContent: View {
     var body: some View {
         
         LazyVStack(alignment: .leading) {
-            HStack {
-                Text("Details")
-                Spacer()
-                Button {
-                    goToAddDetailsSelection()
-                } label: {
+                
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Details")
+                    Spacer()
                     Image(systemName: "chevron.right")
                         .fontWeight(.semibold)
+                        .foregroundColor(.blue)
                 }
+                
+                Text("Extra Information to track with this habit")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom)
             }
-            Text("Extra Information to track with this habit")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .padding(.bottom)
+            .contentShape(Rectangle())
             
             ForEach($details) { $detail in
                 let detail = $detail.wrappedValue
@@ -226,6 +226,9 @@ struct CreateHabitDetailContent: View {
         .padding()
         .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
+        .onTapGesture {
+            goToAddDetailsSelection()
+        }
     }
     
 //    var body: some View {
@@ -273,7 +276,7 @@ struct CreateHabitDetailContent: View {
                 .focused($focusedDetail, equals: .row(id: detail.wrappedValue.id))
                 
             Picker("Type", selection: detail.valueType) {
-                ForEach(HabitDetailType.allCases) { type in
+                ForEach(ActivityDetailType.allCases) { type in
                     Text("\(type.rawValue)")
                 }
             }
@@ -417,7 +420,7 @@ struct HabitMeSheetDismissButton: View {
             Image(systemName: "xmark.circle.fill")
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color(uiColor: .secondaryLabel))
-                .font(.title)
+                .font(.title2)
         }
     }
 }

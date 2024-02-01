@@ -8,15 +8,13 @@
 import SwiftUI
 
 
-class CreateHabitNavigationFlow: NewSheetyNavigationFlow {
+class CreateHabitNavigationFlow: NewStackNavigationFlow {
     
     // MARK: Properties
-    var displayedSheet: SheetyIdentifier?
+    @Published var path = [StackIdentifier]()
     
-    // MARK: Sheety Identifiers
-    enum SheetyIdentifier: Identifiable, Hashable {
-        
-        var id: Int { self.hashValue }
+    // MARK: Stack Identifiers
+    enum StackIdentifier: Hashable {
         
         case detailSelection
     }
@@ -31,15 +29,12 @@ extension ContentView {
         // Placing in NavigationStack so that I can make sure that the `bottomBar` works
         // as expected (there was weird behavior with it disappearing after the sheet was
         // dismissed when this was not in a NavigationStack
-        NavigationStack {
-            makeCreateHabitView()
-            
-                .sheet(item: $createHabitNavigationFlowDisplayedSheet) { identifier in
-                    switch identifier {
-                    case .detailSelection:
-                        makeAddDetailSelectionView()
-                    }
-                }
+        makeCreateHabitView()
+        .flowNavigationDestination(flowPath: $createHabitNavigationFlowPath) { identifier in
+            switch identifier {
+            case .detailSelection:
+                makeAddDetailSelectionView()
+            }
         }
     }
     
@@ -55,7 +50,7 @@ extension ContentView {
     
     private func goToAddDetailsSelectionFromCreateHabit() {
         
-        createHabitNavigationFlowDisplayedSheet = .detailSelection
+        createHabitNavigationFlowPath.append(.detailSelection)
     }
 }
 

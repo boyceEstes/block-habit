@@ -110,7 +110,6 @@ struct EditHabitView: View {
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
     let dataHabit = DataHabit(
-        id: UUID().uuidString,
         name: "Chugging Dew",
         color: Habit.habits.randomElement()?.color.toHexString() ?? "#FFFFFF",
         habitRecords: []
