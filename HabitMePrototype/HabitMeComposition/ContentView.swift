@@ -30,7 +30,7 @@ struct MyTextFieldStyle: TextFieldStyle {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(Color(uiColor: .tertiarySystemGroupedBackground))
 //                .stroke(Color.blue, lineWidth: 1)
-        ).padding()
+        )
     }
 }
 
@@ -43,6 +43,9 @@ struct ContentView: View {
     
     // Habit Detail navigation
     @State var habitDetailNavigationFlowDisplayedSheet: HabitDetailNavigationFlow.SheetyIdentifier?
+    
+    // Create Habit navigation
+    @State var createHabitNavigationFlowDisplayedSheet: CreateHabitNavigationFlow.SheetyIdentifier?
     
     
     var body: some View {

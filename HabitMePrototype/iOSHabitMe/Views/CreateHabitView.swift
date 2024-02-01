@@ -8,6 +8,7 @@
 import SwiftUI
 
 
+
 extension View {
     
     func createEditHabitSheetPresentation() -> some View {
@@ -18,10 +19,97 @@ extension View {
 struct CreateEditHabitSheetPresentation: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .presentationDetents([.medium])
+            .presentationDetents([.large])
             .presentationDragIndicator(.visible)
             .presentationBackground(.background)
     }
+}
+
+
+enum HabitDetailType: String, CaseIterable, Identifiable {
+    
+    case number = "Number"
+    case text = "Text"
+    
+    var id: HabitDetailType { self }
+}
+
+
+struct DetailUnit: Hashable {
+    
+    let name: String
+    let abbreviatedName: String
+    
+    static let none = DetailUnit(
+        name: "None",
+        abbreviatedName: ""
+    )
+    
+    
+    static let minutes = DetailUnit(
+        name: "Minutes",
+        abbreviatedName: "min"
+    )
+    
+    
+    static let preloadedOptions = [
+        none,
+        minutes,
+        DetailUnit(
+            name: "Miles",
+            abbreviatedName: "mi"
+        ),
+        DetailUnit(
+            name: "Kilometers",
+            abbreviatedName: "km"
+        ),
+        DetailUnit(
+            name: "Pounds",
+            abbreviatedName: "lbs"
+        ),
+        DetailUnit(
+            name: "Kilograms",
+            abbreviatedName: "kg"
+        ),
+        DetailUnit(
+            name: "Grams",
+            abbreviatedName: "g"
+        ),
+        DetailUnit(
+            name: "Milliliters",
+            abbreviatedName: "ml"
+        ),
+        DetailUnit(
+            name: "Liters",
+            abbreviatedName: "L"
+        ),
+        DetailUnit(
+            name: "Ounces",
+            abbreviatedName: "oz"
+        ),
+        DetailUnit(
+            name: "Fluid Ounces",
+            abbreviatedName: "fl oz"
+        )
+    ]
+}
+
+
+struct HabitDetail: Hashable, Identifiable {
+    
+    let id = UUID().uuidString
+    var name: String
+    var valueType: HabitDetailType
+    var unit: DetailUnit // lb, meters, etc. for number
+    
+    
+    static let preloadedHabitDetails = [
+        HabitDetail(
+            name: "Duration",
+            valueType: .number,
+            unit: .minutes
+        )
+    ]
 }
 
 
@@ -30,31 +118,40 @@ struct CreateHabitView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
+    let goToAddDetailsSelection: () -> Void
+    
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     
-
+    @State private var details: [HabitDetail] = HabitDetail.preloadedHabitDetails
     
     var body: some View {
-        VStack(spacing: 0) {
-            SheetTitleBar(title: "Create New Habit") {
-                HabitMeSheetDismissButton(dismiss: { dismiss() })
+        ScrollView {
+            VStack(spacing: 20) {
+                SheetTitleBar(title: "Create New Habit") {
+                    HabitMeSheetDismissButton(dismiss: { dismiss() })
+                }
+                
+                CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
+                
+                CreateHabitDetailContent(
+                    goToAddDetailsSelection: goToAddDetailsSelection,
+                    details: $details
+                )
             }
-            
-            Spacer()
-            
-            CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
-            
-            Spacer()
-            
-            HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
-                .padding()
-            
         }
         .createEditHabitSheetPresentation()
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
+                    .padding()
+            }
+        }
     }
     
     
+    
+
     var isAbleToCreate: Bool {
         
         if selectedColor != nil && !nameTextFieldValue.isEmpty {
@@ -81,6 +178,127 @@ struct CreateHabitView: View {
 }
 
 
+enum Focusable: Hashable {
+    case none
+    case row(id: String)
+}
+
+
+struct CreateHabitDetailContent: View {
+    
+    let goToAddDetailsSelection: () -> Void
+    @Binding var details: [HabitDetail]
+    @FocusState private var focusedDetail: Focusable?
+    
+    var body: some View {
+        
+        LazyVStack(alignment: .leading) {
+            HStack {
+                Text("Details")
+                Spacer()
+                Button {
+                    goToAddDetailsSelection()
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .fontWeight(.semibold)
+                }
+            }
+            Text("Extra Information to track with this habit")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .padding(.bottom)
+            
+            ForEach($details) { $detail in
+                let detail = $detail.wrappedValue
+                HStack {
+                    Text("\(detail.name)")
+                    Text("in \(detail.unit.name.lowercased())")
+//                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(detail.valueType.rawValue)")
+                        .foregroundStyle(.secondary)
+                }
+                .padding()
+                .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+            }
+        }
+        .padding()
+        .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal)
+    }
+    
+//    var body: some View {
+//        List {
+//            
+//            Section {
+//                
+//                ForEach($details) { $detail in
+//                    
+//                    createHabitDetailView(detail: $detail)
+//                }
+//                .onDelete(perform: removeRows)
+//            } header: {
+//                HStack {
+//                    Text("Details")
+//                    Spacer()
+//                    Button {
+//                        print("Add")
+////                        let newHabitDetail = HabitDetail(name: "", valueType: .number, unit: DetailUnit.none)
+////                        details.append(newHabitDetail)
+////                        focusedDetail = .row(id: newHabitDetail.id)
+//                        goToAddDetailsSelection()
+//                    } label: {
+//                        Image(systemName: "plus.circle")
+//                            .foregroundStyle(.blue)
+//                    }
+//                    .font(.title3)
+//                }
+//            } footer: {
+//                Text("Extra information to track when this habit is completed.\n\nExample: 'Duration: 20 min' ")
+//                    .font(.footnote)
+//                    .foregroundStyle(.secondary)
+//            }
+//        }
+//        .scrollDisabled(true)
+//        .scrollContentBackground(.hidden)
+//    }
+    
+    
+    func createHabitDetailView(detail: Binding<HabitDetail>) -> some View{
+        
+        HStack {
+            TextField("Name", text: detail.name)
+                .textFieldStyle(MyTextFieldStyle())
+                .focused($focusedDetail, equals: .row(id: detail.wrappedValue.id))
+                
+            Picker("Type", selection: detail.valueType) {
+                ForEach(HabitDetailType.allCases) { type in
+                    Text("\(type.rawValue)")
+                }
+            }
+            .labelsHidden()
+            
+//            if detail.wrappedValue.valueType == .number {
+//                Picker("Units", selection: detail.unit) {
+//                    ForEach(DetailUnit.preloadedOptions, id: \.self) { detailUnit in
+//                        Text("\(detailUnit.name)")
+//                    }
+//                }
+////                .pickerStyle(.navigationLink)
+//                .labelsHidden()
+//            }
+        }
+    }
+    
+    
+    private func removeRows(at offsets: IndexSet) {
+        
+        details.remove(atOffsets: offsets)
+    }
+}
+
+
 struct CreateEditHabitContent: View {
     
     
@@ -96,6 +314,7 @@ struct CreateEditHabitContent: View {
         TextField("Name", text: $nameTextFieldValue)
             .font(.headline)
             .textFieldStyle(MyTextFieldStyle())
+            .padding(.horizontal)
         
         VStack {
             LazyHGrid(rows: rows, spacing: 30) {
@@ -254,6 +473,7 @@ struct HabitMePrimaryButton: View {
 
 
 #Preview {
-    
-    CreateHabitView()
+    NavigationStack {
+        CreateHabitView(goToAddDetailsSelection: { })
+    }
 }

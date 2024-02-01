@@ -34,7 +34,7 @@ extension ContentView {
                 
                 switch identifier {
                 case .createHabit:
-                    makeCreateHabitView()
+                    makeCreateHabitViewWithSheetyNavigation()
                     
                 case let .habitRecordDetail(habitRecord):
                     makeHabitRecordDetailView(habitRecord: habitRecord)
