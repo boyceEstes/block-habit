@@ -44,7 +44,12 @@ extension ModelContext {
         
         print("tapped habit data")
         
-        let newHabitRecord = DataHabitRecord(creationDate: today, completionDate: newHabitRecordCompletionDate)
+        let newHabitRecord = DataHabitRecord(
+            creationDate: today,
+            completionDate: newHabitRecordCompletionDate,
+            habit: nil,
+            activityDetailRecords: []
+        )
         newHabitRecord.habit = habit
 //        habit.habitRecords.append(newHabitRecord) -- saw this was less efficient here: https://fatbobman.com/en/posts/relationships-in-swiftdata-changes-and-considerations/
         // Inseting multiple rows, compose your own temporary array of habitrecords and then append them to the parents array of records so that it needs to do less

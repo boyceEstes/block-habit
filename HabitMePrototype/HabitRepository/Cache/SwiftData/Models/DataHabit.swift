@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 final class DataHabit: Hashable {
-
     
     @Attribute(.unique) var id: String = UUID().uuidString
     var name: String

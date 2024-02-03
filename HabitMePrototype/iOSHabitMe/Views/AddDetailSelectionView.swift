@@ -14,8 +14,21 @@ struct AddDetailsSelectionView: View {
         SortDescriptor(\DataActivityDetail.name)
     ]) var activityDetails: [DataActivityDetail]
     
-    @State private var selectedDetails: [(order: Int, detail: DataActivityDetail)] = []
+    @State private var activityDetailsWithSelection = [DataActivityDetail: Bool]()
     
+    @Binding var selectedDetails: [DataActivityDetail]
+    
+    
+    init(selectedDetails: Binding<[DataActivityDetail]>) {
+        
+        self._selectedDetails = selectedDetails
+        
+        self.activityDetailsWithSelection = activityDetails.reduce(into: [DataActivityDetail: Bool](), {
+            $0[$1] = selectedDetails.map { $0.wrappedValue }.contains($1)
+        })
+    }
+    
+
     var body: some View {
         List {
             ForEach(activityDetails) { activityDetail in
@@ -46,13 +59,19 @@ struct AddDetailsSelectionView: View {
                 .padding(8)
                 .listRowBackground(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(isRowSelected(activityDetail) ? Color.white : .clear, lineWidth: 5)
+                        .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? Color.white : .clear, lineWidth: 5)
                         .fill(Color(uiColor: .secondarySystemGroupedBackground))
                         .padding(.horizontal)
                         .padding(.vertical, 8)
                         
                 )
                 .listRowSeparator(.hidden)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation(.easeInOut(duration: 3)) {
+                        toggleSelection(for: activityDetail)
+                    }
+                }
             }
         }
         .listStyle(.plain)
@@ -77,10 +96,22 @@ struct AddDetailsSelectionView: View {
     }
     
     
-    func isRowSelected(_ activityDetail: DataActivityDetail) -> Bool{
+//    private func isRowSelected(_ activityDetail: DataActivityDetail) -> Bool{
+//        withAnimation {
+//            return selectedDetails.contains(activityDetail)
+//        }
+//    }
+    
+    
+    private func toggleSelection(for activityDetail: DataActivityDetail) {
         
-        let selectedActivityDetails = selectedDetails.map { $0.detail }
-        return selectedActivityDetails.contains(activityDetail)
+        if let selectedDetailIndex = selectedDetails.firstIndex(where: { $0 == activityDetail }) {
+            let _ = selectedDetails.remove(at: selectedDetailIndex)
+            activityDetailsWithSelection[activityDetail] = false
+        } else {
+            selectedDetails.append(activityDetail)
+            activityDetailsWithSelection[activityDetail] = true
+        }
     }
 }
 
@@ -105,7 +136,7 @@ struct AddDetailsSelectionView: View {
     }
     
     return NavigationStack {
-        AddDetailsSelectionView()
+        AddDetailsSelectionView(selectedDetails: .constant([decodedActivityDetails.first!]))
     }
     .modelContainer(container)
 }

@@ -16,7 +16,19 @@ class CreateHabitNavigationFlow: NewStackNavigationFlow {
     // MARK: Stack Identifiers
     enum StackIdentifier: Hashable {
         
-        case detailSelection
+        case detailSelection(selectedDetails: Binding<[DataActivityDetail]>)
+        
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case let .detailSelection(value):
+                hasher.combine(value.wrappedValue)
+            }
+        }
+        
+        
+        static func == (lhs: CreateHabitNavigationFlow.StackIdentifier, rhs: CreateHabitNavigationFlow.StackIdentifier) -> Bool {
+            lhs.hashValue == rhs.hashValue
+        }
     }
 }
 
@@ -32,8 +44,8 @@ extension ContentView {
         makeCreateHabitView()
         .flowNavigationDestination(flowPath: $createHabitNavigationFlowPath) { identifier in
             switch identifier {
-            case .detailSelection:
-                makeAddDetailSelectionView()
+            case let .detailSelection(selectedDetails):
+                makeAddDetailSelectionView(selectedDetails: selectedDetails)
             }
         }
     }
@@ -48,9 +60,9 @@ extension ContentView {
     }
     
     
-    private func goToAddDetailsSelectionFromCreateHabit() {
+    private func goToAddDetailsSelectionFromCreateHabit(selectedDetails: Binding<[DataActivityDetail]>) {
         
-        createHabitNavigationFlowPath.append(.detailSelection)
+        createHabitNavigationFlowPath.append(.detailSelection(selectedDetails: selectedDetails))
     }
 }
 

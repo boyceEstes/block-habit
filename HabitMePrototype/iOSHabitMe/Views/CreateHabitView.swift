@@ -109,12 +109,11 @@ struct CreateHabitView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
-    let goToAddDetailsSelection: () -> Void
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
     
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
-    
-    @State private var details: [HabitDetail] = HabitDetail.preloadedHabitDetails
+    @State private var selectedDetails = [DataActivityDetail]()
     
     var body: some View {
         ScrollView {
@@ -127,7 +126,7 @@ struct CreateHabitView: View {
                 
                 CreateHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
-                    details: $details
+                    selectedDetails: $selectedDetails
                 )
             }
         }
@@ -147,8 +146,6 @@ struct CreateHabitView: View {
         }
     }
     
-    
-    
 
     var isAbleToCreate: Bool {
         
@@ -166,9 +163,22 @@ struct CreateHabitView: View {
             return
         }
 
-        let newDataHabit = DataHabit(name: nameTextFieldValue, color: stringColorHex, habitRecords: [])
+        let newDataHabit = DataHabit(
+            name: nameTextFieldValue,
+            color: stringColorHex,
+            activityDetails: [],
+            habitRecords: []
+        )
         
         modelContext.insert(newDataHabit)
+        
+        
+        for selectedDetail in selectedDetails {
+            modelContext.insert(selectedDetail)
+        }
+        
+        newDataHabit.activityDetails = selectedDetails
+        
         DispatchQueue.main.async {
             dismiss()
         }
@@ -184,9 +194,10 @@ enum Focusable: Hashable {
 
 struct CreateHabitDetailContent: View {
     
-    let goToAddDetailsSelection: () -> Void
-    @Binding var details: [HabitDetail]
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
+    @Binding var selectedDetails: [DataActivityDetail]
     @FocusState private var focusedDetail: Focusable?
+    
     
     var body: some View {
         
@@ -204,30 +215,32 @@ struct CreateHabitDetailContent: View {
                 Text("Extra Information to track with this habit")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                    .padding(.bottom)
             }
             .contentShape(Rectangle())
             
-            ForEach($details) { $detail in
-                let detail = $detail.wrappedValue
-                HStack {
-                    Text("\(detail.name)")
-                    Text("in \(detail.unit.name.lowercased())")
-//                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                    Text("\(detail.valueType.rawValue)")
-                        .foregroundStyle(.secondary)
+            if !selectedDetails.isEmpty {
+                ForEach($selectedDetails) { $detail in
+                    let detail = $detail.wrappedValue
+                    HStack {
+                        Text("\(detail.name)")
+                        let units = detail.availableUnits.joined(separator: ", ").lowercased()
+                        Text("in \(units)")
+                        //                        .font(.footnote)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Text("\(detail.valueType.rawValue)")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding()
+                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
                 }
-                .padding()
-                .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
             }
         }
         .padding()
         .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
         .onTapGesture {
-            goToAddDetailsSelection()
+            goToAddDetailsSelection($selectedDetails)
         }
     }
     
@@ -297,7 +310,7 @@ struct CreateHabitDetailContent: View {
     
     private func removeRows(at offsets: IndexSet) {
         
-        details.remove(atOffsets: offsets)
+        selectedDetails.remove(atOffsets: offsets)
     }
 }
 
@@ -477,6 +490,6 @@ struct HabitMePrimaryButton: View {
 
 #Preview {
     NavigationStack {
-        CreateHabitView(goToAddDetailsSelection: { })
+        CreateHabitView(goToAddDetailsSelection: { _ in })
     }
 }

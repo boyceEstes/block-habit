@@ -11,9 +11,9 @@ import SwiftUI
 extension ContentView {
     
     @ViewBuilder
-    func makeAddDetailSelectionView() -> some View {
+    func makeAddDetailSelectionView(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
         
-        AddDetailsSelectionView()
+        AddDetailsSelectionView(selectedDetails: selectedDetails)
     }
 }
 

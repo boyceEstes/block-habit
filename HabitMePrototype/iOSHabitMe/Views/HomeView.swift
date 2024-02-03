@@ -90,18 +90,7 @@ struct HomeView: View {
             
             return _dataHabitRecordsOnDate
     }
-    /*
-     * I want to be able to have some way that I can monitor any changes to the database and when
-     * I detect a change, I will run the little refresh function and place everything in the right
-     * spot. So instead of adding to anything in-memory. I would save directly to the db and let
-     * it work through by itself
-     *
-     * Until I hook that up, I can hold everything here. Load it on the onAppear. Then I can
-     * add the new habit record to the in-memory variable holding all of our record data. When
-     * I do this, I will essentially "pretend" that we are monitoring changes, and manually call
-     * the refresh method (which uses this in-memory variable) and have the graph hopefully refresh
-     *
-     */
+
 
     var body: some View {
         
@@ -137,7 +126,8 @@ struct HomeView: View {
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
-                        modelContext.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay)
+                        logRecord(for: habit)
+                        
                     }
                 )
             }
@@ -197,6 +187,24 @@ struct HomeView: View {
                 }
             }
         }
+    }
+    
+    
+    private func logRecord(for habit: DataHabit) {
+        
+        // Determine if the activity has details that should be filled
+        if !habit.activityDetails.isEmpty {
+            
+//            let habitRecord =
+//            goToHabitRecordDetail
+            
+        } else {
+            modelContext.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay)
+        }
+        // Display a sheet to enter the details
+        // OR
+        // Immediately log the record
+        
     }
 
     
