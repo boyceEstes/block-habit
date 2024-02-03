@@ -14,7 +14,7 @@ struct AddDetailsSelectionView: View {
         SortDescriptor(\DataActivityDetail.name)
     ]) var activityDetails: [DataActivityDetail]
     
-    @State private var activityDetailsWithSelection = [DataActivityDetail: Bool]()
+    @State private var activityDetailsWithSelection: [DataActivityDetail: Bool]
     
     @Binding var selectedDetails: [DataActivityDetail]
     
@@ -23,9 +23,12 @@ struct AddDetailsSelectionView: View {
         
         self._selectedDetails = selectedDetails
         
-        self.activityDetailsWithSelection = activityDetails.reduce(into: [DataActivityDetail: Bool](), {
-            $0[$1] = selectedDetails.map { $0.wrappedValue }.contains($1)
-        })
+        // Had to create this with a specific initialization, otherwise it would be implicitly
+        // initializedand this would happen later, after the view has appeared
+        self._activityDetailsWithSelection = State(
+            initialValue: selectedDetails.reduce(into: [DataActivityDetail: Bool](), {
+                $0[$1.wrappedValue] = true
+        }))
     }
     
 
@@ -68,7 +71,7 @@ struct AddDetailsSelectionView: View {
                 .listRowSeparator(.hidden)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 3)) {
+                    withAnimation(.easeInOut(duration: 1.2)) {
                         toggleSelection(for: activityDetail)
                     }
                 }
