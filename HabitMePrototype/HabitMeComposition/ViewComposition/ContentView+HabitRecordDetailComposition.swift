@@ -13,6 +13,6 @@ extension ContentView {
     @ViewBuilder
     func makeHabitRecordDetailView(habitRecord: DataHabitRecord) -> some View {
         
-        HabitRecordDetailView(habitRecord: habitRecord)
+        HabitRecordDetailView(activityRecord: habitRecord)
     }
 }

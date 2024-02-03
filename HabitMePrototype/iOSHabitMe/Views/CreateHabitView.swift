@@ -285,7 +285,7 @@ struct CreateHabitDetailContent: View {
         
         HStack {
             TextField("Name", text: detail.name)
-                .textFieldStyle(MyTextFieldStyle())
+                .basicTextFieldStyle()
                 .focused($focusedDetail, equals: .row(id: detail.wrappedValue.id))
                 
             Picker("Type", selection: detail.valueType) {
@@ -328,8 +328,8 @@ struct CreateEditHabitContent: View {
     
     var body: some View {
         TextField("Name", text: $nameTextFieldValue)
+            .basicTextFieldStyle()
             .font(.headline)
-            .textFieldStyle(MyTextFieldStyle())
             .padding(.horizontal)
         
         VStack {

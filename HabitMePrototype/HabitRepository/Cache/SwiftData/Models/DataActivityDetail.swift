@@ -129,17 +129,15 @@ final class DataActivityDetailRecord: Hashable {
     var activityDetail: DataActivityDetail
     
     /// This instance must be associated with a habit record to give more insight into how the user is completing their record
-    var activityRecord: DataHabitRecord
+    var activityRecord: DataHabitRecord?
     
     
     init(
-        id: String,
         value: String,
         unit: String? = nil,
         activityDetail: DataActivityDetail,
         activityRecord: DataHabitRecord
     ) {
-        self.id = id
         self.value = value
         self.unit = unit
         self.activityDetail = activityDetail

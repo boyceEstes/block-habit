@@ -48,6 +48,9 @@
 		B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionView.swift */; };
 		B3C9E5442B6BD9FE00153158 /* ActivityDetailSeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */; };
 		B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */; };
+		B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */; };
+		B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */; };
+		B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +97,9 @@
 		B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+AddDetailSelectionView.swift"; sourceTree = "<group>"; };
 		B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ActivityDetailSeedData.json; sourceTree = "<group>"; };
 		B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataActivityDetail.swift; sourceTree = "<group>"; };
+		B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitRecordWithDetailsView.swift; sourceTree = "<group>"; };
+		B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TextFieldStyle.swift"; sourceTree = "<group>"; };
+		B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SectionBackground.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -227,6 +233,7 @@
 		B3C97F202B5CE8FA00211B4C /* iOSHabitMe */ = {
 			isa = PBXGroup;
 			children = (
+				B3C9E54A2B6EC06F00153158 /* Modifiers */,
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
 				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
@@ -256,6 +263,7 @@
 				B32947C32B64040B007C8C1E /* EditHabitView.swift */,
 				B32947C72B65950D007C8C1E /* StatisticsView.swift */,
 				B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */,
+				B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -295,6 +303,15 @@
 				B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B3C9E54A2B6EC06F00153158 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */,
+				B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		B3CC60AB2B5EA9380074ED41 /* SwiftData */ = {
@@ -399,12 +416,14 @@
 				B3C97F0D2B5CE7BC00211B4C /* ManagedHabitRecord.swift in Sources */,
 				B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */,
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
+				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
 				B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */,
 				B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */,
 				B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */,
 				B32947AC2B62AD2E007C8C1E /* HabitRecordDetailView.swift in Sources */,
 				B3C97F1D2B5CE8AD00211B4C /* Habit.swift in Sources */,
+				B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */,
 				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
 				B32947C82B65950D007C8C1E /* StatisticsView.swift in Sources */,
@@ -412,6 +431,7 @@
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
 				B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
+				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
 				B3C97F132B5CE82C00211B4C /* CoreDataHabitRepository.swift in Sources */,

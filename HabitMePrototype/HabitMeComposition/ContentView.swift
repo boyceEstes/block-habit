@@ -22,18 +22,6 @@ extension Date {
     }
 }
 
-struct MyTextFieldStyle: TextFieldStyle {
-    func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-        .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(uiColor: .tertiarySystemGroupedBackground))
-//                .stroke(Color.blue, lineWidth: 1)
-        )
-    }
-}
-
 
 struct ContentView: View {
     
