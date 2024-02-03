@@ -10,33 +10,77 @@ import SwiftData
 
 struct AddDetailsSelectionView: View {
     
-    @Query var activityDetails: [DataActivityDetail]
+    @Query(sort: [
+        SortDescriptor(\DataActivityDetail.name)
+    ]) var activityDetails: [DataActivityDetail]
+    
+    @State private var selectedDetails: [(order: Int, detail: DataActivityDetail)] = []
     
     var body: some View {
         List {
             ForEach(activityDetails) { activityDetail in
                 VStack(alignment: .leading, spacing: 8) {
+                    
                     HStack(alignment: .firstTextBaseline) {
                         Text("\(activityDetail.name)")
                         Spacer()
                         Text("\(activityDetail.valueType.rawValue)")
-//                            .foregroundStyle(.secondary)
                     }
+                    
                     HStack(alignment: .firstTextBaseline) {
+                        
                         Text("Ex. \"\(activityDetail.example)\"")
-                        //                        .font(.footnote)
                             .foregroundStyle(.secondary)
+                        
                         Spacer()
+                        
                         if !activityDetail.availableUnits.isEmpty {
                             let availableUnitsInString = activityDetail.availableUnits.joined(separator: ", ")
+                            
                             Text("\(availableUnitsInString)")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
                     }
                 }
+                .padding(8)
+                .listRowBackground(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(isRowSelected(activityDetail) ? Color.white : .clear, lineWidth: 5)
+                        .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                        
+                )
+                .listRowSeparator(.hidden)
             }
         }
+        .listStyle(.plain)
+        .navigationTitle("Select Activity Details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                
+                Button {
+                    print("Edit the details available")
+                } label: {
+                    Image(systemName: "pencil.circle")
+                }
+                
+                Button {
+                    print("Add something")
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+    }
+    
+    
+    func isRowSelected(_ activityDetail: DataActivityDetail) -> Bool{
+        
+        let selectedActivityDetails = selectedDetails.map { $0.detail }
+        return selectedActivityDetails.contains(activityDetail)
     }
 }
 
@@ -60,6 +104,8 @@ struct AddDetailsSelectionView: View {
         container.mainContext.insert(activityDetail)
     }
     
-    return AddDetailsSelectionView()
-        .modelContainer(container)
+    return NavigationStack {
+        AddDetailsSelectionView()
+    }
+    .modelContainer(container)
 }
