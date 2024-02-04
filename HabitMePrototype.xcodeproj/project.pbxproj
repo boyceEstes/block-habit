@@ -51,6 +51,7 @@
 		B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */; };
 		B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */; };
 		B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */; };
+		B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54F2B6F16F100153158 /* View+Font.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitRecordWithDetailsView.swift; sourceTree = "<group>"; };
 		B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TextFieldStyle.swift"; sourceTree = "<group>"; };
 		B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SectionBackground.swift"; sourceTree = "<group>"; };
+		B3C9E54F2B6F16F100153158 /* View+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Font.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -310,6 +312,7 @@
 			children = (
 				B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */,
 				B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */,
+				B3C9E54F2B6F16F100153158 /* View+Font.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
+				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
 				B3C97F132B5CE82C00211B4C /* CoreDataHabitRepository.swift in Sources */,

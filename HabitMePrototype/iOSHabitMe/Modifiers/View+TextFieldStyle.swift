@@ -9,6 +9,13 @@ import SwiftUI
 import Combine
 
 
+struct Constant {
+    
+    static let textFieldPadding: CGFloat = 8
+    static let cornerRadius: CGFloat = 10
+}
+
+
 struct NumberTextField: View {
     
     let title: String
@@ -34,19 +41,27 @@ struct NumberTextField: View {
             return sanitizedNumber
             
         }, set: { newWorkingText in
-            let sanitizedNumber = newWorkingText.isEmpty ? "0" : newWorkingText
-            text.wrappedValue = String(sanitizedNumber)
+            
+            let count = newWorkingText.count
+            
+            if count < 2 {
+                text.wrappedValue = newWorkingText
+            } else {
+                text.wrappedValue = text.wrappedValue
+            }
+//            let sanitizedNumber = newWorkingText.isEmpty ? "0" : newWorkingText
+//            text.wrappedValue = String(sanitizedNumber)
+//            return sanitizedNumber
         })
     }
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
-            TextField(title, text: $workingText)
-                .basicTextFieldStyle()
-                .fixedSize(horizontal: true, vertical: false)
-                .multilineTextAlignment(.center)
+            TextField("0", text: $workingText)
+                .multilineTextAlignment(units != nil ? .trailing : .center)
                 .keyboardType(.numberPad)
                 .focused($isActive)
+                .frame(width: 60)
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
@@ -55,10 +70,18 @@ struct NumberTextField: View {
                         }
                     }
                 }
-                if let units {
-                    Text("\(units)")
-                        .font(.footnote)
-                }
+            if let units {
+                Text("\(units)")
+                    .lineLimit(1)
+                    .font(.footnote)
+                //                    .frame(width: 40)
+                // TODO: scale up with dynamic type
+            }
+        }
+        .textFieldBackground()
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isActive = true
         }
     }
 }
@@ -78,50 +101,41 @@ struct MultiLinerTextField: View {
     
     
     var body: some View {
-        
-        TextField(title, text: $text, axis: .vertical)
-            .multiLinerTextFieldStyle(numberOfLines: lineLimit)
+        TextField(title, text: $text, prompt: Text(""), axis: .vertical)
+            .lineLimit(lineLimit)
+            .textFieldBackground()
     }
 }
+
+
+
+//struct BasicTextFieldStyle: TextFieldStyle {
+//    func _body(configuration: TextField<Self._Label>) -> some View {
+//        configuration
+//        .padding(8)
+//        .background(
+//            Color(uiColor: .tertiarySystemGroupedBackground),
+//            in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+//        )
+//    }
+//}
 
 
 extension View {
     
-    func basicTextFieldStyle() -> some View {
-        textFieldStyle(BasicTextFieldStyle())
-    }
-    
-    
-    func multiLinerTextFieldStyle(numberOfLines: ClosedRange<Int> = 2...4) -> some View {
-        textFieldStyle(MultiLinerTextFieldStyle(numberOfLines: numberOfLines))
+    func textFieldBackground() -> some View {
+        
+        modifier(TextFieldBackground())
     }
 }
 
 
-struct BasicTextFieldStyle: TextFieldStyle {
-    func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-        .padding(10)
-        .background(
-            Color(uiColor: .tertiarySystemGroupedBackground),
-            in: RoundedRectangle(cornerRadius: 10, style: .continuous)
-        )
-    }
-}
-
-
-struct MultiLinerTextFieldStyle: TextFieldStyle {
+struct TextFieldBackground: ViewModifier {
     
-    let numberOfLines: ClosedRange<Int>
-    
-    init(numberOfLines: ClosedRange<Int> = 2...4) {
-        self.numberOfLines = numberOfLines
-    }
-    
-    func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-            .basicTextFieldStyle()
-            .lineLimit(numberOfLines)
+    func body(content: Content) -> some View {
+        content
+            .padding(Constant.textFieldPadding)
+            .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: Constant.cornerRadius))
     }
 }
 
@@ -133,20 +147,19 @@ struct MultiLinerTextFieldStyle: TextFieldStyle {
         VStack {
             Text("Basic")
             TextField("Description", text: $someTextFieldValue)
-                .basicTextFieldStyle()
-        }
-        VStack {
-            Text("MultiLiner (without custom TF)")
-            TextField("Description", text: $someTextFieldValue)
-                .multiLinerTextFieldStyle()
+                .textFieldBackground()
         }
         VStack {
             Text("MultiLiner")
             MultiLinerTextField("Description", text: $someTextFieldValue)
         }
         VStack {
-            Text("NumberTextField")
-            NumberTextField("Duration", text: $someTextFieldValue, units: "min")
+            Text("NumberTextField with units")
+            NumberTextField("Duration", text: $someTextFieldValue, units: "minutes really long")
+        }
+        VStack {
+            Text("NumberTextField without units")
+            NumberTextField("Duration", text: $someTextFieldValue)
         }
     }
 }

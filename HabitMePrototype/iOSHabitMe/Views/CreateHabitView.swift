@@ -285,8 +285,8 @@ struct CreateHabitDetailContent: View {
         
         HStack {
             TextField("Name", text: detail.name)
-                .basicTextFieldStyle()
                 .focused($focusedDetail, equals: .row(id: detail.wrappedValue.id))
+                .textFieldBackground()
                 
             Picker("Type", selection: detail.valueType) {
                 ForEach(ActivityDetailType.allCases) { type in
@@ -328,9 +328,10 @@ struct CreateEditHabitContent: View {
     
     var body: some View {
         TextField("Name", text: $nameTextFieldValue)
-            .basicTextFieldStyle()
+            .textFieldBackground()
             .font(.headline)
             .padding(.horizontal)
+        
         
         VStack {
             LazyHGrid(rows: rows, spacing: 30) {

@@ -11,8 +11,10 @@ import SwiftUI
 extension View {
     
     func sectionBackground() -> some View {
+        
         modifier(SectionBackground())
     }
+    
 }
 
 
@@ -24,6 +26,7 @@ struct SectionBackground: ViewModifier {
             .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
     }
 }
+
 
 #Preview {
 

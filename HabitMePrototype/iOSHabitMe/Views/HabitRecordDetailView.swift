@@ -72,15 +72,14 @@ struct HabitRecordDetailView: View {
             } else {
                 Text("There are no activity record details")
             }
-            
-            VStack {
+            HStack {
                 Text("Completion Time")
-                    .font(.footnote)
-//                Spacer()
+                    .sectionTitleFont()
+                Spacer()
                 DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
                     .labelsHidden()
             }
-//            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .sectionBackground()
             .padding(.horizontal)
             
@@ -144,6 +143,7 @@ struct EditableActivityDetailNumberView: View {
         
         HStack {
             Text("\(activityDetail.name)")
+                .sectionTitleFont()
             Spacer()
             VStack {
                 NumberTextField(
@@ -179,9 +179,9 @@ struct EditableActivityDetailTextView: View {
     var body: some View {
         
         let activityDetail = activityDetailRecord.activityDetail
-        VStack(alignment: .leading) {
-            Text("\(activityDetail.name)")
-                .font(.footnote)
+        VStack(alignment: .leading, spacing: 10) {
+            Text(activityDetail.name)
+                .font(.callout)
             MultiLinerTextField("\(name)", text: $textFieldValue)
         }
         .sectionBackground()
