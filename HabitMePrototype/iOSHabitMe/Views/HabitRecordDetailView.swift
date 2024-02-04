@@ -74,7 +74,7 @@ struct HabitRecordDetailView: View {
             }
             HStack {
                 Text("Completion Time")
-                    .sectionTitleFont()
+                    .font(.sectionTitle)
                 Spacer()
                 DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
                     .labelsHidden()
@@ -143,7 +143,7 @@ struct EditableActivityDetailNumberView: View {
         
         HStack {
             Text("\(activityDetail.name)")
-                .sectionTitleFont()
+                .font(.sectionTitle)
             Spacer()
             VStack {
                 NumberTextField(

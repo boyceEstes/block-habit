@@ -52,6 +52,7 @@
 		B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */; };
 		B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */; };
 		B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54F2B6F16F100153158 /* View+Font.swift */; };
+		B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5622B6F25EB00153158 /* View+toolbar.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +103,7 @@
 		B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TextFieldStyle.swift"; sourceTree = "<group>"; };
 		B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SectionBackground.swift"; sourceTree = "<group>"; };
 		B3C9E54F2B6F16F100153158 /* View+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Font.swift"; sourceTree = "<group>"; };
+		B3C9E5622B6F25EB00153158 /* View+toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+toolbar.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -313,6 +315,7 @@
 				B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */,
 				B3C9E54D2B6EC5C900153158 /* View+SectionBackground.swift */,
 				B3C9E54F2B6F16F100153158 /* View+Font.swift */,
+				B3C9E5622B6F25EB00153158 /* View+toolbar.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				B3C97F0F2B5CE7BC00211B4C /* ManagedHabit.swift in Sources */,
 				B32947AC2B62AD2E007C8C1E /* HabitRecordDetailView.swift in Sources */,
 				B3C97F1D2B5CE8AD00211B4C /* Habit.swift in Sources */,
+				B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */,
 				B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */,
 				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,

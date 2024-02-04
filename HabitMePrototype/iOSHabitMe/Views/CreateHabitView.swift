@@ -131,18 +131,16 @@ struct CreateHabitView: View {
             }
         }
         .createEditHabitSheetPresentation()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Text("Create New Habit")
-                    .font(.title2)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                HabitMeSheetDismissButton(dismiss: { dismiss() })
-            }
-            ToolbarItem(placement: .bottomBar) {
-                HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
-                    .padding()
-            }
+
+        .topBar {
+            Text("New Habit")
+        } topBarTrailingContent: {
+            HabitMeSheetDismissButton(dismiss: { dismiss() })
+        }
+        
+        .bottomBar {
+            HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
+                .padding()
         }
     }
     

@@ -8,27 +8,23 @@
 import SwiftUI
 
 
-extension View {
-    
-    func sectionTitleFont() -> some View {
-        modifier(SectionTitleFont())
-    }
-}
 
-
-struct SectionTitleFont: ViewModifier {
+extension Font {
     
-    func body(content: Content) -> some View {
-        content
-            .font(.callout)
-    }
+    static var sectionTitle: Font { .callout }
+    static var navTitle: Font { .title2 }
 }
 
 
 #Preview {
-    VStack {
-        Text("Section title font")
-            .sectionTitleFont()
-            .sectionBackground()
+    NavigationStack {
+        VStack {
+            Text("Section title font")
+                .font(.sectionTitle)
+                .sectionBackground()
+        }
+        
+        Text("Sheety title font")
+            .font(.navTitle)
     }
 }
