@@ -8,41 +8,69 @@
 import SwiftUI
 import SwiftData
 
+
+
 struct CreateHabitRecordWithDetailsView: View {
+    
+    // Creating this tranisent object because having a hard time referencing
+    // the activities when I map it to a `DataActivityDetailRecord`
+    // so lets see if this works
+    struct ActivityDetailRecord: Identifiable, Hashable {
+
+        
+        let id = UUID().uuidString
+        let activityDetail: DataActivityDetail
+        var value: String
+        
+        
+        init(activityDetail: DataActivityDetail, value: String) {
+            
+            self.activityDetail = activityDetail
+            self.value = value
+        }
+        
+        
+        static func == (lhs: CreateHabitRecordWithDetailsView.ActivityDetailRecord, rhs: CreateHabitRecordWithDetailsView.ActivityDetailRecord) -> Bool {
+            lhs.hashValue == rhs.hashValue
+        }
+        
+        
+        func hash(into hasher: inout Hasher) {
+            
+            hasher.combine(value)
+            hasher.combine(activityDetail)
+        }
+    }
+    
+    
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     
     // We pass this in and use its information along with the current
     // datetime to autopopulate some details
     let activity: DataHabit
-    @State private var activityRecord: DataHabitRecord
+    let creationDate = Date()
+//    @State private var activityRecord: DataHabitRecord
+    // Keeping this separate from the above property just because SwiftData is a little finicky
+    // and I want things in smaller pieces for making the relationship connections
+    @State private var activityDetailRecords: [ActivityDetailRecord]
+    @FocusState var isActive: Bool
     
     init(activity: DataHabit) {
         
         self.activity = activity
-        
-        self._activityRecord = State(
-            initialValue: DataHabitRecord(
-                creationDate: Date(),
-                completionDate: Date(),
-                habit: nil, // Setting this as nil instead of the habit because I can't trust habit data
-                activityDetailRecords: []
-            )
+
+        self._activityDetailRecords = State(
+            initialValue: activity.activityDetails.map { activityDetail in
+                
+                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
+                
+                return ActivityDetailRecord(
+                    activityDetail: activityDetail, 
+                    value: ""
+                )
+            }
         )
-        
-        var activityRecordDetails = activity.activityDetails.map {
-            
-            // If the valueType == Text, then we will initialize with nothing.
-            // otherwise if the it is a number...we will initialize with nothing.
-            
-            // When we are setting this up... we want toreference it to the place its coming from?
-            // which is the activity detail. This caused an error when we created it like this from
-            // habit record
-            // So be prepared for a FIXME: THIS MIGHT CRASH IN THE FUTURE
-            DataActivityDetailRecord(
-                value: "",
-                activityDetail: $0,
-                activityRecord: self.activityRecord
-            )
-        }
         
         // Maybe I should wait until after we enter the information to do this part?
         // I'm not sure how this will work, inserting this information into activityRecord now
@@ -54,9 +82,108 @@ struct CreateHabitRecordWithDetailsView: View {
         // later after we hit the create button to prevent fun weird stuff happening.
     }
     
+    @State private var testing = "Testing"
+    
     var body: some View {
         
-        Text("hello world")
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 20) {
+                if !activityDetailRecords.isEmpty {
+
+                    ForEach($activityDetailRecords, id: \.id) { $activityDetailRecord in
+                            
+                        let activityDetail =
+                        activityDetailRecord.activityDetail
+                        
+                        
+                        switch activityDetail.valueType {
+                        case .number:
+                            EditableActivityDetailNumberView(
+                                name: activityDetail.name,
+                                units: activityDetail.availableUnits.first?.lowercased(),
+                                textFieldValue: $activityDetailRecord.value
+                            )
+                        case .text:
+                            TextField(activityDetail.name, text: $activityDetailRecord.value, axis: .vertical)
+                                .focused($isActive)
+                                .lineLimit(4)
+                                .sectionBackground()
+                        }
+                    }
+                } else {
+                    Text("There are no activity record details")
+                }
+            }
+            .padding(.horizontal)
+        }
+
+        
+        .topBar {
+            Text(activity.name)
+                .font(.navTitle)
+        } topBarTrailingContent: {
+            HabitMeSheetDismissButton(dismiss: { dismiss() })
+        }
+        
+        .bottomBar {
+            HabitMePrimaryButton(
+                title: "Record Activity",
+                action: didTapCreateActivityRecord
+            )
+            .padding()
+        }
+    }
+    
+    
+    // MARK: UI Helpers
+//    private func valueBinding(for activityDetailRecord: ActivityDetailRecord) -> Binding<String> {
+//        
+//        return Binding {
+//            activityDetailRecord.value
+//            
+//        } set: { newValue in
+//            activityDetailRecord.value = newValue
+//        }
+//    }
+    
+    
+    // MARK: Logic
+    private func didTapCreateActivityRecord() {
+
+        // We already have the DataHabit so we just need to create the DataHabitRecord
+        // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
+        let activityRecord = DataHabitRecord(
+            creationDate: creationDate,
+            completionDate: creationDate,
+            habit: nil,
+            activityDetailRecords: []
+        )
+        
+        activityRecord.habit = activity
+        
+        modelContext.insert(activityRecord)
+        
+        
+        for activityDetailRecord in activityDetailRecords {
+            
+            let dataActivityDetailRecord = DataActivityDetailRecord(
+                value: activityDetailRecord.value,
+                activityDetail: activityDetailRecord.activityDetail,
+                activityRecord: activityRecord
+            )
+            
+//            dataActivityDetailRecords.append(dataActivityDetailRecord)
+            modelContext.insert(dataActivityDetailRecord)
+        }
+        
+//        activityRecord.activityDetailRecords = dataActivityDetailRecords
+        
+//        modelContext.insert(activityRecord)
+        
+        
+        DispatchQueue.main.async {
+            dismiss()
+        }
     }
 }
 
@@ -65,14 +192,41 @@ struct CreateHabitRecordWithDetailsView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
-    let dataHabit = DataHabit(
+    // MARK: Create ActivityDetails
+    let resourceName = "ActivityDetailSeedData"
+    let resourceExtension = "json"
+    guard let url = Bundle.main.url(forResource: "\(resourceName)", withExtension: "\(resourceExtension)") else {
+        fatalError("Failed to find '\(resourceName)' with '\(resourceExtension)' extension")
+    }
+    let data = try! Data(contentsOf: url)
+    let decodedActivityDetails = try! JSONDecoder().decode([DataActivityDetail].self, from: data)
+    
+    // Save to the model container
+    for activityDetail in decodedActivityDetails {
+        container.mainContext.insert(activityDetail)
+    }
+    
+
+    // MARK: Create Activity
+    let activity = DataHabit(
         name: "Chugged Dew",
         color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
+        activityDetails: [],
         habitRecords: []
     )
     
-    container.mainContext.insert(dataHabit)
+    container.mainContext.insert(activity)
     
-    return CreateHabitRecordWithDetailsView(activity: dataHabit)
-        .modelContainer(container)
+//    activity.activityDetails = decodedActivityDetails
+    
+    for activityDetail in activity.activityDetails {
+        
+        activityDetail.habits.append(activity)
+    }
+
+    
+    return NavigationStack {
+        CreateHabitRecordWithDetailsView(activity: activity)
+    }
+    .modelContainer(container)
 }

@@ -32,6 +32,7 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         var id: Int { self.hashValue }
         
         case createHabit
+        case createActivityRecordWithDetails(activity: DataHabit)
         case habitRecordDetail(habitRecord: DataHabitRecord)
         case editHabit(habit: DataHabit)
     }

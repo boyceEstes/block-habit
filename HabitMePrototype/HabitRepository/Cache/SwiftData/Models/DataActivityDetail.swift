@@ -136,7 +136,7 @@ final class DataActivityDetailRecord: Hashable {
         value: String,
         unit: String? = nil,
         activityDetail: DataActivityDetail,
-        activityRecord: DataHabitRecord
+        activityRecord: DataHabitRecord? = nil
     ) {
         self.value = value
         self.unit = unit

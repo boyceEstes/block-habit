@@ -141,6 +141,7 @@ struct HabitsMenu: View {
     let goToHabitDetail: (DataHabit) -> Void
     let goToEditHabit: (DataHabit) -> Void
     
+    
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     

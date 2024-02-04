@@ -170,10 +170,11 @@ struct CreateHabitView: View {
         
         
         for selectedDetail in selectedDetails {
+            selectedDetail.habits.append(newDataHabit)
             modelContext.insert(selectedDetail)
         }
         
-        newDataHabit.activityDetails = selectedDetails
+//        newDataHabit.activityDetails = selectedDetails
         
         DispatchQueue.main.async {
             dismiss()

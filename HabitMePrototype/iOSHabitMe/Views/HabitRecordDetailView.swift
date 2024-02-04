@@ -41,7 +41,7 @@ struct HabitRecordDetailView: View {
     var body: some View {
         ScrollView {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
-            LazyVStack(spacing: 20) {
+            LazyVStack(alignment: .leading, spacing: 20) {
                 
                 if !activityRecord.activityDetailRecords.isEmpty {
                     ForEach(activityRecord.activityDetailRecords) { activityDetailRecord in
@@ -61,7 +61,6 @@ struct HabitRecordDetailView: View {
                             TextField(activityDetail.name, text: valueBinding, axis: .vertical)
                                 .lineLimit(4)
                                 .sectionBackground()
-                                .padding(.horizontal)
                         }
                     }
                 } else {
@@ -76,10 +75,10 @@ struct HabitRecordDetailView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .sectionBackground()
-                .padding(.horizontal)
                 
                 Spacer()
             }
+            .padding(.horizontal)
             .padding(.top)
         }
         .presentationDetents([.large])
@@ -184,7 +183,6 @@ struct EditableActivityDetailNumberView: View {
             }
         }
         .sectionBackground()
-        .padding(.horizontal)
     }
 }
 

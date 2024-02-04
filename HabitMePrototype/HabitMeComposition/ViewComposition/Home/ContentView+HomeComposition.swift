@@ -36,6 +36,9 @@ extension ContentView {
                 case .createHabit:
                     makeCreateHabitViewWithSheetyNavigation()
                     
+                case let .createActivityRecordWithDetails(activity):
+                    makeCreateActivityRecordWithDetails(activity: activity)
+                    
                 case let .habitRecordDetail(habitRecord):
                     makeHabitRecordDetailView(habitRecord: habitRecord)
                     
@@ -54,7 +57,8 @@ extension ContentView {
             goToCreateHabit: goToCreateHabitFromHome,
             goToHabitRecordDetail: goToHabitRecordDetailFromHome,
             goToEditHabit: goToEditHabitFromHome,
-            goToStatistics: goToStatisticsFromHome
+            goToStatistics: goToStatisticsFromHome,
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHome
         )
     }
     
@@ -88,5 +92,11 @@ extension ContentView {
     private func goToStatisticsFromHome() {
         
         homeNavigationFlowPath.append(.statistics)
+    }
+    
+    
+    private func goToCreateActivityRecordWithDetailsFromHome(activity: DataHabit) {
+        
+        homeNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity)
     }
 }
