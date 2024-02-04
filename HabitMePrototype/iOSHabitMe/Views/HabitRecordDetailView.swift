@@ -41,20 +41,21 @@ struct HabitRecordDetailView: View {
     var body: some View {
         let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
         VStack(spacing: 20) {
-            SheetTitleBar(
-                title: activityRecord.habit?.name ?? "Could Not Find Habit",
-                subtitle: DateFormatter.shortDate.string(from: activityRecord.completionDate)
-            ) {
-                HStack(spacing: 20) {
-                    HabitMeDeleteButton {
-                        alertDetail = HabitRecordDetailAlert.areYouSure(yesAction: {
-                            removeHabitRecord(activityRecord)
-                        }).alertData()
-                        showAlert = true
-                    }
-                    HabitMeSheetDismissButton(dismiss: { dismiss() })
-                }
-            }
+            
+//            SheetTitleBar(
+//                title: activityRecord.habit?.name ?? "Could Not Find Habit",
+//                subtitle: DateFormatter.shortDate.string(from: activityRecord.completionDate)
+//            ) {
+//                HStack(spacing: 20) {
+//                    HabitMeDeleteButton {
+//                        alertDetail = HabitRecordDetailAlert.areYouSure(yesAction: {
+//                            removeHabitRecord(activityRecord)
+//                        }).alertData()
+//                        showAlert = true
+//                    }
+//                    HabitMeSheetDismissButton(dismiss: { dismiss() })
+//                }
+//            }
             
             
             if !activityRecord.activityDetailRecords.isEmpty {
@@ -100,6 +101,15 @@ struct HabitRecordDetailView: View {
                 updateHabitRecord(activityRecord, withNewCompletionTime: editableCompletionTime)
             }
         }
+        .topBar {
+            VStack {
+                Text(activityRecord.habit?.name ?? "Could Not Find Habit")
+                Text(DateFormatter.shortDate.string(from: activityRecord.completionDate))
+            }
+        } topBarTrailingContent: {
+            
+        }
+
     }
     
     

@@ -12,7 +12,9 @@ extension ContentView {
     
     @ViewBuilder
     func makeHabitRecordDetailView(habitRecord: DataHabitRecord) -> some View {
-        
-        HabitRecordDetailView(activityRecord: habitRecord)
+        // Adding navigation stack to get the goodies of toolbar and adding that to the keyboard .numberPad
+        NavigationStack {
+            HabitRecordDetailView(activityRecord: habitRecord)
+        }
     }
 }

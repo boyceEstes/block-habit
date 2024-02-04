@@ -33,7 +33,7 @@ struct ContentView: View {
     @State var habitDetailNavigationFlowDisplayedSheet: HabitDetailNavigationFlow.SheetyIdentifier?
     
     // Create Habit navigation
-    @State var createHabitNavigationFlowPath = [CreateHabitNavigationFlow.StackIdentifier]()
+    @State var createEditHabitNavigationFlowPath = [CreateEditHabitNavigationFlow.StackIdentifier]()
     
     
     var body: some View {

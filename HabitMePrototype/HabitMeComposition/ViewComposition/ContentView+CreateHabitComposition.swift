@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-class CreateHabitNavigationFlow: NewStackNavigationFlow {
+class CreateEditHabitNavigationFlow: NewStackNavigationFlow {
     
     // MARK: Properties
     @Published var path = [StackIdentifier]()
@@ -26,7 +26,7 @@ class CreateHabitNavigationFlow: NewStackNavigationFlow {
         }
         
         
-        static func == (lhs: CreateHabitNavigationFlow.StackIdentifier, rhs: CreateHabitNavigationFlow.StackIdentifier) -> Bool {
+        static func == (lhs: CreateEditHabitNavigationFlow.StackIdentifier, rhs: CreateEditHabitNavigationFlow.StackIdentifier) -> Bool {
             lhs.hashValue == rhs.hashValue
         }
     }
@@ -42,7 +42,7 @@ extension ContentView {
         // as expected (there was weird behavior with it disappearing after the sheet was
         // dismissed when this was not in a NavigationStack
         makeCreateHabitView()
-        .flowNavigationDestination(flowPath: $createHabitNavigationFlowPath) { identifier in
+        .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
             switch identifier {
             case let .detailSelection(selectedDetails):
                 makeAddDetailSelectionView(selectedDetails: selectedDetails)
@@ -55,14 +55,14 @@ extension ContentView {
     func makeCreateHabitView() -> some View {
         
         CreateHabitView(
-            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateHabit
+            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
         )
     }
     
     
-    private func goToAddDetailsSelectionFromCreateHabit(selectedDetails: Binding<[DataActivityDetail]>) {
+    func goToAddDetailsSelectionFromCreateEditHabit(selectedDetails: Binding<[DataActivityDetail]>) {
         
-        createHabitNavigationFlowPath.append(.detailSelection(selectedDetails: selectedDetails))
+        createEditHabitNavigationFlowPath.append(.detailSelection(selectedDetails: selectedDetails))
     }
 }
 

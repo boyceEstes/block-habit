@@ -30,30 +30,46 @@ enum EditHabitAlert {
 struct EditHabitView: View {
     
     @Environment(\.dismiss) var dismiss
-    
+
     @State private var alertDetail: AlertDetail?
     @State private var showAlert: Bool = false
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     
+    @State private var selectedDetails: [DataActivityDetail]
+    
+    
     let habit: DataHabit
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
+    
+    
+    init(
+        habit: DataHabit,
+        goToAddDetailsSelection: @escaping (Binding<[DataActivityDetail]>) -> Void
+    ) {
+        self.habit = habit
+        self.goToAddDetailsSelection = goToAddDetailsSelection
+        
+        self._selectedDetails = State(initialValue: habit.activityDetails)
+    }
+    
     
     var body: some View {
         
-        VStack(spacing: 0) {
-            SheetTitleBar(title: "Edit Habit") {
-                    HabitMeSheetDismissButton(dismiss: resetAndExit)
+        ScrollView {
+            
+            VStack(spacing: 20) {
+                
+                CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
+                
+                CreateHabitDetailContent(
+                    goToAddDetailsSelection: goToAddDetailsSelection,
+                    selectedDetails: $selectedDetails
+                )
+                
+//                HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
+//                    .padding()
             }
-            
-            Spacer()
-            
-            CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
-            
-            Spacer()
-            
-            HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
-                .padding()
-            
         }
         .createEditHabitSheetPresentation()
         .onAppear {
@@ -61,6 +77,33 @@ struct EditHabitView: View {
             self.selectedColor = Color(hex: habit.color) ?? .gray
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
+        
+        .topBar {
+            Text("Edit Habit")
+        } topBarTrailingContent: {
+            HabitMeSheetDismissButton(dismiss: resetAndExit)
+        }
+        
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                HabitMePrimaryButton(
+                    title: "Save",
+                    isAbleToTap: isAbleToCreate,
+                    action: didTapSaveAndExit
+                )
+                .padding()
+            }
+        }
+    }
+    
+    
+    var isAbleToCreate: Bool {
+        
+        if selectedColor != nil && !nameTextFieldValue.isEmpty {
+            return true
+        } else {
+            return false
+        }
     }
     
     
@@ -68,6 +111,7 @@ struct EditHabitView: View {
         
         updateHabitName()
         updateHabitColor()
+        updateHabitDetails()
         dismiss()
     }
     
@@ -85,6 +129,13 @@ struct EditHabitView: View {
         
         print("update habit color")
         habit.color = selectedColorString
+    }
+    
+    
+    private func updateHabitDetails() {
+        
+        print("update habit details")
+        habit.activityDetails = selectedDetails
     }
     
     
@@ -116,5 +167,7 @@ struct EditHabitView: View {
     )
     container.mainContext.insert(dataHabit)
     
-    return EditHabitView(habit: dataHabit)
+    return NavigationStack {
+        EditHabitView(habit: dataHabit, goToAddDetailsSelection: { _ in })
+    }
 }

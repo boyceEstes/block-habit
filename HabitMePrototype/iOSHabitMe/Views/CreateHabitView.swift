@@ -16,6 +16,7 @@ extension View {
     }
 }
 
+
 struct CreateEditHabitSheetPresentation: ViewModifier {
     func body(content: Content) -> some View {
         content
@@ -118,10 +119,7 @@ struct CreateHabitView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-//                SheetTitleBar(title: "Create New Habit") {
-//                    HabitMeSheetDismissButton(dismiss: { dismiss() })
-//                }
-                
+
                 CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
                 
                 CreateHabitDetailContent(
@@ -384,42 +382,6 @@ struct CreateEditHabitContent: View {
 }
 
 
-
-struct SheetTitleBar<TitleButtonContent: View>: View {
-    
-    let title: String
-    let subtitle: String?
-    @ViewBuilder var titleButtonContent: () -> TitleButtonContent
-    
-    
-    init(title: String, subtitle: String? = nil, titleButtonContent: @escaping () -> TitleButtonContent) {
-        self.title = title
-        self.subtitle = subtitle
-        self.titleButtonContent = titleButtonContent
-    }
-    
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.title2)
-                if let subtitle {
-                    Text("\(subtitle)")
-                        .foregroundStyle(Color(uiColor: .secondaryLabel))
-                }
-            }
-            Spacer()
-            
-            titleButtonContent()
-
-        }
-        .padding(.horizontal)
-        .padding(.top)
-    }
-}
-
-
 struct HabitMeSheetDismissButton: View {
     
     let dismiss: () -> Void
@@ -432,7 +394,7 @@ struct HabitMeSheetDismissButton: View {
             Image(systemName: "xmark.circle.fill")
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color(uiColor: .secondaryLabel))
-                .font(.title2)
+                .font(.navTitle)
         }
     }
 }
@@ -479,7 +441,6 @@ struct HabitMePrimaryButton: View {
                 .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10))
-                
         }
         .buttonStyle(FunButtonPressStyle())
         .disabled(isAbleToTap == true ? false : true)

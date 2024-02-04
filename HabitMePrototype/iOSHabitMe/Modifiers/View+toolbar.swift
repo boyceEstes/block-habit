@@ -17,6 +17,7 @@ extension View {
         @ViewBuilder topBarLeadingContent: @escaping () -> TopBarLeadingContent,
         @ViewBuilder topBarTrailingContent: @escaping  () -> TopBarTrailingContent
     ) -> some View {
+        
         modifier(
             TopBar(
                 topBarLeadingContent: topBarLeadingContent,

@@ -13,6 +13,15 @@ extension ContentView {
     @ViewBuilder
     func makeEditHabitView(habit: DataHabit) -> some View {
         
-        EditHabitView(habit: habit)
+        EditHabitView(
+            habit: habit,
+            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
+        )
+        .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
+            switch identifier {
+            case let .detailSelection(selectedDetails):
+                makeAddDetailSelectionView(selectedDetails: selectedDetails)
+            }
+        }
     }
 }
