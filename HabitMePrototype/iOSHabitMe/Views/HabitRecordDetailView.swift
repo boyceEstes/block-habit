@@ -39,52 +39,48 @@ struct HabitRecordDetailView: View {
     @State private var alertDetail: AlertDetail? = nil
     
     var body: some View {
-        let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
-        VStack(spacing: 20) {
-            
-//            SheetTitleBar(
-//                title: activityRecord.habit?.name ?? "Could Not Find Habit",
-//                subtitle: DateFormatter.shortDate.string(from: activityRecord.completionDate)
-//            ) {
-//                HStack(spacing: 20) {
-//                    HabitMeDeleteButton {
-//                        alertDetail = HabitRecordDetailAlert.areYouSure(yesAction: {
-//                            removeHabitRecord(activityRecord)
-//                        }).alertData()
-//                        showAlert = true
-//                    }
-//                    HabitMeSheetDismissButton(dismiss: { dismiss() })
-//                }
-//            }
-            
-            
-            if !activityRecord.activityDetailRecords.isEmpty {
-                ForEach(activityRecord.activityDetailRecords) { activityDetailRecord in
-                    
-                    let activityDetail = 
-                    activityDetailRecord.activityDetail
-                    switch activityDetail.valueType {
-                    case .number:
-                        EditableActivityDetailNumberView(activityDetailRecord: activityDetailRecord)
-                    case .text:
-                        EditableActivityDetailTextView(activityDetailRecord: activityDetailRecord)
+        ScrollView {
+            let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
+            LazyVStack(spacing: 20) {
+                
+                if !activityRecord.activityDetailRecords.isEmpty {
+                    ForEach(activityRecord.activityDetailRecords) { activityDetailRecord in
+                        
+                        let activityDetail =
+                        activityDetailRecord.activityDetail
+                        let valueBinding = valueBinding(for: activityDetailRecord)
+                        
+                        switch activityDetail.valueType {
+                        case .number:
+                            EditableActivityDetailNumberView(
+                                name: activityDetail.name,
+                                units: activityDetail.availableUnits.first?.lowercased(),
+                                textFieldValue: valueBinding
+                            )
+                        case .text:
+                            TextField(activityDetail.name, text: valueBinding, axis: .vertical)
+                                .lineLimit(4)
+                                .sectionBackground()
+                                .padding(.horizontal)
+                        }
                     }
+                } else {
+                    Text("There are no activity record details")
                 }
-            } else {
-                Text("There are no activity record details")
-            }
-            HStack {
-                Text("Completion Time")
-                    .font(.sectionTitle)
+                HStack {
+                    Text("Completion Time")
+                        .font(.sectionTitle)
+                    Spacer()
+                    DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .sectionBackground()
+                .padding(.horizontal)
+                
                 Spacer()
-                DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .sectionBackground()
-            .padding(.horizontal)
-            
-            Spacer()
+            .padding(.top)
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
@@ -101,19 +97,40 @@ struct HabitRecordDetailView: View {
                 updateHabitRecord(activityRecord, withNewCompletionTime: editableCompletionTime)
             }
         }
+        
         .topBar {
-            VStack {
+            VStack(alignment: .leading) {
                 Text(activityRecord.habit?.name ?? "Could Not Find Habit")
+                    .font(.navTitle)
                 Text(DateFormatter.shortDate.string(from: activityRecord.completionDate))
+                    .font(.navSubtitle)
             }
         } topBarTrailingContent: {
-            
+            HabitMeSheetDismissButton(dismiss: { dismiss() })
         }
 
     }
     
     
-    // MARK: Logic
+    
+    // MARK: UI Helpers
+    private func valueBinding(for activityDetailRecord: DataActivityDetailRecord) -> Binding<String> {
+        
+        return Binding {
+            activityDetailRecord.value
+        } set: { newValue in
+            activityDetailRecord.value = newValue
+        }
+    }
+    
+//    
+//    // MARK: Logic
+//    private func didTapButtonToUpdateActivityRecord() {
+//        print("did tap button to update activity record)")
+//    }
+    
+    
+    
     private func removeHabitRecord(_ habitRecord: DataHabitRecord) {
         
         DispatchQueue.main.async {
@@ -134,30 +151,33 @@ struct HabitRecordDetailView: View {
 
 struct EditableActivityDetailNumberView: View {
     
-    let activityDetailRecord: DataActivityDetailRecord
-    @State private var textFieldValue: String
-    
-    
-    init(activityDetailRecord: DataActivityDetailRecord) {
-        
-        self.activityDetailRecord = activityDetailRecord
-        
-        self._textFieldValue = State(initialValue: activityDetailRecord.value)
-    }
+    let name: String
+    let units: String?
+//    let activityDetailRecord: DataActivityDetailRecord
+    @Binding var textFieldValue: String
+//
+//    
+//    init(activityDetailRecord: DataActivityDetailRecord) {
+//        
+//        self.activityDetailRecord = activityDetailRecord
+//        
+//        self._textFieldValue = State(initialValue: activityDetailRecord.value)
+//    }
     
     
     var body: some View {
         
-        let activityDetail = activityDetailRecord.activityDetail
-        let units = activityDetail.availableUnits.first?.lowercased()
+//        let activityDetail = activityDetailRecord.activityDetail
+//        let units = activityDetail.availableUnits.first?.lowercased()
         
         HStack {
-            Text("\(activityDetail.name)")
+//            Text("\(activityDetail.name)")
+            Text(name)
                 .font(.sectionTitle)
             Spacer()
             VStack {
                 NumberTextField(
-                    "\(activityDetail.name)",
+                    "\(name)",
                     text: $textFieldValue,
                     units: units
                 )
@@ -167,38 +187,6 @@ struct EditableActivityDetailNumberView: View {
         .padding(.horizontal)
     }
 }
-
-
-struct EditableActivityDetailTextView: View {
-    
-    let activityDetailRecord: DataActivityDetailRecord
-    @State private var textFieldValue: String
-    
-    var name: String {
-        activityDetailRecord.activityDetail.name
-    }
-    
-    init(activityDetailRecord: DataActivityDetailRecord) {
-        
-        self.activityDetailRecord = activityDetailRecord
-        
-        self._textFieldValue = State(initialValue: activityDetailRecord.value)
-    }
-    
-    
-    var body: some View {
-        
-        let activityDetail = activityDetailRecord.activityDetail
-        VStack(alignment: .leading, spacing: 10) {
-            Text(activityDetail.name)
-                .font(.callout)
-            MultiLinerTextField("\(name)", text: $textFieldValue)
-        }
-        .sectionBackground()
-        .padding(.horizontal)
-    }
-}
-
 
 
 struct HabitMeDeleteButton: View {
@@ -274,5 +262,7 @@ struct HabitMeDeleteButton: View {
     
 
     
-    return HabitRecordDetailView(activityRecord: activityRecord)
+    return NavigationStack {
+        HabitRecordDetailView(activityRecord: activityRecord)
+    }
 }

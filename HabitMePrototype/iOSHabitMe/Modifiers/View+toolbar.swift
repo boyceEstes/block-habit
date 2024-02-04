@@ -51,7 +51,8 @@ struct TopBar<TopBarLeadingContent: View, TopBarTrailingContent: View>: ViewModi
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     topBarLeadingContent()
-                        .font(.navTitle)
+//                        .font(.navTitle)
+                        .padding(.vertical)
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
