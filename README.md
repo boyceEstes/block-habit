@@ -21,4 +21,4 @@ Design a way to attach a value to your activity record - A rating for how well y
 
 By the end of this feature, users should be able to see details of their activity records. For activities with associated number values, it would be displayed as a chart demonstrating the change over time. For activities with textual details, like summary or description, there will be a separate list showing record details where they can read what has been written over time.
 
-Completion Rating: 85%
+Feature Completion Rating: 85%
