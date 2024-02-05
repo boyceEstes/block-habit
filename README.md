@@ -18,4 +18,7 @@ View your habits over time in the statistics view, filter through them and be fl
 
 ## Current Focus
 Design a way to attach a value to your activity record - A rating for how well you slept, or how long you journaled, or how many reps of your physical therapy you did, or how much study time you had, or how long you read, or how long your walk was. In addition to number values, enable users to log notes - attach text values to activity record logs as well. Display these when viewing the details of the activity record.
+
+By the end of this feature, users should be able to see details of their activity records. For activities with associated number values, it would be displayed as a chart demonstrating the change over time. For activities with textual details, like summary or description, there will be a separate list showing record details where they can read what has been written over time.
+
 Completion Rating: 85%
