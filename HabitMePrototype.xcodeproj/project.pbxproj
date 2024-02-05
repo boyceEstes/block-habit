@@ -30,6 +30,7 @@
 		B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C92B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
+		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
 		B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */; };
 		B3C97F262B5CE95000211B4C /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BarView.swift */; };
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
@@ -75,6 +76,7 @@
 		B32947C92B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+StatisticsComposition.swift"; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
+		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
 		B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsOnDate.swift; sourceTree = "<group>"; };
 		B3C97F252B5CE95000211B4C /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
@@ -174,12 +176,19 @@
 			path = ViewComposition;
 			sourceTree = "<group>";
 		};
-		B3B403852B71237900D1967E /* Business Logic */ = {
+		B3B403852B71237900D1967E /* Policies */ = {
 			isa = PBXGroup;
 			children = (
 				B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */,
 			);
-			path = "Business Logic";
+			path = Policies;
+			sourceTree = "<group>";
+		};
+		B3B4038A2B71331E00D1967E /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		B3C97F142B5CE83600211B4C /* Cache */ = {
@@ -194,8 +203,10 @@
 		B3C97F1A2B5CE88600211B4C /* HabitRepository */ = {
 			isa = PBXGroup;
 			children = (
+				B3B4038A2B71331E00D1967E /* Protocols */,
 				B3C97F1B2B5CE89C00211B4C /* Models */,
 				B3C97F142B5CE83600211B4C /* Cache */,
+				B3B403852B71237900D1967E /* Policies */,
 			);
 			path = HabitRepository;
 			sourceTree = "<group>";
@@ -203,6 +214,7 @@
 		B3C97F1B2B5CE89C00211B4C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -210,7 +222,6 @@
 		B3C97F202B5CE8FA00211B4C /* iOSHabitMe */ = {
 			isa = PBXGroup;
 			children = (
-				B3B403852B71237900D1967E /* Business Logic */,
 				B3C9E54A2B6EC06F00153158 /* Modifiers */,
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
@@ -381,6 +392,7 @@
 				B3C97F262B5CE95000211B4C /* BarView.swift in Sources */,
 				B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */,
 				B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */,
+				B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */,
 				B3C9E51A2B698CAC00153158 /* ModelContext+Info.swift in Sources */,
 				B32947A82B61E0E1007C8C1E /* DayView.swift in Sources */,
 				B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */,
