@@ -10,7 +10,7 @@ you can add as many activity block logs as you want, edit them, remove them, and
 3. Tap the Activity that is created to log your first block!
 
 
-### Context Menus are your friend
+### Context Menus Are Your Friend
 If you feel like something is missing(... It probably is, but on the off-chance its not) try holding down UI elements for extra features. Quick and dirty way to get the functionality there until the UI is more fleshed out.
 
 ## Statistics
