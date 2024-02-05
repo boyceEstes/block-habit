@@ -15,32 +15,7 @@ enum HabitRecordVisualMode {
 }
 
 
-protocol ActivityRecordCreator {
-    
-    var selectedDay: Date { get set }
-    var goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void { get }
-}
-
-
-extension ActivityRecordCreator {
-    
-    func createRecord(for activity: DataHabit, in modelContext: ModelContext) {
-        
-        if !activity.activityDetails.isEmpty {
-            
-            goToCreateActivityRecordWithDetails(activity, selectedDay)
-            
-        } else {
-            
-            let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
-            
-            modelContext.createHabitRecordOnDate(activity: activity, creationDate: creationDate, completionDate: completionDate)
-        }
-    }
-}
-
-
-struct HomeView: View, ActivityRecordCreator {
+struct HomeView: View, ActivityRecordCreatorOrNavigator {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]

@@ -10,7 +10,7 @@ import SwiftData
 
 
 
-struct CreateHabitRecordWithDetailsView: View {
+struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
@@ -23,7 +23,7 @@ struct CreateHabitRecordWithDetailsView: View {
 //    @State private var activityRecord: DataHabitRecord
     // Keeping this separate from the above property just because SwiftData is a little finicky
     // and I want things in smaller pieces for making the relationship connections
-    @State private var activityDetailRecords: [ActivityDetailRecord]
+    @State var activityDetailRecords: [ActivityDetailRecord]
     @FocusState var isActive: Bool
     
     init(activity: DataHabit, selectedDay: Date) {
@@ -123,15 +123,7 @@ struct CreateHabitRecordWithDetailsView: View {
 
         // We already have the DataHabit so we just need to create the DataHabitRecord
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
-        
-        let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
-        
-        modelContext.createHabitRecordOnDate(
-            activity: activity,
-            creationDate: creationDate,
-            completionDate: completionDate,
-            activityDetailRecords: activityDetailRecords
-        )
+        createRecord(for: activity, in: modelContext)
         
         DispatchQueue.main.async {
             dismiss()

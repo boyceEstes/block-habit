@@ -28,7 +28,7 @@ enum HabitDetailAlert {
 
 
 
-struct HabitDetailView: View, ActivityRecordCreator {
+struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     let habit: DataHabit
     let goToEditHabit: () -> Void
