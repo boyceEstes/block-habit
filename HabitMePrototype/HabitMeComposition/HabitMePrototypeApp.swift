@@ -12,8 +12,6 @@ import SwiftData
 @main
 struct HabitMePrototypeApp: App {
     
-    let habitRepository = InMemoryHabitRepository()
-    
     var body: some Scene {
         WindowGroup {
             ContentView()

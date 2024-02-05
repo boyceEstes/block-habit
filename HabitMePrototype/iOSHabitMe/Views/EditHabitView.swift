@@ -162,7 +162,7 @@ struct EditHabitView: View {
     
     let dataHabit = DataHabit(
         name: "Chugging Dew",
-        color: Habit.habits.randomElement()?.color.toHexString() ?? "#FFFFFF",
+        color: Color.indigo.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     container.mainContext.insert(dataHabit)

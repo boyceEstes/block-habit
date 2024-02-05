@@ -338,12 +338,12 @@ struct StatisticsView: View {
     
     let dataHabit = DataHabit(
         name: "Chugged Dew",
-        color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
+        color: Color.indigo.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     let dataHabit2 = DataHabit(
         name: "Smashed Taco",
-        color: Habit.habits[1].color.toHexString() ?? "#FFFFFF",
+        color: Color.orange.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     container.mainContext.insert(dataHabit)

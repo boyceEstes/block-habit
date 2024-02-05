@@ -312,12 +312,12 @@ struct HomeView: View, ActivityRecordCreator {
     
     let dataHabit = DataHabit(
         name: "Chugged Dew",
-        color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
+        color: Color.blue.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     let dataHabit2 = DataHabit(
         name: "Smashed Taco",
-        color: Habit.habits[1].color.toHexString() ?? "#FFFFFF",
+        color: Color.orange.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     container.mainContext.insert(dataHabit)
@@ -371,7 +371,6 @@ struct HomeView: View, ActivityRecordCreator {
     container.mainContext.insert(dataHabitRecord24)
     
     
-    let habit = Habit.meditation
     return NavigationStack {
         HomeView(
             goToHabitDetail: { _ in },

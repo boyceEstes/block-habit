@@ -196,7 +196,7 @@ struct CreateHabitRecordWithDetailsView: View {
     // MARK: Create Activity
     let activity = DataHabit(
         name: "Chugged Dew",
-        color: Habit.habits[0].color.toHexString() ?? "#FFFFFF",
+        color: Color.indigo.toHexString() ?? "#FFFFFF",
         activityDetails: [],
         habitRecords: []
     )

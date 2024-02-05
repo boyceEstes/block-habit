@@ -366,7 +366,7 @@ struct StatBox: View {
     
     let dataHabit = DataHabit(
         name: "Chugging Dew",
-        color: Habit.habits.randomElement()?.color.toHexString() ?? "#FFFFFF",
+        color: Color.indigo.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     container.mainContext.insert(dataHabit)
@@ -425,7 +425,6 @@ struct StatBox: View {
     container.mainContext.insert(dataHabitRecord6)
     container.mainContext.insert(dataHabitRecord7)
     
-    let habit = Habit.meditation
     return NavigationStack {
         HabitDetailView(
             habit: dataHabit,
