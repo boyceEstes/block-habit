@@ -49,6 +49,7 @@ struct CreateHabitRecordWithDetailsView: View {
     // We pass this in and use its information along with the current
     // datetime to autopopulate some details
     let activity: DataHabit
+    let selectedDay: Date
     let creationDate = Date()
 //    @State private var activityRecord: DataHabitRecord
     // Keeping this separate from the above property just because SwiftData is a little finicky
@@ -56,9 +57,10 @@ struct CreateHabitRecordWithDetailsView: View {
     @State private var activityDetailRecords: [ActivityDetailRecord]
     @FocusState var isActive: Bool
     
-    init(activity: DataHabit) {
+    init(activity: DataHabit, selectedDay: Date) {
         
         self.activity = activity
+        self.selectedDay = selectedDay
 
         self._activityDetailRecords = State(
             initialValue: activity.activityDetails.map { activityDetail in
@@ -152,9 +154,12 @@ struct CreateHabitRecordWithDetailsView: View {
 
         // We already have the DataHabit so we just need to create the DataHabitRecord
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
+        
+        let (creationDate, completionDate) = calculateDatesForRecord(on: selectedDay)
+        
         let activityRecord = DataHabitRecord(
             creationDate: creationDate,
-            completionDate: creationDate,
+            completionDate: completionDate,
             habit: nil,
             activityDetailRecords: []
         )
@@ -172,18 +177,47 @@ struct CreateHabitRecordWithDetailsView: View {
                 activityRecord: activityRecord
             )
             
-//            dataActivityDetailRecords.append(dataActivityDetailRecord)
             modelContext.insert(dataActivityDetailRecord)
         }
-        
-//        activityRecord.activityDetailRecords = dataActivityDetailRecords
-        
-//        modelContext.insert(activityRecord)
-        
         
         DispatchQueue.main.async {
             dismiss()
         }
+    }
+    
+    
+    private func calculateDatesForRecord(on selectedDay: Date) -> (creationDate: Date, completionDate: Date) {
+        
+        
+        let today = Date()
+        let todayNoon = today.noon!
+        let selectedDay = selectedDay
+        let selectedDateNoon = selectedDay.noon!
+        
+        var newHabitRecordCompletionDate: Date!
+        
+
+        if todayNoon == selectedDateNoon {
+            // we do this because we want the exact time, for ordering purposes, on the given day
+            newHabitRecordCompletionDate = today
+        } else {
+            // If the day has already passed (which is the only other option)
+            // then we do not care the exact completionDate, and we will not be giving
+            // we'll just get the latest most that we can come up with and make
+            // the creationDate accurate for any sorting ties later additions would
+            // make
+            
+            // Sets to the
+            var selectedDayDateComponents = Calendar.current.dateComponents(in: .current, from: selectedDay)
+            selectedDayDateComponents.hour = 23
+            selectedDayDateComponents.minute = 59
+            selectedDayDateComponents.second = 59
+            
+            newHabitRecordCompletionDate = selectedDayDateComponents.date!
+        }
+        
+        return (today, newHabitRecordCompletionDate)
+        
     }
 }
 
@@ -226,7 +260,7 @@ struct CreateHabitRecordWithDetailsView: View {
 
     
     return NavigationStack {
-        CreateHabitRecordWithDetailsView(activity: activity)
+        CreateHabitRecordWithDetailsView(activity: activity, selectedDay: Date())
     }
     .modelContainer(container)
 }

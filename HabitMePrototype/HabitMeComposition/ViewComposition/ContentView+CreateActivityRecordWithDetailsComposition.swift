@@ -12,10 +12,10 @@ import SwiftUI
 extension ContentView {
     
     @ViewBuilder
-    func makeCreateActivityRecordWithDetails(activity: DataHabit) -> some View {
+    func makeCreateActivityRecordWithDetails(activity: DataHabit, selectedDay: Date) -> some View {
         
         NavigationStack {
-            CreateHabitRecordWithDetailsView(activity: activity)
+            CreateHabitRecordWithDetailsView(activity: activity, selectedDay: selectedDay)
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)

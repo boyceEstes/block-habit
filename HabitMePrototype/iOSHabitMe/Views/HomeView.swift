@@ -29,7 +29,7 @@ struct HomeView: View {
     let goToHabitRecordDetail: (DataHabitRecord) -> Void
     let goToEditHabit: (DataHabit) -> Void
     let goToStatistics: () -> Void
-    let goToCreateActivityRecordWithDetails: (DataHabit) -> Void
+    let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
     
     
     /*
@@ -196,7 +196,7 @@ struct HomeView: View {
         // Determine if the activity has details that should be filled
         if !habit.activityDetails.isEmpty {
             
-            goToCreateActivityRecordWithDetails(habit)
+            goToCreateActivityRecordWithDetails(habit, selectedDay)
 //            print("log record for activity with activity details")
 //            var activityDetailRecords = [DataActivityDetailRecord]()
 //            
@@ -403,7 +403,7 @@ struct HomeView: View {
             goToHabitRecordDetail: { _ in },
             goToEditHabit: { _ in },
             goToStatistics: { },
-            goToCreateActivityRecordWithDetails: { _ in }
+            goToCreateActivityRecordWithDetails: { _, _ in }
         )
         .modelContainer(container)
     }

@@ -3,8 +3,7 @@
         "name": "Duration",
         "valueType": "Number",
         "availableUnits": [
-            "Minutes",
-            "Days"
+            "min"
         ]
     },
     {

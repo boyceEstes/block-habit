@@ -195,7 +195,6 @@ struct CreateHabitDetailContent: View {
     @Binding var selectedDetails: [DataActivityDetail]
     @FocusState private var focusedDetail: Focusable?
     
-    
     var body: some View {
         
         LazyVStack(alignment: .leading) {
@@ -221,6 +220,8 @@ struct CreateHabitDetailContent: View {
                     HStack {
                         Text("\(detail.name)")
                         let units = detail.availableUnits.joined(separator: ", ").lowercased()
+                        
+                        
                         Text("in \(units)")
                         //                        .font(.footnote)
                             .foregroundStyle(.secondary)
@@ -228,8 +229,6 @@ struct CreateHabitDetailContent: View {
                         Text("\(detail.valueType.rawValue)")
                             .foregroundStyle(.secondary)
                     }
-                    .padding()
-                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
                 }
             }
         }
