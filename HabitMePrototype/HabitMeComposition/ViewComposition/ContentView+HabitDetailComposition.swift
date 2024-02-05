@@ -20,6 +20,7 @@ class HabitDetailNavigationFlow: NewSheetyNavigationFlow {
         var id: Int { self.hashValue }
         
         case editHabit(habit: DataHabit)
+        case createActivityRecordWithDetails(activity: DataHabit, selectedDay: Date)
     }
 }
 
@@ -34,6 +35,8 @@ extension ContentView {
                 switch identifier {
                 case let .editHabit(habit):
                     makeEditHabitView(habit: habit)
+                case let .createActivityRecordWithDetails(activity, selectedDay):
+                    makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
                 }
             }
     }
@@ -42,12 +45,22 @@ extension ContentView {
     @ViewBuilder
     private func makeHabitDetailView(habit: DataHabit) -> some View {
         
-        HabitDetailView(habit: habit, goToEditHabit: { goToEditHabitFromHabitDetail(habit: habit) } )
+        HabitDetailView(
+            habit: habit,
+            goToEditHabit: { goToEditHabitFromHabitDetail(habit: habit) },
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHabitDetail
+        )
     }
     
     
     private func goToEditHabitFromHabitDetail(habit: DataHabit) {
         
         habitDetailNavigationFlowDisplayedSheet = .editHabit(habit: habit)
+    }
+    
+    
+    private func goToCreateActivityRecordWithDetailsFromHabitDetail(activity: DataHabit, selectedDay: Date) {
+        
+        habitDetailNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
     }
 }

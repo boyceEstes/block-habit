@@ -14,7 +14,33 @@ enum HabitRecordVisualMode {
     case daily
 }
 
-struct HomeView: View {
+
+protocol ActivityRecordCreator {
+    
+    var selectedDay: Date { get set }
+    var goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void { get }
+}
+
+
+extension ActivityRecordCreator {
+    
+    func createRecord(for activity: DataHabit, in modelContext: ModelContext) {
+        
+        if !activity.activityDetails.isEmpty {
+            
+            goToCreateActivityRecordWithDetails(activity, selectedDay)
+            
+        } else {
+            
+            let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
+            
+            modelContext.createHabitRecordOnDate(activity: activity, creationDate: creationDate, completionDate: completionDate)
+        }
+    }
+}
+
+
+struct HomeView: View, ActivityRecordCreator {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
@@ -31,7 +57,6 @@ struct HomeView: View {
     let goToStatistics: () -> Void
     let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
     
-    
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.
      * The big problem is habitsOnDates is a little bit hairy. I wonder if it is better
@@ -41,7 +66,7 @@ struct HomeView: View {
      */
     
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
-    @State private var selectedDay: Date = Date().noon!
+    @State var selectedDay: Date = Date().noon!
     
     
     var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
@@ -127,8 +152,7 @@ struct HomeView: View {
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
-                        logRecord(for: habit)
-                        
+                        createRecord(for: habit, in: modelContext)
                     }
                 )
             }
@@ -190,68 +214,20 @@ struct HomeView: View {
         }
     }
     
-    
-    private func logRecord(for habit: DataHabit) {
-        
-        // Determine if the activity has details that should be filled
-        if !habit.activityDetails.isEmpty {
-            
-            goToCreateActivityRecordWithDetails(habit, selectedDay)
-//            print("log record for activity with activity details")
-//            var activityDetailRecords = [DataActivityDetailRecord]()
+//    
+//    private func logRecord(for habit: DataHabit) {
+//        
+//        if !habit.activityDetails.isEmpty {
 //            
-//            print("create habit record on selected date (for \(habit.name))")
+//            goToCreateActivityRecordWithDetails(habit, selectedDay)
 //            
-//            let today = Date()
-//            let todayNoon = today.noon!
-//            let selectedDay = selectedDay
-//            let selectedDateNoon = selectedDay.noon!
+//        } else {
 //            
-//            var newHabitRecordCompletionDate: Date!
+//            let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
 //            
-//
-//            if todayNoon == selectedDateNoon {
-//                // we do this because we want the exact time, for ordering purposes, on the given day
-//                newHabitRecordCompletionDate = today
-//            } else {
-//                // If the day has already passed (which is the only other option)
-//                // then we do not care the exact completionDate, and we will not be giving
-//                // we'll just get the latest most that we can come up with and make
-//                // the creationDate accurate for any sorting ties later additions would
-//                // make
-//                
-//                // Sets to the
-//                var selectedDayDateComponents = Calendar.current.dateComponents(in: .current, from: selectedDay)
-//                selectedDayDateComponents.hour = 23
-//                selectedDayDateComponents.minute = 59
-//                selectedDayDateComponents.second = 59
-//                
-//                newHabitRecordCompletionDate = selectedDayDateComponents.date!
-//            }
-//            
-//            print("tapped habit data")
-//            
-//            let newHabitRecord = DataHabitRecord(
-//                creationDate: today,
-//                completionDate: newHabitRecordCompletionDate,
-//                habit: nil,
-//                activityDetailRecords: []
-//            )
-//            newHabitRecord.habit = habit
-//            
-//            for activityDetail in habit.activityDetails {
-//                let detaliRecord = DataActivityDetailRecord(value: "27", activityDetail: activityDetail, activityRecord: newHabitRecord)
-//                modelContext.insert(detaliRecord)
-//            }
-            
-        } else {
-            modelContext.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay)
-        }
-        // Display a sheet to enter the details
-        // OR
-        // Immediately log the record
-        
-    }
+//            modelContext.createHabitRecordOnDate(activity: habit, creationDate: creationDate, completionDate: completionDate)
+//        }
+//    }
 
     
     private func setHabitRecordViewMode(to visualMode: HabitRecordVisualMode) {

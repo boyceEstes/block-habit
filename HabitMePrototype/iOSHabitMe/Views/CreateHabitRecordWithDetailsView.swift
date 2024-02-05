@@ -9,38 +9,41 @@ import SwiftUI
 import SwiftData
 
 
+// Creating this tranisent object because having a hard time referencing
+// the activities when I map it to a `DataActivityDetailRecord` due to SwiftData
+// relationship idiosyncrosies - this allowed me to access my data as I wanted
+// NOTE: keeping the ID as a unique identifier, separate from content is important
+// so that the row is not reloaded when the keyboard modifies its value (it was
+// a id based on the hashvalue before)
+struct ActivityDetailRecord: Identifiable, Hashable {
+
+    
+    let id = UUID().uuidString
+    let activityDetail: DataActivityDetail
+    var value: String
+    
+    
+    init(activityDetail: DataActivityDetail, value: String) {
+        
+        self.activityDetail = activityDetail
+        self.value = value
+    }
+    
+    
+    static func == (lhs: ActivityDetailRecord, rhs: ActivityDetailRecord) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
+    
+    func hash(into hasher: inout Hasher) {
+        
+        hasher.combine(value)
+        hasher.combine(activityDetail)
+    }
+}
+
 
 struct CreateHabitRecordWithDetailsView: View {
-    
-    // Creating this tranisent object because having a hard time referencing
-    // the activities when I map it to a `DataActivityDetailRecord`
-    // so lets see if this works
-    struct ActivityDetailRecord: Identifiable, Hashable {
-
-        
-        let id = UUID().uuidString
-        let activityDetail: DataActivityDetail
-        var value: String
-        
-        
-        init(activityDetail: DataActivityDetail, value: String) {
-            
-            self.activityDetail = activityDetail
-            self.value = value
-        }
-        
-        
-        static func == (lhs: CreateHabitRecordWithDetailsView.ActivityDetailRecord, rhs: CreateHabitRecordWithDetailsView.ActivityDetailRecord) -> Bool {
-            lhs.hashValue == rhs.hashValue
-        }
-        
-        
-        func hash(into hasher: inout Hasher) {
-            
-            hasher.combine(value)
-            hasher.combine(activityDetail)
-        }
-    }
     
     
     @Environment(\.dismiss) var dismiss
@@ -155,69 +158,18 @@ struct CreateHabitRecordWithDetailsView: View {
         // We already have the DataHabit so we just need to create the DataHabitRecord
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
         
-        let (creationDate, completionDate) = calculateDatesForRecord(on: selectedDay)
+        let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
         
-        let activityRecord = DataHabitRecord(
+        modelContext.createHabitRecordOnDate(
+            activity: activity,
             creationDate: creationDate,
             completionDate: completionDate,
-            habit: nil,
-            activityDetailRecords: []
+            activityDetailRecords: activityDetailRecords
         )
-        
-        activityRecord.habit = activity
-        
-        modelContext.insert(activityRecord)
-        
-        
-        for activityDetailRecord in activityDetailRecords {
-            
-            let dataActivityDetailRecord = DataActivityDetailRecord(
-                value: activityDetailRecord.value,
-                activityDetail: activityDetailRecord.activityDetail,
-                activityRecord: activityRecord
-            )
-            
-            modelContext.insert(dataActivityDetailRecord)
-        }
         
         DispatchQueue.main.async {
             dismiss()
         }
-    }
-    
-    
-    private func calculateDatesForRecord(on selectedDay: Date) -> (creationDate: Date, completionDate: Date) {
-        
-        
-        let today = Date()
-        let todayNoon = today.noon!
-        let selectedDay = selectedDay
-        let selectedDateNoon = selectedDay.noon!
-        
-        var newHabitRecordCompletionDate: Date!
-        
-
-        if todayNoon == selectedDateNoon {
-            // we do this because we want the exact time, for ordering purposes, on the given day
-            newHabitRecordCompletionDate = today
-        } else {
-            // If the day has already passed (which is the only other option)
-            // then we do not care the exact completionDate, and we will not be giving
-            // we'll just get the latest most that we can come up with and make
-            // the creationDate accurate for any sorting ties later additions would
-            // make
-            
-            // Sets to the
-            var selectedDayDateComponents = Calendar.current.dateComponents(in: .current, from: selectedDay)
-            selectedDayDateComponents.hour = 23
-            selectedDayDateComponents.minute = 59
-            selectedDayDateComponents.second = 59
-            
-            newHabitRecordCompletionDate = selectedDayDateComponents.date!
-        }
-        
-        return (today, newHabitRecordCompletionDate)
-        
     }
 }
 

@@ -28,16 +28,18 @@ enum HabitDetailAlert {
 
 
 
-struct HabitDetailView: View {
-    
+struct HabitDetailView: View, ActivityRecordCreator {
     
     let habit: DataHabit
     let goToEditHabit: () -> Void
+    let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
+    
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
-    @State private var selectedDay: Date = Date().noon ?? Date()
+    
+    @State var selectedDay: Date = Date().noon ?? Date()
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
 //     Query to fetch all of the habit records for the habit
@@ -163,23 +165,15 @@ struct HabitDetailView: View {
     }
     
     
-    init(habit: DataHabit, goToEditHabit: @escaping () -> Void) {
+    init(
+        habit: DataHabit,
+        goToEditHabit: @escaping () -> Void,
+        goToCreateActivityRecordWithDetails: @escaping (DataHabit, Date) -> Void
+    ) {
         
         self.habit = habit
         self.goToEditHabit = goToEditHabit
-        
-//        let habitID = habit.id
-        
-//        _dataHabitRecordsForHabit = Query(
-//            filter: #Predicate {
-//                guard let habitForHabitRecord = $0.habit else { return false }
-//                
-//                habitForHabitRecord.id == habitID
-//            }, sort: [
-//                SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-//                SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-//            ], animation: .default
-//        )
+        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
     }
     
     
@@ -202,7 +196,8 @@ struct HabitDetailView: View {
                 )
                 
                 HabitMePrimaryButton(title: "Log New Record", color: Color(hex: habit.color)) {
-                    modelContext.createHabitRecordOnDate(habit: habit, selectedDay: selectedDay)
+                    
+                    createRecord(for: habit, in: modelContext)
                 }
                 .padding()
                 
@@ -220,13 +215,6 @@ struct HabitDetailView: View {
                 .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
                  )
                 .padding([.horizontal, .bottom])
-                
-//                DayView(
-//                    graphHeight: 150,
-//                    numOfItemsToReachTop: numOfItemsToReachTop,
-//                    habitRecords: dataHabitRecordsForHabit,
-//                    selectedDay: selectedDay
-//                )
             }
             .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
@@ -441,7 +429,8 @@ struct StatBox: View {
     return NavigationStack {
         HabitDetailView(
             habit: dataHabit,
-            goToEditHabit: { }
+            goToEditHabit: { },
+            goToCreateActivityRecordWithDetails: { _, _ in }
         )
         .modelContainer(container)
     }
