@@ -216,8 +216,21 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     )
                     .padding([.horizontal, .bottom])
                     
-//                    if
-//                    LineChartDateXAxisView(data: <#T##[LineChartOnDateData]#>)
+                    if !activity.activityDetails.isEmpty {
+                        
+                        let activityDetails = activity.activityDetails
+                        
+                        ForEach(activityDetails) { activityDetail in
+                            
+//                            if activityDetail.valueType == .number {
+                                
+                            LineChart(activityDetail: activityDetail, activity: activity)
+//                                let lineChartActivityDetailData = lineChartActivityDetailData(for: activityDetail)
+//                                
+//                                LineChartDateXAxisView(data: lineChartActivityDetailData)
+//                            }
+                        }
+                    }
                 }
                 .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
@@ -245,6 +258,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
     }
+    
+    
+
     
     
     private func removeHabit() {
@@ -285,6 +301,84 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         } else {
             return StatBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
         }
+    }
+}
+
+
+struct LineChart: View {
+    
+    // FIXME: Handle some details by averaging and some details by summing
+    let calculateSum = false
+    
+    let activityDetail: DataActivityDetail
+    let activity: DataHabit
+    
+    var body: some View {
+        
+        if activityDetail.valueType == .number {
+            
+            let lineChartActivityDetailData = lineChartActivityDetailData(for: activityDetail)
+            
+            LineChartDateXAxisView(data: lineChartActivityDetailData)
+                .foregroundStyle(Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+        }
+    }
+    
+    
+    // TODO: test business logic
+    private func lineChartActivityDetailData(for activityDetail: DataActivityDetail) -> [LineChartActivityDetailData] {
+        
+        let activityDetailRecords = activityDetail.detailRecords.filter { $0.activityRecord?.habit == activity }
+        
+        // we go through each of thse and set all of the completionDates as a key - when we
+        // find that it is not nil and we have a new value to insert, add or average depending on
+        // the graph setting
+        
+        var dateCountDictionary = [Date: (count: Int, amount: Double)]()
+        for activityDetailRecord in activityDetailRecords {
+            
+            // If there is inconsistent data transforming a value, just don't show a chart
+            guard let activityDetailRecordValue = Double(activityDetailRecord.value),
+                  let completionDate = activityDetailRecord.activityRecord?.completionDate.noon
+            else {
+                return []
+            }
+            
+            // To average this, we will keep up with the count of records inserted for each date
+            if let (currentRecordCountForDay, currentValueCountForDay) = dateCountDictionary[completionDate] {
+                
+                if calculateSum {
+                    
+                    dateCountDictionary[completionDate] = (1, currentValueCountForDay + activityDetailRecordValue)
+                    
+                } else {
+                    // must be average
+                    let newCurrentCountForDay = currentRecordCountForDay + 1
+                    let newCurrentValueForDay = (currentValueCountForDay + activityDetailRecordValue)
+                    
+                    dateCountDictionary[completionDate] = (newCurrentCountForDay, newCurrentValueForDay)
+                }
+                
+            } else {
+                dateCountDictionary[completionDate] = (1, activityDetailRecordValue)
+            }
+        }
+        
+        
+        
+        let dateCountDictionaryArray = dateCountDictionary.sorted(by: { $0.key < $1.key })
+        let data = dateCountDictionaryArray.map { LineChartActivityDetailData(date: $0.key, value: $0.value.amount / Double($0.value.count)) }
+        
+        
+//        let data: [LineChartActivityDetailData] = activityDetailRecords.compactMap {
+//            guard let completionDate = $0.activityRecord?.completionDate,
+//                  let activityDetailRecordValue = Double($0.value)
+//            else { return nil }
+//            
+//            return LineChartActivityDetailData(date: completionDate, value: activityDetailRecordValue)
+//        }
+//        
+        return data
     }
 }
 
