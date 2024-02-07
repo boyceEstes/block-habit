@@ -27,7 +27,6 @@ enum HabitDetailAlert {
 }
 
 
-
 struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     let activity: DataHabit
@@ -61,6 +60,87 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             return habitForHabitRecord.id == habitID
         }
     }
+    
+    // TODO: Unit test this
+    // We are returning specific detail records associated with the detail because if we just looked at the detail's records,
+    // we would get back the results for ALL activities that it has been associated with, instead of just this one.
+    /// Translate activity records into usable activity detail data that can be iterated over to display chart information (Used as a piece of later computation)
+    var chartActivityDetailRecordsForActivityRecords: [DataActivityDetail: [DataActivityDetailRecord]] {
+        
+        // Translate to dictionary of all of the activitydetails and all of the activity detail records for each
+        filteredDatahabitRecordsForHabit.reduce(into: [DataActivityDetail: [DataActivityDetailRecord]]()) { dict, activityRecord in
+            
+            for activityDetailRecord in activityRecord.activityDetailRecords {
+                
+                let activityDetail = activityDetailRecord.activityDetail
+                guard activityDetail.valueType == .number else { continue } // Skip this record if the detail is not a number
+                
+                if dict[activityDetail] != nil {
+                    dict[activityDetail]!.append(activityDetailRecord)
+                } else {
+                    dict[activityDetail] = [activityDetailRecord]
+                }
+            }
+        }
+    }
+    
+    
+    /// Convert data to only dates and values for charts to consume, keyed by activity detail in order to set up each separate chart
+    var allDetailChartData: [DataActivityDetail: [LineChartActivityDetailData]] {
+        
+        // FIXME: Handle some details by averaging and some details by summing
+        let calculateSum = false
+
+        return chartActivityDetailRecordsForActivityRecords.reduce(into: [DataActivityDetail: [LineChartActivityDetailData]]()) { allDetailDataDict, chartActivityDetailRecordsForActivityRecord in
+            
+            let (activityDetail, activityDetailRecords) = chartActivityDetailRecordsForActivityRecord
+            
+            var dateCountDictionary = [Date: (count: Int, amount: Double)]()
+            for activityDetailRecord in activityDetailRecords {
+
+                
+                guard let activityDetailRecordValue = Double(activityDetailRecord.value),
+                      let completionDate = activityDetailRecord.activityRecord?.completionDate.noon
+                else {
+                    // FIXME: Log if this happens, it really should never occur but shouldn't hurt anything if it skips
+                    continue // If there is inconsistent data transforming a value, then continue on to the next row
+                }
+
+                // To average this, we will keep up with the count of records inserted for each date
+                if let (currentRecordCountForDay, currentValueCountForDay) = dateCountDictionary[completionDate] {
+
+                    if calculateSum {
+
+                        dateCountDictionary[completionDate] = (1, currentValueCountForDay + activityDetailRecordValue)
+
+                    } else {
+                        // must be average
+                        let newCurrentCountForDay = currentRecordCountForDay + 1
+                        let newCurrentValueForDay = (currentValueCountForDay + activityDetailRecordValue)
+
+                        dateCountDictionary[completionDate] = (newCurrentCountForDay, newCurrentValueForDay)
+                    }
+
+                } else {
+                    dateCountDictionary[completionDate] = (1, activityDetailRecordValue)
+                }
+            }
+
+            let dateCountDictionaryArray = dateCountDictionary.sorted(by: { $0.key < $1.key })
+            let data = dateCountDictionaryArray.map { LineChartActivityDetailData(date: $0.key, value: $0.value.amount / Double($0.value.count)) }
+            
+            
+            allDetailDataDict[activityDetail] = data
+        }
+    }
+    
+    // Alphabetical order -> transforms into single tuple array
+    /// Final iteration of transforming data to be used to display in chart
+    var allDetailChartDataSorted: [(DataActivityDetail, [LineChartActivityDetailData])] {
+        
+        allDetailChartData.sorted { $0.key.name < $1.key.name }
+    }
+    
     
     @State private var currentStreak = 0
     @State private var avgRecordsPerDay: Double = 0
@@ -216,21 +296,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     )
                     .padding([.horizontal, .bottom])
                     
-                    if !activity.activityDetails.isEmpty {
-                        
-                        let activityDetails = activity.activityDetails
-                        
-                        ForEach(activityDetails) { activityDetail in
-                            
-//                            if activityDetail.valueType == .number {
-                                
-                            LineChart(activityDetail: activityDetail, activity: activity)
-//                                let lineChartActivityDetailData = lineChartActivityDetailData(for: activityDetail)
-//                                
-//                                LineChartDateXAxisView(data: lineChartActivityDetailData)
-//                            }
-                        }
-                    }
+                    
+//                    LineChart(activityDetails: , activity: activity)
+                    activityDetailCharts
                 }
                 .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
@@ -260,7 +328,24 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     }
     
     
-
+    @ViewBuilder
+    var activityDetailCharts: some View {
+        
+        // loops over activitydetails to display one chart at a time
+        ForEach(allDetailChartDataSorted, id: \.0) { chartInformation in
+            
+            let (activityDetail, chartInfo) = chartInformation
+            
+            VStack {
+                Text("\(activityDetail.name)")
+                
+                LineChartDateXAxisView(data: chartInfo)
+                    .foregroundStyle(Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+            }
+            .sectionBackground()
+            .padding(.horizontal)
+        }
+    }
     
     
     private func removeHabit() {
@@ -310,23 +395,28 @@ struct LineChart: View {
     // FIXME: Handle some details by averaging and some details by summing
     let calculateSum = false
     
-    let activityDetail: DataActivityDetail
+    let activityDetails: [DataActivityDetail]
     let activity: DataHabit
+//    let activityDetail: DataActivityDetail
+//    let activity: DataHabit
     
     var body: some View {
         
-        if activityDetail.valueType == .number {
+        ForEach(activityDetails, id: \.id) { activityDetail in
             
-            let lineChartActivityDetailData = lineChartActivityDetailData(for: activityDetail)
-            
-            LineChartDateXAxisView(data: lineChartActivityDetailData)
-                .foregroundStyle(Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+            if activityDetail.valueType == .number {
+                
+                let lineChartActivityDetailData = lineChartActivityDetailData(for: activityDetail, activity: activity)
+                
+                LineChartDateXAxisView(data: lineChartActivityDetailData)
+                    .foregroundStyle(Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+            }
         }
     }
     
     
     // TODO: test business logic
-    private func lineChartActivityDetailData(for activityDetail: DataActivityDetail) -> [LineChartActivityDetailData] {
+    private func lineChartActivityDetailData(for activityDetail: DataActivityDetail, activity: DataHabit) -> [LineChartActivityDetailData] {
         
         let activityDetailRecords = activityDetail.detailRecords.filter { $0.activityRecord?.habit == activity }
         

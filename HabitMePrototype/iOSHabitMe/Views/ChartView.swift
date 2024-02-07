@@ -34,14 +34,21 @@ struct LineChartActivityDetailData: Identifiable {
     
     // Charts aren't great with dates until they are converted to strings
     var displayableDate: String {
-        
-        DateFormatter.shortDate.string(from: date)
+        guard let noonDate = date.noon else { return "" }
+        return DateFormatter.shortDate.string(from: noonDate)
     }
 }
 
 struct LineChartDateXAxisView: View {
     
     let data: [LineChartActivityDetailData]
+//    
+//    var initialXScrollPosition: String {
+//        
+//        guard let lastDataPoint = data.last else { return ""}
+//        
+//        return lastDataPoint.displayableDate
+//    }
     
     var body: some View {
         
@@ -55,7 +62,9 @@ struct LineChartDateXAxisView: View {
             }
         }
         .frame(height: 150)
-//        .chartScrollableAxes(.horizontal)
+        .chartScrollableAxes(.horizontal)
+        .chartXVisibleDomain(length: 8)
+//        .chartScrollPosition(initialX: initialXScrollPosition)
     }
     
     
@@ -134,7 +143,7 @@ struct BarChartView: View {
         LineChartActivityDetailData(date: Date().adding(days: -18), value: 187.0),
         LineChartActivityDetailData(date: Date().adding(days: -19), value: 187.3),
         LineChartActivityDetailData(date: Date().adding(days: -20), value: 189.2),
-        LineChartActivityDetailData(date: Date().adding(days: -1), value: 300)
+        LineChartActivityDetailData(date: Date().noon!, value: 300)
     ]
     
     return LineChartDateXAxisView(data: data)
