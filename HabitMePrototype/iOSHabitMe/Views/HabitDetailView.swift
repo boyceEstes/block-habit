@@ -30,7 +30,7 @@ enum HabitDetailAlert {
 
 struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
-    let habit: DataHabit
+    let activity: DataHabit
     let goToEditHabit: () -> Void
     let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
     
@@ -57,7 +57,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             
             guard let habitForHabitRecord = $0.habit else { return false }
             
-            let habitID = habit.id
+            let habitID = activity.id
             return habitForHabitRecord.id == habitID
         }
     }
@@ -166,12 +166,12 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     
     init(
-        habit: DataHabit,
+        activity: DataHabit,
         goToEditHabit: @escaping () -> Void,
         goToCreateActivityRecordWithDetails: @escaping (DataHabit, Date) -> Void
     ) {
         
-        self.habit = habit
+        self.activity = activity
         self.goToEditHabit = goToEditHabit
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
     }
@@ -184,41 +184,45 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             let screenWidth = proxy.size.width
             let screenHeight = proxy.size.height
             let graphHeight = screenHeight * 0.3
-
-            VStack(spacing: 0) {
-                BarView(
-                    graphWidth: screenWidth,
-                    graphHeight: graphHeight,
-                    numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                    dataHabitRecordsOnDate:
-                        dataHabitRecordsOnDate,
-                    selectedDay: $selectedDay
-                )
-                
-                HabitMePrimaryButton(title: "Log New Record", color: Color(hex: habit.color)) {
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    BarView(
+                        graphWidth: screenWidth,
+                        graphHeight: graphHeight,
+                        numOfItemsToReachTop: Double(numOfItemsToReachTop),
+                        dataHabitRecordsOnDate:
+                            dataHabitRecordsOnDate,
+                        selectedDay: $selectedDay
+                    )
                     
-                    createRecord(for: habit, in: modelContext)
-                }
-                .padding()
-                
-                Grid() {
-                    GridRow {
-                        totalRecordsStatBox(totalRecords: totalRecords)
-                        currentStreakStatBox(currentStreak: currentStreak)
+                    HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {
+                        
+                        createRecord(for: activity, in: modelContext)
                     }
-                    GridRow {
-                        avgRecordsPerDayStatBox(avgRecordsPerDay: avgRecordsPerDay)
-                        bestStreakStatBox(bestStreak: bestStreak)
+                    .padding()
+                    
+                    Grid() {
+                        GridRow {
+                            totalRecordsStatBox(totalRecords: totalRecords)
+                            currentStreakStatBox(currentStreak: currentStreak)
+                        }
+                        GridRow {
+                            avgRecordsPerDayStatBox(avgRecordsPerDay: avgRecordsPerDay)
+                            bestStreakStatBox(bestStreak: bestStreak)
+                        }
                     }
+                    .padding()
+                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
+                    )
+                    .padding([.horizontal, .bottom])
+                    
+//                    if
+//                    LineChartDateXAxisView(data: <#T##[LineChartOnDateData]#>)
                 }
-                .padding()
-                .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
-                 )
-                .padding([.horizontal, .bottom])
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
-        .navigationTitle("\(habit.name)")
+        .navigationTitle("\(activity.name)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
@@ -247,7 +251,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         
         DispatchQueue.main.async {
             dismiss()
-            modelContext.delete(habit: habit)
+            modelContext.delete(habit: activity)
         }
     }
     
@@ -427,7 +431,7 @@ struct StatBox: View {
     
     return NavigationStack {
         HabitDetailView(
-            habit: dataHabit,
+            activity: dataHabit,
             goToEditHabit: { },
             goToCreateActivityRecordWithDetails: { _, _ in }
         )

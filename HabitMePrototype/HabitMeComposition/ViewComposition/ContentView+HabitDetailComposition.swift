@@ -28,13 +28,13 @@ class HabitDetailNavigationFlow: NewSheetyNavigationFlow {
 extension ContentView {
     
     @ViewBuilder
-    func makeHabitDetailViewWithSheetyNavigation(habit: DataHabit) -> some View {
+    func makeHabitDetailViewWithSheetyNavigation(activity: DataHabit) -> some View {
         
-        makeHabitDetailView(habit: habit)
+        makeHabitDetailView(activity: activity)
             .sheet(item: $habitDetailNavigationFlowDisplayedSheet) { identifier in
                 switch identifier {
-                case let .editHabit(habit):
-                    makeEditHabitView(habit: habit)
+                case let .editHabit(activity):
+                    makeEditHabitView(habit: activity)
                 case let .createActivityRecordWithDetails(activity, selectedDay):
                     makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
                 }
@@ -43,11 +43,11 @@ extension ContentView {
     
     
     @ViewBuilder
-    private func makeHabitDetailView(habit: DataHabit) -> some View {
+    private func makeHabitDetailView(activity: DataHabit) -> some View {
         
         HabitDetailView(
-            habit: habit,
-            goToEditHabit: { goToEditHabitFromHabitDetail(habit: habit) },
+            activity: activity,
+            goToEditHabit: { goToEditHabitFromHabitDetail(habit: activity) },
             goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHabitDetail
         )
     }

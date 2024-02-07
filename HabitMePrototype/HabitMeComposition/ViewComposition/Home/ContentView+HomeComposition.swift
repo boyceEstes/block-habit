@@ -17,8 +17,8 @@ extension ContentView {
         makeHomeViewWithSheetyNavigation()
             .flowNavigationDestination(flowPath: $homeNavigationFlowPath) { identifier in
                 switch identifier {
-                case let .habitDetail(habit):
-                    makeHabitDetailViewWithSheetyNavigation(habit: habit)
+                case let .habitDetail(activity):
+                    makeHabitDetailViewWithSheetyNavigation(activity: activity)
                 case .statistics:
                     makeStatisticsView()
                 }
