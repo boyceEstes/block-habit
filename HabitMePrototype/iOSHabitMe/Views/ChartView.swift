@@ -39,76 +39,6 @@ struct LineChartActivityDetailData: Identifiable {
     }
 }
 
-struct LineChartDateXAxisView: View {
-    
-    let data: [LineChartActivityDetailData]
-    let lineColor: Color
-//
-//    var initialXScrollPosition: String {
-//        
-//        guard let lastDataPoint = data.last else { return ""}
-//        
-//        return lastDataPoint.displayableDate
-//    }
-    var gradientColor: LinearGradient
-    
-    init(data: [LineChartActivityDetailData], lineColor: Color) {
-        self.data = data
-        self.lineColor = lineColor
-        
-        self.gradientColor = LinearGradient(
-            gradient: Gradient(
-                colors: [
-                    lineColor.opacity(0.5),
-                    lineColor.opacity(0.2),
-                    lineColor.opacity(0.05)
-                ]
-            ),
-            startPoint: .top,
-            endPoint: .bottom
-        )
-    }
-    
-    
-    var body: some View {
-        
-        Chart {
-            ForEach(data) { lineMarkData in
-                
-                LineMark(
-                    x: .value("Date", lineMarkData.displayableDate),
-                    y: .value("Amount", lineMarkData.value)
-                )
-                .interpolationMethod(.catmullRom) // Makes it sloping and fun
-                .symbol {
-                    Circle()
-                        .fill(lineColor)
-                        .frame(width: 5)
-                }
-                .symbolSize(30)
-                .foregroundStyle(lineColor)
-                
-                
-                AreaMark(
-                    x: .value("Date", lineMarkData.displayableDate),
-                    y: .value("Amount", lineMarkData.value)
-                )
-                .interpolationMethod(.catmullRom)
-                .foregroundStyle(gradientColor)
-            }
-        }
-        .frame(height: 150)
-        .chartScrollableAxes(.horizontal)
-        .chartXVisibleDomain(length: 8)
-        
-//        .chartScrollPosition(initialX: initialXScrollPosition)
-    }
-    
-    
-//    var lowestValue:
-}
-
-
 struct BarChartView: View {
     
     let datesWithTestRecords: [Date: [TestingRecord]] = [
@@ -184,5 +114,5 @@ struct BarChartView: View {
     ]
     
     
-    return LineChartDateXAxisView(data: data, lineColor: .red)
+    return ActivityDetailLineMarkChart(data: data, lineColor: .red)
 }
