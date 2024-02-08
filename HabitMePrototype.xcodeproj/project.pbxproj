@@ -32,11 +32,10 @@
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
 		B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */; };
-		B3B403902B71A7E100D1967E /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B4038F2B71A7E100D1967E /* ChartView.swift */; };
 		B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */; };
 		B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */; };
 		B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */; };
-		B3C97F262B5CE95000211B4C /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BarView.swift */; };
+		B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BJBarChart.swift */; };
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
 		B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F292B5CE99200211B4C /* HomeView.swift */; };
 		B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */; };
@@ -82,11 +81,10 @@
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
 		B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreator.swift; sourceTree = "<group>"; };
-		B3B4038F2B71A7E100D1967E /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailLineMarkChart.swift; sourceTree = "<group>"; };
 		B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartActivityDetailData.swift; sourceTree = "<group>"; };
 		B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsOnDate.swift; sourceTree = "<group>"; };
-		B3C97F252B5CE95000211B4C /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
+		B3C97F252B5CE95000211B4C /* BJBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJBarChart.swift; sourceTree = "<group>"; };
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
 		B3C97F292B5CE99200211B4C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitView.swift; sourceTree = "<group>"; };
@@ -203,6 +201,7 @@
 		B3BFE9E32B75207C00DE7617 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
+				B3C97F252B5CE95000211B4C /* BJBarChart.swift */,
 				B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */,
 			);
 			path = Charts;
@@ -261,7 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				B3BFE9E32B75207C00DE7617 /* Charts */,
-				B3C97F252B5CE95000211B4C /* BarView.swift */,
 				B3C97F272B5CE97500211B4C /* HabitsMenu.swift */,
 				B3C97F292B5CE99200211B4C /* HomeView.swift */,
 				B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */,
@@ -272,7 +270,6 @@
 				B32947C72B65950D007C8C1E /* StatisticsView.swift */,
 				B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */,
 				B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */,
-				B3B4038F2B71A7E100D1967E /* ChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -409,7 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3C9E51C2B699BC900153158 /* ModelContext+InsertHabitRecord.swift in Sources */,
-				B3C97F262B5CE95000211B4C /* BarView.swift in Sources */,
+				B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */,
 				B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */,
 				B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */,
 				B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */,
@@ -448,7 +445,6 @@
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
 				B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */,
-				B3B403902B71A7E100D1967E /* ChartView.swift in Sources */,
 				B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */,
 				B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */,
 			);
