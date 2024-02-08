@@ -42,13 +42,33 @@ struct LineChartActivityDetailData: Identifiable {
 struct LineChartDateXAxisView: View {
     
     let data: [LineChartActivityDetailData]
-//    
+    let lineColor: Color
+//
 //    var initialXScrollPosition: String {
 //        
 //        guard let lastDataPoint = data.last else { return ""}
 //        
 //        return lastDataPoint.displayableDate
 //    }
+    var gradientColor: LinearGradient
+    
+    init(data: [LineChartActivityDetailData], lineColor: Color) {
+        self.data = data
+        self.lineColor = lineColor
+        
+        self.gradientColor = LinearGradient(
+            gradient: Gradient(
+                colors: [
+                    lineColor.opacity(0.5),
+                    lineColor.opacity(0.2),
+                    lineColor.opacity(0.05)
+                ]
+            ),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+    
     
     var body: some View {
         
@@ -59,11 +79,28 @@ struct LineChartDateXAxisView: View {
                     x: .value("Date", lineMarkData.displayableDate),
                     y: .value("Amount", lineMarkData.value)
                 )
+                .interpolationMethod(.catmullRom) // Makes it sloping and fun
+                .symbol {
+                    Circle()
+                        .fill(lineColor)
+                        .frame(width: 5)
+                }
+                .symbolSize(30)
+                .foregroundStyle(lineColor)
+                
+                
+                AreaMark(
+                    x: .value("Date", lineMarkData.displayableDate),
+                    y: .value("Amount", lineMarkData.value)
+                )
+                .interpolationMethod(.catmullRom)
+                .foregroundStyle(gradientColor)
             }
         }
         .frame(height: 150)
         .chartScrollableAxes(.horizontal)
         .chartXVisibleDomain(length: 8)
+        
 //        .chartScrollPosition(initialX: initialXScrollPosition)
     }
     
@@ -102,7 +139,7 @@ struct BarChartView: View {
                                     y: .value("Something", 1),
                                     width: 40
                                 )
-                                .foregroundStyle(by: .value("Shape Color", testRecord.activityColor))
+                                .foregroundStyle(by: .value("Shape Color", testRecord.activityColor)) // Makes it the color thats passed in
                             }
                         }
                     }
@@ -146,5 +183,6 @@ struct BarChartView: View {
         LineChartActivityDetailData(date: Date().noon!, value: 300)
     ]
     
-    return LineChartDateXAxisView(data: data)
+    
+    return LineChartDateXAxisView(data: data, lineColor: .red)
 }

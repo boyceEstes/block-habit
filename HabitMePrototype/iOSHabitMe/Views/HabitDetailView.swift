@@ -339,8 +339,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             VStack {
                 Text("\(activityDetail.name)")
                 
-                LineChartDateXAxisView(data: chartInfo)
-                    .foregroundStyle(Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+                LineChartDateXAxisView(data: chartInfo, lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue))
             }
             .sectionBackground()
             .padding(.horizontal)
@@ -408,8 +407,7 @@ struct LineChart: View {
                 
                 let lineChartActivityDetailData = lineChartActivityDetailData(for: activityDetail, activity: activity)
                 
-                LineChartDateXAxisView(data: lineChartActivityDetailData)
-                    .foregroundStyle(Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+                LineChartDateXAxisView(data: lineChartActivityDetailData, lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue))
             }
         }
     }

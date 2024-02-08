@@ -14,10 +14,10 @@
             filePath = "HabitMePrototype/iOSHabitMe/Views/HabitDetailView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "471"
-            endingLineNumber = "471"
-            landmarkName = "lineChartActivityDetailData(for:activity:)"
-            landmarkType = "7">
+            startingLineNumber = "472"
+            endingLineNumber = "472"
+            landmarkName = "LineChart"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -30,11 +30,26 @@
             filePath = "HabitMePrototype/iOSHabitMe/Views/HabitDetailView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
+            startingLineNumber = "435"
+            endingLineNumber = "435"
             landmarkName = "lineChartActivityDetailData(for:activity:)"
             landmarkType = "7">
             <Locations>
+               <Location
+                  uuid = "4AB5563A-695D-4A9A-96C4-1B5C6C9F3EC1 - 67f681d2c8748581"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HabitMePrototype.LineChart.lineChartActivityDetailData(for: HabitMePrototype.DataActivityDetail, activity: HabitMePrototype.DataHabit) -&gt; Swift.Array&lt;HabitMePrototype.LineChartActivityDetailData&gt;"
+                  moduleName = "HabitMePrototype"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/HabitDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "438"
+                  endingLineNumber = "438"
+                  offsetFromSymbolStart = "1246">
+               </Location>
                <Location
                   uuid = "4AB5563A-695D-4A9A-96C4-1B5C6C9F3EC1 - 67f681d2c87485c3"
                   shouldBeEnabled = "Yes"
@@ -49,21 +64,6 @@
                   startingLineNumber = "436"
                   endingLineNumber = "436"
                   offsetFromSymbolStart = "1246">
-               </Location>
-               <Location
-                  uuid = "4AB5563A-695D-4A9A-96C4-1B5C6C9F3EC1 - 67f681d2c874860d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HabitMePrototype.LineChart.lineChartActivityDetailData(for: HabitMePrototype.DataActivityDetail, activity: HabitMePrototype.DataHabit) -&gt; Swift.Array&lt;HabitMePrototype.LineChartActivityDetailData&gt;"
-                  moduleName = "HabitMePrototype"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/HabitDetailView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "434"
-                  endingLineNumber = "434"
-                  offsetFromSymbolStart = "2253">
                </Location>
             </Locations>
          </BreakpointContent>
