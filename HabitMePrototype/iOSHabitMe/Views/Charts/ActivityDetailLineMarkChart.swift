@@ -16,18 +16,6 @@ struct ActivityDetailLineMarkChart: View {
     let data: [LineChartActivityDetailData]
     let lineColor: Color
 
-//    var initialXScrollPosition: String {
-//        
-//        var initialPosition = 0
-//        let dataCount = data.count
-//        
-//        if dataCount > xVisibleDomainLength {
-//            initialPosition = dataCount - initialPosition
-//        }
-//
-//        let initialValueToScrollTo = data[initialPosition].displayableDate
-//        return initialValueToScrollTo
-//    }
     var initialXScrollPosition: String {
         
         guard let index = data.index(data.endIndex, offsetBy: -xVisibleDomainLength, limitedBy: data.startIndex) else {

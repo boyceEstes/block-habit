@@ -30,42 +30,10 @@
             filePath = "HabitMePrototype/iOSHabitMe/Views/Charts/ActivityDetailLineMarkChart.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "initialXScrollPosition"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "9E6BC6FD-67D8-4F04-B4A1-F67B54433260 - c272d8bd0cd6da15"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HabitMePrototype.ActivityDetailLineMarkChart.init(data: Swift.Array&lt;HabitMePrototype.LineChartActivityDetailData&gt;, lineColor: SwiftUI.Color) -&gt; HabitMePrototype.ActivityDetailLineMarkChart"
-                  moduleName = "HabitMePrototype"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/Charts/ActivityDetailLineMarkChart.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14"
-                  offsetFromSymbolStart = "75">
-               </Location>
-               <Location
-                  uuid = "9E6BC6FD-67D8-4F04-B4A1-F67B54433260 - bd78103e6dc61bb9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HabitMePrototype.ActivityDetailLineMarkChart.initialXScrollPosition.getter : Swift.String"
-                  moduleName = "HabitMePrototype"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/Charts/ActivityDetailLineMarkChart.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "34"
-                  endingLineNumber = "34"
-                  offsetFromSymbolStart = "456">
-               </Location>
-            </Locations>
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "ActivityDetailLineMarkChart"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
