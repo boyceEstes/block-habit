@@ -34,6 +34,7 @@
 		B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */; };
 		B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */; };
 		B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */; };
+		B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */; };
 		B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */; };
 		B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BJBarChart.swift */; };
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
@@ -83,6 +84,7 @@
 		B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreator.swift; sourceTree = "<group>"; };
 		B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailLineMarkChart.swift; sourceTree = "<group>"; };
 		B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartActivityDetailData.swift; sourceTree = "<group>"; };
+		B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Constants.swift"; sourceTree = "<group>"; };
 		B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsOnDate.swift; sourceTree = "<group>"; };
 		B3C97F252B5CE95000211B4C /* BJBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJBarChart.swift; sourceTree = "<group>"; };
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				B3C97F212B5CE91500211B4C /* Models */,
 				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
 				B32947A92B61E848007C8C1E /* DateFormatter+Reusable.swift */,
+				B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */,
 			);
 			path = iOSHabitMe;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */,
+				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
 				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,

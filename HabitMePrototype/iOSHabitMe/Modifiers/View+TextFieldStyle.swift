@@ -9,13 +9,6 @@ import SwiftUI
 import Combine
 
 
-struct Constant {
-    
-    static let textFieldPadding: CGFloat = 8
-    static let cornerRadius: CGFloat = 10
-}
-
-
 struct NumberTextField: View {
     
     let title: String
@@ -104,8 +97,8 @@ struct TextFieldBackground: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(Constant.textFieldPadding)
-            .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: Constant.cornerRadius))
+            .padding(.textFieldPadding)
+            .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: .cornerRadius))
     }
 }
 

@@ -223,11 +223,16 @@ struct HabitRecordBlocksOnDate: View {
             let _ = print("-- completionDate: \(habitRecord.completionDate)")
             let _ = print("-- creationDate: \(habitRecord.creationDate)")
             
+            let isLastRecord = habitRecords.first == habitRecord
+            
             ActivityBlock(
                 colorHex: habitRecord.habit?.color ?? UIColor.black.toHexString()!,
                 itemWidth: itemWidth,
                 itemHeight: itemHeight,
                 tapAction: didTapBlock
+            )
+            .clipShape(
+                UnevenRoundedRectangle(cornerRadii: .init(topLeading: isLastRecord ? .bigBlockCornerRadius : 0, topTrailing: isLastRecord ? .bigBlockCornerRadius : 0))
             )
         }
     }
@@ -248,10 +253,16 @@ struct ActivityBlock: View {
         self.tapAction = tapAction
     }
     
+    
+    var color: Color {
+        Color(hex: colorHex) ?? .gray
+    }
+    
+    
     var body: some View {
         
         Rectangle()
-            .fill(Color(hex: colorHex) ?? .gray)
+            .fill(color)
             .frame(width: itemWidth, height: itemHeight)
             .onTapGesture(perform: tapAction)
     }
