@@ -23,7 +23,7 @@ extension DateFormatter {
     static let monthDayDate: DateFormatter = {
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM D"
+        formatter.dateFormat = "MMM d"
         return formatter
     }()
     
