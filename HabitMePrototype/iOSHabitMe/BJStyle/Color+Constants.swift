@@ -15,29 +15,40 @@ extension Color {
     static let secondaryFont: Color = .secondary
 }
 
+
 #Preview {
 
     VStack {
-        Text("Some kind of text")
-            .foregroundStyle(.secondary)
-        Text("Some kind of text")
-            .foregroundStyle(Color.secondaryFont)
-        Text("In secondary background")
-            .foregroundStyle(.secondary)
-            .padding()
-            .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10))
-        Text("In secondary background")
-            .foregroundStyle(Color.secondaryFont)
-            .padding()
-            .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10))
-        Text("In tertiary background")
-            .foregroundStyle(.secondary)
-            .padding()
-            .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
-        Text("In tertiary background")
-            .foregroundStyle(Color.secondaryFont)
-            .padding()
-            .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
+        VStack {
+            Text("Some kind of text")
+                .foregroundStyle(.secondary)
+            Text("Some kind of text")
+                .foregroundStyle(Color.secondaryFont)
+        }
+        .sectionBackground()
+        
+        VStack {
+            Text("In secondary background")
+                .foregroundStyle(.secondary)
+                .padding()
+                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
+            Text("In secondary background")
+                .foregroundStyle(Color.secondaryFont)
+                .padding()
+                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
+        }
+        .sectionBackground()
+        
+        VStack {
+            Text("In tertiary background")
+                .foregroundStyle(.secondary)
+                .padding()
+                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
+            Text("In tertiary background")
+                .foregroundStyle(Color.secondaryFont)
+                .padding()
+                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
+        }
         
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
