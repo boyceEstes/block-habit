@@ -10,9 +10,9 @@ import SwiftUI
 
 extension View {
     
-    func sectionBackground() -> some View {
+    func sectionBackground(color: Color = .secondaryBackground) -> some View {
         
-        modifier(SectionBackground())
+        modifier(SectionBackground(color: color))
     }
     
 }
@@ -20,10 +20,12 @@ extension View {
 
 struct SectionBackground: ViewModifier {
     
+    let color: Color
+    
     func body(content: Content) -> some View {
         content
             .padding()
-            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+            .background(color, in: RoundedRectangle(cornerRadius: .cornerRadius))
     }
 }
 

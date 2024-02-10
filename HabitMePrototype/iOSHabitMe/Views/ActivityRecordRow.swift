@@ -42,7 +42,7 @@ struct ActivityRecordRowTitleDate: View {
 
 /// Intended for use when displaying activity records that will only need some Date as the title
 /// For example, the `HabitDetailView` would show logs with only the date
-struct ActivityRecordRowDate: View {
+struct ActivityRecordRowDateWithInfo: View {
     
     let activityRecord: ActivityRecord
     
@@ -50,11 +50,19 @@ struct ActivityRecordRowDate: View {
         
         let date = activityRecord.completionDate.displayDate
         
-        ActivityRecordRow {
-            Text("\(date)")
-                .font(.rowTitle)
-        } detailRecordContent: {
+        VStack(alignment: .leading, spacing: .rowVDetailSpacing) {
             
+            HStack {
+                Text("\(date)")
+                    .font(.rowTitle)
+                Spacer()
+            }
+            
+            let detailRecords = activityRecord.detailRecords
+            
+            if !detailRecords.isEmpty {
+                ActivityRecordRowContent(detailRecords: detailRecords)
+            }
         }
     }
 }
@@ -109,10 +117,9 @@ struct ActivityRecordRowContent: View {
     var body: some View {
         
         // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
-        LazyVStack(alignment: .leading) {
+        LazyVStack(alignment: .leading, spacing: .rowVDetailSpacing) {
 
             ActivityDetailRecordIndicators(detailRecords: detailRecords)
-//            ActivityDetailRecordGrid(detailRecords: detailRecords)
             ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
         }
     }
@@ -158,7 +165,10 @@ struct ActivityDetailRecordTextList: View {
                     .foregroundStyle(Color.secondaryFont)
                 Text("\(textActivityDetailRecord.value)")
             }
-            .sectionBackground()
+            .frame(maxWidth: .infinity, alignment: .leading)
+//            .padding()
+//            .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: .cornerRadius))
+            .sectionBackground(color: .tertiaryBackground)
         }
     }
 }
@@ -205,7 +215,7 @@ struct ActivityDetailRecordNumberGrid: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .sectionBackground()
+                .sectionBackground(color: .tertiaryBackground)
             }
         }
     }
@@ -316,14 +326,14 @@ struct ActivityDetailRecordNumberGrid: View {
         completionDate: Date(),
         detailRecords: [
             activityDetailRecordTimeRecord,
-            activityDetailRecordAmountRecord
+            activityDetailRecordAmountRecord,
 //            activityDetailLengthRecord,
-//            activityDetailRecordNoteRecord,
+            activityDetailRecordNoteRecord
 //            activityDetailTouchdownsRecord
         ]
     )
     
-    return ActivityRecordRowTitleDate(selectedDay: Date(), activityRecord: activityRecord).sectionBackground()
+    return ActivityRecordRowDateWithInfo(activityRecord: activityRecord).sectionBackground()
 }
 
 

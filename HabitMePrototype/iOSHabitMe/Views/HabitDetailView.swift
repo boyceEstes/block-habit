@@ -299,7 +299,12 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     
                     activityDetailCharts
                     
-                    
+                    VStack(alignment: .leading) {
+                        Text("Activity Logs")
+                            .font(.sectionTitle)
+                        allActivtyRecords
+                    }
+                    .padding(.horizontal)
                 }
                 .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
@@ -344,6 +349,16 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             }
             .sectionBackground()
             .padding(.horizontal)
+        }
+    }
+    
+    
+    var allActivtyRecords: some View {
+        
+        ForEach(filteredDatahabitRecordsForHabit) { activityRecord in
+            
+            ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
+                .sectionBackground()
         }
     }
     

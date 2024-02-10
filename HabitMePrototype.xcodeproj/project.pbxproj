@@ -233,6 +233,7 @@
 			children = (
 				B3C9E54A2B6EC06F00153158 /* Modifiers */,
 				B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */,
+				B3BFEA102B76806100DE7617 /* Color+Constants.swift */,
 			);
 			path = BJStyle;
 			sourceTree = "<group>";
@@ -273,7 +274,6 @@
 				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
 				B32947A92B61E848007C8C1E /* DateFormatter+Reusable.swift */,
 				B3BFEA0B2B76672500DE7617 /* BJAsset.swift */,
-				B3BFEA102B76806100DE7617 /* Color+Constants.swift */,
 			);
 			path = iOSHabitMe;
 			sourceTree = "<group>";
