@@ -63,9 +63,8 @@ struct HabitRecordDetailView: View {
                                 .sectionBackground()
                         }
                     }
-                } else {
-                    Text("There are no activity record details")
                 }
+                
                 HStack {
                     Text("Completion Time")
                     Spacer()
@@ -106,7 +105,6 @@ struct HabitRecordDetailView: View {
         } topBarTrailingContent: {
             HabitMeSheetDismissButton(dismiss: { dismiss() })
         }
-
     }
     
     
