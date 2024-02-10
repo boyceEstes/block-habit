@@ -48,14 +48,17 @@ struct ActivityRecordRowDateWithInfo: View {
     
     var body: some View {
         
-        let date = activityRecord.completionDate.displayDate
+        let completionDate = activityRecord.completionDate
+        let titleDate = completionDate.displayDate
         
         VStack(alignment: .leading, spacing: .rowVDetailSpacing) {
             
             HStack {
-                Text("\(date)")
+                Text("\(titleDate)")
                     .font(.rowTitle)
                 Spacer()
+                Text("\(DisplayDatePolicy.date(for: activityRecord, on: completionDate))")
+                    .font(.rowDetail)
             }
             
             let detailRecords = activityRecord.detailRecords
@@ -344,11 +347,23 @@ struct UnwrappedValueText: View {
         detail: activityDetailNote
     )
     
+    let creationDate = DateComponents(calendar: .current, year: 2024, month: 2, day: 10, hour: 16, minute: 30, second: 01).date!
+    let completionDateMadeFromAnotherDay = DateComponents(calendar: .current, year: 2024, month: 2, day: 9, hour: 23, minute: 59, second: 59).date!
+    let completionDateMadeFromSameDay = creationDate
     
-    let activityRecord = ActivityRecord(
+    
+    let activityRecordMunchingTacos = ActivityRecord(
+        title: "Munching Tacos",
+        creationDate: creationDate,
+        completionDate: completionDateMadeFromSameDay,
+        detailRecords: []
+    )
+    // I want an activity record for this date and a creationDate that is different than the completionDate
+    
+    let activityRecordChuggingDew = ActivityRecord(
         title: "Chugging Dew",
-        creationDate: Date(),
-        completionDate: Date(),
+        creationDate: creationDate,
+        completionDate: completionDateMadeFromAnotherDay,
         detailRecords: [
             activityDetailRecordTimeRecord,
             activityDetailRecordAmountRecord,
@@ -359,7 +374,10 @@ struct UnwrappedValueText: View {
         ]
     )
     
-    return ActivityRecordRowDateWithInfo(activityRecord: activityRecord).sectionBackground()
+    return VStack {
+        ActivityRecordRowDateWithInfo(activityRecord: activityRecordMunchingTacos).sectionBackground()
+        ActivityRecordRowDateWithInfo(activityRecord: activityRecordChuggingDew).sectionBackground()
+    }
 }
 
 
