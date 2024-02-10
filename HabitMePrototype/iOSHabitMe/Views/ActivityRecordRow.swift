@@ -13,19 +13,28 @@ import SwiftUI
 /// For example, in the DayView.
 struct ActivityRecordRowTitleDate: View {
     
+    // This is for knowing the date to display
+    let selectedDay: Date
     let activityRecord: ActivityRecord
+    
+    
     
     var body: some View {
         
-        ActivityRecordRow {
-            HStack {
+        VStack(alignment: .leading, spacing: .rowVDetailSpacing) {
+            HStack(alignment: .center) {
                 Text("\(activityRecord.title)")
                     .font(.rowTitle)
                 Spacer()
-                Text("\(activityRecord.displayableCompletionDate)")
+                Text("\(DisplayDatePolicy.date(for: activityRecord, on: selectedDay))")
+                    .font(.callout)
             }
-        } detailRecordContent: {
-            ActivityRecordRowContent(detailRecords: activityRecord.detailRecords)
+            
+            let detailRecords = activityRecord.detailRecords
+            
+            if !detailRecords.isEmpty {
+                ActivityDetailRecordIndicators(detailRecords: detailRecords)
+            }
         }
     }
 }
@@ -39,7 +48,7 @@ struct ActivityRecordRowDate: View {
     
     var body: some View {
         
-        let date = activityRecord.complationDate.displayDate
+        let date = activityRecord.completionDate.displayDate
         
         ActivityRecordRow {
             Text("\(date)")
@@ -66,9 +75,28 @@ fileprivate struct ActivityRecordRow<TitleContent: View, DetailRecordContent: Vi
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: .rowVDetailSpacing) {
+        VStack(alignment: .center, spacing: .rowVDetailSpacing) {
             titleContent
             detailRecordContent
+        }
+    }
+}
+
+
+struct ActivityDetailRecordIndicators: View {
+    
+    let detailRecords: [ActivityDetailRecord2]
+    
+    var body: some View {
+        
+        HStack {
+            ForEach(detailRecords, id: \.id) { detailRecord in
+                
+                let detail = detailRecord.detail
+                
+                detail.valueType.asset.image()
+                    .foregroundColor(.secondaryFont)
+            }
         }
     }
 }
@@ -82,16 +110,8 @@ struct ActivityRecordRowContent: View {
         
         // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
         LazyVStack(alignment: .leading) {
-            HStack {
-                ForEach(detailRecords, id: \.id) { detailRecord in
-                    
-                    let detail = detailRecord.detail
-                    
-                    detail.valueType.asset.image()
-                        .foregroundColor(.secondaryFont)
-                }
-            }
-            
+
+            ActivityDetailRecordIndicators(detailRecords: detailRecords)
 //            ActivityDetailRecordGrid(detailRecords: detailRecords)
             ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
         }
@@ -292,17 +312,18 @@ struct ActivityDetailRecordNumberGrid: View {
     
     let activityRecord = ActivityRecord(
         title: "Chugging Dew",
-        complationDate: Date(),
+        creationDate: Date(),
+        completionDate: Date(),
         detailRecords: [
             activityDetailRecordTimeRecord,
-            activityDetailRecordAmountRecord,
-            activityDetailLengthRecord,
-            activityDetailRecordNoteRecord,
-            activityDetailTouchdownsRecord
+            activityDetailRecordAmountRecord
+//            activityDetailLengthRecord,
+//            activityDetailRecordNoteRecord,
+//            activityDetailTouchdownsRecord
         ]
     )
     
-    return ActivityRecordRowTitleDate(activityRecord: activityRecord)
+    return ActivityRecordRowTitleDate(selectedDay: Date(), activityRecord: activityRecord).sectionBackground()
 }
 
 

@@ -55,15 +55,15 @@ struct DayView: View {
                         itemHeight: itemHeight
                     )
                     
-                    VStack(alignment: .leading) {
-                        Text("\(habitRecord.habit?.name ?? "Could Not Find Habit")")
-                        Text("\(DisplayDatePolicy.date(for: habitRecord, on: selectedDay))")
-                            .font(.footnote)
-                            .foregroundStyle(Color.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+//                    VStack(alignment: .leading) {
+//                        Text("\(habitRecord.habit?.name ?? "Could Not Find Habit")")
+//                        Text("\(DisplayDatePolicy.date(for: habitRecord.toModel(), on: selectedDay))")
+//                            .font(.footnote)
+//                            .foregroundStyle(Color.secondary)
+//                    }
+                    ActivityRecordRowTitleDate(selectedDay: selectedDay, activityRecord: habitRecord.toModel())
                     .padding()
-                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+                    .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10))
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button {

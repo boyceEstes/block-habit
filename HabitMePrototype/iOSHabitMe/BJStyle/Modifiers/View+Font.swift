@@ -20,6 +20,7 @@ extension Font {
     static var navSubtitle: Font { .subheadline }
     
     static var rowTitle: Font { .headline }
+    static var rowDetail: Font { .callout }
 }
 
 
