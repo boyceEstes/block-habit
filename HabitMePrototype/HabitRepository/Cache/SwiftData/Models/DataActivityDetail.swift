@@ -90,6 +90,16 @@ enum ActivityDetailType: String, CaseIterable, Identifiable, Hashable, Codable {
     case text = "Text"
     
     var id: ActivityDetailType { self }
+    
+    
+    var asset: BJAsset {
+        switch self {
+        case .number:
+            BJAsset.numberSquare
+        case .text:
+            BJAsset.characterBubble
+        }
+    }
 }
 
 

@@ -131,7 +131,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
                     }
                 )
             }
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .background(Color.primaryBackground)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

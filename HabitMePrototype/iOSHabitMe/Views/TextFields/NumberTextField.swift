@@ -1,13 +1,11 @@
 //
-//  View+TextFieldStyle.swift
+//  NumberTextField.swift
 //  HabitMePrototype
 //
-//  Created by Boyce Estes on 2/3/24.
+//  Created by Boyce Estes on 2/9/24.
 //
 
 import SwiftUI
-import Combine
-
 
 struct NumberTextField: View {
     
@@ -72,46 +70,11 @@ struct NumberTextField: View {
 }
 
 
-//struct BasicTextFieldStyle: TextFieldStyle {
-//    func _body(configuration: TextField<Self._Label>) -> some View {
-//        configuration
-//        .padding(8)
-//        .background(
-//            Color(uiColor: .tertiarySystemGroupedBackground),
-//            in: RoundedRectangle(cornerRadius: 10, style: .continuous)
-//        )
-//    }
-//}
-
-
-extension View {
-    
-    func textFieldBackground() -> some View {
-        
-        modifier(TextFieldBackground())
-    }
-}
-
-
-struct TextFieldBackground: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        content
-            .padding(.textFieldPadding)
-            .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: .cornerRadius))
-    }
-}
-
-
 #Preview {
     
     @State var someTextFieldValue = ""
+    
     return VStack {
-        VStack {
-            Text("Basic")
-            TextField("Description", text: $someTextFieldValue)
-                .textFieldBackground()
-        }
         VStack {
             Text("NumberTextField with units")
             NumberTextField("Duration", text: $someTextFieldValue, units: "minutes really long")

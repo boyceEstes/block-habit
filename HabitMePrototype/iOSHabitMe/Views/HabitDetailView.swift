@@ -298,6 +298,8 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     
                     
                     activityDetailCharts
+                    
+                    
                 }
                 .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
@@ -335,7 +337,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             
             let (activityDetail, chartInfo) = chartInformation
             
-            VStack {
+            VStack(alignment: .leading) {
                 Text("\(activityDetail.name)")
                 
                 ActivityDetailLineMarkChart(data: chartInfo, lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue))

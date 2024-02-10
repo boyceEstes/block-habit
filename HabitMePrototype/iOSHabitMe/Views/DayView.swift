@@ -78,7 +78,6 @@ struct DayView: View {
                     goToHabitRecordDetail(habitRecord)
                 }
             }
-//            .onDelete(perform: deleteActivities)
             .listRowSeparator(.hidden)
             .listRowBackground(Color(uiColor: .secondarySystemGroupedBackground))
 

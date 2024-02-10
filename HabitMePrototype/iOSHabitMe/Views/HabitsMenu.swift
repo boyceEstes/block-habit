@@ -199,7 +199,7 @@ struct HabitsMenu: View {
             }
             .padding(.horizontal)
         }
-        .background(Color(uiColor: .tertiarySystemGroupedBackground))
+        .background(Color.secondaryBackground)
         .clipShape(
             RoundedRectangle(cornerRadius: 20))
         .padding()
