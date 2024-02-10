@@ -54,3 +54,24 @@ final class DataHabitRecord {
         self.activityDetailRecords = activityDetailRecords
     }
 }
+
+
+// Oh god we're gonna have do conversion for everything.
+// The main reason I wanted to have a model was to access variables
+// without getting the strange SwiftData relationship fault crashes.
+// So even though its a pain, I think its still worth it to do this
+// to make the app more consistent.
+
+extension DataHabitRecord {
+    
+    func toModel() -> ActivityRecord {
+        
+        ActivityRecord(
+            id: self.id,
+            title: self.habit?.name ?? "Unknown Title",
+            creationDate: self.creationDate,
+            completionDate: self.completionDate,
+            detailRecords: self.activityDetailRecords.toModel()
+        )
+    }
+}

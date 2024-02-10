@@ -119,6 +119,20 @@ extension DataActivityDetail {
 }
 
 
+extension DataActivityDetail {
+    
+    func toModel() -> ActivityDetail {
+        
+        ActivityDetail(
+            id: self.id,
+            name: self.name,
+            valueType: self.valueType,
+            units: self.availableUnits.first
+        )
+    }
+}
+
+
 @Model
 final class DataActivityDetailRecord: Hashable {
     
@@ -152,5 +166,27 @@ final class DataActivityDetailRecord: Hashable {
         self.unit = unit
         self.activityDetail = activityDetail
         self.activityRecord = activityRecord
+    }
+}
+
+
+extension DataActivityDetailRecord {
+    
+    func toModel() -> ActivityDetailRecord2 {
+        
+        ActivityDetailRecord2(
+            id: self.id,
+            value: self.value,
+            detail: self.activityDetail.toModel()
+        )
+    }
+}
+
+
+extension Array where Element == DataActivityDetailRecord {
+    
+    func toModel() -> [ActivityDetailRecord2] {
+        
+        map { $0.toModel() }
     }
 }

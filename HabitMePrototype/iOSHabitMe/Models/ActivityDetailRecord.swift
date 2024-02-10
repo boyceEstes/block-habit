@@ -86,21 +86,29 @@ struct ActivityRecord: Identifiable, Hashable {
     let id: String
     
     let title: String
-    let complationDate: Date
+    let creationDate: Date
+    let completionDate: Date
     let detailRecords: [ActivityDetailRecord2]
     
-    init(id: String = UUID().uuidString, title: String, complationDate: Date, detailRecords: [ActivityDetailRecord2]) {
+    init(
+        id: String = UUID().uuidString,
+        title: String,
+        creationDate: Date,
+        completionDate: Date,
+        detailRecords: [ActivityDetailRecord2]
+    ) {
         
         self.id = id
         self.title = title
-        self.complationDate = complationDate
+        self.creationDate = creationDate
+        self.completionDate = completionDate
         self.detailRecords = detailRecords
     }
     
     
     var displayableCompletionDate: String {
         
-        DateFormatter.shortDateShortTime.string(from: complationDate)
+        DateFormatter.shortDateShortTime.string(from: completionDate)
     }
 }
 
