@@ -19,4 +19,7 @@ extension CGFloat {
     
     static var vSectionSpacing: CGFloat = 20
     static var vItemSpacing: CGFloat = 12
+    
+    /// sections that are details in a larger section, there can be many and we want there to be less padding to get more on a page and not give it so much importance
+    static var detailPadding: CGFloat = 8
 }

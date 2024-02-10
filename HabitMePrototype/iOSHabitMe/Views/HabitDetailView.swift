@@ -472,9 +472,8 @@ struct StatBox: View {
                     .multilineTextAlignment(.center)
             }
         }
-        .padding(8)
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .systemBackground), in: RoundedRectangle(cornerRadius: 10))
+        .frame(maxWidth: .infinity)
+        .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
     }
 }
 

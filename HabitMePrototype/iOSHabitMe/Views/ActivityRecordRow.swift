@@ -170,7 +170,7 @@ struct ActivityDetailRecordTextList: View {
                 UnwrappedValueText(activityDetailRecord: textActivityDetailRecord)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .sectionBackground(color: .tertiaryBackground)
+            .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
         }
     }
 }
@@ -217,7 +217,7 @@ struct ActivityDetailRecordNumberGrid: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .sectionBackground(color: .tertiaryBackground)
+                .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
             }
         }
     }
