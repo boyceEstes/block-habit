@@ -39,6 +39,7 @@
 		B3BFEA0C2B76672500DE7617 /* BJAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA0B2B76672500DE7617 /* BJAsset.swift */; };
 		B3BFEA0F2B76769900DE7617 /* NumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA0E2B76769900DE7617 /* NumberTextField.swift */; };
 		B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA102B76806100DE7617 /* Color+Constants.swift */; };
+		B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA132B77FF6B00DE7617 /* DisplayDatePolicy.swift */; };
 		B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */; };
 		B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BJBarChart.swift */; };
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
@@ -93,6 +94,7 @@
 		B3BFEA0B2B76672500DE7617 /* BJAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJAsset.swift; sourceTree = "<group>"; };
 		B3BFEA0E2B76769900DE7617 /* NumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberTextField.swift; sourceTree = "<group>"; };
 		B3BFEA102B76806100DE7617 /* Color+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Constants.swift"; sourceTree = "<group>"; };
+		B3BFEA132B77FF6B00DE7617 /* DisplayDatePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDatePolicy.swift; sourceTree = "<group>"; };
 		B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsOnDate.swift; sourceTree = "<group>"; };
 		B3C97F252B5CE95000211B4C /* BJBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJBarChart.swift; sourceTree = "<group>"; };
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */,
+				B3BFEA132B77FF6B00DE7617 /* DisplayDatePolicy.swift */,
 			);
 			path = Policies;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,
 				B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */,
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
+				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
 				B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */,

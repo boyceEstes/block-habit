@@ -57,7 +57,7 @@ struct DayView: View {
                     
                     VStack(alignment: .leading) {
                         Text("\(habitRecord.habit?.name ?? "Could Not Find Habit")")
-                        Text("\(displayDate(for: habitRecord))")
+                        Text("\(DisplayDatePolicy.date(for: habitRecord, on: selectedDay))")
                             .font(.footnote)
                             .foregroundStyle(Color.secondary)
                     }
@@ -90,38 +90,6 @@ struct DayView: View {
     
     
     // MARK: Helper methods
-    private func displayDate(for habitRecord: DataHabitRecord) -> String {
-        
-        let timeDateFormatter: DateFormatter = .shortTime
-        let dateTimeDateFormatter: DateFormatter = .shortDateShortTime
-        
-        guard let dayOfActivityCreation = habitRecord.creationDate.noon else {
-            return "Unknown"
-        }
-        
-        /*
-        * The purpose: We want the user to only be able to edit a task's completionTime - and order
-        * properly when it is changed, despite the creationDate having an entirely different date -
-        * only display the creation date when it is unedited and created on another date
-        */
-
-        let completionTime = Calendar.current.dateComponents([.hour, .minute, .second], from: habitRecord.completionDate)
-        
-        var isCompletionTimeLastSecond: Bool {
-            completionTime.hour == 23 && completionTime.minute == 59 && completionTime.second == 59
-        }
-        
-        
-        if isCompletionTimeLastSecond && dayOfActivityCreation != selectedDay {
-            let dateTimeToFormat = habitRecord.creationDate
-            return dateTimeDateFormatter.string(from: dateTimeToFormat).lowercased()
-            
-        } else {
-            let timeToFormat = habitRecord.completionDate
-            return timeDateFormatter.string(from: timeToFormat).lowercased()
-        }
-    }
-    
     
     private func deleteActivity(habitRecord: DataHabitRecord) {
         modelContext.delete(habitRecord)
