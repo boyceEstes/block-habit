@@ -306,9 +306,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     }
                     .padding(.horizontal)
                 }
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
         }
+        .background(Color.primaryBackground)
         .navigationTitle("\(activity.name)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
