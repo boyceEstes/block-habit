@@ -40,6 +40,7 @@
 		B3BFEA0F2B76769900DE7617 /* NumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA0E2B76769900DE7617 /* NumberTextField.swift */; };
 		B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA102B76806100DE7617 /* Color+Constants.swift */; };
 		B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA132B77FF6B00DE7617 /* DisplayDatePolicy.swift */; };
+		B3BFEA162B781A1A00DE7617 /* String+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA152B781A1A00DE7617 /* String+Constants.swift */; };
 		B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */; };
 		B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BJBarChart.swift */; };
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
@@ -95,6 +96,7 @@
 		B3BFEA0E2B76769900DE7617 /* NumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberTextField.swift; sourceTree = "<group>"; };
 		B3BFEA102B76806100DE7617 /* Color+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Constants.swift"; sourceTree = "<group>"; };
 		B3BFEA132B77FF6B00DE7617 /* DisplayDatePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDatePolicy.swift; sourceTree = "<group>"; };
+		B3BFEA152B781A1A00DE7617 /* String+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Constants.swift"; sourceTree = "<group>"; };
 		B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsOnDate.swift; sourceTree = "<group>"; };
 		B3C97F252B5CE95000211B4C /* BJBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJBarChart.swift; sourceTree = "<group>"; };
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				B3C9E54A2B6EC06F00153158 /* Modifiers */,
 				B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */,
 				B3BFEA102B76806100DE7617 /* Color+Constants.swift */,
+				B3BFEA152B781A1A00DE7617 /* String+Constants.swift */,
 			);
 			path = BJStyle;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */,
 				B3BFEA0C2B76672500DE7617 /* BJAsset.swift in Sources */,
 				B32947A42B601CD3007C8C1E /* HabitDetailView.swift in Sources */,
+				B3BFEA162B781A1A00DE7617 /* String+Constants.swift in Sources */,
 				B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */,
 				B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */,
 				B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */,

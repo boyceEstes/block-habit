@@ -69,26 +69,26 @@ struct ActivityRecordRowDateWithInfo: View {
 
 
 /// Intended to prevent duplicate logic and points of failure between different rows displaying activity record date
-fileprivate struct ActivityRecordRow<TitleContent: View, DetailRecordContent: View>: View {
-    
-    let titleContent: TitleContent
-    let detailRecordContent: DetailRecordContent
-    
-    init(@ViewBuilder titleContent: () -> TitleContent, @ViewBuilder detailRecordContent: () -> DetailRecordContent) {
-        
-        self.titleContent = titleContent()
-        self.detailRecordContent = detailRecordContent()
-    }
-    
-    
-    var body: some View {
-        
-        VStack(alignment: .center, spacing: .rowVDetailSpacing) {
-            titleContent
-            detailRecordContent
-        }
-    }
-}
+//fileprivate struct ActivityRecordRow<TitleContent: View, DetailRecordContent: View>: View {
+//    
+//    let titleContent: TitleContent
+//    let detailRecordContent: DetailRecordContent
+//    
+//    init(@ViewBuilder titleContent: () -> TitleContent, @ViewBuilder detailRecordContent: () -> DetailRecordContent) {
+//        
+//        self.titleContent = titleContent()
+//        self.detailRecordContent = detailRecordContent()
+//    }
+//    
+//    
+//    var body: some View {
+//        
+//        VStack(alignment: .center, spacing: .rowVDetailSpacing) {
+//            titleContent
+//            detailRecordContent
+//        }
+//    }
+//}
 
 
 struct ActivityDetailRecordIndicators: View {
@@ -163,11 +163,10 @@ struct ActivityDetailRecordTextList: View {
                 Text("\(textActivityDetailRecord.detail.name)")
                     .font(.callout)
                     .foregroundStyle(Color.secondaryFont)
-                Text("\(textActivityDetailRecord.value)")
+                
+                UnwrappedValueText(activityDetailRecord: textActivityDetailRecord)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-//            .padding()
-//            .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: .cornerRadius))
             .sectionBackground(color: .tertiaryBackground)
         }
     }
@@ -227,12 +226,7 @@ struct ActivityDetailRecordNumberGrid: View {
         let units = numberActivityDetailRecord.detail.units
         
         HStack {
-            Text("\(numberActivityDetailRecord.value)")
-                .layoutPriority(1)
-            if let units {
-                Text(units)
-                    .font(.callout)
-            }
+            UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
         }
         .lineLimit(1)
     }
@@ -240,16 +234,39 @@ struct ActivityDetailRecordNumberGrid: View {
     @ViewBuilder
     func vStackFit(for numberActivityDetailRecord: ActivityDetailRecord2) -> some View {
         
-        let units = numberActivityDetailRecord.detail.units
-        
         VStack(alignment: .leading) {
-            Text("\(numberActivityDetailRecord.value)")
+            UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
+        }
+        .lineLimit(1)
+    }
+}
+
+
+/// Intended to give "N/A" if a value is empty - this should work for numbers or text, but it isn't super safe because it relies on
+/// the units being empty for any text, otherwise they will show.
+///
+/// Also this is meant to be placed in a VStack or HStack, assuming that you want the units to be shown corrrectly
+struct UnwrappedValueText: View {
+    
+    let activityDetailRecord: ActivityDetailRecord2
+    
+    var body: some View {
+        
+        let value = activityDetailRecord.value
+        
+        if !value.isEmpty {
+            let units = activityDetailRecord.detail.units
+            
+            Text("\(activityDetailRecord.value)")
+            
             if let units {
                 Text(units)
                     .font(.callout)
             }
+
+        } else {
+            Text("\(.notAvailable)")
         }
-        .lineLimit(1)
     }
 }
     
@@ -289,6 +306,11 @@ struct ActivityDetailRecordNumberGrid: View {
         valueType: .text
     )
     
+    let activityDetailMood = ActivityDetail(
+        name: "Mood",
+        valueType: .text
+    )
+    
     
     let activityDetailRecordTimeRecord = ActivityDetailRecord2(
         value: "1000",
@@ -309,8 +331,13 @@ struct ActivityDetailRecordNumberGrid: View {
     
     
     let activityDetailTouchdownsRecord = ActivityDetailRecord2(
-        value: "21024",
+        value: "",
         detail: activityDetailTouchdowns
+    )
+    
+    let activityDetailMoodRecord = ActivityDetailRecord2(
+        value: "",
+        detail: activityDetailMood
     )
     
     
@@ -328,8 +355,9 @@ struct ActivityDetailRecordNumberGrid: View {
             activityDetailRecordTimeRecord,
             activityDetailRecordAmountRecord,
 //            activityDetailLengthRecord,
-            activityDetailRecordNoteRecord
-//            activityDetailTouchdownsRecord
+            activityDetailRecordNoteRecord,
+            activityDetailTouchdownsRecord,
+            activityDetailMoodRecord
         ]
     )
     
