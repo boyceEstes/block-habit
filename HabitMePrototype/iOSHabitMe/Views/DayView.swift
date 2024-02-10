@@ -62,8 +62,7 @@ struct DayView: View {
 //                            .foregroundStyle(Color.secondary)
 //                    }
                     ActivityRecordRowTitleDate(selectedDay: selectedDay, activityRecord: habitRecord.toModel())
-                    .padding()
-                    .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10))
+                        .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button {

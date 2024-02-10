@@ -21,7 +21,7 @@ struct ActivityRecordRowTitleDate: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: .rowVDetailSpacing) {
+        VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
             HStack(alignment: .center) {
                 Text("\(activityRecord.title)")
                     .font(.rowTitle)
@@ -51,11 +51,12 @@ struct ActivityRecordRowDateWithInfo: View {
         let completionDate = activityRecord.completionDate
         let titleDate = completionDate.displayDate
         
-        VStack(alignment: .leading, spacing: .rowVDetailSpacing) {
+        VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
             
             HStack {
                 Text("\(titleDate)")
                     .font(.rowTitle)
+                    .layoutPriority(1)
                 Spacer()
                 Text("\(DisplayDatePolicy.date(for: activityRecord, on: completionDate))")
                     .font(.rowDetail)
@@ -120,7 +121,7 @@ struct ActivityRecordRowContent: View {
     var body: some View {
         
         // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
-        LazyVStack(alignment: .leading, spacing: .rowVDetailSpacing) {
+        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
 
             ActivityDetailRecordIndicators(detailRecords: detailRecords)
             ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
@@ -144,7 +145,7 @@ struct ActivityDetailRecordRowContentInfo: View {
     
     var body: some View {
         
-        VStack {
+        VStack(spacing: .detailPadding) {
             ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
             ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
         }
@@ -375,8 +376,14 @@ struct UnwrappedValueText: View {
     )
     
     return VStack {
-        ActivityRecordRowDateWithInfo(activityRecord: activityRecordMunchingTacos).sectionBackground()
-        ActivityRecordRowDateWithInfo(activityRecord: activityRecordChuggingDew).sectionBackground()
+        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordMunchingTacos)
+            .sectionBackground(padding: .detailPadding)
+        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordChuggingDew)
+            .sectionBackground(padding: .detailPadding)
+        ActivityRecordRowDateWithInfo(activityRecord: activityRecordMunchingTacos)
+            .sectionBackground()
+        ActivityRecordRowDateWithInfo(activityRecord: activityRecordChuggingDew)
+            .sectionBackground()
     }
 }
 

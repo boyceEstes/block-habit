@@ -40,7 +40,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
      * have so I think it should be fine.
      */
     
-    @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
+    @State private var habitRecordVisualMode: HabitRecordVisualMode = .daily
     @State var selectedDay: Date = Date().noon!
     
     
