@@ -265,7 +265,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             let screenHeight = proxy.size.height
             let graphHeight = screenHeight * 0.3
             ScrollView {
-                LazyVStack(spacing: 0) {
+                LazyVStack(spacing: .vSectionSpacing) {
                     BarView(
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
@@ -279,7 +279,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         
                         createRecord(for: activity, in: modelContext)
                     }
-                    .padding()
+                    .padding(.horizontal)
                     
                     Grid() {
                         GridRow {
@@ -294,12 +294,12 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     .padding()
                     .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
                     )
-                    .padding([.horizontal, .bottom])
+                    .padding([.horizontal])
                     
                     
                     activityDetailCharts
                     
-                    VStack(alignment: .leading) {
+                    LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                         Text("Activity Logs")
                             .font(.sectionTitle)
                         allActivtyRecords
@@ -348,7 +348,6 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                 ActivityDetailLineMarkChart(data: chartInfo, lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue))
             }
             .sectionBackground()
-            .padding(.horizontal)
         }
     }
     

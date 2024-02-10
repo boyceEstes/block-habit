@@ -223,8 +223,6 @@ struct ActivityDetailRecordNumberGrid: View {
     @ViewBuilder
     func hStackFit(for numberActivityDetailRecord: ActivityDetailRecord2) -> some View {
         
-        let units = numberActivityDetailRecord.detail.units
-        
         HStack {
             UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
         }

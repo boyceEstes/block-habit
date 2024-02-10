@@ -68,7 +68,6 @@ struct HabitRecordDetailView: View {
                 }
                 HStack {
                     Text("Completion Time")
-                        .font(.sectionTitle)
                     Spacer()
                     DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
                         .labelsHidden()

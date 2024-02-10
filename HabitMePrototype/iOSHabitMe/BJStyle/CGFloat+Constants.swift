@@ -16,4 +16,7 @@ extension CGFloat {
     static let bigBlockCornerRadius: CGFloat = 4
     /// when you have a row, make this the to the next line
     static let rowVDetailSpacing: CGFloat = 10
+    
+    static var vSectionSpacing: CGFloat = 20
+    static var vItemSpacing: CGFloat = 12
 }

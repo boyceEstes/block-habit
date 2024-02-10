@@ -11,7 +11,7 @@ import SwiftUI
 
 extension Font {
     
-    static var sectionTitle: Font { .callout }
+    static var sectionTitle: Font { .title3 }
     
     
     
