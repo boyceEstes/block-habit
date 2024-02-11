@@ -275,78 +275,43 @@ struct UnwrappedValueText: View {
 
 
 #Preview {
-    
-    let activityDetailTime = ActivityDetail(
-        name: "Time",
-        valueType: .number,
-        units: "minutes"
-    )
-    
-    
-    let activityDetailAmount = ActivityDetail(
-        name: "Amount",
-        valueType: .number,
-        units: "fl oz"
-    )
-    
-    
-    let activityDetailLength = ActivityDetail(
-        name: "Length",
-        valueType: .number
-    )
-    
-    
-    let activityDetailTouchdowns = ActivityDetail(
-        name: "Touchdowns",
-        valueType: .number,
-        units: "tds"
-    )
-    
-    
-    let activityDetailNote = ActivityDetail(
-        name: "Note",
-        valueType: .text
-    )
-    
-    let activityDetailMood = ActivityDetail(
-        name: "Mood",
-        valueType: .text
-    )
+
     
     
     let activityDetailRecordTimeRecord = ActivityDetailRecord2(
         value: "1000",
-        detail: activityDetailTime
+        detail: ActivityDetail.time
     )
     
     
     let activityDetailRecordAmountRecord = ActivityDetailRecord2(
         value: "28",
-        detail: activityDetailAmount
+        detail: ActivityDetail.amount
     )
     
     
     let activityDetailLengthRecord = ActivityDetailRecord2(
         value: "203",
-        detail: activityDetailLength
+        detail: ActivityDetail.length
     )
     
     
     let activityDetailTouchdownsRecord = ActivityDetailRecord2(
         value: "",
-        detail: activityDetailTouchdowns
+        detail: ActivityDetail.touchdowns
     )
-    
-    let activityDetailMoodRecord = ActivityDetailRecord2(
-        value: "",
-        detail: activityDetailMood
-    )
-    
     
     let activityDetailRecordNoteRecord = ActivityDetailRecord2(
         value: "It was tough. I understood the meaning behind Code Red today. It is the code of blood. The code of pushing through the pain. It is the code of war.",
-        detail: activityDetailNote
+        detail: ActivityDetail.note
     )
+    
+    
+    let activityDetailMoodRecord = ActivityDetailRecord2(
+        value: "",
+        detail: ActivityDetail.mood
+    )
+    
     
     let creationDate = DateComponents(calendar: .current, year: 2024, month: 2, day: 10, hour: 16, minute: 30, second: 01).date!
     let completionDateMadeFromAnotherDay = DateComponents(calendar: .current, year: 2024, month: 2, day: 9, hour: 23, minute: 59, second: 59).date!

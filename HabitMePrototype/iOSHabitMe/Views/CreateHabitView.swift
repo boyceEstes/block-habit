@@ -132,6 +132,7 @@ struct CreateHabitView: View {
 
         .topBar {
             Text("New Habit")
+                .font(.navTitle)
         } topBarTrailingContent: {
             HabitMeSheetDismissButton(dismiss: { dismiss() })
         }
@@ -197,7 +198,7 @@ struct CreateHabitDetailContent: View {
     
     var body: some View {
         
-        LazyVStack(alignment: .leading) {
+        LazyVStack(alignment: .leading, spacing: .vSectionSpacing) {
                 
             VStack(alignment: .leading) {
                 HStack {
@@ -215,19 +216,22 @@ struct CreateHabitDetailContent: View {
             .contentShape(Rectangle())
             
             if !selectedDetails.isEmpty {
-                ForEach($selectedDetails) { $detail in
-                    let detail = $detail.wrappedValue
-                    HStack {
-                        Text("\(detail.name)")
-                        let units = detail.availableUnits.joined(separator: ", ").lowercased()
-                        
-                        
-                        Text("in \(units)")
-                        //                        .font(.footnote)
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Text("\(detail.valueType.rawValue)")
-                            .foregroundStyle(.secondary)
+                LazyVStack(spacing: .vItemSpacing) {
+                    ForEach($selectedDetails) { $detail in
+                        let detail = $detail.wrappedValue
+                        ActivityDetailSummaryRow(activityDetail: detail.toModel())
+                        //                    HStack {
+                        //                        Text("\(detail.name)")
+                        //                        let units = detail.availableUnits.joined(separator: ", ").lowercased()
+                        //
+                        //
+                        //                        Text("in \(units)")
+                        //                        //                        .font(.footnote)
+                        //                            .foregroundStyle(.secondary)
+                        //                        Spacer()
+                        //                        Text("\(detail.valueType.rawValue)")
+                        //                            .foregroundStyle(.secondary)
+                        //                    }
                     }
                 }
             }

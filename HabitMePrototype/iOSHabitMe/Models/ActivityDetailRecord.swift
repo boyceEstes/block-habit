@@ -78,6 +78,45 @@ struct ActivityDetail: Identifiable, Hashable {
         self.valueType = valueType
         self.units = units
     }
+    
+    
+    
+    static let time = ActivityDetail(
+        name: "Time",
+        valueType: .number,
+        units: "minutes"
+    )
+    
+    
+    static let amount = ActivityDetail(
+        name: "Amount",
+        valueType: .number,
+        units: "fl oz"
+    )
+    
+    
+    static let length = ActivityDetail(
+        name: "Length",
+        valueType: .number
+    )
+    
+    
+    static let touchdowns = ActivityDetail(
+        name: "Touchdowns",
+        valueType: .number,
+        units: "tds"
+    )
+    
+    
+    static let note = ActivityDetail(
+        name: "Note",
+        valueType: .text
+    )
+    
+    static let mood = ActivityDetail(
+        name: "Mood",
+        valueType: .text
+    )
 }
 
 
