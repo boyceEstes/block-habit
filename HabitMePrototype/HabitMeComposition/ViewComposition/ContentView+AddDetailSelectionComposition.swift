@@ -8,12 +8,50 @@
 import SwiftUI
 
 
+class AddDetailsNavigationFlow: NewSheetyNavigationFlow {
+    
+    // MARK: Properties
+    @Published var displayedSheet: SheetyIdentifier?
+    
+    // MARK: Sheety Identifier
+    enum SheetyIdentifier: Identifiable, Hashable {
+        
+        var id: Int { self.hashValue }
+        
+        case createActivityDetail
+    }
+}
+
+
 extension ContentView {
     
+    
     @ViewBuilder
-    func makeAddDetailSelectionView(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
+    func makeAddDetailsViewWithSheetyNavigation(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
         
-        AddDetailsSelectionView(selectedDetails: selectedDetails)
+        makeAddDetailsView(selectedDetails: selectedDetails)
+            .sheet(item: $addDetailsNavigationFlowDisplayedSheet) { identifier in
+                switch identifier {
+                case .createActivityDetail:
+                    makeCreateActivityDetailView()
+                }
+            }
+    }
+    
+    
+    @ViewBuilder
+    func makeAddDetailsView(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
+        
+        AddDetailsSelectionView(
+            selectedDetails: selectedDetails,
+            goToCreateActivityDetail: goToCreateActivityDetailFromAddDetailSelection
+        )
+    }
+    
+    
+    private func goToCreateActivityDetailFromAddDetailSelection() {
+        
+        addDetailsNavigationFlowDisplayedSheet = .createActivityDetail
     }
 }
 

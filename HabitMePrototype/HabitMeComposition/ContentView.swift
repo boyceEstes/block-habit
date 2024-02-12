@@ -35,6 +35,8 @@ struct ContentView: View {
     // Create Habit navigation
     @State var createEditHabitNavigationFlowPath = [CreateEditHabitNavigationFlow.StackIdentifier]()
     
+    // Add Details navigation
+    @State var addDetailsNavigationFlowDisplayedSheet: AddDetailsNavigationFlow.SheetyIdentifier?
     
     var body: some View {
         let _ = print("Hello world home view")

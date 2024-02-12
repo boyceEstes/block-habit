@@ -17,11 +17,13 @@ struct AddDetailsSelectionView: View {
     @State private var activityDetailsWithSelection: [DataActivityDetail: Bool]
     
     @Binding var selectedDetails: [DataActivityDetail]
+    let goToCreateActivityDetail: () -> Void
     
     
-    init(selectedDetails: Binding<[DataActivityDetail]>) {
+    init(selectedDetails: Binding<[DataActivityDetail]>, goToCreateActivityDetail: @escaping () -> Void) {
         
         self._selectedDetails = selectedDetails
+        self.goToCreateActivityDetail = goToCreateActivityDetail
         
         // Had to create this with a specific initialization, otherwise it would be implicitly
         // initializedand this would happen later, after the view has appeared
@@ -91,6 +93,7 @@ struct AddDetailsSelectionView: View {
                 
                 Button {
                     print("Add something")
+                    goToCreateActivityDetail()
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -139,7 +142,11 @@ struct AddDetailsSelectionView: View {
     }
     
     return NavigationStack {
-        AddDetailsSelectionView(selectedDetails: .constant([decodedActivityDetails.first!]))
+        AddDetailsSelectionView(
+            selectedDetails:
+                .constant([decodedActivityDetails.first!]), 
+            goToCreateActivityDetail: { }
+        )
     }
     .modelContainer(container)
 }
