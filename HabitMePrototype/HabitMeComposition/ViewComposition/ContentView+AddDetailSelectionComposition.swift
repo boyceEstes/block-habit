@@ -42,7 +42,7 @@ extension ContentView {
     @ViewBuilder
     func makeAddDetailsView(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
         
-        AddDetailsSelectionView(
+        AddDetailsView(
             selectedDetails: selectedDetails,
             goToCreateActivityDetail: goToCreateActivityDetailFromAddDetailSelection
         )

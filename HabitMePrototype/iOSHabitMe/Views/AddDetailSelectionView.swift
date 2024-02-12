@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct AddDetailsSelectionView: View {
+struct AddDetailsView: View {
     
     @Query(sort: [
         SortDescriptor(\DataActivityDetail.name)
@@ -142,7 +142,7 @@ struct AddDetailsSelectionView: View {
     }
     
     return NavigationStack {
-        AddDetailsSelectionView(
+        AddDetailsView(
             selectedDetails:
                 .constant([decodedActivityDetails.first!]), 
             goToCreateActivityDetail: { }
