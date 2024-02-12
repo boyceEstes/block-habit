@@ -11,19 +11,20 @@ import Combine
 
 extension View {
     
-    func textFieldBackground() -> some View {
+    func textFieldBackground(color: Color = .secondaryBackground) -> some View {
         
-        modifier(TextFieldBackground())
+        modifier(TextFieldBackground(color: color))
     }
 }
 
 
 struct TextFieldBackground: ViewModifier {
     
+    let color: Color
+    
     func body(content: Content) -> some View {
         content
-            .padding(.textFieldPadding)
-            .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: .cornerRadius))
+            .sectionBackground(padding: .textFieldPadding, color: color)
     }
 }
 
