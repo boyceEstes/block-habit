@@ -78,11 +78,7 @@ struct EditHabitView: View {
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         
-        .topBar {
-            Text("Edit Habit")
-        } topBarTrailingContent: {
-            HabitMeSheetDismissButton(dismiss: resetAndExit)
-        }
+        .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
         
         .toolbar {
             ToolbarItem(placement: .bottomBar) {

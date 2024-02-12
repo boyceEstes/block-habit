@@ -11,9 +11,25 @@ import SwiftUI
 
 extension View {
     
+    @ViewBuilder func sheetyTopBarNav(
+        title: String,
+        subtitle: String? = nil,
+        dismissAction: @escaping () -> Void
+    ) -> some View {
+        
+        modifier(
+            SheetyTopBarNav(
+                title: title,
+                subtitle: subtitle,
+                dismissAction: dismissAction
+            )
+        )
+    }
+    
+    
     /// Template so that we can easily insert into the navigation bar setup that is being used throughout the app
     @ViewBuilder
-    func topBar<TopBarLeadingContent: View, TopBarTrailingContent: View>(
+    fileprivate func topBar<TopBarLeadingContent: View, TopBarTrailingContent: View>(
         @ViewBuilder topBarLeadingContent: @escaping () -> TopBarLeadingContent,
         @ViewBuilder topBarTrailingContent: @escaping  () -> TopBarTrailingContent
     ) -> some View {
@@ -37,6 +53,32 @@ extension View {
                 bottomBarContent: bottomBarContent
             )
         )
+    }
+}
+
+
+struct SheetyTopBarNav: ViewModifier {
+    
+    let title: String
+    let subtitle: String?
+    let dismissAction: () -> Void
+    
+    func body(content: Content) -> some View {
+        
+        content
+            .topBar {
+                VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+                    Text(title)
+                        .font(.navTitle)
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(.navSubtitle)
+                    }
+                }
+            } topBarTrailingContent: {
+                HabitMeSheetDismissButton(dismiss: dismissAction)
+            }
+
     }
 }
 

@@ -38,6 +38,10 @@ struct HabitRecordDetailView: View {
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     
+    var navSubtitleDateString: String {
+        DateFormatter.shortDate.string(from: activityRecord.completionDate)
+    }
+    
     var body: some View {
         ScrollView {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
@@ -95,16 +99,7 @@ struct HabitRecordDetailView: View {
             }
         }
         
-        .topBar {
-            VStack(alignment: .leading) {
-                Text(activityRecord.habit?.name ?? "Could Not Find Habit")
-                    .font(.navTitle)
-                Text(DateFormatter.shortDate.string(from: activityRecord.completionDate))
-                    .font(.navSubtitle)
-            }
-        } topBarTrailingContent: {
-            HabitMeSheetDismissButton(dismiss: { dismiss() })
-        }
+        .sheetyTopBarNav(title: activityRecord.habit?.name ?? "Unknown Activity", subtitle: navSubtitleDateString, dismissAction: { dismiss() })
     }
     
     

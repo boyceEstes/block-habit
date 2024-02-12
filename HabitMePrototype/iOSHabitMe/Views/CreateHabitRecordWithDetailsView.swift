@@ -87,14 +87,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
             }
             .padding(.horizontal)
         }
-
-        
-        .topBar {
-            Text(activity.name)
-                .font(.navTitle)
-        } topBarTrailingContent: {
-            HabitMeSheetDismissButton(dismiss: { dismiss() })
-        }
+        .sheetyTopBarNav(title: activity.name, dismissAction: { dismiss() })
         
         .bottomBar {
             HabitMePrimaryButton(

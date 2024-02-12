@@ -32,6 +32,8 @@ enum ActivityDetailCalculationType: String, CaseIterable, Identifiable {
 
 struct CreateActivityDetailView: View {
     
+    @Environment(\.dismiss) var dismiss
+    
     @State private var detailName: String = ""
     @State private var typeSelection: ActivityDetailType = .number
     @State private var units: String = "min"
@@ -54,7 +56,10 @@ struct CreateActivityDetailView: View {
             if typeSelection == .number {
                 numberDetailSection
             }
+            
+            Spacer()
         }
+        .sheetyTopBarNav(title: "Create Activity Detail", dismissAction: { dismiss() })
     }
     
     
@@ -95,5 +100,8 @@ struct CreateActivityDetailView: View {
 }
 
 #Preview {
-    CreateActivityDetailView()
+    
+    NavigationStack {
+        CreateActivityDetailView()
+    }
 }

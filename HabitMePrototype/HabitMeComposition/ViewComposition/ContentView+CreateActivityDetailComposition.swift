@@ -12,6 +12,9 @@ extension ContentView {
     @ViewBuilder
     func makeCreateActivityDetailView() -> some View {
         
-        CreateActivityDetailView()
+        // Placing in a navigation stack to place things in toolbar
+        NavigationStack {
+            CreateActivityDetailView()
+        }
     }
 }
