@@ -18,12 +18,12 @@ enum ActivityDetailCalculationType: String, CaseIterable, Identifiable {
         
         var _explanation: String = .calculationTypExplanation
         
-        switch self {
-        case .sum:
-            _explanation.append(" \(String.sumExplanation)")
-        case .average:
-            _explanation.append(" \(String.avgExplanation)")
-        }
+//        switch self {
+//        case .sum:
+//            _explanation.append(" \(String.sumExplanation)")
+//        case .average:
+//            _explanation.append(" \(String.avgExplanation)")
+//        }
         
         return _explanation
     }
@@ -63,6 +63,7 @@ struct CreateActivityDetailView: View {
             Spacer()
         }
         .padding(.horizontal)
+        .animation(.default, value: typeSelection)
         .sheetyTopBarNav(title: "Create Activity Detail", dismissAction: { dismiss() })
     }
     
@@ -73,6 +74,7 @@ struct CreateActivityDetailView: View {
             
             Text("Number Details")
                 .font(.sectionTitle)
+                .padding(.horizontal)
             
             VStack(alignment: .leading, spacing: .vSectionSpacing) {
                 HStack {
@@ -88,9 +90,9 @@ struct CreateActivityDetailView: View {
                 .sectionBackground()
             }
             
-            
             Text("\(calculationTypeSelection.explanation)")
                 .font(.footnote)
+                .padding(.horizontal)
         }
     }
     
