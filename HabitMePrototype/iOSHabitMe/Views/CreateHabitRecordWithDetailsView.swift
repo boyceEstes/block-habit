@@ -88,14 +88,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
             .padding(.horizontal)
         }
         .sheetyTopBarNav(title: activity.name, dismissAction: { dismiss() })
-        
-        .bottomBar {
-            HabitMePrimaryButton(
-                title: "Record Activity",
-                action: didTapCreateActivityRecord
-            )
-            .padding()
-        }
+        .sheetyBottomBarButton(title: "Record Activity", action: didTapCreateActivityRecord)
     }
     
     

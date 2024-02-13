@@ -130,11 +130,7 @@ struct CreateHabitView: View {
         }
         .createEditHabitSheetPresentation()
         .sheetyTopBarNav(title: "New Habit", dismissAction: { dismiss() })
-        
-        .bottomBar {
-            HabitMePrimaryButton(title: "Create Habit", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
-                .padding()
-        }
+        .sheetyBottomBarButton(title: "Create", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
     }
     
 

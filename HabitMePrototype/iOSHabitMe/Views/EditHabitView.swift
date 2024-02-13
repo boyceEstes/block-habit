@@ -79,17 +79,7 @@ struct EditHabitView: View {
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         
         .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
-        
-        .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                HabitMePrimaryButton(
-                    title: "Save",
-                    isAbleToTap: isAbleToCreate,
-                    action: didTapSaveAndExit
-                )
-                .padding()
-            }
-        }
+        .sheetyBottomBarButton(title: "Save", isAbleToTap: isAbleToCreate, action: didTapSaveAndExit)
     }
     
     

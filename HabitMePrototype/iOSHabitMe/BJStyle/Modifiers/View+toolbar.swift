@@ -27,6 +27,22 @@ extension View {
     }
     
     
+    @ViewBuilder func sheetyBottomBarButton(
+        title: String,
+        isAbleToTap: Bool = true,
+        action: @escaping () -> Void
+    ) -> some View {
+        
+        modifier(
+            SheetyBottomBarButton(
+                title: title,
+                isAbleToTap: isAbleToTap,
+                action: action
+            )
+        )
+    }
+    
+    
     /// Template so that we can easily insert into the navigation bar setup that is being used throughout the app
     @ViewBuilder
     fileprivate func topBar<TopBarLeadingContent: View, TopBarTrailingContent: View>(
@@ -45,7 +61,7 @@ extension View {
     
     /// Template for bottom bar - maybe a little pedantic but I don't like typing this out
     @ViewBuilder
-    func bottomBar<BottomBarContent: View>(
+    fileprivate func bottomBar<BottomBarContent: View>(
         @ViewBuilder bottomBarContent: @escaping () -> BottomBarContent
     ) -> some View {
         modifier(
@@ -70,6 +86,7 @@ struct SheetyTopBarNav: ViewModifier {
                 VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
                     Text(title)
                         .font(.navTitle)
+                    
                     if let subtitle {
                         Text(subtitle)
                             .font(.navSubtitle)
@@ -78,7 +95,26 @@ struct SheetyTopBarNav: ViewModifier {
             } topBarTrailingContent: {
                 HabitMeSheetDismissButton(dismiss: dismissAction)
             }
+    }
+}
 
+
+struct SheetyBottomBarButton: ViewModifier {
+    
+    let title: String
+    let isAbleToTap: Bool
+    let action: () -> Void
+    
+    func body(content: Content) -> some View {
+        
+        content
+            .bottomBar {
+                HabitMePrimaryButton(
+                    title: title,
+                    isAbleToTap: isAbleToTap,
+                    action: action
+                )
+            }
     }
 }
 
@@ -118,6 +154,7 @@ struct BottomBar<BottomBarContent: View>: ViewModifier {
         }
     }
 }
+
 
 #Preview {
     NavigationStack {

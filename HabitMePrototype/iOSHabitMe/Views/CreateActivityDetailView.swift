@@ -35,7 +35,7 @@ struct CreateActivityDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var detailName: String = ""
-    @State private var typeSelection: ActivityDetailType = .number
+    @State private var typeSelection: ActivityDetailType = .text
     @State private var units: String = ""
     @State private var calculationTypeSelection: ActivityDetailCalculationType = .sum
     
@@ -56,8 +56,14 @@ struct CreateActivityDetailView: View {
             }
             .sectionBackground()
             
-            if typeSelection == .number {
+            switch typeSelection {
+            case .number:
                 numberDetailSection
+                
+            case .text:
+                Text("Example 'There was a knock at the door that interrupted my flow. I was so close to finishing the equation of life, but I've lost my train of thought and I can't find it again.'")
+                    .font(.footnote)
+                    .padding(.horizontal)
             }
             
             Spacer()
