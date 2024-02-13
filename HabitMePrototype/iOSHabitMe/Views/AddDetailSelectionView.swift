@@ -37,7 +37,7 @@ struct AddDetailsView: View {
     var body: some View {
         List {
             ForEach(activityDetails) { activityDetail in
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 0) {
                     
                     HStack(alignment: .firstTextBaseline) {
                         Text("\(activityDetail.name)")
@@ -61,14 +61,13 @@ struct AddDetailsView: View {
                         }
                     }
                 }
-                .padding(8)
+                .padding(.detailPadding)
                 .listRowBackground(
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: .cornerRadius)
                         .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? Color.white : .clear, lineWidth: 5)
-                        .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                        .fill(Color.secondaryBackground)
                         .padding(.horizontal)
-                        .padding(.vertical, 8)
-                        
+                        .padding(.vertical, (CGFloat.vItemSpacing / 2))
                 )
                 .listRowSeparator(.hidden)
                 .contentShape(Rectangle())
