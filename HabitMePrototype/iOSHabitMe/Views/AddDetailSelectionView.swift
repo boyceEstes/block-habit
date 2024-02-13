@@ -11,7 +11,7 @@ import SwiftData
 struct AddDetailsView: View {
     
     @Query(sort: [
-        SortDescriptor(\DataActivityDetail.name)
+        SortDescriptor(\DataActivityDetail.creationDate, order: .reverse)
     ]) var activityDetails: [DataActivityDetail]
     
     @State private var activityDetailsWithSelection: [DataActivityDetail: Bool]
