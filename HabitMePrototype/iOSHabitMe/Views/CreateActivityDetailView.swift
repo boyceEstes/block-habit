@@ -130,12 +130,9 @@ struct CreateActivityDetailView: View {
     private func didTapCreateDetail() {
         
         guard isAbleToTapCreate else { return }
+
+        modelContext.createActivityDetail(name: detailName, valueType: typeSelection, units: units)
         
-        let unitsArray = !units.isEmpty && typeSelection == .number ? [units] : []
-        
-        let activityDetail = DataActivityDetail(name: detailName, valueType: typeSelection, availableUnits: unitsArray, isArchived: false, detailRecords: [], habits: [])
-        
-        modelContext.insert(activityDetail)
         dismiss()
     }
 }

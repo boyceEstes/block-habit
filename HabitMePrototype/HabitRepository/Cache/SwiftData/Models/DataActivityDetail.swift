@@ -40,6 +40,10 @@ final class DataActivityDetail: Hashable, Decodable {
     /// lose all of the associated records, simply sort by nonArchived when displaying data
     var isArchived: Bool
     
+    /// Use for sorting purposes
+    var creationDate: Date
+    
+    
     /// This can be empty - no records are required for this model
     @Relationship(deleteRule: .cascade, inverse: \DataActivityDetailRecord.activityDetail) var detailRecords: [DataActivityDetailRecord]
     
@@ -53,6 +57,7 @@ final class DataActivityDetail: Hashable, Decodable {
         valueType: ActivityDetailType = .text,
         availableUnits: [String] = [],
         isArchived: Bool = false,
+        creationDate: Date = Date(),
         detailRecords: [DataActivityDetailRecord] = [],
         habits: [DataHabit] = []
     ) {
@@ -60,6 +65,7 @@ final class DataActivityDetail: Hashable, Decodable {
         self.valueType = valueType
         self.availableUnits = availableUnits
         self.isArchived = isArchived
+        self.creationDate = creationDate
         self.detailRecords = detailRecords
         self.habits = habits
     }
@@ -77,6 +83,7 @@ final class DataActivityDetail: Hashable, Decodable {
         // Should always be initialized to this
 //        availableUnits = []
         isArchived = false
+        creationDate = Date()
         detailRecords = []
         habits = []
     }
