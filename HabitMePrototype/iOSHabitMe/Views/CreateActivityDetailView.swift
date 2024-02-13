@@ -33,6 +33,7 @@ enum ActivityDetailCalculationType: String, CaseIterable, Identifiable {
 struct CreateActivityDetailView: View {
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     
     @State private var detailName: String = ""
     @State private var typeSelection: ActivityDetailType = .text
@@ -40,9 +41,9 @@ struct CreateActivityDetailView: View {
     @State private var calculationTypeSelection: ActivityDetailCalculationType = .sum
     
     var body: some View {
+    
         VStack(spacing: .vSectionSpacing) {
             HStack {
-                
                 TextField("Name", text: $detailName)
                     .textFieldBackground(color: .tertiaryBackground)
                 
@@ -61,7 +62,7 @@ struct CreateActivityDetailView: View {
                 numberDetailSection
                 
             case .text:
-                Text("Example 'There was a knock at the door that interrupted my flow. I was so close to finishing the equation of life, but I've lost my train of thought and I can't find it again.'")
+                Text("Example 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo. Lesson learned.'")
                     .font(.footnote)
                     .padding(.horizontal)
             }
@@ -71,6 +72,7 @@ struct CreateActivityDetailView: View {
         .padding(.horizontal)
         .animation(.default, value: typeSelection)
         .sheetyTopBarNav(title: "Create Activity Detail", dismissAction: { dismiss() })
+        .sheetyBottomBarButton(title: "Create", isAbleToTap: isAbleToTapCreate, action: didTapCreateDetail)
     }
     
     
@@ -104,6 +106,7 @@ struct CreateActivityDetailView: View {
     
     
     var calculationType: some View {
+        
         HStack {
             Text("Calculation Type")
             Spacer()
@@ -115,6 +118,25 @@ struct CreateActivityDetailView: View {
             .tint(.primary)
             .sectionBackground(padding: 0, color: .tertiaryBackground)
         }
+    }
+    
+    
+    var isAbleToTapCreate: Bool {
+        
+        !detailName.isEmpty
+    }
+    
+    
+    private func didTapCreateDetail() {
+        
+        guard isAbleToTapCreate else { return }
+        
+        let unitsArray = !units.isEmpty && typeSelection == .number ? [units] : []
+        
+        let activityDetail = DataActivityDetail(name: detailName, valueType: typeSelection, availableUnits: unitsArray, isArchived: false, detailRecords: [], habits: [])
+        
+        modelContext.insert(activityDetail)
+        dismiss()
     }
 }
 

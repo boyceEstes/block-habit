@@ -298,11 +298,16 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     
                     
                     activityDetailCharts
+                        .padding(.horizontal)
                     
                     LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-                        Text("Activity Logs")
+                        Text("Activity Records")
                             .font(.sectionTitle)
-                        allActivtyRecords
+                        if !filteredDatahabitRecordsForHabit.isEmpty {
+                            allActivtyRecords
+                        } else {
+                            Text("No records found for this activity yet")
+                        }
                     }
                     .padding(.horizontal)
                 }
