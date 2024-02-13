@@ -10,6 +10,7 @@ import SwiftData
 
 struct AddDetailsView: View {
     
+    @Environment(\.editMode) var editMode
     @Query(sort: [
         SortDescriptor(\DataActivityDetail.creationDate, order: .reverse)
     ]) var activityDetails: [DataActivityDetail]
@@ -72,10 +73,16 @@ struct AddDetailsView: View {
                 .listRowSeparator(.hidden)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 1.2)) {
-                        toggleSelection(for: activityDetail)
+                    // Do not allow to select if we are editing
+                    if !(editMode?.wrappedValue.isEditing ?? false) {
+                        withAnimation(.easeInOut(duration: 1.2)) {
+                            toggleSelection(for: activityDetail)
+                        }
                     }
                 }
+            }
+            .onDelete { _ in
+                print("deleteeee ")
             }
         }
         .listStyle(.plain)
@@ -84,11 +91,13 @@ struct AddDetailsView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 
-                Button {
-                    print("Edit the details available")
-                } label: {
-                    Image(systemName: "pencil.circle")
-                }
+//                Button {
+//                    print("Edit the details available")
+//                    self.editMode?.value.toggle
+//                } label: {
+//                    Image(systemName: "pencil.circle")
+//                }
+                EditButton()
                 
                 Button {
                     print("Add something")
