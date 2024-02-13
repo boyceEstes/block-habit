@@ -36,7 +36,7 @@ struct CreateActivityDetailView: View {
     
     @State private var detailName: String = ""
     @State private var typeSelection: ActivityDetailType = .number
-    @State private var units: String = "min"
+    @State private var units: String = ""
     @State private var calculationTypeSelection: ActivityDetailCalculationType = .sum
     
     var body: some View {
@@ -44,14 +44,17 @@ struct CreateActivityDetailView: View {
             HStack {
                 
                 TextField("Name", text: $detailName)
-                    .textFieldBackground()
+                    .textFieldBackground(color: .tertiaryBackground)
                 
                 Picker("Type", selection: $typeSelection) {
                     ForEach(ActivityDetailType.allCases) { type in
                         Text("\(type.rawValue)")
                     }
                 }
+                .tint(.primary)
+                .sectionBackground(padding: 0, color: .tertiaryBackground)
             }
+            .sectionBackground()
             
             if typeSelection == .number {
                 numberDetailSection
@@ -59,6 +62,7 @@ struct CreateActivityDetailView: View {
             
             Spacer()
         }
+        .padding(.horizontal)
         .sheetyTopBarNav(title: "Create Activity Detail", dismissAction: { dismiss() })
     }
     
@@ -67,34 +71,41 @@ struct CreateActivityDetailView: View {
         
         VStack(alignment: .leading, spacing: .vItemSpacing) {
             
-            HStack {
-                TextField("Units", text: $units)
-                    .frame(width: 85)
-                    .textFieldBackground()
-                Spacer()
-                Text("Example '27\(units.isEmpty ? "" : " \(units)")'")
+            Text("Number Details")
+                .font(.sectionTitle)
+            
+            VStack(alignment: .leading, spacing: .vSectionSpacing) {
+                HStack {
+                    TextField("Units", text: $units)
+                        .frame(width: 85)
+                        .textFieldBackground(color: .tertiaryBackground)
+                    Spacer()
+                    Text("Example '27\(units.isEmpty ? "" : " \(units)")'")
+                }
+                .sectionBackground()
+                
+                calculationType
+                .sectionBackground()
             }
             
-            calculationType
+            
+            Text("\(calculationTypeSelection.explanation)")
+                .font(.footnote)
         }
-        
     }
     
     
     var calculationType: some View {
-        VStack (spacing: .vItemSpacing) {
-            HStack {
-                Text("Calculation Type")
-                Spacer()
-                Picker("Calculation Type", selection: $calculationTypeSelection) {
-                    ForEach(ActivityDetailCalculationType.allCases) { type in
-                        Text("\(type.rawValue)")
-                    }
+        HStack {
+            Text("Calculation Type")
+            Spacer()
+            Picker("Calculation Type", selection: $calculationTypeSelection) {
+                ForEach(ActivityDetailCalculationType.allCases) { type in
+                    Text("\(type.rawValue)")
                 }
             }
-            
-            Text("\(calculationTypeSelection.explanation)")
-                .font(.footnote)
+            .tint(.primary)
+            .sectionBackground(padding: 0, color: .tertiaryBackground)
         }
     }
 }
@@ -103,5 +114,6 @@ struct CreateActivityDetailView: View {
     
     NavigationStack {
         CreateActivityDetailView()
+            .background(Color.primaryBackground)
     }
 }

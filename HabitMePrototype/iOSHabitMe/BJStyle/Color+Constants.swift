@@ -11,7 +11,8 @@ extension Color {
     
     static let primaryBackground: Color = Color(uiColor: .secondarySystemGroupedBackground)
     static let secondaryBackground: Color = Color(uiColor: .tertiarySystemGroupedBackground)
-    static let tertiaryBackground: Color = Color(uiColor: .systemBackground)
+    // tertiaryBackground color that I have in Assets because it is more custom
+    
     static let secondaryFont: Color = .secondary
 }
 
@@ -49,6 +50,7 @@ extension Color {
                 .padding()
                 .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
         }
+        .sectionBackground()
         
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

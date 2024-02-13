@@ -61,7 +61,7 @@ struct NumberTextField: View {
                 // TODO: scale up with dynamic type
             }
         }
-        .textFieldBackground()
+        .textFieldBackground(color: .tertiaryBackground)
         .contentShape(Rectangle())
         .onTapGesture {
             isActive = true
