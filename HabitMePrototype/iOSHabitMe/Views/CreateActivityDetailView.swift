@@ -131,9 +131,14 @@ struct CreateActivityDetailView: View {
         
         guard isAbleToTapCreate else { return }
 
-        modelContext.createActivityDetail(name: detailName, valueType: typeSelection, units: units)
-        
-        dismiss()
+        do {
+            try modelContext.createActivityDetail(name: detailName, valueType: typeSelection, units: units, overrideDuplicateNameError: true)
+            
+            dismiss()
+            
+        } catch {
+            print("ERROR: \(error.localizedDescription)")
+        }
     }
 }
 
