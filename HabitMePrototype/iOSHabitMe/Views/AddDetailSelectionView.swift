@@ -11,6 +11,7 @@ import SwiftData
 struct AddDetailsView: View {
     
     @Environment(\.editMode) var editMode
+    @Environment(\.modelContext) var modelContext
     @Query(sort: [
         SortDescriptor(\DataActivityDetail.creationDate, order: .reverse)
     ]) var activityDetails: [DataActivityDetail]
@@ -81,8 +82,8 @@ struct AddDetailsView: View {
                     }
                 }
             }
-            .onDelete { _ in
-                print("deleteeee ")
+            .onDelete { indexSet in
+                deleteActivityDetails(at: indexSet)
             }
         }
         .listStyle(.plain)
@@ -91,12 +92,6 @@ struct AddDetailsView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 
-//                Button {
-//                    print("Edit the details available")
-//                    self.editMode?.value.toggle
-//                } label: {
-//                    Image(systemName: "pencil.circle")
-//                }
                 EditButton()
                 
                 Button {
@@ -106,6 +101,17 @@ struct AddDetailsView: View {
                     Image(systemName: "plus")
                 }
             }
+        }
+    }
+    
+    
+    private func deleteActivityDetails(at offsets: IndexSet) {
+        
+        // TODO: Present alert to warn that this is crazy sauce
+        for index in offsets {
+            
+            let activityDetail = activityDetails[index]
+            modelContext.delete(activityDetail)
         }
     }
     
