@@ -38,6 +38,12 @@ struct HabitRecordDetailView: View {
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     
+    var sortedActivityRecordDetails: [DataActivityDetailRecord] {
+
+        activityRecord.activityDetailRecords.bjSort()
+    }
+
+    
     var navSubtitleDateString: String {
         DateFormatter.shortDate.string(from: activityRecord.completionDate)
     }
@@ -47,8 +53,8 @@ struct HabitRecordDetailView: View {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
             LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                 
-                if !activityRecord.activityDetailRecords.isEmpty {
-                    ForEach(activityRecord.activityDetailRecords) { activityDetailRecord in
+                if !sortedActivityRecordDetails.isEmpty {
+                    ForEach(sortedActivityRecordDetails) { activityDetailRecord in
                         
                         let activityDetail =
                         activityDetailRecord.activityDetail

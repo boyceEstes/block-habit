@@ -196,4 +196,29 @@ extension Array where Element == DataActivityDetailRecord {
         
         map { $0.toModel() }
     }
+    
+
+    func bjSort() -> [DataActivityDetailRecord] {
+        
+        // Prioritize number types at the top
+        // Sort alphabetically
+        var sortedArray = [DataActivityDetailRecord]()
+        
+        let numberActivityDetailRecords = filter { $0.activityDetail.valueType == .number }
+        let sortedNumberActivityDetailRecords = numberActivityDetailRecords.sorted {
+            $0.activityDetail.name < $1.activityDetail.name
+        }
+        
+        let textActivityDetailRecords = filter {
+            $0.activityDetail.valueType == .text
+        }
+        let sortedTextActivityDetailsRecords = textActivityDetailRecords.sorted {
+            $0.activityDetail.name < $1.activityDetail.name
+        }
+        
+        sortedArray.append(contentsOf: sortedNumberActivityDetailRecords)
+        sortedArray.append(contentsOf: sortedTextActivityDetailsRecords)
+        
+        return sortedArray
+    }
 }

@@ -92,18 +92,6 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     }
     
     
-    // MARK: UI Helpers
-//    private func valueBinding(for activityDetailRecord: ActivityDetailRecord) -> Binding<String> {
-//        
-//        return Binding {
-//            activityDetailRecord.value
-//            
-//        } set: { newValue in
-//            activityDetailRecord.value = newValue
-//        }
-//    }
-    
-    
     // MARK: Logic
     private func didTapCreateActivityRecord() {
 
