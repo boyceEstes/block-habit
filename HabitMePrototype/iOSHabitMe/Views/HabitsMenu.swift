@@ -33,12 +33,12 @@ struct ActionDetail: Hashable {
     
     
     static func ok(buttonAction: @escaping (() -> Void) = {}) -> ActionDetail {
-        ActionDetail(title: "OK", action: buttonAction)
+        ActionDetail(title: .ok, action: buttonAction)
     }
     
     
     static func cancel(buttonAction: @escaping (() -> Void) = {}) -> ActionDetail {
-        ActionDetail(title: "Cancel", role: .cancel, action: buttonAction)
+        ActionDetail(title: .cancel, role: .cancel, action: buttonAction)
     }
 }
 

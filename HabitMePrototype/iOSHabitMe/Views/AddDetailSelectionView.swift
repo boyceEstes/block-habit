@@ -8,15 +8,53 @@
 import SwiftUI
 import SwiftData
 
+
+enum AddDetailsAlert {
+    
+    case deleteActivityRecordWarning(
+        deleteAction: () -> Void,
+        archiveAction: () -> Void
+    )
+    
+    func alertData() -> AlertDetail {
+        
+        switch self {
+        case let .deleteActivityRecordWarning(deleteAction, archiveAction):
+            return AlertDetail(
+                title: .deleteActivityDetail_alertTitle,
+                message: .deleteActivityDetail_alertMessage,
+                actions: [
+                    ActionDetail.cancel(),
+                    ActionDetail(
+                        title: .deleteActivityDetail_archiveActionTitle,
+                        role: .none,
+                        action: archiveAction
+                    ),
+                    ActionDetail(
+                        title: .deleteActivityDetail_deleteActionTitle,
+                        role: .destructive,
+                        action: deleteAction
+                    )
+                ]
+            )
+        }
+    }
+}
+
+
 struct AddDetailsView: View {
     
     @Environment(\.editMode) var editMode
     @Environment(\.modelContext) var modelContext
-    @Query(sort: [
+    @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
+        activityDetail.isArchived == false
+    }, sort: [
         SortDescriptor(\DataActivityDetail.creationDate, order: .reverse)
-    ]) var activityDetails: [DataActivityDetail]
+    ], animation: .default) var activityDetails: [DataActivityDetail]
     
     @State private var activityDetailsWithSelection: [DataActivityDetail: Bool]
+    @State private var alertDetail: AlertDetail?
+    @State private var showAlert = false
     
     @Binding var selectedDetails: [DataActivityDetail]
     let goToCreateActivityDetail: () -> Void
@@ -83,10 +121,11 @@ struct AddDetailsView: View {
                 }
             }
             .onDelete { indexSet in
-                deleteActivityDetails(at: indexSet)
+                warnBeforeDeletion(at: indexSet)
             }
         }
         .listStyle(.plain)
+        .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .navigationTitle("Select Activity Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -105,13 +144,33 @@ struct AddDetailsView: View {
     }
     
     
+    private func warnBeforeDeletion(at offsets: IndexSet) {
+        
+        alertDetail = AddDetailsAlert.deleteActivityRecordWarning(
+            deleteAction: { deleteActivityDetails(at: offsets) },
+            archiveAction: { archiveActivityDetails(at: offsets) }
+        ).alertData()
+        
+        showAlert = true
+    }
+    
+    
     private func deleteActivityDetails(at offsets: IndexSet) {
         
-        // TODO: Present alert to warn that this is crazy sauce
         for index in offsets {
             
             let activityDetail = activityDetails[index]
             modelContext.delete(activityDetail)
+        }
+    }
+    
+    
+    private func archiveActivityDetails(at offsets: IndexSet) {
+        
+        for index in offsets {
+            
+            let activityDetail = activityDetails[index]
+            activityDetail.isArchived = true
         }
     }
     
