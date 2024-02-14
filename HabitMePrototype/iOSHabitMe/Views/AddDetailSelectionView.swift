@@ -105,14 +105,14 @@ struct AddDetailsView: View {
                     Button {
                         archiveActivityDetails(activityDetail)
                     } label: {
-                        Label("Archive", systemImage: "archivebox.fill")
+                        Label(String.archive, systemImage: "archivebox.fill")
                     }
                     .tint(.indigo)
 
                     Button(role: .destructive) {
                         warnBeforeDeletion(activityDetail)
                     } label: {
-                        Label("Delete", systemImage: "trash.fill")
+                        Label(String.delete, systemImage: "trash.fill")
                     }
                 }
                 .padding(.detailPadding)
@@ -137,7 +137,7 @@ struct AddDetailsView: View {
         }
         .listStyle(.plain)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        .navigationTitle("Select Activity Details")
+        .navigationTitle(String.addActivityDetails_navTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
