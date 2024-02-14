@@ -45,7 +45,7 @@ struct HabitRecordDetailView: View {
     var body: some View {
         ScrollView {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
-            LazyVStack(alignment: .leading, spacing: 20) {
+            LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                 
                 if !activityRecord.activityDetailRecords.isEmpty {
                     ForEach(activityRecord.activityDetailRecords) { activityDetailRecord in
@@ -71,6 +71,7 @@ struct HabitRecordDetailView: View {
                 
                 HStack {
                     Text("Completion Time")
+                        .font(.rowDetail)
                     Spacer()
                     DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
                         .labelsHidden()
@@ -164,7 +165,7 @@ struct EditableActivityDetailNumberView: View {
         HStack {
 //            Text("\(activityDetail.name)")
             Text(name)
-                .font(.sectionTitle)
+                .font(.rowDetail)
             Spacer()
             VStack {
                 NumberTextField(

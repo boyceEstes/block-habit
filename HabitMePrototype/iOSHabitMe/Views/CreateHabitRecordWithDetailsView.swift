@@ -58,7 +58,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     var body: some View {
         
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 20) {
+            LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                 if !activityDetailRecords.isEmpty {
 
                     ForEach($activityDetailRecords, id: \.id) { $activityDetailRecord in
