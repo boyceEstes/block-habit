@@ -101,6 +101,20 @@ struct AddDetailsView: View {
                         }
                     }
                 }
+                .swipeActions {
+                    Button {
+                        archiveActivityDetails(activityDetail)
+                    } label: {
+                        Label("Archive", systemImage: "archivebox.fill")
+                    }
+                    .tint(.indigo)
+
+                    Button(role: .destructive) {
+                        warnBeforeDeletion(activityDetail)
+                    } label: {
+                        Label("Delete", systemImage: "trash.fill")
+                    }
+                }
                 .padding(.detailPadding)
                 .listRowBackground(
                     RoundedRectangle(cornerRadius: .cornerRadius)
@@ -120,9 +134,6 @@ struct AddDetailsView: View {
                     }
                 }
             }
-            .onDelete { indexSet in
-                warnBeforeDeletion(at: indexSet)
-            }
         }
         .listStyle(.plain)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
@@ -131,10 +142,7 @@ struct AddDetailsView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 
-                EditButton()
-                
                 Button {
-                    print("Add something")
                     goToCreateActivityDetail()
                 } label: {
                     Image(systemName: "plus")
@@ -144,34 +152,26 @@ struct AddDetailsView: View {
     }
     
     
-    private func warnBeforeDeletion(at offsets: IndexSet) {
+    private func warnBeforeDeletion(_ activityDetail: DataActivityDetail) {
         
         alertDetail = AddDetailsAlert.deleteActivityRecordWarning(
-            deleteAction: { deleteActivityDetails(at: offsets) },
-            archiveAction: { archiveActivityDetails(at: offsets) }
+            deleteAction: { deleteActivityDetails(activityDetail) },
+            archiveAction: { archiveActivityDetails(activityDetail) }
         ).alertData()
         
         showAlert = true
     }
     
     
-    private func deleteActivityDetails(at offsets: IndexSet) {
+    private func deleteActivityDetails(_ activityDetail: DataActivityDetail) {
         
-        for index in offsets {
-            
-            let activityDetail = activityDetails[index]
-            modelContext.delete(activityDetail)
-        }
+        modelContext.delete(activityDetail)
     }
     
     
-    private func archiveActivityDetails(at offsets: IndexSet) {
-        
-        for index in offsets {
+    private func archiveActivityDetails(_ activityDetail: DataActivityDetail) {
             
-            let activityDetail = activityDetails[index]
-            activityDetail.isArchived = true
-        }
+        activityDetail.isArchived = true
     }
     
     
