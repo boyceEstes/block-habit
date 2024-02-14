@@ -32,7 +32,8 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
         self.selectedDay = selectedDay
 
         self._activityDetailRecords = State(
-            initialValue: activity.activityDetails.map { activityDetail in
+            initialValue: activity.activityDetails.bjSort()
+                .map { activityDetail in
                 
                 print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
                 

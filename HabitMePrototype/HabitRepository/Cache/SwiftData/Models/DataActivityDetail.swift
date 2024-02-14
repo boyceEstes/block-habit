@@ -190,6 +190,35 @@ extension DataActivityDetailRecord {
 }
 
 
+extension Array where Element == DataActivityDetail {
+    
+    /// This is basically the same logic used in sorting the activity details as well
+    func bjSort() -> [DataActivityDetail] {
+        
+        // Prioritize number types at the top
+        // Sort alphabetically
+        var sortedArray = [DataActivityDetail]()
+        
+        let numberActivityDetailRecords = filter { $0.valueType == .number }
+        let sortedNumberActivityDetailRecords = numberActivityDetailRecords.sorted {
+            $0.name < $1.name
+        }
+        
+        let textActivityDetailRecords = filter {
+            $0.valueType == .text
+        }
+        let sortedTextActivityDetailsRecords = textActivityDetailRecords.sorted {
+            $0.name < $1.name
+        }
+        
+        sortedArray.append(contentsOf: sortedNumberActivityDetailRecords)
+        sortedArray.append(contentsOf: sortedTextActivityDetailsRecords)
+        
+        return sortedArray
+    }
+}
+
+
 extension Array where Element == DataActivityDetailRecord {
     
     func toModel() -> [ActivityDetailRecord2] {
@@ -198,6 +227,7 @@ extension Array where Element == DataActivityDetailRecord {
     }
     
 
+    /// This is basically the same logic used in sorting the activity details as well
     func bjSort() -> [DataActivityDetailRecord] {
         
         // Prioritize number types at the top
