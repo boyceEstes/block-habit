@@ -19,11 +19,20 @@ extension DateFormatter {
     }()
     
     
-    /// Ex: `Jan 1`, `Dec 25`
+    /// Ex `1/1`, `12/25` or `01/01`, `25/12` if you are in other countries
+    static let shortDateWithoutYear: DateFormatter = {
+        
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("Md")
+        return formatter
+    }()
+    
+    
+    /// Ex: `Jan 1`, `Dec 25` or `1 Jan`, `25 Dec` if you are in other countries
     static let monthDayDate: DateFormatter = {
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
+        formatter.setLocalizedDateFormatFromTemplate("MMMd")
         return formatter
     }()
     

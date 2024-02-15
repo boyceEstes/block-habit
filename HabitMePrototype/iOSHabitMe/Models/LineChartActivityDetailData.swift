@@ -18,7 +18,7 @@ struct LineChartActivityDetailData: Identifiable {
     // Charts aren't great with dates until they are converted to strings
     var displayableDate: String {
         guard let noonDate = date.noon else { return "" }
-        return DateFormatter.shortDate.string(from: noonDate)
+        return DateFormatter.shortDateWithoutYear.string(from: noonDate)
     }
 }
 
