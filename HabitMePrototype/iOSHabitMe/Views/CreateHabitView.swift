@@ -204,18 +204,6 @@ struct CreateHabitDetailContent: View {
                     ForEach($selectedDetails) { $detail in
                         let detail = $detail.wrappedValue
                         ActivityDetailSummaryRow(activityDetail: detail.toModel())
-                        //                    HStack {
-                        //                        Text("\(detail.name)")
-                        //                        let units = detail.availableUnits.joined(separator: ", ").lowercased()
-                        //
-                        //
-                        //                        Text("in \(units)")
-                        //                        //                        .font(.footnote)
-                        //                            .foregroundStyle(.secondary)
-                        //                        Spacer()
-                        //                        Text("\(detail.valueType.rawValue)")
-                        //                            .foregroundStyle(.secondary)
-                        //                    }
                     }
                 }
             }

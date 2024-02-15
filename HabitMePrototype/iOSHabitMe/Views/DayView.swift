@@ -78,7 +78,7 @@ struct DayView: View {
                 }
             }
             .listRowSeparator(.hidden)
-            .listRowBackground(Color(uiColor: .secondarySystemGroupedBackground))
+            .listRowBackground(Color.primaryBackground)
 
         }
         .frame(height: graphHeight)

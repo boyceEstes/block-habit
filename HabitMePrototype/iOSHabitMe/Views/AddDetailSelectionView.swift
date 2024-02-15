@@ -76,64 +76,58 @@ struct AddDetailsView: View {
 
     var body: some View {
         List {
-            ForEach(activityDetails) { activityDetail in
-                VStack(alignment: .leading, spacing: 0) {
-                    
-                    HStack(alignment: .firstTextBaseline) {
-                        Text("\(activityDetail.name)")
-                        Spacer()
-                        Text("\(activityDetail.valueType.rawValue)")
-                    }
-                    
-                    HStack(alignment: .firstTextBaseline) {
+//            VStack(spacing: .vItemSpacing) {
+                ForEach(activityDetails) { activityDetail in
+                    VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
                         
-                        Text("Ex. \"\(activityDetail.example)\"")
-                            .foregroundStyle(.secondary)
+                        ActivityDetailBasicInfo(activityDetail: activityDetail.toModel())
                         
-                        Spacer()
-                        
-                        if !activityDetail.availableUnits.isEmpty {
-                            let availableUnitsInString = activityDetail.availableUnits.joined(separator: ", ")
+                        HStack(alignment: .firstTextBaseline) {
                             
-                            Text("\(availableUnitsInString)")
-                                .font(.footnote)
+                            Text("Ex. \"\(activityDetail.example)\"")
                                 .foregroundStyle(.secondary)
+                                .font(.rowDetail)
+                            
+                            Spacer()
+                            
+                            Text("[Avg]")
+                                .foregroundStyle(.secondary)
+                                .font(.rowDetail)
+                        }
+                    }
+                    .swipeActions {
+                        Button {
+                            archiveActivityDetails(activityDetail)
+                        } label: {
+                            Label(String.archive, systemImage: "archivebox.fill")
+                        }
+                        .tint(.indigo)
+                        
+                        Button(role: .destructive) {
+                            warnBeforeDeletion(activityDetail)
+                        } label: {
+                            Label(String.delete, systemImage: "trash.fill")
+                        }
+                    }
+                    .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: .cornerRadius)
+                            .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? Color.blue : .clear, lineWidth: 3)
+                    )
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 0, leading: .detailSelectionHorizontalPadding, bottom: .vItemSpacing, trailing: .detailSelectionHorizontalPadding))
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        // Do not allow to select if we are editing
+                        if !(editMode?.wrappedValue.isEditing ?? false) {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                toggleSelection(for: activityDetail)
+                            }
                         }
                     }
                 }
-                .swipeActions {
-                    Button {
-                        archiveActivityDetails(activityDetail)
-                    } label: {
-                        Label(String.archive, systemImage: "archivebox.fill")
-                    }
-                    .tint(.indigo)
-
-                    Button(role: .destructive) {
-                        warnBeforeDeletion(activityDetail)
-                    } label: {
-                        Label(String.delete, systemImage: "trash.fill")
-                    }
-                }
-                .padding(.detailPadding)
-                .listRowBackground(
-                    RoundedRectangle(cornerRadius: .cornerRadius)
-                        .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? Color.white : .clear, lineWidth: 5)
-                        .fill(Color.secondaryBackground)
-                        .padding(.horizontal)
-                        .padding(.vertical, (CGFloat.vItemSpacing / 2))
-                )
-                .listRowSeparator(.hidden)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    // Do not allow to select if we are editing
-                    if !(editMode?.wrappedValue.isEditing ?? false) {
-                        withAnimation(.easeInOut(duration: 1.2)) {
-                            toggleSelection(for: activityDetail)
-                        }
-                    }
-                }
-            }
+//            }
         }
         .listStyle(.plain)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)

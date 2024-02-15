@@ -106,7 +106,11 @@ extension DataActivityDetail {
             return "And then he said, 'the hotdog was green the whole time!'"
             
         case .number:
-            return "27\(availableUnits.isEmpty ? "" : " \(availableUnits.first!)")"
+            guard !availableUnits.isEmpty, let firstAvailableUnit = availableUnits.first else {
+                return "27"
+            }
+            
+            return "27\(firstAvailableUnit.isEmpty ? "" : " \(firstAvailableUnit)")"
         }
     }
 }

@@ -13,6 +13,17 @@ struct ActivityDetailSummaryRow: View {
     
     var body: some View {
         
+        ActivityDetailBasicInfo(activityDetail: activityDetail)
+        .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
+    }
+}
+
+
+struct ActivityDetailBasicInfo: View {
+    
+    let activityDetail: ActivityDetail
+    
+    var body: some View {
         HStack {
             HStack(alignment: .firstTextBaseline) {
                 Text("\(activityDetail.name)")
@@ -24,9 +35,9 @@ struct ActivityDetailSummaryRow: View {
             Spacer()
             activityDetail.valueType.asset.image()
         }
-        .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
     }
 }
+
 
 #Preview {
     

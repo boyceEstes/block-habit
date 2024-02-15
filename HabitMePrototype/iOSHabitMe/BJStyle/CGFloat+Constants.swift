@@ -23,4 +23,7 @@ extension CGFloat {
     
     /// sections that are details in a larger section, there can be many and we want there to be less padding to get more on a page and not give it so much importance
     static var detailPadding: CGFloat = 12
+    ///
+    /// Intended to be as close to the default padding but I"m sure its gonna be replaced in the future
+    static var detailSelectionHorizontalPadding: CGFloat = 20
 }
