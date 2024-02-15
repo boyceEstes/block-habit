@@ -146,8 +146,13 @@ struct ActivityDetailRecordRowContentInfo: View {
     var body: some View {
         
         VStack(spacing: .detailPadding) {
-            ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
-            ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
+            if !numberActivityDetailRecords.isEmpty {
+                ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
+            }
+            
+            if !textActivityDetailRecords.isEmpty {
+                ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
+            }
         }
     }
 }
