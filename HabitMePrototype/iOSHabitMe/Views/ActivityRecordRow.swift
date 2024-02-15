@@ -346,9 +346,9 @@ struct UnwrappedValueText: View {
         ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordChuggingDew)
             .sectionBackground(padding: .detailPadding)
         ActivityRecordRowDateWithInfo(activityRecord: activityRecordMunchingTacos)
-            .sectionBackground()
+            .sectionBackground(padding: .detailPadding)
         ActivityRecordRowDateWithInfo(activityRecord: activityRecordChuggingDew)
-            .sectionBackground()
+            .sectionBackground(padding: .detailPadding)
     }
 }
 

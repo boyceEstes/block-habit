@@ -366,7 +366,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         ForEach(filteredDatahabitRecordsForHabit) { activityRecord in
             
             ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
-                .sectionBackground()
+                .sectionBackground(padding: .detailPadding)
         }
     }
     
@@ -504,6 +504,11 @@ struct StatBox: View {
         completionDate: Date().adding(days: 0),
         habit: dataHabit
     )
+    let dataHabitRecord00 = DataHabitRecord(
+        creationDate: Date(),
+        completionDate: Date().adding(days: 0),
+        habit: dataHabit
+    )
     let dataHabitRecord = DataHabitRecord(
         creationDate: Date(),
         completionDate: Date().adding(days: -1),
@@ -521,6 +526,7 @@ struct StatBox: View {
     )
 
     container.mainContext.insert(dataHabitRecord0)
+    container.mainContext.insert(dataHabitRecord00)
     container.mainContext.insert(dataHabitRecord)
     container.mainContext.insert(dataHabitRecord2)
     container.mainContext.insert(dataHabitRecord3)
