@@ -28,6 +28,7 @@
 		B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C52B640431007C8C1E /* ContentView+EditHabitComposition.swift */; };
 		B32947C82B65950D007C8C1E /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C72B65950D007C8C1E /* StatisticsView.swift */; };
 		B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C92B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift */; };
+		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -88,6 +89,7 @@
 		B32947C52B640431007C8C1E /* ContentView+EditHabitComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+EditHabitComposition.swift"; sourceTree = "<group>"; };
 		B32947C72B65950D007C8C1E /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		B32947C92B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+StatisticsComposition.swift"; sourceTree = "<group>"; };
+		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				B3BFEA0E2B76769900DE7617 /* NumberTextField.swift */,
+				B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				B32947A42B601CD3007C8C1E /* HabitDetailView.swift in Sources */,
 				B3BFEA162B781A1A00DE7617 /* String+Constants.swift in Sources */,
 				B3BFEA1A2B791F8800DE7617 /* CreateActivityDetailView.swift in Sources */,
+				B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */,
 				B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */,
 				B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */,
 				B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */,

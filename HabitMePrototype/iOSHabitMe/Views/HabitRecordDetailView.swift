@@ -37,6 +37,7 @@ struct HabitRecordDetailView: View {
     @State private var editableCompletionTime: Date = Date()
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
+    @FocusState private var focused: Focusable?
     
     var sortedActivityRecordDetails: [DataActivityDetailRecord] {
 
@@ -62,15 +63,21 @@ struct HabitRecordDetailView: View {
                         
                         switch activityDetail.valueType {
                         case .number:
-                            EditableActivityDetailNumberView(
-                                name: activityDetail.name,
+                            NumberTextFieldRow(
+                                title: activityDetail.name,
+                                text: valueBinding,
                                 units: activityDetail.availableUnits.first?.lowercased(),
-                                textFieldValue: valueBinding
+                                focused: $focused,
+                                focusID: 0
                             )
+                            
                         case .text:
-                            TextField(activityDetail.name, text: valueBinding, axis: .vertical)
-                                .lineLimit(4)
-                                .sectionBackground()
+                            TextFieldRow(
+                                title: activityDetail.name,
+                                text: valueBinding,
+                                focused: $focused,
+                                focusID: 0
+                            )
                         }
                     }
                 }
@@ -83,16 +90,14 @@ struct HabitRecordDetailView: View {
                         .labelsHidden()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .sectionBackground()
+                .sectionBackground(padding: .detailPadding)
                 
                 Spacer()
             }
             .padding(.horizontal)
             .padding(.top)
         }
-        .presentationDetents([.large])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(.background)
+        .scrollDismissesKeyboard(.interactively)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .onAppear {
             editableCompletionTime = activityRecord.completionDate
@@ -105,7 +110,6 @@ struct HabitRecordDetailView: View {
                 updateHabitRecord(activityRecord, withNewCompletionTime: editableCompletionTime)
             }
         }
-        
         .sheetyTopBarNav(title: activityRecord.habit?.name ?? "Unknown Activity", subtitle: navSubtitleDateString, dismissAction: { dismiss() })
     }
     
@@ -143,45 +147,6 @@ struct HabitRecordDetailView: View {
     private func updateHabitRecord(_ habitRecord: DataHabitRecord, withNewCompletionTime newCompletionTime: Date) {
         
         habitRecord.completionDate = newCompletionTime
-    }
-}
-
-
-struct EditableActivityDetailNumberView: View {
-    
-    let name: String
-    let units: String?
-//    let activityDetailRecord: DataActivityDetailRecord
-    @Binding var textFieldValue: String
-//
-//    
-//    init(activityDetailRecord: DataActivityDetailRecord) {
-//        
-//        self.activityDetailRecord = activityDetailRecord
-//        
-//        self._textFieldValue = State(initialValue: activityDetailRecord.value)
-//    }
-    
-    
-    var body: some View {
-        
-//        let activityDetail = activityDetailRecord.activityDetail
-//        let units = activityDetail.availableUnits.first?.lowercased()
-        
-        HStack {
-//            Text("\(activityDetail.name)")
-            Text(name)
-                .font(.rowDetail)
-            Spacer()
-            VStack {
-                NumberTextField(
-                    "\(name)",
-                    text: $textFieldValue,
-                    units: units
-                )
-            }
-        }
-        .sectionBackground()
     }
 }
 

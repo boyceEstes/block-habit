@@ -17,7 +17,7 @@ extension ContentView {
         NavigationStack {
             CreateHabitRecordWithDetailsView(activity: activity, selectedDay: selectedDay)
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .presentationBackground(.background)
     }

@@ -10,7 +10,6 @@ import Foundation
 
 extension CGFloat {
     
-    static let textFieldPadding: CGFloat = 8
     static let cornerRadius: CGFloat = 10
     /// cornerRadius for the top of a column on the BJBarView
     static let bigBlockCornerRadius: CGFloat = 4

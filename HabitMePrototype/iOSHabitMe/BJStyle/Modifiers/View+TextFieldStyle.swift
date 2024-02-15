@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 
 
+
 extension View {
     
     func textFieldBackground(color: Color = .secondaryBackground) -> some View {
@@ -24,7 +25,7 @@ struct TextFieldBackground: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .sectionBackground(padding: .textFieldPadding, color: color)
+            .sectionBackground(padding: .detailPadding, color: color)
     }
 }
 

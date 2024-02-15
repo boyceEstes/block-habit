@@ -9,6 +9,12 @@ import SwiftUI
 import SwiftData
 
 
+enum Focusable: Hashable {
+    
+    case none
+    case row(id: Int)
+}
+
 
 struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails {
     
@@ -24,7 +30,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     // Keeping this separate from the above property just because SwiftData is a little finicky
     // and I want things in smaller pieces for making the relationship connections
     @State var activityDetailRecords: [ActivityDetailRecord]
-    @FocusState var isActive: Bool
+    @FocusState var focusedActivityDetail: Focusable?
     
     init(activity: DataHabit, selectedDay: Date) {
         
@@ -60,26 +66,34 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
         
         ScrollView {
             LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-                if !activityDetailRecords.isEmpty {
+                
+                let activityDetailRecordsCount = activityDetailRecords.count
+                if activityDetailRecordsCount > 0 {
 
-                    ForEach($activityDetailRecords, id: \.id) { $activityDetailRecord in
+                    ForEach(0..<activityDetailRecordsCount, id: \.self) { i in
                             
                         let activityDetail =
-                        activityDetailRecord.activityDetail
-                        
-                        
-                        switch activityDetail.valueType {
-                        case .number:
-                            EditableActivityDetailNumberView(
-                                name: activityDetail.name,
-                                units: activityDetail.availableUnits.first?.lowercased(),
-                                textFieldValue: $activityDetailRecord.value
+                        activityDetailRecords[i].activityDetail
+                        let units = activityDetail.availableUnits.first?.lowercased()
+
+                        if activityDetail.valueType == .number {
+                            
+                            NumberTextFieldRow(
+                                title: activityDetail.name,
+                                text: self.$activityDetailRecords[i].value, 
+                                units: units,
+                                focused: $focusedActivityDetail,
+                                focusID: i
                             )
-                        case .text:
-                            TextField(activityDetail.name, text: $activityDetailRecord.value, axis: .vertical)
-                                .focused($isActive)
-                                .lineLimit(4)
-                                .sectionBackground()
+                            
+                        } else {
+                            
+                            TextFieldRow(
+                                title: activityDetail.name,
+                                text: self.$activityDetailRecords[i].value,
+                                focused: $focusedActivityDetail,
+                                focusID: i
+                            )
                         }
                     }
                 } else {
@@ -88,10 +102,58 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
             }
             .padding(.horizontal)
         }
+        .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                if let previousIndex = previousTextFieldIndex {
+                    Button("Prev") {
+                        print("prev")
+                        focusedActivityDetail = .row(id: previousIndex)
+                    }
+                }
+                if let nextIndex = nextTextFieldIndex {
+                    Button("Next") {
+                        print("next")
+                        focusedActivityDetail = .row(id: nextIndex)
+                    }
+                } else {
+                    Button("Done") {
+                        print("done")
+                        focusedActivityDetail = nil
+                    }
+                }
+            }
+        }
         .sheetyTopBarNav(title: activity.name, dismissAction: { dismiss() })
         .sheetyBottomBarButton(title: "Record Activity", action: didTapCreateActivityRecord)
     }
     
+    
+    // MARK: UI
+    /// Returns the previous text field index if it is available, if it is not possible to go back it will return nil
+    var previousTextFieldIndex: Int? {
+        
+        if case .row(let id) = focusedActivityDetail {
+            if id > 0 {
+                return id - 1
+            }
+        }
+        
+        return nil
+    }
+    
+    /// Returns the next text field index if it is available, if it is not possible to go to next  it will return nil
+    var nextTextFieldIndex: Int? {
+        
+        if case .row(let id) = focusedActivityDetail {
+            if id < activityDetailRecords.count - 1 {
+                return id + 1
+            }
+        }
+        
+        return nil
+    }
     
     // MARK: Logic
     private func didTapCreateActivityRecord() {
@@ -136,7 +198,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     
     container.mainContext.insert(activity)
     
-//    activity.activityDetails = decodedActivityDetails
+    activity.activityDetails = decodedActivityDetails
     
     for activityDetail in activity.activityDetails {
         

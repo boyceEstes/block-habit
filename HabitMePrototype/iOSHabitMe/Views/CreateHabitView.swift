@@ -174,12 +174,6 @@ struct CreateHabitView: View {
 }
 
 
-enum Focusable: Hashable {
-    case none
-    case row(id: String)
-}
-
-
 struct CreateHabitDetailContent: View {
     
     let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
@@ -275,7 +269,7 @@ struct CreateHabitDetailContent: View {
         
         HStack {
             TextField("Name", text: detail.name)
-                .focused($focusedDetail, equals: .row(id: detail.wrappedValue.id))
+//                .focused($focusedDetail, equals: .row(id: detail.wrappedValue.id))
                 .textFieldBackground()
                 
             Picker("Type", selection: detail.valueType) {

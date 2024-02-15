@@ -16,7 +16,7 @@ extension ContentView {
         NavigationStack {
             HabitRecordDetailView(activityRecord: habitRecord)
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .presentationBackground(.background)
     }
