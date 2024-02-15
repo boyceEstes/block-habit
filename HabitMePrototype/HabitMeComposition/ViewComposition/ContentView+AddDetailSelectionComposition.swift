@@ -27,9 +27,9 @@ extension ContentView {
     
     
     @ViewBuilder
-    func makeAddDetailsViewWithSheetyNavigation(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
+    func makeAddDetailsViewWithSheetyNavigation(selectedDetails: Binding<[DataActivityDetail]>, selectedColor: Color?) -> some View {
         
-        makeAddDetailsView(selectedDetails: selectedDetails)
+        makeAddDetailsView(selectedDetails: selectedDetails, selectedColor: selectedColor)
             .sheet(item: $addDetailsNavigationFlowDisplayedSheet) { identifier in
                 switch identifier {
                 case .createActivityDetail:
@@ -40,10 +40,11 @@ extension ContentView {
     
     
     @ViewBuilder
-    func makeAddDetailsView(selectedDetails: Binding<[DataActivityDetail]>) -> some View {
+    func makeAddDetailsView(selectedDetails: Binding<[DataActivityDetail]>, selectedColor: Color?) -> some View {
         
         AddDetailsView(
             selectedDetails: selectedDetails,
+            detailSelectionColor: selectedColor,
             goToCreateActivityDetail: goToCreateActivityDetailFromAddDetailSelection
         )
     }

@@ -59,11 +59,16 @@ struct AddDetailsView: View {
     
     @Binding var selectedDetails: [DataActivityDetail]
     let goToCreateActivityDetail: () -> Void
+    let detailSelectionColor: Color
     
-    
-    init(selectedDetails: Binding<[DataActivityDetail]>, goToCreateActivityDetail: @escaping () -> Void) {
+    init(
+        selectedDetails: Binding<[DataActivityDetail]>,
+        detailSelectionColor: Color?,
+        goToCreateActivityDetail: @escaping () -> Void
+    ) {
         
         self._selectedDetails = selectedDetails
+        self.detailSelectionColor = detailSelectionColor ?? .blue
         self.goToCreateActivityDetail = goToCreateActivityDetail
         
         // Had to create this with a specific initialization, otherwise it would be implicitly
@@ -115,7 +120,7 @@ struct AddDetailsView: View {
                     .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
                     .overlay(
                         RoundedRectangle(cornerRadius: .cornerRadius)
-                            .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? Color.blue : .clear, lineWidth: 3)
+                            .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
                     )
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
@@ -215,6 +220,7 @@ struct AddDetailsView: View {
         AddDetailsView(
             selectedDetails:
                 .constant([decodedActivityDetails.first!]), 
+            detailSelectionColor: .yellow,
             goToCreateActivityDetail: { }
         )
     }

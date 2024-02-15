@@ -40,12 +40,12 @@ struct EditHabitView: View {
     
     
     let habit: DataHabit
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
     
     
     init(
         habit: DataHabit,
-        goToAddDetailsSelection: @escaping (Binding<[DataActivityDetail]>) -> Void
+        goToAddDetailsSelection: @escaping (Binding<[DataActivityDetail]>, Color?) -> Void
     ) {
         self.habit = habit
         self.goToAddDetailsSelection = goToAddDetailsSelection
@@ -64,7 +64,8 @@ struct EditHabitView: View {
                 
                 CreateHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
-                    selectedDetails: $selectedDetails
+                    selectedDetails: $selectedDetails,
+                    selectedColor: selectedColor
                 )
                 
 //                HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
@@ -154,6 +155,6 @@ struct EditHabitView: View {
     container.mainContext.insert(dataHabit)
     
     return NavigationStack {
-        EditHabitView(habit: dataHabit, goToAddDetailsSelection: { _ in })
+        EditHabitView(habit: dataHabit, goToAddDetailsSelection: { _, _ in })
     }
 }

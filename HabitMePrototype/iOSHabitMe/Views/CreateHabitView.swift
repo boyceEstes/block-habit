@@ -110,7 +110,7 @@ struct CreateHabitView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
     
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
@@ -124,7 +124,8 @@ struct CreateHabitView: View {
                 
                 CreateHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
-                    selectedDetails: $selectedDetails
+                    selectedDetails: $selectedDetails,
+                    selectedColor: selectedColor
                 )
             }
         }
@@ -176,8 +177,10 @@ struct CreateHabitView: View {
 
 struct CreateHabitDetailContent: View {
     
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>) -> Void
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?
+    ) -> Void
     @Binding var selectedDetails: [DataActivityDetail]
+    let selectedColor: Color?
     @FocusState private var focusedDetail: Focusable?
     
     var body: some View {
@@ -212,7 +215,7 @@ struct CreateHabitDetailContent: View {
         .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
         .onTapGesture {
-            goToAddDetailsSelection($selectedDetails)
+            goToAddDetailsSelection($selectedDetails, selectedColor)
         }
     }
     
@@ -426,6 +429,6 @@ struct HabitMePrimaryButton: View {
 
 #Preview {
     NavigationStack {
-        CreateHabitView(goToAddDetailsSelection: { _ in })
+        CreateHabitView(goToAddDetailsSelection: { _, _ in })
     }
 }

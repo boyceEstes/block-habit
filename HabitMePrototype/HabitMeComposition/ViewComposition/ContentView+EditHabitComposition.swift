@@ -19,8 +19,8 @@ extension ContentView {
         )
         .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
             switch identifier {
-            case let .detailSelection(selectedDetails):
-                makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails)
+            case let .detailSelection(selectedDetails, selectedColor):
+                makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
             }
         }
     }
