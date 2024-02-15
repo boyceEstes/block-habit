@@ -351,7 +351,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                 
                 ActivityDetailLineMarkChart(
                     data: chartInfo,
-                    lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue)
+                    lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue),
+                    // Average should be more focused because there will probably be less variability
+                    isFocusedDomain: activityDetail.calculationType == .average
                 )
             }
             .sectionBackground()

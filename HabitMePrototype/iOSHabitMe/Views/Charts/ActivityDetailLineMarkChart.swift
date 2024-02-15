@@ -15,6 +15,14 @@ struct ActivityDetailLineMarkChart: View {
     
     let data: [LineChartActivityDetailData]
     let lineColor: Color
+    
+    /// For things like weight that might not change very drastically, we want to give the option to make the graph's range smaller to see changes easier.
+    let isFocusedDomain: Bool
+    
+    var focusedDomain: ClosedRange<Int>? {
+        data.focusedDomainRange()
+    }
+    
 
     var initialXScrollPosition: String {
         
@@ -25,11 +33,20 @@ struct ActivityDetailLineMarkChart: View {
         return data[index].displayableDate
     }
     
+    
+//    var focusedDomain
+    
     var gradientColor: LinearGradient
     
-    init(data: [LineChartActivityDetailData], lineColor: Color) {
+    init(
+        data: [LineChartActivityDetailData],
+        lineColor: Color,
+        isFocusedDomain: Bool
+    ) {
+        
         self.data = data
         self.lineColor = lineColor
+        self.isFocusedDomain = isFocusedDomain
         
         self.gradientColor = LinearGradient(
             gradient: Gradient(
@@ -75,11 +92,30 @@ struct ActivityDetailLineMarkChart: View {
         .frame(height: 150)
         .chartScrollableAxes(.horizontal)
         .chartXVisibleDomain(length: xVisibleDomainLength)
+        // zooms in for stats that need to be focused
+        .if(isFocusedDomain && focusedDomain != nil) { view in
+            view.chartYScale(domain: focusedDomain!)
+        }
         .chartScrollPosition(initialX: initialXScrollPosition)
     }
     
     
 //    var lowestValue:
+}
+
+extension View {
+    /// Applies the given transform if the given condition evaluates to `true`.
+    /// - Parameters:
+    ///   - condition: The condition to evaluate.
+    ///   - transform: The transform to apply to the source `View`.
+    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
 }
 
 
@@ -109,5 +145,8 @@ struct ActivityDetailLineMarkChart: View {
     ]
     
     
-    return ActivityDetailLineMarkChart(data: data, lineColor: .red)
+    return VStack {
+        ActivityDetailLineMarkChart(data: data, lineColor: .red, isFocusedDomain: false)
+        ActivityDetailLineMarkChart(data: data, lineColor: .red, isFocusedDomain: true)
+    }
 }
