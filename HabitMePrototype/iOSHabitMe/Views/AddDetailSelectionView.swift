@@ -49,7 +49,8 @@ struct AddDetailsView: View {
     @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
         activityDetail.isArchived == false
     }, sort: [
-        SortDescriptor(\DataActivityDetail.creationDate, order: .reverse)
+        SortDescriptor(\DataActivityDetail.creationDate, order: .reverse),
+        SortDescriptor(\DataActivityDetail.name, order: .forward)
     ], animation: .default) var activityDetails: [DataActivityDetail]
     
     @State private var activityDetailsWithSelection: [DataActivityDetail: Bool]
@@ -90,9 +91,11 @@ struct AddDetailsView: View {
                             
                             Spacer()
                             
-                            Text("[Avg]")
-                                .foregroundStyle(.secondary)
-                                .font(.rowDetail)
+                            if activityDetail.valueType == .number {
+                                Text("[\(activityDetail.calculationType.rawValue)]")
+                                    .foregroundStyle(.secondary)
+                                    .font(.rowDetail)
+                            }
                         }
                     }
                     .swipeActions {
