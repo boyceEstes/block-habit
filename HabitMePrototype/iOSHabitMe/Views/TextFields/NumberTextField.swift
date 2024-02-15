@@ -39,6 +39,23 @@ struct NumberTextFieldRow: View {
 }
 
 
+final class DecimalNumberPolicy {
+    
+    private init() { }
+    
+    static func isValidDecimalNumber(numberString: String) -> Bool {
+        
+        var dotCount = 0
+        for c in numberString {
+            // Comma check is to cover for other languages that have comma decimals
+            if String(c) == "." || String(c) == "," { dotCount += 1 }
+        }
+        
+        return dotCount < 2
+    }
+}
+
+
 struct NumberTextField: View {
     
     let title: String
@@ -63,6 +80,7 @@ struct NumberTextField: View {
         self.focused = focused
         self.focusID = focusID
         
+        
         self._workingText = Binding(get: {
             
             let unwrappedText = text.wrappedValue
@@ -70,6 +88,7 @@ struct NumberTextField: View {
             return sanitizedNumber
             
         }, set: { newValue in
+            
             text.wrappedValue = newValue
         })
     }
@@ -79,7 +98,7 @@ struct NumberTextField: View {
         HStack(alignment: .firstTextBaseline) {
             TextField("0", text: $workingText)
                 .multilineTextAlignment(units != nil ? .trailing : .center)
-                .keyboardType(.numberPad)
+                .keyboardType(.decimalPad)
                 .frame(width: 60)
                 .focused(focused, equals: .row(id: focusID))
             if let units {
@@ -92,6 +111,12 @@ struct NumberTextField: View {
         }
         .textFieldBackground(color: .tertiaryBackground)
         .contentShape(Rectangle())
+        .onReceive(workingText.publisher.collect()) {
+            if !DecimalNumberPolicy.isValidDecimalNumber(numberString: String($0)) {
+                // Just want to take everything but the new decimal point
+                self.workingText = String($0.prefix(workingText.count - 1))
+            }
+        }
     }
 }
 
