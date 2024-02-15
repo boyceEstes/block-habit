@@ -130,7 +130,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     }
     
     
-    // MARK: UI
+    // MARK: UI Helpers
     /// Returns the previous text field index if it is available, if it is not possible to go back it will return nil
     var previousTextFieldIndex: Int? {
         

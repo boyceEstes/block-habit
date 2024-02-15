@@ -54,12 +54,14 @@ struct HabitRecordDetailView: View {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
             LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                 
-                if !sortedActivityRecordDetails.isEmpty {
-                    ForEach(sortedActivityRecordDetails) { activityDetailRecord in
+                let sortedActivityRecordDetailsCount = sortedActivityRecordDetails.count
+                
+                if sortedActivityRecordDetailsCount > 0 {
+                    ForEach(0..<sortedActivityRecordDetailsCount, id: \.self) { i in
                         
                         let activityDetail =
-                        activityDetailRecord.activityDetail
-                        let valueBinding = valueBinding(for: activityDetailRecord)
+                        sortedActivityRecordDetails[i].activityDetail
+                        let valueBinding = valueBinding(for: sortedActivityRecordDetails[i])
                         
                         switch activityDetail.valueType {
                         case .number:
@@ -68,7 +70,7 @@ struct HabitRecordDetailView: View {
                                 text: valueBinding,
                                 units: activityDetail.availableUnits.first?.lowercased(),
                                 focused: $focused,
-                                focusID: 0
+                                focusID: i
                             )
                             
                         case .text:
@@ -76,7 +78,7 @@ struct HabitRecordDetailView: View {
                                 title: activityDetail.name,
                                 text: valueBinding,
                                 focused: $focused,
-                                focusID: 0
+                                focusID: i
                             )
                         }
                     }
@@ -110,12 +112,55 @@ struct HabitRecordDetailView: View {
                 updateHabitRecord(activityRecord, withNewCompletionTime: editableCompletionTime)
             }
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                if let previousIndex = previousTextFieldIndex {
+                    Button("Prev") {
+                        focused = .row(id: previousIndex)
+                    }
+                }
+                if let nextIndex = nextTextFieldIndex {
+                    Button("Next") {
+                        focused = .row(id: nextIndex)
+                    }
+                }
+                
+                Button("Done") {
+                    focused = nil
+                }
+            }
+        }
         .sheetyTopBarNav(title: activityRecord.habit?.name ?? "Unknown Activity", subtitle: navSubtitleDateString, dismissAction: { dismiss() })
     }
     
     
     
     // MARK: UI Helpers
+    var previousTextFieldIndex: Int? {
+        
+        if case .row(let id) = focused {
+            if id > 0 {
+                return id - 1
+            }
+        }
+        
+        return nil
+    }
+    
+    /// Returns the next text field index if it is available, if it is not possible to go to next  it will return nil
+    var nextTextFieldIndex: Int? {
+        
+        if case .row(let id) = focused {
+            if id < sortedActivityRecordDetails.count - 1 {
+                return id + 1
+            }
+        }
+        
+        return nil
+    }
+    
+    
     private func valueBinding(for activityDetailRecord: DataActivityDetailRecord) -> Binding<String> {
         
         return Binding {
