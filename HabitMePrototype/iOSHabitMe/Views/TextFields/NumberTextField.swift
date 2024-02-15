@@ -39,23 +39,6 @@ struct NumberTextFieldRow: View {
 }
 
 
-final class DecimalNumberPolicy {
-    
-    private init() { }
-    
-    static func isValidDecimalNumber(numberString: String) -> Bool {
-        
-        var dotCount = 0
-        for c in numberString {
-            // Comma check is to cover for other languages that have comma decimals
-            if String(c) == "." || String(c) == "," { dotCount += 1 }
-        }
-        
-        return dotCount < 2
-    }
-}
-
-
 struct NumberTextField: View {
     
     let title: String
