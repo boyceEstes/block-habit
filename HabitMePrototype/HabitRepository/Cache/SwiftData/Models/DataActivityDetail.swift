@@ -43,6 +43,9 @@ final class DataActivityDetail: Hashable, Decodable {
     /// Use for sorting purposes
     var creationDate: Date
     
+    /// Intended for displaying statistics
+    var calculationType: ActivityDetailCalculationType
+    
     
     /// This can be empty - no records are required for this model
     @Relationship(deleteRule: .cascade, inverse: \DataActivityDetailRecord.activityDetail) var detailRecords: [DataActivityDetailRecord]
@@ -58,6 +61,7 @@ final class DataActivityDetail: Hashable, Decodable {
         availableUnits: [String] = [],
         isArchived: Bool = false,
         creationDate: Date = Date(),
+        calculationType: ActivityDetailCalculationType = .sum,
         detailRecords: [DataActivityDetailRecord] = [],
         habits: [DataHabit] = []
     ) {
@@ -66,6 +70,7 @@ final class DataActivityDetail: Hashable, Decodable {
         self.availableUnits = availableUnits
         self.isArchived = isArchived
         self.creationDate = creationDate
+        self.calculationType = calculationType
         self.detailRecords = detailRecords
         self.habits = habits
     }
@@ -84,28 +89,9 @@ final class DataActivityDetail: Hashable, Decodable {
 //        availableUnits = []
         isArchived = false
         creationDate = Date()
+        calculationType = .sum
         detailRecords = []
         habits = []
-    }
-}
-
-
-enum ActivityDetailType: String, CaseIterable, Identifiable, Hashable, Codable {
-    
-    // Very important to have these exact rawValues because they are used to decode seed data
-    case number = "Number"
-    case text = "Text"
-    
-    var id: ActivityDetailType { self }
-    
-    
-    var asset: BJAsset {
-        switch self {
-        case .number:
-            BJAsset.numberSquare
-        case .text:
-            BJAsset.characterBubble
-        }
     }
 }
 

@@ -8,19 +8,13 @@ import Foundation
 import SwiftData
 
 
-enum BJRepositoryError: Error {
-    
-    case activityDetailNameAlreadyExists
-    case failedToLoadActivityDetails
-}
-
-
 extension ModelContext {
     
     func createActivityDetail(
         name: String,
         valueType: ActivityDetailType,
         units: String?,
+        calculationType: ActivityDetailCalculationType,
         overrideDuplicateNameError: Bool = false
     ) throws {
         
@@ -52,6 +46,7 @@ extension ModelContext {
                 availableUnits: unitsArray,
                 isArchived: false,
                 creationDate: creationDate,
+                calculationType: calculationType,
                 detailRecords: [],
                 habits: []
             )

@@ -7,28 +7,6 @@
 
 import SwiftUI
 
-enum ActivityDetailCalculationType: String, CaseIterable, Identifiable {
-     
-    case sum = "Sum"
-    case average = "Average"
-    
-    var id: ActivityDetailCalculationType { self }
-   
-    var explanation: String {
-        
-        var _explanation: String = .calculationTypExplanation
-        
-//        switch self {
-//        case .sum:
-//            _explanation.append(" \(String.sumExplanation)")
-//        case .average:
-//            _explanation.append(" \(String.avgExplanation)")
-//        }
-        
-        return _explanation
-    }
-}
-
 
 struct CreateActivityDetailView: View {
     
@@ -132,7 +110,13 @@ struct CreateActivityDetailView: View {
         guard isAbleToTapCreate else { return }
 
         do {
-            try modelContext.createActivityDetail(name: detailName, valueType: typeSelection, units: units, overrideDuplicateNameError: true)
+            try modelContext.createActivityDetail(
+                name: detailName,
+                valueType: typeSelection,
+                units: units,
+                calculationType: calculationTypeSelection,
+                overrideDuplicateNameError: true
+            )
             
             dismiss()
             

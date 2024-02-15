@@ -29,6 +29,9 @@
 		B32947C82B65950D007C8C1E /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C72B65950D007C8C1E /* StatisticsView.swift */; };
 		B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32947C92B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
+		B347DE362B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */; };
+		B347DE392B7DA58F00F2FA74 /* ActivityDetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */; };
+		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -90,6 +93,9 @@
 		B32947C72B65950D007C8C1E /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		B32947C92B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+StatisticsComposition.swift"; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
+		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
+		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
+		B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJRepositoryError.swift; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -205,6 +211,16 @@
 				B3BFEA1B2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift */,
 			);
 			path = ViewComposition;
+			sourceTree = "<group>";
+		};
+		B347DE372B7DA55A00F2FA74 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */,
+				B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */,
+				B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		B3B403852B71237900D1967E /* Policies */ = {
@@ -356,6 +372,7 @@
 		B3C9E5452B6BDC8100153158 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B347DE372B7DA55A00F2FA74 /* Enums */,
 				B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */,
 				B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */,
 			);
@@ -485,6 +502,7 @@
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
+				B347DE362B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift in Sources */,
 				B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */,
 				B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */,
 				B32947AC2B62AD2E007C8C1E /* HabitRecordDetailView.swift in Sources */,
@@ -508,7 +526,9 @@
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
 				B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */,
 				B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */,
+				B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */,
 				B3BFEA182B7838B400DE7617 /* ActivityDetailSummaryRow.swift in Sources */,
+				B347DE392B7DA58F00F2FA74 /* ActivityDetailType.swift in Sources */,
 				B3BFEA0A2B76635000DE7617 /* ActivityRecordRow.swift in Sources */,
 				B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */,
 			);

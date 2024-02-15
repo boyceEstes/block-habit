@@ -89,7 +89,6 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     var allDetailChartData: [DataActivityDetail: [LineChartActivityDetailData]] {
         
         // FIXME: Handle some details by averaging and some details by summing
-        let calculateSum = false
 
         return chartActivityDetailRecordsForActivityRecords.reduce(into: [DataActivityDetail: [LineChartActivityDetailData]]()) { allDetailDataDict, chartActivityDetailRecordsForActivityRecord in
             
@@ -109,18 +108,18 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                 // To average this, we will keep up with the count of records inserted for each date
                 if let (currentRecordCountForDay, currentValueCountForDay) = dateCountDictionary[completionDate] {
 
-                    if calculateSum {
-
+                    switch activityDetailRecord.activityDetail.calculationType {
+                    case .sum:
+                        print("This activity detail, \(activityDetailRecord.activityDetail.name), is SUM")
                         dateCountDictionary[completionDate] = (1, currentValueCountForDay + activityDetailRecordValue)
-
-                    } else {
+                    case .average:
+                        print("This activity detail is \(activityDetailRecord.activityDetail.name) is AVERAGE")
                         // must be average
                         let newCurrentCountForDay = currentRecordCountForDay + 1
                         let newCurrentValueForDay = (currentValueCountForDay + activityDetailRecordValue)
 
                         dateCountDictionary[completionDate] = (newCurrentCountForDay, newCurrentValueForDay)
                     }
-
                 } else {
                     dateCountDictionary[completionDate] = (1, activityDetailRecordValue)
                 }
@@ -350,7 +349,10 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             VStack(alignment: .leading) {
                 Text("\(activityDetail.name)")
                 
-                ActivityDetailLineMarkChart(data: chartInfo, lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue))
+                ActivityDetailLineMarkChart(
+                    data: chartInfo,
+                    lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue)
+                )
             }
             .sectionBackground()
         }
