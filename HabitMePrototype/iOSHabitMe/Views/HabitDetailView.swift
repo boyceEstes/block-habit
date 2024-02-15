@@ -240,7 +240,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     
     var totalRecords: String {
-        return "\(dataHabitRecordsForHabit.count)"
+        return "\(filteredDatahabitRecordsForHabit.count)"
     }
     
     
