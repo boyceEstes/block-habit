@@ -60,8 +60,6 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
         // later after we hit the create button to prevent fun weird stuff happening.
     }
     
-    @State private var testing = "Testing"
-    
     var body: some View {
         
         ScrollView {

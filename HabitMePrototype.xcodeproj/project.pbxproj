@@ -33,6 +33,8 @@
 		B347DE392B7DA58F00F2FA74 /* ActivityDetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
+		B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */; };
+		B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -98,6 +100,8 @@
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
 		B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJRepositoryError.swift; sourceTree = "<group>"; };
 		B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalNumberPolicy.swift; sourceTree = "<group>"; };
+		B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeKey.swift; sourceTree = "<group>"; };
+		B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HeightChangePreference.swift"; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -225,6 +229,16 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
+		B347DE692B7FF4D900F2FA74 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B3BFEA122B77F9D100DE7617 /* BJStyle */,
+				B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */,
+				B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		B3B403852B71237900D1967E /* Policies */ = {
 			isa = PBXGroup;
 			children = (
@@ -302,7 +316,7 @@
 		B3C97F202B5CE8FA00211B4C /* iOSHabitMe */ = {
 			isa = PBXGroup;
 			children = (
-				B3BFEA122B77F9D100DE7617 /* BJStyle */,
+				B347DE692B7FF4D900F2FA74 /* Helpers */,
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
 				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
@@ -505,6 +519,7 @@
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
+				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
 				B347DE362B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift in Sources */,
 				B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */,
@@ -513,6 +528,7 @@
 				B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */,
 				B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */,
 				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
+				B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */,
 				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
 				B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */,
 				B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */,
