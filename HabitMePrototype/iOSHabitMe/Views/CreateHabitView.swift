@@ -177,8 +177,7 @@ struct CreateHabitView: View {
 
 struct CreateHabitDetailContent: View {
     
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?
-    ) -> Void
+    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
     @Binding var selectedDetails: [DataActivityDetail]
     let selectedColor: Color?
     @FocusState private var focusedDetail: Focusable?

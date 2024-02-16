@@ -19,7 +19,7 @@ extension DateFormatter {
     }()
     
     
-    /// Ex `1/1`, `12/25` or `01/01`, `25/12` if you are in other countries
+    /// Ex: (depending on locale) `1/1`, `12/25` or `01/01`, `25/12`
     static let shortDateWithoutYear: DateFormatter = {
         
         let formatter = DateFormatter()
@@ -28,7 +28,7 @@ extension DateFormatter {
     }()
     
     
-    /// Ex: `Jan 1`, `Dec 25` or `1 Jan`, `25 Dec` if you are in other countries
+    /// Ex: (depending on locale) `Jan 1`, `Dec 25` or `1 Jan`, `25 Dec`
     static let monthDayDate: DateFormatter = {
         
         let formatter = DateFormatter()

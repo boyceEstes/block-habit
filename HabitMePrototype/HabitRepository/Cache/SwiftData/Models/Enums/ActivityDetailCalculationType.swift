@@ -27,4 +27,15 @@ enum ActivityDetailCalculationType: String, CaseIterable, Identifiable, Hashable
         
         return _explanation
     }
+    
+    
+    var displayPerDay: String {
+        
+        switch self {
+        case .average:
+            "Average per day"
+        case .sum:
+            "Total per day"
+        }
+    }
 }

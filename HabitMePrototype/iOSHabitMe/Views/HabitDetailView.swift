@@ -346,8 +346,14 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             
             let (activityDetail, chartInfo) = chartInformation
             
-            VStack(alignment: .leading) {
-                Text("\(activityDetail.name)")
+            VStack(alignment: .leading, spacing: .vSectionSpacing) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("\(activityDetail.name)")
+                    Spacer()
+                    Text("\(activityDetail.calculationType.displayPerDay)")
+                        .font(Font.rowDetail)
+                        .foregroundStyle(Color.secondaryFont)
+                }
                 
                 ActivityDetailLineMarkChart(
                     data: chartInfo,
