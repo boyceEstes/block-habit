@@ -270,7 +270,6 @@ struct UnwrappedValueText: View {
                 Text(units)
                     .font(.callout)
             }
-
         } else {
             Text("\(.notAvailable)")
         }
@@ -280,8 +279,6 @@ struct UnwrappedValueText: View {
 
 
 #Preview {
-
-    
     
     let activityDetailRecordTimeRecord = ActivityDetailRecord2(
         value: "1000",
@@ -338,7 +335,7 @@ struct UnwrappedValueText: View {
         detailRecords: [
             activityDetailRecordTimeRecord,
             activityDetailRecordAmountRecord,
-//            activityDetailLengthRecord,
+            activityDetailLengthRecord,
             activityDetailRecordNoteRecord,
             activityDetailTouchdownsRecord,
             activityDetailMoodRecord
