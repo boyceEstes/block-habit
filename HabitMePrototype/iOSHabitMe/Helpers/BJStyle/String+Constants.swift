@@ -21,8 +21,8 @@ extension String {
     
     // Calculation Type
     static let calculationTypExplanation = "Calculation type is used to dictate how the detail values will be combined if there are multiple on the same day."
-    static let sumExplanation = "'Sum' will add all of the detail records together over some amount of time. If you were reading for 30 min and then read again for 25 min, this would be displayed as 55 min."
-    static let avgExplanation = "'Average' will average all of the detail records together over some amount of time. If you logged your weight in the morning for 190lbs and at night for 200lbs, this would be displayed as 195 lbs for the day"
+    static let sumExplanation = "Example (Sum Type): If you Read for 15 minutes in the morning and 20 min at night, you will have 35 min logged for the day"
+    static let avgExplanation = "Example (Average Type): If you logged your weight in the morning for 190lbs and at night for 200lbs, this would be displayed as 195 lbs for the day"
     
     // add details
     static let addActivityDetails_navTitle = "Select Activity Details"

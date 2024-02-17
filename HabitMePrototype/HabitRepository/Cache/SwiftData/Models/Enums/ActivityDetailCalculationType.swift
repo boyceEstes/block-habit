@@ -16,14 +16,14 @@ enum ActivityDetailCalculationType: String, CaseIterable, Identifiable, Hashable
    
     var explanation: String {
         
-        let _explanation: String = .calculationTypExplanation
+        var _explanation: String = .calculationTypExplanation
         
-//        switch self {
-//        case .sum:
-//            _explanation.append(" \(String.sumExplanation)")
-//        case .average:
-//            _explanation.append(" \(String.avgExplanation)")
-//        }
+        switch self {
+        case .sum:
+            _explanation.append("\n\n\(String.sumExplanation)")
+        case .average:
+            _explanation.append("\n\n\(String.avgExplanation)")
+        }
         
         return _explanation
     }
