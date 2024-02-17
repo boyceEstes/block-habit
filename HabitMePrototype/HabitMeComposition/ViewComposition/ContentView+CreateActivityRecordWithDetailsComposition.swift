@@ -23,27 +23,3 @@ extension ContentView {
     }
 }
 
-
-extension View {
-    
-    func recordSheetPresentation(activityDetailCount: Int) -> some View {
-        
-        modifier(
-            RecordSheetPresentation(activityDetailCount: activityDetailCount)
-        )
-    }
-}
-
-
-struct RecordSheetPresentation: ViewModifier {
-    
-    let activityDetailCount: Int
-    
-    func body(content: Content) -> some View {
-        
-        content
-            .presentationDetents(activityDetailCount > 3 ? [.large] : [.medium])
-            .presentationDragIndicator(.visible)
-            .presentationBackground(.background)
-    }
-}
