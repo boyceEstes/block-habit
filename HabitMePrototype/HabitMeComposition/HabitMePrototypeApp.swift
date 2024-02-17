@@ -31,6 +31,7 @@ struct HabitMePrototypeApp: App {
                 let descriptor = FetchDescriptor<DataActivityDetail>()
                 let existingActivityDetailCount = try container.mainContext.fetchCount(descriptor)
                 
+                // Only works when there are ZERO activity details loaded
                 guard existingActivityDetailCount == 0 else { return }
                 
                 // Load and decode the json that we have inserted

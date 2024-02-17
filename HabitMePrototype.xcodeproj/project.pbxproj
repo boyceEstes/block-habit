@@ -302,18 +302,10 @@
 			isa = PBXGroup;
 			children = (
 				B3B4038A2B71331E00D1967E /* Protocols */,
-				B3C97F1B2B5CE89C00211B4C /* Models */,
 				B3C97F142B5CE83600211B4C /* Cache */,
 				B3B403852B71237900D1967E /* Policies */,
 			);
 			path = HabitRepository;
-			sourceTree = "<group>";
-		};
-		B3C97F1B2B5CE89C00211B4C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		B3C97F202B5CE8FA00211B4C /* iOSHabitMe */ = {
