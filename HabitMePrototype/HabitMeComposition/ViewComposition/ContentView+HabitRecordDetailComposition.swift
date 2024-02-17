@@ -11,13 +11,13 @@ import SwiftUI
 extension ContentView {
     
     @ViewBuilder
-    func makeHabitRecordDetailView(habitRecord: DataHabitRecord) -> some View {
+    func makeHabitRecordDetailView(activityRecord: DataHabitRecord) -> some View {
         // Adding navigation stack to get the goodies of toolbar and adding that to the keyboard .numberPad
+        let activityDetailCount = activityRecord.habit?.activityDetails.count ?? 1
+        
         NavigationStack {
-            HabitRecordDetailView(activityRecord: habitRecord)
+            HabitRecordDetailView(activityRecord: activityRecord)
         }
-        .presentationDetents([.large])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(.background)
+        .recordSheetPresentation(activityDetailCount: activityDetailCount)
     }
 }

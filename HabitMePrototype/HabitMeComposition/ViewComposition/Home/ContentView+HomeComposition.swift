@@ -40,7 +40,7 @@ extension ContentView {
                     makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
                     
                 case let .habitRecordDetail(habitRecord):
-                    makeHabitRecordDetailView(habitRecord: habitRecord)
+                    makeHabitRecordDetailView(activityRecord: habitRecord)
                     
                 case let .editHabit(habit):
                     makeEditHabitView(habit: habit)
