@@ -14,7 +14,8 @@ final class DataHabit: Hashable {
     @Attribute(.unique) var id: String = UUID().uuidString
     var name: String
     var color: String
-    @Relationship(deleteRule: .nullify, inverse: \DataActivityDetail.habits) var activityDetails: [DataActivityDetail]
+    // Initializing to empty should cause a lightweight migration, if coming from an earlier version
+    @Relationship(deleteRule: .nullify, inverse: \DataActivityDetail.habits) var activityDetails: [DataActivityDetail] = []
     @Relationship(deleteRule: .cascade, inverse: \DataHabitRecord.habit) var habitRecords: [DataHabitRecord]
     
     
@@ -39,7 +40,8 @@ final class DataHabitRecord {
     var creationDate: Date
     var completionDate: Date
     var habit: DataHabit?
-    @Relationship(deleteRule: .cascade, inverse: \DataActivityDetailRecord.activityRecord) var activityDetailRecords: [DataActivityDetailRecord]
+    // Initializing to empty should cause a lightweight migration, if coming from an earlier version
+    @Relationship(deleteRule: .cascade, inverse: \DataActivityDetailRecord.activityRecord) var activityDetailRecords: [DataActivityDetailRecord] = []
     
     
     init(
