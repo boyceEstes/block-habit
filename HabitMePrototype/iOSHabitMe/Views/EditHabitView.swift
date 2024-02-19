@@ -66,14 +66,11 @@ struct EditHabitView: View {
                 
                 CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
                 
-                CreateHabitDetailContent(
+                CreateEditHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
                 )
-                
-//                HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
-//                    .padding()
             }
         }
         .createEditHabitSheetPresentation()

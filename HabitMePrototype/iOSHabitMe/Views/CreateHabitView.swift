@@ -123,7 +123,7 @@ struct CreateHabitView: View {
 
                 CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
                 
-                CreateHabitDetailContent(
+                CreateEditHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
@@ -184,7 +184,7 @@ struct CreateHabitView: View {
 }
 
 
-struct CreateHabitDetailContent: View {
+struct CreateEditHabitDetailContent: View {
     
     let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
     @Binding var selectedDetails: [ActivityDetail]
