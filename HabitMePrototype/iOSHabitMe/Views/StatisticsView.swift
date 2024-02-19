@@ -14,10 +14,22 @@ import SwiftData
  * would update the stats that will be displayed in this view.
  */
 
-struct SelectableHabit: Hashable {
-    
-    var habit: DataHabit
+struct SelectableHabit: Hashable, SelectableListItem {
+
+    let id: String
+    let name: String
     var isSelected: Bool = true
+    var colorString: String?
+    
+    // This is kept for easily keeping data that will be needed later
+    var habit: DataHabit
+    
+    init(habit: DataHabit) {
+        self.id = habit.id
+        self.name = habit.name
+        self.colorString = habit.color 
+        self.habit = habit
+    }
 }
 
 struct StatisticsView: View {
@@ -124,36 +136,7 @@ struct StatisticsView: View {
                             .padding(.horizontal)
                             
                             
-                            ScrollView(.horizontal) {
-                                LazyHStack {
-                                    ForEach(0..<selectableHabits.count, id: \.self) { i in
-                                        
-                                        let selectableHabit = selectableHabits[i]
-                                        let isSelected = selectableHabit.isSelected
-                                        let name = selectableHabit.habit.name
-                                        let color = selectableHabit.habit.color
-                                        
-                                        Button {
-                                            print("tapped selectableHabit")
-                                            withAnimation {
-                                                selectableHabits[i].isSelected.toggle()
-                                            }
-                                        } label: {
-                                            Text("\(name)")
-                                                .foregroundStyle(Color.primary)
-                                        }
-                                        .padding(8)
-                                        .contentShape(RoundedRectangle(cornerRadius: 10))
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .fill(isSelected ? Color(hex: color) ?? Color.gray : .clear)
-                                                .stroke(isSelected ? Color.clear : Color(hex: color) ?? Color.gray, lineWidth: 3)
-                                        )
-                                        .padding(.vertical)
-                                    }
-                                }
-                                .padding(.leading)
-                            }
+                            HorizontalScrollySelectableList(items: $selectableHabits)
                         }
                     }
                     
@@ -318,17 +301,74 @@ struct StatisticsView: View {
         
         bestStreaks = habitBestStreaks
     }
-//
-//    private func filterButton(habit: DataHabit) -> some View {
-//        
-//        Button {
-//            
-//        } label: {
-//            
-//        }
-//    }
 }
 
+
+// Needs to be Identifiable for the foreach conformance, just makes it easier
+protocol SelectableListItem: Identifiable {
+    
+    var id: String { get } // Id stays the same
+    var name: String { get } // Name stays the same
+    var isSelected: Bool { get set } // Gets toggled
+    
+    var colorString: String? { get }
+}
+
+
+extension SelectableListItem {
+    
+    var color: Color {
+        
+        let defaultColor = Color.blue
+        
+        guard let colorString, let unwrappedColor = Color(hex: colorString) else {
+            return defaultColor
+        }
+        
+        return unwrappedColor
+    }
+}
+
+
+struct HorizontalScrollySelectableList<T: SelectableListItem>: View {
+    
+    @Binding var items: [T]
+    
+    
+    var body: some View {
+        
+        ScrollView(.horizontal) {
+            LazyHStack {
+                ForEach(0..<items.count, id: \.self) { i in
+                    
+                    let item = items[i]
+                    let isSelected = item.isSelected
+                    let name = item.name
+                    let color = item.color
+                    
+                    Button {
+                        print("tapped selectableHabit")
+                        withAnimation {
+                            items[i].isSelected.toggle()
+                        }
+                    } label: {
+                        Text("\(name)")
+                            .foregroundStyle(Color.primary)
+                    }
+                    .padding(8)
+                    .contentShape(RoundedRectangle(cornerRadius: 10))
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(isSelected ? color : .clear)
+                            .stroke(isSelected ? Color.clear : color, lineWidth: 3)
+                    )
+                    .padding(.vertical)
+                }
+            }
+            .padding(.leading)
+        }
+    }
+}
 
 
 #Preview {
