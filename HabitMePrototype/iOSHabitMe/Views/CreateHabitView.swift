@@ -116,6 +116,7 @@ struct CreateHabitView: View {
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     @State private var selectedDetails = [ActivityDetail]()
+    @State private var completionGoal: Int? = nil
     
     var body: some View {
         ScrollView {
@@ -127,6 +128,10 @@ struct CreateHabitView: View {
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
+                )
+                
+                CreateEditActivityCompletionGoalContent(
+                    completionGoal: $completionGoal
                 )
             }
         }
@@ -189,7 +194,6 @@ struct CreateEditHabitDetailContent: View {
     let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
     @Binding var selectedDetails: [ActivityDetail]
     let selectedColor: Color?
-    @FocusState private var focusedDetail: Focusable?
     
     var body: some View {
         
