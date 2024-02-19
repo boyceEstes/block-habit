@@ -34,7 +34,7 @@ extension ContentView {
                 
                 switch identifier {
                 case .createHabit:
-                    makeCreateHabitViewWithSheetyNavigation()
+                    makeCreateHabitViewWithStackNavigation()
                     
                 case let .createActivityRecordWithDetails(activity, selectedDay):
                     makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)

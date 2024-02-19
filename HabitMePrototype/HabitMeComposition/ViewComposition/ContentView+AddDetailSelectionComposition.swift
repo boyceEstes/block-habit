@@ -47,6 +47,7 @@ extension ContentView {
             detailSelectionColor: selectedColor,
             goToCreateActivityDetail: goToCreateActivityDetailFromAddDetailSelection
         )
+        .interactiveDismissDisabled()
     }
     
     

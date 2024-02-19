@@ -37,7 +37,7 @@ class CreateEditHabitNavigationFlow: NewStackNavigationFlow {
 extension ContentView {
     
     @ViewBuilder
-    func makeCreateHabitViewWithSheetyNavigation() -> some View {
+    func makeCreateHabitViewWithStackNavigation() -> some View {
         
         // Placing in NavigationStack so that I can make sure that the `bottomBar` works
         // as expected (there was weird behavior with it disappearing after the sheet was

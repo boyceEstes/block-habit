@@ -15,6 +15,7 @@ extension ContentView {
         // Placing in a navigation stack to place things in toolbar
         NavigationStack {
             CreateActivityDetailView()
+                .interactiveDismissDisabled()
         }
     }
 }
