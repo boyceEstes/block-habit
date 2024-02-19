@@ -259,22 +259,20 @@ struct HomeView: View {
                         viewModel.destroyHabit(for: habit)
                     }
                 )
-                
 //                VStack(spacing: .vSectionSpacing) {
-//                    
 //                    VStack(alignment: .leading, spacing: .vItemSpacing) {
 //                        HStack {
 //                            Text("Habits")
 //                            Spacer()
 //                            HStack(spacing: 16) {
-////                                Button {
-////                                    withAnimation {
-////                                        isActivityFilterMenuShowing.toggle()
-////                                    }
-////                                } label: {
-////                                    
-////                                    Image(systemName: isActivityMenuFiltered ?  "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-////                                }
+//                                Button {
+//                                    withAnimation {
+//                                        isActivityFilterMenuShowing.toggle()
+//                                    }
+//                                } label: {
+//                                    
+//                                    Image(systemName: isActivityFilterMenuFilled ?  "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+//                                }
 //                                Button {
 //                                    goToCreateHabit()
 //                                } label: {
@@ -284,34 +282,24 @@ struct HomeView: View {
 //                        }
 //                        .homeDetailTitle()
 //                        
-////                        if isActivityFilterMenuShowing {
-////                            
-////                            // Binding is necessary to work with the reusable component and keep everything separated
-////                            let activityFitlerOptionsBinding = Binding {
-////                                activityFilterOptions
-////                            } set: { newActivityFilterOptions in
-////                                
-////                                // There should never be a change in the array size or order
-////                                let activityFilterOptionsCount = activityFilterOptions.count
-////                                
-////                                guard activityFilterOptionsCount == newActivityFilterOptions.count else {
-////                                    print("Log: Somehow the arrays are off")
-////                                    return
-////                                }
-////                                
-////                                // Set each element of the array to the new element
-////                                // - there can be multiple set if you toggle "All"
-////                                for index in 0..<activityFilterOptionsCount {
-////                                    activityFilterOptions[index].isSelected = newActivityFilterOptions[index].isSelected
-////                                }
-////                            }
-////                            
-////                            HorizontalScrollySelectableList(items: activityFitlerOptionsBinding)
-////                        }
+//                        if isActivityFilterMenuShowing {
+//                            HorizontalScrollySelectableList(items: $activityFilterOptions)
+//                        }
 //                    }
+//                    
+//                    HabitsMenu(
+//                        goToHabitDetail: goToHabitDetail,
+//                        goToEditHabit: goToEditHabit,
+//                        habits: dataHabits,
+//                        didTapCreateHabitButton: {
+//                            goToCreateHabit()
+//                        }, didTapHabitButton: { habit in
+//                            createRecord(for: habit, in: modelContext)
+//                        }
+//                    )
 //                }
-//                .sectionBackground()
-//                .padding()
+                .sectionBackground()
+                .padding()
             }
             .background(Color.primaryBackground)
         }
