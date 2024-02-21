@@ -18,10 +18,17 @@ The purpose of this strategy is to enable quick and easy hot fixes/sporadic upda
 Once unit tests are added, the plan is to use GitHub Actions to automate tests on each merge to main, which will sadly mean Pull Requests will be enforced make updates. 
 
 
-## Unit Testing (Future Work)
-This project is built quickly and has sacraficed some good programming practices like Test Driven Development in favor of getting basic behavior and UI/UX down first, ironing out business logic second. (Knock on wood, but so far so good cowboy coding) 
+## Unit Testing
+This project was built quickly and has sacrificed some good programming practices like Test Driven Development in favor of getting basic behavior and UI/UX down first. As its gotten more mature and the business logic has gotten more complicated, unit testing has become necessary.
 
-Once the project becomes more mature, unit tests will be added to cover the more logic-driven parts of the app, and business logic will be written in TDD style.
+This should make things much easier moving forward. The goal is to have major code coverage for all business logic. Extract logic from the views as much as possible and into `Policy` files if possible. This will make it more ubiquitous and reusable across future UI modules, and mostly safe without being anal about code coverage percentages.
+
+
+## Module Design
+I am beginning to separate the project into its various modules at this stage. If all goes well, this app would be expanded to macOS and/or watchOS. This requires some shared logic between UI. This requires a shared framework to handle the data that will power each UI module, which I am calling the `BJRepository`. 
+
+![Module Design Dependency Graph](module-design.drawio.png)
+
 
 ## App Usage
 
