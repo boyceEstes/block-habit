@@ -63,7 +63,6 @@
 		B3BFEA1A2B791F8800DE7617 /* CreateActivityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA192B791F8800DE7617 /* CreateActivityDetailView.swift */; };
 		B3BFEA1C2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA1B2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift */; };
 		B3BFEA1E2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA1D2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift */; };
-		B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */; };
 		B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F252B5CE95000211B4C /* BJBarChart.swift */; };
 		B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F272B5CE97500211B4C /* HabitsMenu.swift */; };
 		B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F292B5CE99200211B4C /* HomeView.swift */; };
@@ -141,7 +140,6 @@
 		B3BFEA192B791F8800DE7617 /* CreateActivityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateActivityDetailView.swift; sourceTree = "<group>"; };
 		B3BFEA1B2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityDetailComposition.swift"; sourceTree = "<group>"; };
 		B3BFEA1D2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+CreateActivityDetail.swift"; sourceTree = "<group>"; };
-		B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsOnDate.swift; sourceTree = "<group>"; };
 		B3C97F252B5CE95000211B4C /* BJBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJBarChart.swift; sourceTree = "<group>"; };
 		B3C97F272B5CE97500211B4C /* HabitsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenu.swift; sourceTree = "<group>"; };
 		B3C97F292B5CE99200211B4C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -569,7 +567,6 @@
 				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
 				B37074312B9E03E9006FCC4E /* ManagedHabitRecord+CoreDataClass.swift in Sources */,
 				B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */,
-				B3C97F232B5CE92E00211B4C /* HabitsOnDate.swift in Sources */,
 				B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */,
 				B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */,
 				B3BFEA0F2B76769900DE7617 /* NumberTextField.swift in Sources */,

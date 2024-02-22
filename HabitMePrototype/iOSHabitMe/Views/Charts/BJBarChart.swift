@@ -41,7 +41,12 @@ struct StatisticsBarView: View {
     
     /// This will build a column without a selectable day
     @ViewBuilder
-    func dateColumn(graphHeight: Double, numOfItemsToReachTop: Double, date: Date, habitRecords: [DataHabitRecord]) -> some View {
+    func dateColumn(
+        graphHeight: Double,
+        numOfItemsToReachTop: Double,
+        date: Date,
+        habitRecords: [DataHabitRecord]
+    ) -> some View {
         
         let habitCount = habitRecords.count
         let itemWidth = (graphHeight) / numOfItemsToReachTop
@@ -96,7 +101,7 @@ struct BarView: View {
     let numOfItemsToReachTop: Double
     
     
-    let dataHabitRecordsOnDate: [DataHabitRecordsOnDate]
+    let datesWithHabitRecords: [Date: [DataHabitRecord]]
     @Binding var selectedDay: Date
 
     
@@ -111,14 +116,15 @@ struct BarView: View {
                 
                 LazyHStack(spacing: 0) {
                     
-                    ForEach(0..<dataHabitRecordsOnDate.count, id: \.self) { i in
+                    ForEach(datesWithHabitRecords.sorted(by: { $0.key < $1.key}), id: \.key) { date, activityRecords in
                         dateColumn(
                             graphHeight: graphHeight,
                             numOfItemsToReachTop: numOfItemsToReachTop,
-                            info: dataHabitRecordsOnDate[i]
+                            date: date,
+                            activityRecords: activityRecords
                         )
                             .frame(width: columnWidth, height: graphHeight, alignment: .bottom)
-                            .id(dataHabitRecordsOnDate[i].funDate)
+                            .id(date)
                     }
                 }
                 .frame(height: graphHeight)
@@ -134,9 +140,14 @@ struct BarView: View {
     
     
     @ViewBuilder
-    func dateColumn(graphHeight: Double, numOfItemsToReachTop: Double, info: DataHabitRecordsOnDate) -> some View {
+    func dateColumn(
+        graphHeight: Double,
+        numOfItemsToReachTop: Double,
+        date: Date,
+        activityRecords: [DataHabitRecord]
+    ) -> some View {
         
-        let habitCount = info.habitsRecords.count
+        let habitCount = activityRecords.count
         let labelHeight: CGFloat = 30
         // This will also be the usual height
         let itemWidth = (graphHeight - labelHeight) / numOfItemsToReachTop
@@ -145,30 +156,30 @@ struct BarView: View {
         VStack(spacing: 0) {
 
             HabitRecordBlocksOnDate(
-                habitRecords: info.habitsRecords,
+                habitRecords: activityRecords,
                 itemWidth: itemWidth,
                 itemHeight: itemHeight
             ) {
-                setSelectedDay(to: info.funDate)
+                setSelectedDay(to: date)
             }
             
             Rectangle()
                 .fill(.ultraThickMaterial)
                 .frame(height: 1)
             
-            Text("\(info.funDate.displayDate)")
+            Text("\(date.displayDate)")
                 .font(.footnote)
-                .fontWeight(info.funDate == selectedDay ? .bold : .regular)
+                .fontWeight(date == selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)
                 .onTapGesture {
-                    setSelectedDay(to: info.funDate)
+                    setSelectedDay(to: date)
                 }
         }
         .contextMenu {
             if habitCount > 0 {
                 Button("Delete Last Habit Record") {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
-                        deleteLastHabitRecord(in: info.habitsRecords)
+                        deleteLastHabitRecord(in: activityRecords)
                     }
                 }
             }

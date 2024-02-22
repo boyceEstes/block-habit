@@ -147,9 +147,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     let numOfItemsToReachTop = 5
     
-    var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
+    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
         
-        var _dataHabitRecordsOnDate = [DataHabitRecordsOnDate]()
+        var _datesWithHabitRecords = [Date: [DataHabitRecord]]()
         
         print("update habit records by loading them")
         
@@ -160,7 +160,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
               let today = Date().noon,
               let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return [] }
+        else { return [:] }
         
         
         print("received from habitRepository fetch... \(filteredDatahabitRecordsForHabit.count)")
@@ -183,7 +183,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         
         for record in filteredDatahabitRecordsForHabit {
             
-            guard let noonDate = record.completionDate.noon else { return [] }
+            guard let noonDate = record.completionDate.noon else { return [:] }
             if dict[noonDate] != nil {
                 dict[noonDate]?.append(record)
             } else {
@@ -195,11 +195,11 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         // Maybe for now, lets just start at january 1, 2024 for the beginning.
         for day in 0...days {
             // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
+            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [:] }
             
             if let habitRecordsForDate = dict[noonDate] {
                 // graph logic
-                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: habitRecordsForDate))
+                _datesWithHabitRecords[noonDate] = habitRecordsForDate
                 
                 daysRecordHasBeenDone += 1
                 recordsThatHaveBeenDone += habitRecordsForDate.count
@@ -208,8 +208,8 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                 streakingCount += 1
                 
             } else {
-                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: []))
                 
+                _datesWithHabitRecords[noonDate] = []
                 // streak logic
                 if streakingCount >= maxStreakCount {
                     maxStreakCount = streakingCount
@@ -235,7 +235,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         }
         
         
-        return _dataHabitRecordsOnDate
+        return _datesWithHabitRecords
     }
     
     
@@ -269,8 +269,8 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                        dataHabitRecordsOnDate:
-                            dataHabitRecordsOnDate,
+                        datesWithHabitRecords:
+                            datesWithHabitRecords,
                         selectedDay: $selectedDay
                     )
                     

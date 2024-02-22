@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import BJRepository
 
 
 enum HabitRecordVisualMode {
@@ -15,10 +16,48 @@ enum HabitRecordVisualMode {
 }
 
 
+struct ActivityMenuFilter: SelectableListItem {
+    
+    let activityMenuFilterType: ActivityMenuFilterType
+    var isSelected: Bool
+    
+    
+    var id: String {
+        name
+    }
+
+    var name: String {
+        activityMenuFilterType.name
+    }
+}
+
+
+extension DataHabit {
+    
+    func isActivityComplete(activityRecords: [DataHabitRecord]) -> Bool {
+        
+        if let completionGoal = goalCompletionsPerDay {
+            let recordCountForHabit = activityRecords.reduce(0) { partialResult, activityRecord in
+                if activityRecord.habit == self { return partialResult + 1 }
+                else { return partialResult }
+            }
+            
+            return recordCountForHabit >= completionGoal
+        } else {
+            // It can never be complete
+            return false
+        }
+    }
+}
+
+
 struct HomeView: View, ActivityRecordCreatorOrNavigator {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
+    @Query(sort: [
+        SortDescriptor(\DataActivityFilter.order, order: .forward)
+    ]) var activityFilterOptions: [DataActivityFilter]
     @Query(sort: [
         SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
         SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
@@ -40,13 +79,72 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
      * have so I think it should be fine.
      */
     
-    @State private var habitRecordVisualMode: HabitRecordVisualMode = .daily
+    @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State var selectedDay: Date = Date().noon!
     
+    // Filtering activity menu
+    @State private var isActivityFilterMenuShowing = false
+//    @State private var activityFilterOptions = ActivityMenuFilterType.allCases.map { ActivityMenuFilter(activityMenuFilterType: $0, isSelected: true) }
     
-    var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
+    var isActivityMenuFiltered: Bool {
+        // if there is a single false isSelected, we should make this button filled
+        activityFilterOptions.contains { activityMenuFilter in
+            return activityMenuFilter.isSelected == false
+        }
+    }
+    
+    var allowedActivityFilters: [DataActivityFilter] {
+        print("Activity: Changed the allowed activityfilteroptions")
+        return activityFilterOptions.filter { $0.isSelected }
+    }
+    
+    var filteredActivities: [DataHabit] {
         
-        var _dataHabitRecordsOnDate = [DataHabitRecordsOnDate]()
+        // If there is nothing filtered we just return everything
+        guard isActivityMenuFiltered else { return
+            dataHabits
+        }
+        
+        return dataHabits.filter { activity in
+            
+            // FIXME: This is atrociously ugly but it might work for now at the cost of performance
+            var dateActivityRecordDict = [Date: [DataHabitRecord]]()
+            for record in dataHabitRecords {
+                
+                guard let noonDate = record.completionDate.noon else { return false }
+                
+                if dateActivityRecordDict[noonDate] != nil {
+                    dateActivityRecordDict[noonDate]?.append(record)
+                } else {
+                    dateActivityRecordDict[noonDate] = [record]
+                }
+            }
+        
+            guard let selectedDayNoon = selectedDay.noon,
+                  let recordsForSelectedDay = dateActivityRecordDict[selectedDayNoon] else { return true }
+            
+            let isActivityCompleted = activity.isActivityComplete(activityRecords: recordsForSelectedDay)
+            
+//            let allowedActivityFilters = activityFilterOptions.filter { $0.isSelected }
+            var isAllowed = false
+            if isActivityCompleted {
+                isAllowed = allowedActivityFilters.contains { $0.filterType == .complete }
+            } else {
+                isAllowed = allowedActivityFilters.contains { $0.filterType == .incomplete }
+            }
+            
+            guard isAllowed != false else { return false } // Don't continue if we already know its not allowed
+            
+            // If there are later conditions add them here
+            print("Activity: \(activity.name) - isAllowed: \(isAllowed), isActivityCompleted: '\(isActivityCompleted)'")
+            return isAllowed
+        }
+    }
+
+    
+    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
+        
+        var _datesWithHabitRecords = [Date: [DataHabitRecord]]()
         
         print("update habit records by loading them")
         
@@ -57,39 +155,40 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
         guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
               let today = Date().noon,
               let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return [] }
+        else { return [:] }
         
         
             print("received from habitRepository fetch... \(dataHabitRecords.count)")
 //
             // Convert to a dictionary in order for us to an easier time in searching for dates
-            var dict = [Date: [DataHabitRecord]]()
-            
+            var dateActivityRecordDict = [Date: [DataHabitRecord]]()
+        
             for record in dataHabitRecords {
                 
-                guard let noonDate = record.completionDate.noon else { return [] }
-                if dict[noonDate] != nil {
-                    dict[noonDate]?.append(record)
+                guard let noonDate = record.completionDate.noon else { return [:] }
+                
+                if dateActivityRecordDict[noonDate] != nil {
+                    dateActivityRecordDict[noonDate]?.append(record)
                 } else {
-                    dict[noonDate] = [record]
+                    dateActivityRecordDict[noonDate] = [record]
                 }
             }
-            
+
             
             // Maybe for now, lets just start at january 1, 2024 for the beginning.
             for day in 0...days {
                 // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
+                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [:] }
                 
                 
-                if let habitRecordsForDate = dict[noonDate] {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: habitRecordsForDate))
+                if let habitRecordsForDate = dateActivityRecordDict[noonDate] {
+                    _datesWithHabitRecords[noonDate] = habitRecordsForDate
                 } else {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: []))
+                    _datesWithHabitRecords[noonDate] = []
                 }
             }
             
-            return _dataHabitRecordsOnDate
+            return _datesWithHabitRecords
     }
 
 
@@ -109,7 +208,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:
-                    BarView(graphWidth: screenWidth, graphHeight: graphHeight, numOfItemsToReachTop: 8, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
+                    BarView(graphWidth: screenWidth, graphHeight: graphHeight, numOfItemsToReachTop: 8, datesWithHabitRecords: datesWithHabitRecords, selectedDay: $selectedDay)
                 case .daily:
                     DayView(
                         goToHabitRecordDetail: goToHabitRecordDetail,
@@ -120,16 +219,69 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
                     )
                 }
                 
-                HabitsMenu(
-                    goToHabitDetail: goToHabitDetail,
-                    goToEditHabit: goToEditHabit,
-                    habits: dataHabits,
-                    didTapCreateHabitButton: {
-                        goToCreateHabit()
-                    }, didTapHabitButton: { habit in
-                        createRecord(for: habit, in: modelContext)
+                VStack(spacing: .vSectionSpacing) {
+                    
+                    VStack(alignment: .leading, spacing: .vItemSpacing) {
+                        HStack {
+                            Text("\(.activityMenuTitle)")
+                            Spacer()
+                            HStack(spacing: 16) {
+                                Button {
+                                    withAnimation {
+                                        isActivityFilterMenuShowing.toggle()
+                                    }
+                                } label: {
+                                    
+                                    Image(systemName: isActivityMenuFiltered ?  "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                                }
+                                Button {
+                                    goToCreateHabit()
+                                } label: {
+                                    Image(systemName: "plus.circle")
+                                }
+                            }
+                        }
+                        .homeDetailTitle()
+                        
+                        if isActivityFilterMenuShowing {
+                            
+                            // Binding is necessary to work with the reusable component and keep everything separated
+                            let activityFitlerOptionsBinding = Binding {
+                                activityFilterOptions
+                            } set: { newActivityFilterOptions in
+                                
+                                // There should never be a change in the array size or order
+                                let activityFilterOptionsCount = activityFilterOptions.count
+                                
+                                guard activityFilterOptionsCount == newActivityFilterOptions.count else {
+                                    print("Log: Somehow the arrays are off")
+                                    return
+                                }
+                                
+                                // Set each element of the array to the new element
+                                // - there can be multiple set if you toggle "All"
+                                for index in 0..<activityFilterOptionsCount {
+                                    activityFilterOptions[index].isSelected = newActivityFilterOptions[index].isSelected
+                                }
+                            }
+                            
+                            HorizontalScrollySelectableList(items: activityFitlerOptionsBinding)
+                        }
                     }
-                )
+                    
+                    HabitsMenu(
+                        goToHabitDetail: goToHabitDetail,
+                        goToEditHabit: goToEditHabit,
+                        habits: filteredActivities,
+                        didTapCreateHabitButton: {
+                            goToCreateHabit()
+                        }, didTapHabitButton: { habit in
+                            createRecord(for: habit, in: modelContext)
+                        }
+                    )
+                }
+                .sectionBackground()
+                .padding()
             }
             .background(Color.primaryBackground)
         }
@@ -215,9 +367,12 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     
     private var dataHabitRecordsForSelectedDay: [DataHabitRecord] {
         
-        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habitsRecords else {
+        guard let dataHabitRecordsSelectedForDay = datesWithHabitRecords[selectedDay] else {
             return []
         }
+//        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habitsRecords else {
+//            return []
+//        }
         
         return dataHabitRecordsSelectedForDay
     }
@@ -281,6 +436,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     }
 }
 
+
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
@@ -293,6 +449,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     let dataHabit2 = DataHabit(
         name: "Smashed Taco",
         color: Color.orange.toHexString() ?? "#FFFFFF",
+        goalCompletionsPerDay: 1,
         habitRecords: []
     )
     container.mainContext.insert(dataHabit)
