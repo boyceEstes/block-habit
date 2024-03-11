@@ -35,8 +35,8 @@ extension ManagedHabit {
         
         return request
     }
-    
 }
+
 
 // MARK: Generated accessors for habitRecords
 extension ManagedHabit {

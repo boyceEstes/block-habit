@@ -19,7 +19,7 @@ struct HabitMePrototypeApp: App {
      * Do that logic in the initialization, here.
      */
     
-//    let blockHabitStore: CoreDataBlockHabitStore
+    let blockHabitStore: CoreDataBlockHabitStore
     var container: ModelContainer
     
     
@@ -38,14 +38,14 @@ struct HabitMePrototypeApp: App {
                 configurations: config
             )
 
-//            if let storeURL = container.mainContext.sqliteStore {
-//                
-//                let bundle = Bundle(for: CoreDataBlockHabitStore.self)
-//                blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
-//                
-//            } else {
-//                throw NSError(domain: "Could not find sqliteStore", code: 0)
-//            }
+            if let storeURL = container.mainContext.sqliteStore {
+                
+                let bundle = Bundle(for: CoreDataBlockHabitStore.self)
+                blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
+                
+            } else {
+                throw NSError(domain: "Could not find sqliteStore", code: 0)
+            }
         } catch {
             fatalError("Could not configure local store: '\(error)'")
         }

@@ -50,6 +50,16 @@ private extension NSPersistentContainer {
         
         let container = NSPersistentContainer(name: name, managedObjectModel: model)
         
+        
+        // When there are uniquely constrained items, like `id`, update the current unique store with whatever new content is coming in
+        // ActivityDetail: Id 1 - favoriteParentName "Dad"
+        // Then after some user submits a new entry with the same Id
+        // ActivityDetail: Id 1 - favoriteParentName "Mom"
+        
+        // Will handle this scenario differently for mergePolicy
+        // - NSMergeByPropertyObjectTrumpMergePolicy: "Mom" will be the winner (the in-memory property)
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
         let description = NSPersistentStoreDescription(url: url)
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         
