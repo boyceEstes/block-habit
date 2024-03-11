@@ -37,7 +37,7 @@ struct HabitMePrototypeApp: App {
                 DataActivityDetailRecord.self,
                 configurations: config
             )
-//
+
 //            if let storeURL = container.mainContext.sqliteStore {
 //                
 //                let bundle = Bundle(for: CoreDataBlockHabitStore.self)

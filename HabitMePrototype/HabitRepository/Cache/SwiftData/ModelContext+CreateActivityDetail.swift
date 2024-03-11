@@ -42,7 +42,7 @@ extension ModelContext {
             
             let activityDetail = DataActivityDetail(
                 name: newName,
-                valueType: valueType,
+                stringlyValueType: valueType.rawValue,
                 availableUnits: unitsArray,
                 isArchived: false,
                 creationDate: creationDate,

@@ -31,7 +31,16 @@ final class DataActivityDetail: Hashable, Decodable {
     /// since it is `Codable` and not a `Collection` type
     ///
     /// https://www.hackingwithswift.com/quick-start/swiftdata/using-structs-and-enums-in-swiftdata-models#:~:text=Any%20class%20marked%20with%20%40Model,have%20raw%20or%20associated%20values.
-    var valueType: ActivityDetailType
+    var stringlyValueType: String = " "
+    
+    var valueType: ActivityDetailType {
+        get {
+            return ActivityDetailType(rawValue: stringlyValueType) ?? .text
+        }
+        set {
+            stringlyValueType = String(newValue.rawValue)
+        }
+    }
     
     /// Additional details to be available when filling out this record
     /// Ex: `Meters`, `Kilograms`, `Minutes`
@@ -68,7 +77,7 @@ final class DataActivityDetail: Hashable, Decodable {
     
     init(
         name: String = "",
-        valueType: ActivityDetailType = .text,
+        stringlyValueType: String = "Text",
         availableUnits: String? = nil,
         isArchived: Bool = false,
         creationDate: Date = Date(),
@@ -77,7 +86,7 @@ final class DataActivityDetail: Hashable, Decodable {
         habits: [DataHabit] = []
     ) {
         self.name = name
-        self.valueType = valueType
+        self.stringlyValueType = stringlyValueType
         self.availableUnits = availableUnits ?? ""
         self.isArchived = isArchived
         self.creationDate = creationDate
@@ -91,7 +100,7 @@ final class DataActivityDetail: Hashable, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         print("completed name")
-        valueType = try container.decode(ActivityDetailType.self, forKey: .valueType)
+        stringlyValueType = try container.decode(String.self, forKey: .valueType)
         print("completed valueType")
         availableUnits = try container.decodeIfPresent(String.self, forKey: .availableUnits) ?? ""
         print("completed availableUnits")

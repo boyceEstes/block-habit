@@ -6,8 +6,8 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isArchived" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="stringlyCalculationType" optional="YES" attributeType="String"/>
-        <attribute name="valueType" optional="YES" attributeType="String"/>
+        <attribute name="stringlyCalculationType" optional="YES" attributeType="String" defaultValueString="Sum"/>
+        <attribute name="stringlyValueType" optional="YES" attributeType="String"/>
         <relationship name="detailRecords" toMany="YES" deletionRule="Cascade" destinationEntity="DataActivityDetailRecord" inverseName="activityDetail" inverseEntity="DataActivityDetailRecord"/>
         <relationship name="habits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DataHabit" inverseName="activityDetails" inverseEntity="DataHabit"/>
     </entity>
