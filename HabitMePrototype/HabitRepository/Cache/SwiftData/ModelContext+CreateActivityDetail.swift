@@ -19,7 +19,7 @@ extension ModelContext {
     ) throws {
         
         let creationDate = Date()
-        let unitsArray = units != nil && valueType == .number ? [units!] : []
+        let unitsArray = units != nil && valueType == .number ? units : nil
         var newName = name
         
         // Check all the current ones - and update the name if there are duplicates
@@ -46,7 +46,7 @@ extension ModelContext {
                 availableUnits: unitsArray,
                 isArchived: false,
                 creationDate: creationDate,
-                calculationType: calculationType,
+                stringlyCalculationType: calculationType.rawValue,
                 detailRecords: [],
                 habits: []
             )

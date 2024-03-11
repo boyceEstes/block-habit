@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23C71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DataActivityDetail" representedClassName="ManagedActivityDetail" syncable="YES">
+        <attribute name="availableUnits" optional="YES" attributeType="String"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isArchived" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="stringlyCalculationType" optional="YES" attributeType="String"/>
+        <attribute name="valueType" optional="YES" attributeType="String"/>
+        <relationship name="detailRecords" toMany="YES" deletionRule="Cascade" destinationEntity="DataActivityDetailRecord" inverseName="activityDetail" inverseEntity="DataActivityDetailRecord"/>
+        <relationship name="habits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DataHabit" inverseName="activityDetails" inverseEntity="DataHabit"/>
+    </entity>
+    <entity name="DataActivityDetailRecord" representedClassName="ManagedActivityDetailRecord" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="unit" optional="YES" attributeType="String"/>
+        <attribute name="value" optional="YES" attributeType="String"/>
+        <relationship name="activityDetail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataActivityDetail" inverseName="detailRecords" inverseEntity="DataActivityDetail"/>
+        <relationship name="activityRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataHabitRecord" inverseName="activityDetailRecords" inverseEntity="DataHabitRecord"/>
+    </entity>
+    <entity name="DataHabit" representedClassName="ManagedHabit" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="activityDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataActivityDetail" inverseName="habits" inverseEntity="DataActivityDetail"/>
+        <relationship name="habitRecords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DataHabitRecord" inverseName="habit" inverseEntity="DataHabitRecord"/>
+    </entity>
+    <entity name="DataHabitRecord" representedClassName="ManagedHabitRecord" syncable="YES">
+        <attribute name="completionDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <relationship name="activityDetailRecords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DataActivityDetailRecord" inverseName="activityRecord" inverseEntity="DataActivityDetailRecord"/>
+        <relationship name="habit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataHabit" inverseName="habitRecords" inverseEntity="DataHabit"/>
+    </entity>
+</model>

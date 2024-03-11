@@ -68,7 +68,7 @@ struct HabitRecordDetailView: View {
                             NumberTextFieldRow(
                                 title: activityDetail.name,
                                 text: valueBinding,
-                                units: activityDetail.availableUnits.first?.lowercased(),
+                                units: activityDetail.availableUnits?.lowercased(),
                                 focused: $focused,
                                 focusID: i
                             )

@@ -29,12 +29,13 @@ final class DataActivityDetail: Hashable, Decodable {
     /// Ex: `Number` or `Text`
     /// Refrence the below link if there are any problems accessing this property but I think it should be fine
     /// since it is `Codable` and not a `Collection` type
+    ///
     /// https://www.hackingwithswift.com/quick-start/swiftdata/using-structs-and-enums-in-swiftdata-models#:~:text=Any%20class%20marked%20with%20%40Model,have%20raw%20or%20associated%20values.
     var valueType: ActivityDetailType
     
     /// Additional details to be available when filling out this record
     /// Ex: `Meters`, `Kilograms`, `Minutes`
-    var availableUnits: [String]
+    var availableUnits: String? = nil
     
     /// For deleting when an activity detail is deleted, this is so that we do not have to
     /// lose all of the associated records, simply sort by nonArchived when displaying data
@@ -44,7 +45,17 @@ final class DataActivityDetail: Hashable, Decodable {
     var creationDate: Date
     
     /// Intended for displaying statistics
-    var calculationType: ActivityDetailCalculationType
+    var stringlyCalculationType: String = "Sum"
+    
+    
+    var calculationType: ActivityDetailCalculationType {
+        get {
+            return ActivityDetailCalculationType(rawValue: stringlyCalculationType) ?? .sum
+        }
+        set {
+            stringlyCalculationType = String(newValue.rawValue)
+        }
+    }
     
     
     /// This can be empty - no records are required for this model
@@ -58,19 +69,19 @@ final class DataActivityDetail: Hashable, Decodable {
     init(
         name: String = "",
         valueType: ActivityDetailType = .text,
-        availableUnits: [String] = [],
+        availableUnits: String? = nil,
         isArchived: Bool = false,
         creationDate: Date = Date(),
-        calculationType: ActivityDetailCalculationType = .sum,
+        stringlyCalculationType: String = "Sum",
         detailRecords: [DataActivityDetailRecord] = [],
         habits: [DataHabit] = []
     ) {
         self.name = name
         self.valueType = valueType
-        self.availableUnits = availableUnits
+        self.availableUnits = availableUnits ?? ""
         self.isArchived = isArchived
         self.creationDate = creationDate
-        self.calculationType = calculationType
+        self.stringlyCalculationType = stringlyCalculationType
         self.detailRecords = detailRecords
         self.habits = habits
     }
@@ -82,14 +93,12 @@ final class DataActivityDetail: Hashable, Decodable {
         print("completed name")
         valueType = try container.decode(ActivityDetailType.self, forKey: .valueType)
         print("completed valueType")
-        availableUnits = try container.decodeIfPresent([String].self, forKey: .availableUnits) ?? []
+        availableUnits = try container.decodeIfPresent(String.self, forKey: .availableUnits) ?? ""
         print("completed availableUnits")
-//
-        // Should always be initialized to this
-//        availableUnits = []
+
         isArchived = false
         creationDate = Date()
-        calculationType = .sum
+        stringlyCalculationType = "Sum"
         detailRecords = []
         habits = []
     }
@@ -106,11 +115,11 @@ extension DataActivityDetail {
             return "And then he said, 'the hotdog was green the whole time!'"
             
         case .number:
-            guard !availableUnits.isEmpty, let firstAvailableUnit = availableUnits.first else {
+            guard let availableUnits = availableUnits else {
                 return "27"
             }
             
-            return "27\(firstAvailableUnit.isEmpty ? "" : " \(firstAvailableUnit)")"
+            return "27 \(availableUnits)"
         }
     }
 }
@@ -124,7 +133,7 @@ extension DataActivityDetail {
             id: self.id,
             name: self.name,
             valueType: self.valueType,
-            units: self.availableUnits.first
+            units: self.availableUnits
         )
     }
 }

@@ -72,7 +72,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
                             
                         let activityDetail =
                         activityDetailRecords[i].activityDetail
-                        let units = activityDetail.availableUnits.first?.lowercased()
+                        let units = activityDetail.availableUnits?.lowercased()
 
                         if activityDetail.valueType == .number {
                             
