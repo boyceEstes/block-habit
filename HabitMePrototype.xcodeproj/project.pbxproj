@@ -46,6 +46,7 @@
 		B37074322B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */; };
 		B37074332B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */; };
 		B37074352B9E088C006FCC4E /* CoreDataBlockHabitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */; };
+		B37AC76E2BA082E00052552B /* Date+GraphDisplayDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC76D2BA082E00052552B /* Date+GraphDisplayDate.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -123,6 +124,7 @@
 		B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedActivityDetailRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedActivityDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBlockHabitStore.swift; sourceTree = "<group>"; };
+		B37AC76D2BA082E00052552B /* Date+GraphDisplayDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+GraphDisplayDate.swift"; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
 				B32947A92B61E848007C8C1E /* DateFormatter+Reusable.swift */,
 				B3BFEA0B2B76672500DE7617 /* BJAsset.swift */,
+				B37AC76D2BA082E00052552B /* Date+GraphDisplayDate.swift */,
 			);
 			path = iOSHabitMe;
 			sourceTree = "<group>";
@@ -361,7 +364,6 @@
 			isa = PBXGroup;
 			children = (
 				B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */,
-				B3C97F222B5CE92E00211B4C /* HabitsOnDate.swift */,
 				B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */,
 			);
 			path = Models;
@@ -583,6 +585,7 @@
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
 				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
 				B37074302B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift in Sources */,
+				B37AC76E2BA082E00052552B /* Date+GraphDisplayDate.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
 				B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */,

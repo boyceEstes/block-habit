@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import BJRepository
 
 
 enum HabitRecordVisualMode {
@@ -16,48 +15,48 @@ enum HabitRecordVisualMode {
 }
 
 
-struct ActivityMenuFilter: SelectableListItem {
-    
-    let activityMenuFilterType: ActivityMenuFilterType
-    var isSelected: Bool
-    
-    
-    var id: String {
-        name
-    }
+//struct ActivityMenuFilter: SelectableListItem {
+//    
+//    let activityMenuFilterType: ActivityMenuFilterType
+//    var isSelected: Bool
+//    
+//    
+//    var id: String {
+//        name
+//    }
+//
+//    var name: String {
+//        activityMenuFilterType.name
+//    }
+//}
 
-    var name: String {
-        activityMenuFilterType.name
-    }
-}
 
-
-extension DataHabit {
-    
-    func isActivityComplete(activityRecords: [DataHabitRecord]) -> Bool {
-        
-        if let completionGoal = goalCompletionsPerDay {
-            let recordCountForHabit = activityRecords.reduce(0) { partialResult, activityRecord in
-                if activityRecord.habit == self { return partialResult + 1 }
-                else { return partialResult }
-            }
-            
-            return recordCountForHabit >= completionGoal
-        } else {
-            // It can never be complete
-            return false
-        }
-    }
-}
+//extension DataHabit {
+//    
+//    func isActivityComplete(activityRecords: [DataHabitRecord]) -> Bool {
+//        
+//        if let completionGoal = goalCompletionsPerDay {
+//            let recordCountForHabit = activityRecords.reduce(0) { partialResult, activityRecord in
+//                if activityRecord.habit == self { return partialResult + 1 }
+//                else { return partialResult }
+//            }
+//            
+//            return recordCountForHabit >= completionGoal
+//        } else {
+//            // It can never be complete
+//            return false
+//        }
+//    }
+//}
 
 
 struct HomeView: View, ActivityRecordCreatorOrNavigator {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
-    @Query(sort: [
-        SortDescriptor(\DataActivityFilter.order, order: .forward)
-    ]) var activityFilterOptions: [DataActivityFilter]
+//    @Query(sort: [
+//        SortDescriptor(\DataActivityFilter.order, order: .forward)
+//    ]) var activityFilterOptions: [DataActivityFilter]
     @Query(sort: [
         SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
         SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
@@ -82,64 +81,64 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State var selectedDay: Date = Date().noon!
     
-    // Filtering activity menu
-    @State private var isActivityFilterMenuShowing = false
-//    @State private var activityFilterOptions = ActivityMenuFilterType.allCases.map { ActivityMenuFilter(activityMenuFilterType: $0, isSelected: true) }
-    
-    var isActivityMenuFiltered: Bool {
-        // if there is a single false isSelected, we should make this button filled
-        activityFilterOptions.contains { activityMenuFilter in
-            return activityMenuFilter.isSelected == false
-        }
-    }
-    
-    var allowedActivityFilters: [DataActivityFilter] {
-        print("Activity: Changed the allowed activityfilteroptions")
-        return activityFilterOptions.filter { $0.isSelected }
-    }
-    
-    var filteredActivities: [DataHabit] {
-        
-        // If there is nothing filtered we just return everything
-        guard isActivityMenuFiltered else { return
-            dataHabits
-        }
-        
-        return dataHabits.filter { activity in
-            
-            // FIXME: This is atrociously ugly but it might work for now at the cost of performance
-            var dateActivityRecordDict = [Date: [DataHabitRecord]]()
-            for record in dataHabitRecords {
-                
-                guard let noonDate = record.completionDate.noon else { return false }
-                
-                if dateActivityRecordDict[noonDate] != nil {
-                    dateActivityRecordDict[noonDate]?.append(record)
-                } else {
-                    dateActivityRecordDict[noonDate] = [record]
-                }
-            }
-        
-            guard let selectedDayNoon = selectedDay.noon,
-                  let recordsForSelectedDay = dateActivityRecordDict[selectedDayNoon] else { return true }
-            
-            let isActivityCompleted = activity.isActivityComplete(activityRecords: recordsForSelectedDay)
-            
-//            let allowedActivityFilters = activityFilterOptions.filter { $0.isSelected }
-            var isAllowed = false
-            if isActivityCompleted {
-                isAllowed = allowedActivityFilters.contains { $0.filterType == .complete }
-            } else {
-                isAllowed = allowedActivityFilters.contains { $0.filterType == .incomplete }
-            }
-            
-            guard isAllowed != false else { return false } // Don't continue if we already know its not allowed
-            
-            // If there are later conditions add them here
-            print("Activity: \(activity.name) - isAllowed: \(isAllowed), isActivityCompleted: '\(isActivityCompleted)'")
-            return isAllowed
-        }
-    }
+//    // Filtering activity menu
+//    @State private var isActivityFilterMenuShowing = false
+////    @State private var activityFilterOptions = ActivityMenuFilterType.allCases.map { ActivityMenuFilter(activityMenuFilterType: $0, isSelected: true) }
+//    
+//    var isActivityMenuFiltered: Bool {
+//        // if there is a single false isSelected, we should make this button filled
+//        activityFilterOptions.contains { activityMenuFilter in
+//            return activityMenuFilter.isSelected == false
+//        }
+//    }
+//    
+//    var allowedActivityFilters: [DataActivityFilter] {
+//        print("Activity: Changed the allowed activityfilteroptions")
+//        return activityFilterOptions.filter { $0.isSelected }
+//    }
+//    
+//    var filteredActivities: [DataHabit] {
+//        
+//        // If there is nothing filtered we just return everything
+//        guard isActivityMenuFiltered else { return
+//            dataHabits
+//        }
+//        
+//        return dataHabits.filter { activity in
+//            
+//            // FIXME: This is atrociously ugly but it might work for now at the cost of performance
+//            var dateActivityRecordDict = [Date: [DataHabitRecord]]()
+//            for record in dataHabitRecords {
+//                
+//                guard let noonDate = record.completionDate.noon else { return false }
+//                
+//                if dateActivityRecordDict[noonDate] != nil {
+//                    dateActivityRecordDict[noonDate]?.append(record)
+//                } else {
+//                    dateActivityRecordDict[noonDate] = [record]
+//                }
+//            }
+//        
+//            guard let selectedDayNoon = selectedDay.noon,
+//                  let recordsForSelectedDay = dateActivityRecordDict[selectedDayNoon] else { return true }
+//            
+//            let isActivityCompleted = activity.isActivityComplete(activityRecords: recordsForSelectedDay)
+//            
+////            let allowedActivityFilters = activityFilterOptions.filter { $0.isSelected }
+//            var isAllowed = false
+//            if isActivityCompleted {
+//                isAllowed = allowedActivityFilters.contains { $0.filterType == .complete }
+//            } else {
+//                isAllowed = allowedActivityFilters.contains { $0.filterType == .incomplete }
+//            }
+//            
+//            guard isAllowed != false else { return false } // Don't continue if we already know its not allowed
+//            
+//            // If there are later conditions add them here
+//            print("Activity: \(activity.name) - isAllowed: \(isAllowed), isActivityCompleted: '\(isActivityCompleted)'")
+//            return isAllowed
+//        }
+//    }
 
     
     var datesWithHabitRecords: [Date: [DataHabitRecord]] {
@@ -219,69 +218,69 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
                     )
                 }
                 
-                VStack(spacing: .vSectionSpacing) {
-                    
-                    VStack(alignment: .leading, spacing: .vItemSpacing) {
-                        HStack {
-                            Text("\(.activityMenuTitle)")
-                            Spacer()
-                            HStack(spacing: 16) {
-                                Button {
-                                    withAnimation {
-                                        isActivityFilterMenuShowing.toggle()
-                                    }
-                                } label: {
-                                    
-                                    Image(systemName: isActivityMenuFiltered ?  "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                                }
-                                Button {
-                                    goToCreateHabit()
-                                } label: {
-                                    Image(systemName: "plus.circle")
-                                }
-                            }
-                        }
-                        .homeDetailTitle()
-                        
-                        if isActivityFilterMenuShowing {
-                            
-                            // Binding is necessary to work with the reusable component and keep everything separated
-                            let activityFitlerOptionsBinding = Binding {
-                                activityFilterOptions
-                            } set: { newActivityFilterOptions in
-                                
-                                // There should never be a change in the array size or order
-                                let activityFilterOptionsCount = activityFilterOptions.count
-                                
-                                guard activityFilterOptionsCount == newActivityFilterOptions.count else {
-                                    print("Log: Somehow the arrays are off")
-                                    return
-                                }
-                                
-                                // Set each element of the array to the new element
-                                // - there can be multiple set if you toggle "All"
-                                for index in 0..<activityFilterOptionsCount {
-                                    activityFilterOptions[index].isSelected = newActivityFilterOptions[index].isSelected
-                                }
-                            }
-                            
-                            HorizontalScrollySelectableList(items: activityFitlerOptionsBinding)
-                        }
+                HabitsMenu(
+                    goToHabitDetail: goToHabitDetail,
+                    goToEditHabit: goToEditHabit,
+                    habits: dataHabits/*filteredActivities*/,
+                    didTapCreateHabitButton: {
+                        goToCreateHabit()
+                    }, didTapHabitButton: { habit in
+                        createRecord(for: habit, in: modelContext)
                     }
-                    
-                    HabitsMenu(
-                        goToHabitDetail: goToHabitDetail,
-                        goToEditHabit: goToEditHabit,
-                        habits: filteredActivities,
-                        didTapCreateHabitButton: {
-                            goToCreateHabit()
-                        }, didTapHabitButton: { habit in
-                            createRecord(for: habit, in: modelContext)
-                        }
-                    )
-                }
-                .sectionBackground()
-                .padding()
+                )
+                
+//                VStack(spacing: .vSectionSpacing) {
+//                    
+//                    VStack(alignment: .leading, spacing: .vItemSpacing) {
+//                        HStack {
+//                            Text("Habits")
+//                            Spacer()
+//                            HStack(spacing: 16) {
+////                                Button {
+////                                    withAnimation {
+////                                        isActivityFilterMenuShowing.toggle()
+////                                    }
+////                                } label: {
+////                                    
+////                                    Image(systemName: isActivityMenuFiltered ?  "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+////                                }
+//                                Button {
+//                                    goToCreateHabit()
+//                                } label: {
+//                                    Image(systemName: "plus.circle")
+//                                }
+//                            }
+//                        }
+//                        .homeDetailTitle()
+//                        
+////                        if isActivityFilterMenuShowing {
+////                            
+////                            // Binding is necessary to work with the reusable component and keep everything separated
+////                            let activityFitlerOptionsBinding = Binding {
+////                                activityFilterOptions
+////                            } set: { newActivityFilterOptions in
+////                                
+////                                // There should never be a change in the array size or order
+////                                let activityFilterOptionsCount = activityFilterOptions.count
+////                                
+////                                guard activityFilterOptionsCount == newActivityFilterOptions.count else {
+////                                    print("Log: Somehow the arrays are off")
+////                                    return
+////                                }
+////                                
+////                                // Set each element of the array to the new element
+////                                // - there can be multiple set if you toggle "All"
+////                                for index in 0..<activityFilterOptionsCount {
+////                                    activityFilterOptions[index].isSelected = newActivityFilterOptions[index].isSelected
+////                                }
+////                            }
+////                            
+////                            HorizontalScrollySelectableList(items: activityFitlerOptionsBinding)
+////                        }
+//                    }
+//                }
+//                .sectionBackground()
+//                .padding()
             }
             .background(Color.primaryBackground)
         }
@@ -449,7 +448,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     let dataHabit2 = DataHabit(
         name: "Smashed Taco",
         color: Color.orange.toHexString() ?? "#FFFFFF",
-        goalCompletionsPerDay: 1,
+//        goalCompletionsPerDay: 1,
         habitRecords: []
     )
     container.mainContext.insert(dataHabit)
