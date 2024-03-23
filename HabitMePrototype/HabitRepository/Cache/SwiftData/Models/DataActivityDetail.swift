@@ -141,8 +141,11 @@ extension DataActivityDetail {
         ActivityDetail(
             id: self.id,
             name: self.name,
-            valueType: self.valueType,
-            units: self.availableUnits
+            availableUnits: self.availableUnits,
+            isArchived: self.isArchived,
+            creationDate: self.creationDate,
+            calculationType: self.calculationType,
+            valueType: self.valueType
         )
     }
 }

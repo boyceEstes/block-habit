@@ -63,61 +63,6 @@ struct ActivityDetailRecord2: Identifiable, Hashable {
 }
 
 
-struct ActivityDetail: Identifiable, Hashable {
-    
-    let id: String
-    
-    let name: String
-    let valueType: ActivityDetailType
-    let units: String?
-    
-    init(id: String = UUID().uuidString, name: String, valueType: ActivityDetailType, units: String? = nil) {
-        
-        self.id = id
-        self.name = name
-        self.valueType = valueType
-        self.units = units
-    }
-    
-    
-    
-    static let time = ActivityDetail(
-        name: "Time",
-        valueType: .number,
-        units: "minutes"
-    )
-    
-    
-    static let amount = ActivityDetail(
-        name: "Amount",
-        valueType: .number,
-        units: "fl oz"
-    )
-    
-    
-    static let length = ActivityDetail(
-        name: "Length",
-        valueType: .number
-    )
-    
-    
-    static let touchdowns = ActivityDetail(
-        name: "Touchdowns",
-        valueType: .number,
-        units: "tds"
-    )
-    
-    
-    static let note = ActivityDetail(
-        name: "Note",
-        valueType: .text
-    )
-    
-    static let mood = ActivityDetail(
-        name: "Mood",
-        valueType: .text
-    )
-}
 
 
 struct ActivityRecord: Identifiable, Hashable {

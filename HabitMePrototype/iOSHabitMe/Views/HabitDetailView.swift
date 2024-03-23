@@ -497,7 +497,7 @@ struct StatBox: View {
 
 #Preview {
     
-    let habit = Habit(id: UUID().uuidString, name: "Chugging Dew", color: Color.indigo.toHexString() ?? "#FFFFFF")
+    let habit = Habit.preview
     // FIXME: Remove unnecessary preview setup since moving to independent model methodology
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)

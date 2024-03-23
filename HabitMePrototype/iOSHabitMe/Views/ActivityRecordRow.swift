@@ -262,7 +262,7 @@ struct UnwrappedValueText: View {
         let value = activityDetailRecord.value
         
         if !value.isEmpty {
-            let units = activityDetailRecord.detail.units
+            let units = activityDetailRecord.detail.availableUnits
             
             Text("\(activityDetailRecord.value)")
             

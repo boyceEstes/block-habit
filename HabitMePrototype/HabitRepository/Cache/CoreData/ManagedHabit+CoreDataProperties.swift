@@ -70,7 +70,7 @@ extension ManagedHabit {
             throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
         }
         
-        return Habit(id: id, name: name, color: color)
+        return Habit(id: id, name: name, color: color, activityDetails: [])
     }
 }
 

@@ -27,7 +27,7 @@ struct ActivityDetailBasicInfo: View {
         HStack {
             HStack(alignment: .firstTextBaseline) {
                 Text("\(activityDetail.name)")
-                if let units = activityDetail.units {
+                if let units = activityDetail.availableUnits {
                     Text("in \(units)")
                         .foregroundStyle(Color.secondaryFont)
                 }

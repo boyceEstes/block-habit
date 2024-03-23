@@ -146,7 +146,13 @@ struct EditHabitView: View {
 
 
 public extension Habit {
-    static let preview = Habit(id: UUID().uuidString, name: "Chugging Dew", color: Color.indigo.toHexString() ?? "#FFFFFF")
+    
+    static let preview = Habit(
+        id: UUID().uuidString,
+        name: "Chugging Dew",
+        color: Color.indigo.toHexString() ?? "#FFFFFF",
+        activityDetails: []
+    )
 }
 
 
