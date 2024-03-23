@@ -11,6 +11,8 @@ import Foundation
 
 extension ModelContext {
     
+    
+    // FIXME: Uncomment when we know how we are going to insert new habit records
     func createHabitRecordOnDate(
         activity: DataHabit,
         creationDate: Date,
@@ -18,29 +20,32 @@ extension ModelContext {
         activityDetailRecords: [ActivityDetailRecord] = []
     ) {
         
-        let activityRecord = DataHabitRecord(
-            creationDate: creationDate,
-            completionDate: completionDate,
-            habit: nil,
-            activityDetailRecords: []
-        )
-        
-        activityRecord.habit = activity
-        
-        self.insert(activityRecord)
-        
-        
-        for activityDetailRecord in activityDetailRecords {
-            
-            let dataActivityDetailRecord = DataActivityDetailRecord(
-                value: activityDetailRecord.value,
-                activityDetail: activityDetailRecord.activityDetail,
-                activityRecord: activityRecord
-            )
-            
-            self.insert(dataActivityDetailRecord)
-        }
+        print("create habit record")
+//        let activityRecord = DataHabitRecord(
+//            creationDate: creationDate,
+//            completionDate: completionDate,
+//            habit: nil,
+//            activityDetailRecords: []
+//        )
+//        
+//        activityRecord.habit = activity
+//        
+//        self.insert(activityRecord)
+//        
+//        
+//        for activityDetailRecord in activityDetailRecords {
+//            
+//            let dataActivityDetailRecord = DataActivityDetailRecord(
+//                value: activityDetailRecord.value,
+//                activityDetail: activityDetailRecord.activityDetail,
+//                activityRecord: activityRecord
+//            )
+//            
+//            self.insert(dataActivityDetailRecord)
+//        }
     }
+    
+    // ----- old commented out stuff TODO: REMOVE OLD STUFF IF NOT NEEDED
 //
 //        print("create habit record on selected date (for \(habit.name))")
 //        

@@ -24,6 +24,18 @@ public struct Habit: Hashable {
 }
 
 
+struct ActivityDetailRecord: Identifiable, Hashable {
+
+    
+    let id = UUID().uuidString
+    var value: String
+    let unit: String?
+    
+    let activityDetail: ActivityDetail
+    // FIXME: Include `HabitRecord` when it becomes available
+}
+
+
 public struct ActivityDetail: ActivityDetailSortable {
     
     public let id: String

@@ -37,20 +37,19 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
         self.activity = activity
         self.selectedDay = selectedDay
 
-        // FIXME: When `Habit` has ActivityDetailRecords
-        self._activityDetailRecords = State(initialValue: [])
-//        State(
-//            initialValue: activity.activityDetails.bjSort()
-//                .map { activityDetail in
-//                
-//                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
-//                
-//                return ActivityDetailRecord(
-//                    activityDetail: activityDetail, 
-//                    value: ""
-//                )
-//            }
-//        )
+        self._activityDetailRecords = State(
+            initialValue: activity.activityDetails.bjSort()
+                .map { activityDetail in
+                
+                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
+                
+                return ActivityDetailRecord(
+                    value: "",
+                    unit: activityDetail.availableUnits,
+                    activityDetail: activityDetail
+                )
+            }
+        )
         
         // Maybe I should wait until after we enter the information to do this part?
         // I'm not sure how this will work, inserting this information into activityRecord now
