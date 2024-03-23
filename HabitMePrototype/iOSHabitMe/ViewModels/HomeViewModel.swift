@@ -6,18 +6,41 @@
 //
 
 import Foundation
+import Combine
 
 
 @Observable
-class HomeViewModel {
+final class HomeViewModel {
     
     let blockHabitStore: CoreDataBlockHabitStore
-//    let habitDataSource: HabitDataSource
+    let habitDataSource: HabitDataSource
     
+    var cancellables = Set<AnyCancellable>()
+    var habits = [ManagedHabit]() {
+        didSet {
+            print("didSet habits - count: \(habits.count)")
+        }
+    }
     
     init(blockHabitStore: CoreDataBlockHabitStore) {
         
         self.blockHabitStore = blockHabitStore
-//        habitDataSource = blockHabitStore.habitDataSource()
+        habitDataSource = blockHabitStore.habitDataSource()
+        
+        bindHabitDataSource()
+    }
+    
+    
+    private func bindHabitDataSource() {
+        
+        habitDataSource
+            .habits
+            .sink { error in
+                fatalError("THERES BEEN A HORRIBLE CRASH INVOLVING '\(error)' - prosecute to the highest degree of the law.")
+            } receiveValue: { habits in
+                self.habits = habits
+            }
+            .store(in: &cancellables)
+
     }
 }

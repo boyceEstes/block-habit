@@ -49,6 +49,7 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
         do {
             try frc.performFetch()
             updateWithLatestValues()
+            
 //            routines.value = managedRoutines.toModel()
         } catch {
             let nsError = error as NSError
