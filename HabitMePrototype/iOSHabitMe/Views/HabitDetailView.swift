@@ -28,10 +28,10 @@ enum HabitDetailAlert {
 
 
 struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
-    
-    let activity: DataHabit
+
+    let activity: Habit
     let goToEditHabit: () -> Void
-    let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
@@ -245,9 +245,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     
     init(
-        activity: DataHabit,
+        activity: Habit,
         goToEditHabit: @escaping () -> Void,
-        goToCreateActivityRecordWithDetails: @escaping (DataHabit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         
         self.activity = activity
@@ -381,7 +381,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         
         DispatchQueue.main.async {
             dismiss()
-            modelContext.delete(habit: activity)
+            // FIXME: Delete/Archive accounting that we do not have a SwiftData model
+            print("'Delete' the habit from detail view")
+//            modelContext.delete(habit: activity)
         }
     }
     
@@ -494,6 +496,9 @@ struct StatBox: View {
 
 
 #Preview {
+    
+    let habit = Habit(id: UUID().uuidString, name: "Chugging Dew", color: Color.indigo.toHexString() ?? "#FFFFFF")
+    // FIXME: Remove unnecessary preview setup since moving to independent model methodology
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
@@ -566,7 +571,7 @@ struct StatBox: View {
     
     return NavigationStack {
         HabitDetailView(
-            activity: dataHabit,
+            activity: habit,
             goToEditHabit: { },
             goToCreateActivityRecordWithDetails: { _, _ in }
         )

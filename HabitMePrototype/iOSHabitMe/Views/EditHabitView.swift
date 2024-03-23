@@ -39,18 +39,19 @@ struct EditHabitView: View {
     @State private var selectedDetails: [DataActivityDetail]
     
     
-    let habit: DataHabit
+    let habit: Habit
     let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
     
     
     init(
-        habit: DataHabit,
+        habit: Habit,
         goToAddDetailsSelection: @escaping (Binding<[DataActivityDetail]>, Color?) -> Void
     ) {
         self.habit = habit
         self.goToAddDetailsSelection = goToAddDetailsSelection
         
-        self._selectedDetails = State(initialValue: habit.activityDetails)
+        // FIXME: When `Habit` has `activityDetails` initialize this like expected
+        self._selectedDetails = State(initialValue: [])//State(initialValue: habit.activityDetails)
     }
     
     
@@ -96,6 +97,7 @@ struct EditHabitView: View {
     
     private func didTapSaveAndExit() {
         
+        // FIXME: Save `Habit` updates
         updateHabitName()
         updateHabitColor()
         updateHabitDetails()
@@ -106,7 +108,7 @@ struct EditHabitView: View {
     private func updateHabitName() {
         
         print("update habit name")
-        habit.name = nameTextFieldValue
+//        habit.name = nameTextFieldValue
     }
     
     
@@ -115,14 +117,14 @@ struct EditHabitView: View {
         guard let selectedColor, let selectedColorString = selectedColor.toHexString() else { return }
         
         print("update habit color")
-        habit.color = selectedColorString
+//        habit.color = selectedColorString
     }
     
     
     private func updateHabitDetails() {
         
         print("update habit details")
-        habit.activityDetails = selectedDetails
+//        habit.activityDetails = selectedDetails
     }
     
     
@@ -142,8 +144,15 @@ struct EditHabitView: View {
     }
 }
 
+
+public extension Habit {
+    static let preview = Habit(id: UUID().uuidString, name: "Chugging Dew", color: Color.indigo.toHexString() ?? "#FFFFFF")
+}
+
+
 #Preview {
     
+    // FIXME: Remove the below unnecessary preview code
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
@@ -154,7 +163,10 @@ struct EditHabitView: View {
     )
     container.mainContext.insert(dataHabit)
     
+    
+    let habit = Habit.preview
+    
     return NavigationStack {
-        EditHabitView(habit: dataHabit, goToAddDetailsSelection: { _, _ in })
+        EditHabitView(habit: habit, goToAddDetailsSelection: { _, _ in })
     }
 }

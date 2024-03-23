@@ -21,7 +21,7 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
     // MARK: - Stack Destinations
     enum StackIdentifier: Hashable {
 
-        case habitDetail(habit: DataHabit)
+        case habitDetail(habit: Habit)
         case statistics
     }
     
@@ -32,8 +32,8 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         var id: Int { self.hashValue }
         
         case createHabit
-        case createActivityRecordWithDetails(activity: DataHabit, selectedDay: Date)
+        case createActivityRecordWithDetails(activity: Habit, selectedDay: Date)
         case habitRecordDetail(habitRecord: DataHabitRecord)
-        case editHabit(habit: DataHabit)
+        case editHabit(habit: Habit)
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 extension ContentView {
     
     @ViewBuilder
-    func makeEditHabitView(habit: DataHabit) -> some View {
+    func makeEditHabitView(habit: Habit) -> some View {
         
         EditHabitView(
             habit: habit,

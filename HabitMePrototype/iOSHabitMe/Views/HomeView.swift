@@ -63,12 +63,12 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     ], animation: .default) var dataHabitRecords: [DataHabitRecord]
     
     
-    let goToHabitDetail: (DataHabit) -> Void
+    let goToHabitDetail: (Habit) -> Void
     let goToCreateHabit: () -> Void
     let goToHabitRecordDetail: (DataHabitRecord) -> Void
-    let goToEditHabit: (DataHabit) -> Void
+    let goToEditHabit: (Habit) -> Void
     let goToStatistics: () -> Void
-    let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.
@@ -83,12 +83,12 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     
     init(
         blockHabitStore: CoreDataBlockHabitStore,
-        goToHabitDetail: @escaping (DataHabit) -> Void,
+        goToHabitDetail: @escaping (Habit) -> Void,
         goToCreateHabit: @escaping () -> Void,
         goToHabitRecordDetail: @escaping (DataHabitRecord) -> Void,
-        goToEditHabit: @escaping (DataHabit) -> Void,
+        goToEditHabit: @escaping (Habit) -> Void,
         goToStatistics: @escaping () -> Void,
-        goToCreateActivityRecordWithDetails: @escaping (DataHabit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         self.goToHabitDetail = goToHabitDetail
         self.goToCreateHabit = goToCreateHabit
@@ -238,7 +238,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
-                    habits: dataHabits/*filteredActivities*/,
+                    habits: viewModel.habits, //dataHabits/*filteredActivities*/,
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in

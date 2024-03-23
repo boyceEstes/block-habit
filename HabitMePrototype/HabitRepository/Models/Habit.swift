@@ -9,7 +9,7 @@ import Foundation
 
 
 
-public struct Habit {
+public struct Habit: Hashable {
     
     public let id: String
     public let name: String
@@ -20,4 +20,5 @@ public struct Habit {
     // public var colorfulColor: Color { Color(decipherString: color) }
     
     // TODO: Fill in the data for habitRecords and activityDetails that should be known from this struct
+    
 }

@@ -138,19 +138,19 @@ struct HabitsMenu: View {
     
     @Environment(\.modelContext) var modelContext
     
-    let goToHabitDetail: (DataHabit) -> Void
-    let goToEditHabit: (DataHabit) -> Void
+    let goToHabitDetail: (Habit) -> Void
+    let goToEditHabit: (Habit) -> Void
     
     
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     
     // TODO: load habits from db
-    let habits: [DataHabit]
+    let habits: [Habit]
     
 //    let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
-    let didTapHabitButton: (DataHabit) -> Void
+    let didTapHabitButton: (Habit) -> Void
     
     
     let columns = [
@@ -207,7 +207,7 @@ struct HabitsMenu: View {
     }
     
     
-    func habitButton(habit: DataHabit, goToHabitDetail: @escaping (DataHabit) -> Void) -> some View {
+    func habitButton(habit: Habit, goToHabitDetail: @escaping (Habit) -> Void) -> some View {
         
         HabitMePrimaryButton(
             title: "\(habit.name)",
@@ -224,7 +224,9 @@ struct HabitsMenu: View {
             }
             Button("Remove Habit", role: .destructive) {
                 alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-                        modelContext.delete(habit: habit)
+                    // FIXME: Deletion broken for habit update
+                    print("DELETE HABIT")
+//                        modelContext.delete(habit: habit)
                     }
                 ).alertData()
                 showAlert = true

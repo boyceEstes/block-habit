@@ -12,9 +12,10 @@ import SwiftUI
 extension ContentView {
     
     @ViewBuilder
-    func makeCreateActivityRecordWithDetails(activity: DataHabit, selectedDay: Date) -> some View {
+    func makeCreateActivityRecordWithDetails(activity: Habit, selectedDay: Date) -> some View {
         
-        let activityDetailCount = activity.activityDetails.count
+        // FIXME: When `Habit` has activityDetails attached to it - this is low key view logic that should be done in the view now the composition anyway
+        let activityDetailCount = 2 //activity.activityDetails.count
         NavigationStack {
             CreateHabitRecordWithDetailsView(activity: activity, selectedDay: selectedDay)
         }

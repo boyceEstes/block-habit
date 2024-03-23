@@ -37,22 +37,25 @@ extension ActivityRecordCreator {
 protocol ActivityRecordCreatorOrNavigator: ActivityRecordCreator {
     
     var selectedDay: Date { get }
-    var goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void { get }
+    var goToCreateActivityRecordWithDetails: (Habit, Date) -> Void { get }
 }
 
 
 extension ActivityRecordCreatorOrNavigator {
     
-    func createRecord(for activity: DataHabit, in modelContext: ModelContext) {
+    func createRecord(for activity: Habit, in modelContext: ModelContext) {
     
-        if !activity.activityDetails.isEmpty {
-            
-            goToCreateActivityRecordWithDetails(activity, selectedDay)
-            
-        } else {
-            
-            parseDatesAndInsertRecord(for: activity, in: modelContext)
-        }
+        // FIXME: When `Habit` has activity details we can update this to navigate correctly on creating a record
+        // FIXME: When we have a way to create a `HabitRecord` entry in the database
+        print("Create Record for \(activity.name)")
+//        if !activity.activityDetails.isEmpty {
+//            
+//            goToCreateActivityRecordWithDetails(activity, selectedDay)
+//            
+//        } else {
+//            
+//            parseDatesAndInsertRecord(for: activity, in: modelContext)
+//        }
     }
 }
 
@@ -67,9 +70,10 @@ protocol ActivityRecordCreatorWithDetails: ActivityRecordCreator {
 
 extension ActivityRecordCreatorWithDetails {
     
-    func createRecord(for activity: DataHabit, in modelContext: ModelContext) {
+    func createRecord(for activity: Habit, in modelContext: ModelContext) {
         
-        parseDatesAndInsertRecord(for: activity, activityDetailRecords: activityDetailRecords, in: modelContext)
+        print("Create Record for \(activity.name) - without risk of going to another creator view")
+//        parseDatesAndInsertRecord(for: activity, activityDetailRecords: activityDetailRecords, in: modelContext)
     }
 }
 

@@ -23,7 +23,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     
     // We pass this in and use its information along with the current
     // datetime to autopopulate some details
-    let activity: DataHabit
+    let activity: Habit
     let selectedDay: Date
     let creationDate = Date()
 //    @State private var activityRecord: DataHabitRecord
@@ -32,23 +32,25 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     @State var activityDetailRecords: [ActivityDetailRecord]
     @FocusState var focusedActivityDetail: Focusable?
     
-    init(activity: DataHabit, selectedDay: Date) {
+    init(activity: Habit, selectedDay: Date) {
         
         self.activity = activity
         self.selectedDay = selectedDay
 
-        self._activityDetailRecords = State(
-            initialValue: activity.activityDetails.bjSort()
-                .map { activityDetail in
-                
-                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
-                
-                return ActivityDetailRecord(
-                    activityDetail: activityDetail, 
-                    value: ""
-                )
-            }
-        )
+        // FIXME: When `Habit` has ActivityDetails
+        self._activityDetailRecords = State(initialValue: [])
+//        State(
+//            initialValue: activity.activityDetails.bjSort()
+//                .map { activityDetail in
+//                
+//                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
+//                
+//                return ActivityDetailRecord(
+//                    activityDetail: activityDetail, 
+//                    value: ""
+//                )
+//            }
+//        )
         
         // Maybe I should wait until after we enter the information to do this part?
         // I'm not sure how this will work, inserting this information into activityRecord now
@@ -168,6 +170,9 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
 
 #Preview {
+    
+    let habit = Habit.preview
+    // FIXME: Remove the unnecessary preview setup after moving to independent model methodology
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
@@ -205,7 +210,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
     
     return NavigationStack {
-        CreateHabitRecordWithDetailsView(activity: activity, selectedDay: Date())
+        CreateHabitRecordWithDetailsView(activity: habit, selectedDay: Date())
     }
     .modelContainer(container)
 }

@@ -65,7 +65,7 @@ extension ContentView {
     
     
     // MARK: Push To Stack
-    private func goToHabitDetailFromHome(habit: DataHabit) {
+    private func goToHabitDetailFromHome(habit: Habit) {
         
         homeNavigationFlowPath.append(.habitDetail(habit: habit))
     }
@@ -84,7 +84,7 @@ extension ContentView {
     }
     
     
-    private func goToEditHabitFromHome(habit: DataHabit) {
+    private func goToEditHabitFromHome(habit: Habit) {
         
         homeNavigationFlowDisplayedSheet = .editHabit(habit: habit)
     }
@@ -96,7 +96,7 @@ extension ContentView {
     }
     
     
-    private func goToCreateActivityRecordWithDetailsFromHome(activity: DataHabit, selectedDay: Date) {
+    private func goToCreateActivityRecordWithDetailsFromHome(activity: Habit, selectedDay: Date) {
         
         homeNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
     }
