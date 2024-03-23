@@ -51,6 +51,7 @@
 		B37AC7732BA0860F0052552B /* HabitFRCDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7722BA0860F0052552B /* HabitFRCDataSourceAdapter.swift */; };
 		B37AC7762BA086E50052552B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7752BA086E50052552B /* HomeViewModel.swift */; };
 		B37AC7782BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7772BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift */; };
+		B37AC77B2BAF53760052552B /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77A2BAF53760052552B /* Habit.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -133,6 +134,7 @@
 		B37AC7722BA0860F0052552B /* HabitFRCDataSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFRCDataSourceAdapter.swift; sourceTree = "<group>"; };
 		B37AC7752BA086E50052552B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B37AC7772BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+habitDataSource.swift"; sourceTree = "<group>"; };
+		B37AC77A2BAF53760052552B /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -306,6 +308,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		B37AC7792BAF53690052552B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B37AC77A2BAF53760052552B /* Habit.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B3B403852B71237900D1967E /* Policies */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +376,7 @@
 		B3C97F1A2B5CE88600211B4C /* HabitRepository */ = {
 			isa = PBXGroup;
 			children = (
+				B37AC7792BAF53690052552B /* Models */,
 				B3B4038A2B71331E00D1967E /* Protocols */,
 				B3C97F142B5CE83600211B4C /* Cache */,
 				B3B403852B71237900D1967E /* Policies */,
@@ -578,6 +589,7 @@
 				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
 				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */,
+				B37AC77B2BAF53760052552B /* Habit.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B37074332B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,

@@ -16,11 +16,12 @@ final class HomeViewModel {
     let habitDataSource: HabitDataSource
     
     var cancellables = Set<AnyCancellable>()
-    var habits = [ManagedHabit]() {
+    var habits = [Habit]() {
         didSet {
             print("didSet habits - count: \(habits.count)")
         }
     }
+    
     
     init(blockHabitStore: CoreDataBlockHabitStore) {
         

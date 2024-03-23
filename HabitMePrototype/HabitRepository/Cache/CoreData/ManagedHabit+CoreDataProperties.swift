@@ -10,8 +10,14 @@ import Foundation
 import CoreData
 
 
-extension ManagedHabit {
+enum HabitRepositoryError: Error {
+    
+    case toModelFailedBecausePropertyWasNil
+}
 
+
+extension ManagedHabit {
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedHabit> {
         return NSFetchRequest<ManagedHabit>(entityName: "DataHabit")
     }
@@ -55,6 +61,32 @@ extension ManagedHabit {
 
 }
 
+
+extension ManagedHabit {
+    
+    func toModel() throws -> Habit {
+        
+        guard let id, let name, let color else {
+            throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
+        }
+        
+        return Habit(id: id, name: name, color: color)
+    }
+}
+
+
+extension Array where Element == ManagedHabit {
+    
+    func toModel() throws -> [Habit] {
+        try map {
+            try $0.toModel()
+        }
+    }
+}
+
+
 extension ManagedHabit : Identifiable {
 
 }
+
+

@@ -12,15 +12,15 @@ import CoreData
 
 public protocol HabitDataSource {
     
-    var habits: AnyPublisher<[ManagedHabit], Never> { get }
+    var habits: AnyPublisher<[Habit], Never> { get }
 }
 
 
 public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
     
     private let frc: NSFetchedResultsController<ManagedHabit>
-    public var habitsSubject = CurrentValueSubject<[ManagedHabit], Never>([])
-    public var habits: AnyPublisher<[ManagedHabit], Never>
+    public var habitsSubject = CurrentValueSubject<[Habit], Never>([])
+    public var habits: AnyPublisher<[Habit], Never>
 //    public var routinesSubject = CurrentValueSubject<[Routine], Error>([])
 //    public var routines: AnyPublisher<[Routine], Error>
     
@@ -48,8 +48,7 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
         
         do {
             try frc.performFetch()
-            updateWithLatestValues()
-            
+            try updateWithLatestValues()
 //            routines.value = managedRoutines.toModel()
         } catch {
             let nsError = error as NSError
@@ -58,13 +57,15 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
     }
     
     
-    private func updateWithLatestValues() {
+    private func updateWithLatestValues() throws {
         
         let managedHabits = frc.fetchedObjects ?? []
         
         print("Update with latest value count: '\(managedHabits.count)'")
         
-        habitsSubject.send(managedHabits)
+        let habits = try managedHabits.toModel()
+        
+        habitsSubject.send(habits)
 //        routinesSubject.send(managedRoutines.toModel())
     }
 }
@@ -76,6 +77,6 @@ extension ManagedHabitFRCDataSourceAdapter: NSFetchedResultsControllerDelegate {
         
         print("BOYCE: Did change routine core data content")
         
-        updateWithLatestValues()
+        try? updateWithLatestValues()
     }
 }
