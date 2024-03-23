@@ -25,6 +25,8 @@ extension Date {
 
 struct ContentView: View {
     
+    let blockHabitStore: CoreDataBlockHabitStore
+    
     // Home navigation
     @State var homeNavigationFlowPath = [HomeNavigationFlow.StackIdentifier]()
     @State var homeNavigationFlowDisplayedSheet: HomeNavigationFlow.SheetyIdentifier?
@@ -40,7 +42,7 @@ struct ContentView: View {
     
     var body: some View {
         let _ = print("Hello world home view")
-        makeHomeViewWithSheetyStackNavigation()
+        makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
     }
 }
 
@@ -69,5 +71,5 @@ class AppState {
 
 
 #Preview {
-    ContentView()
+    ContentView(blockHabitStore: CoreDataBlockHabitStore.preview())
 }

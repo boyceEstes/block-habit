@@ -77,10 +77,27 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
      * bar graphs... or maybe I should just decipher it here. This will be everything I should
      * have so I think it should be fine.
      */
-    
+    @State private var viewModel: HomeViewModel
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     @State var selectedDay: Date = Date().noon!
     
+    init(
+        blockHabitStore: CoreDataBlockHabitStore,
+        goToHabitDetail: @escaping (DataHabit) -> Void,
+        goToCreateHabit: @escaping () -> Void,
+        goToHabitRecordDetail: @escaping (DataHabitRecord) -> Void,
+        goToEditHabit: @escaping (DataHabit) -> Void,
+        goToStatistics: @escaping () -> Void,
+        goToCreateActivityRecordWithDetails: @escaping (DataHabit, Date) -> Void
+    ) {
+        self.goToHabitDetail = goToHabitDetail
+        self.goToCreateHabit = goToCreateHabit
+        self.goToHabitRecordDetail = goToHabitRecordDetail
+        self.goToEditHabit = goToEditHabit
+        self.goToStatistics = goToStatistics
+        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
+        self._viewModel = State(wrappedValue: HomeViewModel(blockHabitStore: blockHabitStore))
+    }
 //    // Filtering activity menu
 //    @State private var isActivityFilterMenuShowing = false
 ////    @State private var activityFilterOptions = ActivityMenuFilterType.allCases.map { ActivityMenuFilter(activityMenuFilterType: $0, isSelected: true) }
@@ -504,6 +521,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     
     return NavigationStack {
         HomeView(
+            blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToHabitDetail: { _ in },
             goToCreateHabit: { },
             goToHabitRecordDetail: { _ in },

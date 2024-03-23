@@ -20,7 +20,7 @@ extension ManagedActivityDetailRecord {
     @NSManaged public var value: String?
     @NSManaged public var unit: String?
     @NSManaged public var activityDetail: ManagedActivityDetail?
-    @NSManaged public var habitRecord: ManagedHabitRecord?
+    @NSManaged public var activityRecord: ManagedHabitRecord?
 }
 
 

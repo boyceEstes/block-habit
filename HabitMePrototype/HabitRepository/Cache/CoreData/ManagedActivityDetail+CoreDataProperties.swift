@@ -16,16 +16,18 @@ extension ManagedActivityDetail {
         return NSFetchRequest<ManagedActivityDetail>(entityName: "ManagedActivityDetail")
     }
 
+    @NSManaged public var id: String?
+    
     @NSManaged public var name: String?
-    @NSManaged public var valueType: String?
+    
     @NSManaged public var availableUnits: String?
     @NSManaged public var isArchived: Bool
     @NSManaged public var creationDate: Date?
-    @NSManaged public var calculationType: String?
-    @NSManaged public var id: String?
+    @NSManaged public var stringlyCalculationType: String
+    @NSManaged public var stringlyValueType: String
     
-    @NSManaged public var detailRecords: NSSet?
-    @NSManaged public var habits: NSSet?
+    @NSManaged public var detailRecords: NSSet? // [DataActivityDetailRecord]
+    @NSManaged public var habits: NSSet? // [DataHabit]
 }
 
 

@@ -12,9 +12,9 @@ extension ContentView {
     
     
     @ViewBuilder
-    func makeHomeViewWithSheetyStackNavigation() -> some View {
+    func makeHomeViewWithSheetyStackNavigation(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
-        makeHomeViewWithSheetyNavigation()
+        makeHomeViewWithSheetyNavigation(blockHabitStore: blockHabitStore)
             .flowNavigationDestination(flowPath: $homeNavigationFlowPath) { identifier in
                 switch identifier {
                 case let .habitDetail(activity):
@@ -27,9 +27,9 @@ extension ContentView {
     
     
     @ViewBuilder
-    private func makeHomeViewWithSheetyNavigation() -> some View {
+    private func makeHomeViewWithSheetyNavigation(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
-        makeHomeView()
+        makeHomeView(blockHabitStore: blockHabitStore)
             .sheet(item: $homeNavigationFlowDisplayedSheet) { identifier in
                 
                 switch identifier {
@@ -50,9 +50,10 @@ extension ContentView {
     
     
     @ViewBuilder
-    private func makeHomeView() -> some View {
+    private func makeHomeView(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
         HomeView(
+            blockHabitStore: blockHabitStore,
             goToHabitDetail: goToHabitDetailFromHome,
             goToCreateHabit: goToCreateHabitFromHome,
             goToHabitRecordDetail: goToHabitRecordDetailFromHome,

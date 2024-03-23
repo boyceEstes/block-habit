@@ -14,6 +14,14 @@ public class CoreDataBlockHabitStore {
     private let container: NSPersistentContainer
     let context: NSManagedObjectContext
     
+    
+    static func preview() -> CoreDataBlockHabitStore {
+        
+        let inMemoryURL = URL(fileURLWithPath: "/dev/null")
+        return try! CoreDataBlockHabitStore(storeURL: inMemoryURL)
+    }
+    
+    
     public init(storeURL: URL, bundle: Bundle = .main) throws {
         
         container = try NSPersistentContainer.load(name: "BlockHabit", url: storeURL, in: bundle)

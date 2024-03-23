@@ -54,7 +54,7 @@ struct HabitMePrototypeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(blockHabitStore: blockHabitStore)
         }
         .modelContainer(container)
 //        .modelContainer(

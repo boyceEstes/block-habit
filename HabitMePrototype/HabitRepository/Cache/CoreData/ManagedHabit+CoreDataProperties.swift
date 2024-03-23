@@ -21,8 +21,8 @@ extension ManagedHabit {
     @NSManaged public var color: String?
 //    @NSManaged public var isArchived: Bool
 //    @NSManaged public var completionGoalsPerDay: Double
-    @NSManaged public var habitRecords: NSSet?
-    @NSManaged public var activityDetails: NSSet?
+    @NSManaged public var habitRecords: NSSet? // DataActivityDetails
+    @NSManaged public var activityDetails: NSSet? // DataHabitRecords
 
     
     public class func allManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
