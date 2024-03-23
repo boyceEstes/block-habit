@@ -19,6 +19,9 @@ final class HomeViewModel {
     var habits = [Habit]() {
         didSet {
             print("didSet habits - count: \(habits.count)")
+            for habit in habits {
+                print("activityDetails - count: \(habit.activityDetails.count)")
+            }
         }
     }
     

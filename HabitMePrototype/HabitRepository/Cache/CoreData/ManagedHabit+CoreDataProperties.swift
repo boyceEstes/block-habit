@@ -28,7 +28,7 @@ extension ManagedHabit {
 //    @NSManaged public var isArchived: Bool
 //    @NSManaged public var completionGoalsPerDay: Double
     @NSManaged public var habitRecords: NSSet? // DataActivityDetails
-    @NSManaged public var activityDetails: NSSet? // DataHabitRecords
+    @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
 
     
     public class func allManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
@@ -70,7 +70,9 @@ extension ManagedHabit {
             throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
         }
         
-        return Habit(id: id, name: name, color: color, activityDetails: [])
+        let activityDetails: [ActivityDetail] = try activityDetails?.toModel() ?? []
+        
+        return Habit(id: id, name: name, color: color, activityDetails: activityDetails)
     }
 }
 

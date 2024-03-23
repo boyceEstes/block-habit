@@ -77,6 +77,40 @@ extension ManagedActivityDetail {
 
 }
 
+
+extension ManagedActivityDetail {
+    
+    func toModel() throws -> ActivityDetail {
+        
+        guard let id, let name, let creationDate else {
+            throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
+        }
+        
+        return ActivityDetail(
+            id: id,
+            name: name,
+            availableUnits: availableUnits,
+            isArchived: isArchived,
+            creationDate: creationDate,
+            calculationType: .sum,
+            valueType: .text
+        )
+    }
+}
+
+
+extension Set where Element == ManagedActivityDetail {
+    
+    func toModel() throws -> [ActivityDetail] {
+        
+        try map {
+            try $0.toModel()
+        }
+    }
+}
+
+
 extension ManagedActivityDetail : Identifiable {
 
 }
+
