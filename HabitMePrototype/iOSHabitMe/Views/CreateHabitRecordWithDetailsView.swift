@@ -37,7 +37,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
         self.activity = activity
         self.selectedDay = selectedDay
 
-        // FIXME: When `Habit` has ActivityDetails
+        // FIXME: When `Habit` has ActivityDetailRecords
         self._activityDetailRecords = State(initialValue: [])
 //        State(
 //            initialValue: activity.activityDetails.bjSort()

@@ -45,17 +45,17 @@ extension ActivityRecordCreatorOrNavigator {
     
     func createRecord(for activity: Habit, in modelContext: ModelContext) {
     
-        // FIXME: When `Habit` has activity details we can update this to navigate correctly on creating a record
         // FIXME: When we have a way to create a `HabitRecord` entry in the database
         print("Create Record for \(activity.name)")
-//        if !activity.activityDetails.isEmpty {
-//            
-//            goToCreateActivityRecordWithDetails(activity, selectedDay)
-//            
-//        } else {
-//            
+        if !activity.activityDetails.isEmpty {
+            
+            goToCreateActivityRecordWithDetails(activity, selectedDay)
+            print("It has activity details so bring up that menu")
+        } else {
+            
 //            parseDatesAndInsertRecord(for: activity, in: modelContext)
-//        }
+            print("No details - insert immediately")
+        }
     }
 }
 

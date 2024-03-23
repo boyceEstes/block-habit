@@ -24,7 +24,7 @@ public struct Habit: Hashable {
 }
 
 
-public struct ActivityDetail {
+public struct ActivityDetail: ActivityDetailSortable {
     
     public let id: String
     public let name: String
