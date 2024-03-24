@@ -13,7 +13,7 @@ import CoreData
 extension ManagedActivityDetailRecord {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedActivityDetailRecord> {
-        return NSFetchRequest<ManagedActivityDetailRecord>(entityName: "ManagedActivityDetailRecord")
+        return NSFetchRequest<ManagedActivityDetailRecord>(entityName: "DataActivityDetailRecord")
     }
 
     @NSManaged public var id: String?

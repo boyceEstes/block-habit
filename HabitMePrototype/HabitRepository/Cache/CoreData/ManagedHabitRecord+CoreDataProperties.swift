@@ -13,7 +13,7 @@ import CoreData
 extension ManagedHabitRecord {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedHabitRecord> {
-        return NSFetchRequest<ManagedHabitRecord>(entityName: "ManagedHabitRecord")
+        return NSFetchRequest<ManagedHabitRecord>(entityName: "DataHabitRecord")
     }
 
     @NSManaged public var id: String?
