@@ -49,6 +49,7 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
             .sink { error in
                 fatalError("THERES BEEN A HORRIBLE CRASH INVOLVING '\(error)' - prosecute to the highest degree of the law.")
             } receiveValue: { habits in
+                print("BOYCE: habit data source reloaded")
                 self.habits = habits
             }
             .store(in: &cancellables)

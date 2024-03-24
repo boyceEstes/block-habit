@@ -110,6 +110,7 @@ struct CreateHabitView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
+    let blockHabitStore: CoreDataBlockHabitStore
     let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
     
     @State private var nameTextFieldValue: String = ""
@@ -145,7 +146,7 @@ struct CreateHabitView: View {
     }
     
     
-    func didTapButtonToCreateHabit() {
+    func didTapButtonToCreateHabit2() {
         
         guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
             return
@@ -170,6 +171,34 @@ struct CreateHabitView: View {
         
         DispatchQueue.main.async {
             dismiss()
+        }
+    }
+    
+    
+    func didTapButtonToCreateHabit() {
+        
+        Task {
+            do {
+                guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
+                    return
+                }
+                
+                let habit = Habit(
+                    id: UUID().uuidString,
+                    name: nameTextFieldValue,
+                    color: stringColorHex,
+                    activityDetails: [] // FIXME: Create habits with activitydetails
+                )
+                
+                try await blockHabitStore.create(habit)
+                
+                DispatchQueue.main.async {
+                    dismiss()
+                }
+            } catch {
+                // FIXME: Handle errors with saving to core data
+                fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
+            }
         }
     }
 }
@@ -428,6 +457,9 @@ struct HabitMePrimaryButton: View {
 
 #Preview {
     NavigationStack {
-        CreateHabitView(goToAddDetailsSelection: { _, _ in })
+        CreateHabitView(
+            blockHabitStore: CoreDataBlockHabitStore.preview(),
+            goToAddDetailsSelection: { _, _ in }
+        )
     }
 }

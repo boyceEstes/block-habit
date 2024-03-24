@@ -56,6 +56,7 @@ extension ContentView {
     func makeCreateHabitView() -> some View {
         
         CreateHabitView(
+            blockHabitStore: blockHabitStore,
             goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
         )
     }
