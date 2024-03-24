@@ -24,6 +24,17 @@ public struct Habit: Hashable {
 }
 
 
+struct HabitRecord {
+    
+    let id: String
+    let creationDate: Date?
+    let completionDate: Date?
+    
+    let activityDetailRecords: [ActivityDetailRecord]
+    let habit: Habit
+}
+
+
 struct ActivityDetailRecord: Identifiable, Hashable {
 
     

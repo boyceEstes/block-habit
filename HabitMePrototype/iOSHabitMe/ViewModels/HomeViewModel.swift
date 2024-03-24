@@ -10,12 +10,13 @@ import Combine
 
 
 @Observable
-final class HomeViewModel {
+final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     let blockHabitStore: CoreDataBlockHabitStore
     let habitDataSource: HabitDataSource
     
-    var cancellables = Set<AnyCancellable>()
+    var selectedDay: Date
+    var goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     var habits = [Habit]() {
         didSet {
             print("didSet habits - count: \(habits.count)")
@@ -25,11 +26,17 @@ final class HomeViewModel {
         }
     }
     
+    var cancellables = Set<AnyCancellable>()
     
-    init(blockHabitStore: CoreDataBlockHabitStore) {
-        
+    
+    init(
+        blockHabitStore: CoreDataBlockHabitStore,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+    ) {
         self.blockHabitStore = blockHabitStore
-        habitDataSource = blockHabitStore.habitDataSource()
+        self.habitDataSource = blockHabitStore.habitDataSource()
+        self.selectedDay = Date().noon!
+        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
         
         bindHabitDataSource()
     }
@@ -45,6 +52,17 @@ final class HomeViewModel {
                 self.habits = habits
             }
             .store(in: &cancellables)
-
+    }
+    
+    
+    func createHabitRecord(for habit: Habit) {
+        
+        Task {
+            do {
+                try await createRecord(for: habit, in: blockHabitStore)
+            } catch {
+                fatalError("ERROR OH NO - BURN IT ALL DOWN")
+            }
+        }
     }
 }

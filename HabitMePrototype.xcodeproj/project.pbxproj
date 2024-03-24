@@ -53,6 +53,8 @@
 		B37AC7782BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7772BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift */; };
 		B37AC77B2BAF53760052552B /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77A2BAF53760052552B /* Habit.swift */; };
 		B37AC77D2BAF67310052552B /* ActivityDetailSortable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77C2BAF67310052552B /* ActivityDetailSortable.swift */; };
+		B37AC77F2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */; };
+		B37AC7812BAF6C9D0052552B /* HaloRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -137,6 +139,8 @@
 		B37AC7772BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+habitDataSource.swift"; sourceTree = "<group>"; };
 		B37AC77A2BAF53760052552B /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		B37AC77C2BAF67310052552B /* ActivityDetailSortable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailSortable.swift; sourceTree = "<group>"; };
+		B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+HabitRecord.swift"; sourceTree = "<group>"; };
+		B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaloRepositoryError.swift; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -288,6 +292,7 @@
 				B37074292B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataClass.swift */,
 				B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */,
 				B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */,
+				B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -314,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				B37AC77A2BAF53760052552B /* Habit.swift */,
+				B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -573,6 +579,7 @@
 				B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */,
 				B37AC7732BA0860F0052552B /* HabitFRCDataSourceAdapter.swift in Sources */,
 				B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */,
+				B37AC77F2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */,
 				B37074222B9E0368006FCC4E /* BlockHabit.xcdatamodeld in Sources */,
 				B3C9E51A2B698CAC00153158 /* ModelContext+Info.swift in Sources */,
 				B32947A82B61E0E1007C8C1E /* DayView.swift in Sources */,
@@ -630,6 +637,7 @@
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
+				B37AC7812BAF6C9D0052552B /* HaloRepositoryError.swift in Sources */,
 				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
 				B37074302B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift in Sources */,
 				B37AC77D2BAF67310052552B /* ActivityDetailSortable.swift in Sources */,

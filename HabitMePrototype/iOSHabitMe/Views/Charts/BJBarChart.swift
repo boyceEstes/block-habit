@@ -237,13 +237,18 @@ struct HabitRecordBlocksOnDate: View {
             let isLastRecord = habitRecords.first == habitRecord
             
             ActivityBlock(
-                colorHex: habitRecord.habit?.color ?? UIColor.black.toHexString()!,
+                colorHex: habitRecord.habit?.color ?? "#000000",
                 itemWidth: itemWidth,
                 itemHeight: itemHeight,
                 tapAction: didTapBlock
             )
             .clipShape(
-                UnevenRoundedRectangle(cornerRadii: .init(topLeading: isLastRecord ? .bigBlockCornerRadius : 0, topTrailing: isLastRecord ? .bigBlockCornerRadius : 0))
+                UnevenRoundedRectangle(
+                    cornerRadii: .init(
+                        topLeading: isLastRecord ? .bigBlockCornerRadius : 0,
+                        topTrailing: isLastRecord ? .bigBlockCornerRadius : 0
+                    )
+                )
             )
         }
     }

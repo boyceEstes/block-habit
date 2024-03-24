@@ -50,7 +50,7 @@ enum HabitRecordVisualMode {
 //}
 
 
-struct HomeView: View, ActivityRecordCreatorOrNavigator {
+struct HomeView: View {
     
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
@@ -68,7 +68,6 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
     let goToHabitRecordDetail: (DataHabitRecord) -> Void
     let goToEditHabit: (Habit) -> Void
     let goToStatistics: () -> Void
-    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.
@@ -95,8 +94,13 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
         self.goToHabitRecordDetail = goToHabitRecordDetail
         self.goToEditHabit = goToEditHabit
         self.goToStatistics = goToStatistics
-        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
-        self._viewModel = State(wrappedValue: HomeViewModel(blockHabitStore: blockHabitStore))
+        
+        self._viewModel = State(
+            wrappedValue: HomeViewModel(
+                blockHabitStore: blockHabitStore,
+                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+            )
+        )
     }
 //    // Filtering activity menu
 //    @State private var isActivityFilterMenuShowing = false
@@ -242,7 +246,7 @@ struct HomeView: View, ActivityRecordCreatorOrNavigator {
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
-                        createRecord(for: habit, in: modelContext)
+                        viewModel.createHabitRecord(for: habit)
                     }
                 )
                 

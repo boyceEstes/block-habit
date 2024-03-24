@@ -20,7 +20,7 @@ extension ManagedHabitRecord {
     @NSManaged public var creationDate: Date?
     @NSManaged public var completionDate: Date?
     
-    @NSManaged public var activityDetailRecords: NSSet? // [DataActivityDetailRecord]
+    @NSManaged public var activityDetailRecords: Set<ManagedActivityDetailRecord>? // [DataActivityDetailRecord]
     @NSManaged public var habit: ManagedHabit? // DataHabit
     
     

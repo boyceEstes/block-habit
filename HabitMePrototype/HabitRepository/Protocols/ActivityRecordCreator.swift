@@ -21,11 +21,19 @@ protocol ActivityRecordCreator {
 extension ActivityRecordCreator {
     
     /// The logic for parsing the dates according to the Business Logic Policy that we have in place and deliver all information necessary to insert into the database
-    func parseDatesAndInsertRecord(for activity: DataHabit, activityDetailRecords: [ActivityDetailRecord] = [], in modelContext: ModelContext) {
+    func parseDatesAndInsertRecord(for habit: Habit, activityDetailRecords: [ActivityDetailRecord] = [], in store: CoreDataBlockHabitStore) async throws {
         
         let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
         
-        modelContext.createHabitRecordOnDate(activity: activity, creationDate: creationDate, completionDate: completionDate, activityDetailRecords: activityDetailRecords)
+        let habitRecord = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: creationDate,
+            completionDate: completionDate,
+            activityDetailRecords: activityDetailRecords,
+            habit: habit
+        )
+        
+        try await store.create(habitRecord)
     }
 }
 
@@ -43,18 +51,34 @@ protocol ActivityRecordCreatorOrNavigator: ActivityRecordCreator {
 
 extension ActivityRecordCreatorOrNavigator {
     
-    func createRecord(for activity: Habit, in modelContext: ModelContext) {
+    private func isNavigatingToCreateRecordWithDetails(for habit: Habit) -> Bool {
+        
+        return !habit.activityDetails.isEmpty
+    }
     
-        // FIXME: When we have a way to create a `HabitRecord` entry in the database
-        print("Create Record for \(activity.name)")
-        if !activity.activityDetails.isEmpty {
-            
-            goToCreateActivityRecordWithDetails(activity, selectedDay)
-            print("It has activity details so bring up that menu")
+    
+//    func createRecordWithSwiftData(for activity: Habit, in modelContext: ModelContext) {
+//    
+//        // FIXME: When we have a way to create a `HabitRecord` entry in the database
+//        print("Create Record for \(activity.name)")
+//        if !activity.activityDetails.isEmpty {
+//            
+//            goToCreateActivityRecordWithDetails(activity, selectedDay)
+//            print("It has activity details so bring up that menu")
+//        } else {
+//            
+////            parseDatesAndInsertRecord(for: activity, in: modelContext)
+//            print("No details - insert immediately")
+//        }
+//    }
+    
+    
+    func createRecord(for habit: Habit, in store: CoreDataBlockHabitStore) async throws {
+        
+        if isNavigatingToCreateRecordWithDetails(for: habit) {
+            goToCreateActivityRecordWithDetails(habit, selectedDay)
         } else {
-            
-//            parseDatesAndInsertRecord(for: activity, in: modelContext)
-            print("No details - insert immediately")
+            try await parseDatesAndInsertRecord(for: habit, in: store)
         }
     }
 }
@@ -70,10 +94,15 @@ protocol ActivityRecordCreatorWithDetails: ActivityRecordCreator {
 
 extension ActivityRecordCreatorWithDetails {
     
-    func createRecord(for activity: Habit, in modelContext: ModelContext) {
-        
-        print("Create Record for \(activity.name) - without risk of going to another creator view")
-//        parseDatesAndInsertRecord(for: activity, activityDetailRecords: activityDetailRecords, in: modelContext)
+//    func createRecord(for activity: Habit, in modelContext: ModelContext) {
+//        
+//        print("Create Record for \(activity.name) - without risk of going to another creator view")
+////        parseDatesAndInsertRecord(for: activity, activityDetailRecords: activityDetailRecords, in: modelContext)
+//    }
+    
+    func createRecord(for habit: Habit, in store: CoreDataBlockHabitStore) async throws {
+    
+        try await parseDatesAndInsertRecord(for: habit, in: store)
     }
 }
 
