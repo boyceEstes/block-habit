@@ -16,7 +16,7 @@ class CreateEditHabitNavigationFlow: NewStackNavigationFlow {
     // MARK: Stack Identifiers
     enum StackIdentifier: Hashable {
         
-        case detailSelection(selectedDetails: Binding<[DataActivityDetail]>, selectedColor: Color?)
+        case detailSelection(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?)
         
         func hash(into hasher: inout Hasher) {
             switch self {
@@ -62,7 +62,7 @@ extension ContentView {
     }
     
     
-    func goToAddDetailsSelectionFromCreateEditHabit(selectedDetails: Binding<[DataActivityDetail]>, selectedColor: Color?) {
+    func goToAddDetailsSelectionFromCreateEditHabit(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?) {
         
         createEditHabitNavigationFlowPath.append(.detailSelection(selectedDetails: selectedDetails, selectedColor: selectedColor))
     }

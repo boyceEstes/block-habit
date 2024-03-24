@@ -116,26 +116,6 @@ final class DataActivityDetail: Hashable, Decodable, ActivityDetailSortable {
 
 extension DataActivityDetail {
     
-    var example: String {
-        
-        switch valueType {
-            
-        case .text:
-            return "And then he said, 'the hotdog was green the whole time!'"
-            
-        case .number:
-            guard let availableUnits = availableUnits else {
-                return "27"
-            }
-            
-            return "27 \(availableUnits)"
-        }
-    }
-}
-
-
-extension DataActivityDetail {
-    
     func toModel() -> ActivityDetail {
         
         ActivityDetail(

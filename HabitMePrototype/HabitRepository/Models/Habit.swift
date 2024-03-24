@@ -77,6 +77,26 @@ public struct ActivityDetail: ActivityDetailSortable {
 }
 
 
+extension ActivityDetail {
+    
+    var example: String {
+        
+        switch valueType {
+            
+        case .text:
+            return "And then he said, 'the hotdog was green the whole time!'"
+            
+        case .number:
+            guard let availableUnits = availableUnits else {
+                return "27"
+            }
+            
+            return "27 \(availableUnits)"
+        }
+    }
+}
+
+
 extension ActivityDetail: Identifiable, Hashable {
     
     static let time = ActivityDetail(

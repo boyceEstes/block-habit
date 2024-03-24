@@ -30,28 +30,28 @@ enum EditHabitAlert {
 struct EditHabitView: View {
     
     @Environment(\.dismiss) var dismiss
-
+    
     @State private var alertDetail: AlertDetail?
     @State private var showAlert: Bool = false
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     
-    @State private var selectedDetails: [DataActivityDetail]
+    @State private var selectedDetails: [ActivityDetail]
     
     
     let habit: Habit
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
+    let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
     
     
     init(
         habit: Habit,
-        goToAddDetailsSelection: @escaping (Binding<[DataActivityDetail]>, Color?) -> Void
+        goToAddDetailsSelection: @escaping (Binding<[ActivityDetail]>, Color?) -> Void
     ) {
         self.habit = habit
         self.goToAddDetailsSelection = goToAddDetailsSelection
         
         // FIXME: When `Habit` has `activityDetails` initialize this like expected
-        self._selectedDetails = State(initialValue: [])//State(initialValue: habit.activityDetails)
+        self._selectedDetails = State(initialValue: habit.activityDetails)
     }
     
     

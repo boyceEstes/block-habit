@@ -53,16 +53,16 @@ struct AddDetailsView: View {
         SortDescriptor(\DataActivityDetail.name, order: .forward)
     ], animation: .default) var activityDetails: [DataActivityDetail]
     
-    @State private var activityDetailsWithSelection: [DataActivityDetail: Bool]
+    @State private var activityDetailsWithSelection: [ActivityDetail: Bool]
     @State private var alertDetail: AlertDetail?
     @State private var showAlert = false
     
-    @Binding var selectedDetails: [DataActivityDetail]
+    @Binding var selectedDetails: [ActivityDetail]
     let goToCreateActivityDetail: () -> Void
     let detailSelectionColor: Color
     
     init(
-        selectedDetails: Binding<[DataActivityDetail]>,
+        selectedDetails: Binding<[ActivityDetail]>,
         detailSelectionColor: Color?,
         goToCreateActivityDetail: @escaping () -> Void
     ) {
@@ -74,7 +74,7 @@ struct AddDetailsView: View {
         // Had to create this with a specific initialization, otherwise it would be implicitly
         // initializedand this would happen later, after the view has appeared
         self._activityDetailsWithSelection = State(
-            initialValue: selectedDetails.reduce(into: [DataActivityDetail: Bool](), {
+            initialValue: selectedDetails.reduce(into: [ActivityDetail: Bool](), {
                 $0[$1.wrappedValue] = true
         }))
     }
@@ -83,10 +83,13 @@ struct AddDetailsView: View {
     var body: some View {
         List {
 //            VStack(spacing: .vItemSpacing) {
-                ForEach(activityDetails) { activityDetail in
+                ForEach(activityDetails) { dataActivityDetail in
+                    
+                    let activityDetail = dataActivityDetail.toModel()
+                    
                     VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
                         
-                        ActivityDetailBasicInfo(activityDetail: activityDetail.toModel())
+                        ActivityDetailBasicInfo(activityDetail: activityDetail)
                         
                         HStack(alignment: .firstTextBaseline) {
                             
@@ -105,14 +108,18 @@ struct AddDetailsView: View {
                     }
                     .swipeActions {
                         Button {
-                            archiveActivityDetails(activityDetail)
+                            // FIXME: Make sure archival for activity detail works
+                            print("Archive the activity detail TBD")
+//                            archiveActivityDetails(dataActivityDetail)
                         } label: {
                             Label(String.archive, systemImage: "archivebox.fill")
                         }
                         .tint(.indigo)
                         
                         Button(role: .destructive) {
-                            warnBeforeDeletion(activityDetail)
+                            // FIXME: Make sure deletion for activity detail works
+                            print("Delete the activity detail TBD")
+//                            warnBeforeDeletion(activityDetail)
                         } label: {
                             Label(String.delete, systemImage: "trash.fill")
                         }
@@ -184,7 +191,7 @@ struct AddDetailsView: View {
 //    }
     
     
-    private func toggleSelection(for activityDetail: DataActivityDetail) {
+    private func toggleSelection(for activityDetail: ActivityDetail) {
         
         if let selectedDetailIndex = selectedDetails.firstIndex(where: { $0 == activityDetail }) {
             let _ = selectedDetails.remove(at: selectedDetailIndex)
@@ -198,6 +205,7 @@ struct AddDetailsView: View {
 
 #Preview {
     
+    // FIXME: Remove the unnecessary preview logic since we might not need DataActivityDetail anymore
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
@@ -218,8 +226,7 @@ struct AddDetailsView: View {
     
     return NavigationStack {
         AddDetailsView(
-            selectedDetails:
-                .constant([decodedActivityDetails.first!]), 
+            selectedDetails: .constant([ActivityDetail.amount]),
             detailSelectionColor: .yellow,
             goToCreateActivityDetail: { }
         )

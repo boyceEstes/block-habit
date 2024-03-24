@@ -111,11 +111,11 @@ struct CreateHabitView: View {
     @Environment(\.modelContext) var modelContext
     
     let blockHabitStore: CoreDataBlockHabitStore
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
+    let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
     
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
-    @State private var selectedDetails = [DataActivityDetail]()
+    @State private var selectedDetails = [ActivityDetail]()
     
     var body: some View {
         ScrollView {
@@ -165,7 +165,7 @@ struct CreateHabitView: View {
                     id: UUID().uuidString,
                     name: nameTextFieldValue,
                     color: stringColorHex,
-                    activityDetails: selectedDetails.toModel()
+                    activityDetails: selectedDetails
                 )
                 
                 try await blockHabitStore.create(habit)
@@ -185,8 +185,8 @@ struct CreateHabitView: View {
 
 struct CreateHabitDetailContent: View {
     
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
-    @Binding var selectedDetails: [DataActivityDetail]
+    let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
+    @Binding var selectedDetails: [ActivityDetail]
     let selectedColor: Color?
     @FocusState private var focusedDetail: Focusable?
     
@@ -213,7 +213,7 @@ struct CreateHabitDetailContent: View {
                 LazyVStack(spacing: .vItemSpacing) {
                     ForEach($selectedDetails) { $detail in
                         let detail = $detail.wrappedValue
-                        ActivityDetailSummaryRow(activityDetail: detail.toModel())
+                        ActivityDetailSummaryRow(activityDetail: detail)
                     }
                 }
             }
