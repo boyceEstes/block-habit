@@ -10,7 +10,9 @@ import Foundation
 import CoreData
 
 
-extension ManagedHabitRecord {
+
+@objc(ManagedHabitRecord)
+public class ManagedHabitRecord: NSManagedObject {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedHabitRecord> {
         return NSFetchRequest<ManagedHabitRecord>(entityName: "DataHabitRecord")

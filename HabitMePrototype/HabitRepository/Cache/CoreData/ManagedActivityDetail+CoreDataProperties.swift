@@ -10,7 +10,8 @@ import Foundation
 import CoreData
 
 
-extension ManagedActivityDetail {
+@objc(ManagedActivityDetail)
+public class ManagedActivityDetail: NSManagedObject {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedActivityDetail> {
         return NSFetchRequest<ManagedActivityDetail>(entityName: "DataActivityDetail")

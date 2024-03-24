@@ -11,7 +11,8 @@ import CoreData
 
 
 
-extension ManagedHabit {
+@objc(ManagedHabit)
+public class ManagedHabit: NSManagedObject {
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedHabit> {
         return NSFetchRequest<ManagedHabit>(entityName: "DataHabit")

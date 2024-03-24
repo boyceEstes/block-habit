@@ -37,12 +37,8 @@
 		B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */; };
 		B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE702B81305700F2FA74 /* View+RecordSheetPresentation.swift */; };
 		B37074222B9E0368006FCC4E /* BlockHabit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B37074202B9E0368006FCC4E /* BlockHabit.xcdatamodeld */; };
-		B370742C2B9E03E9006FCC4E /* ManagedHabit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074242B9E03E8006FCC4E /* ManagedHabit+CoreDataClass.swift */; };
 		B370742D2B9E03E9006FCC4E /* ManagedHabit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */; };
-		B370742E2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074262B9E03E8006FCC4E /* ManagedActivityDetail+CoreDataClass.swift */; };
 		B370742F2B9E03E9006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */; };
-		B37074302B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074282B9E03E8006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift */; };
-		B37074312B9E03E9006FCC4E /* ManagedHabitRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074292B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataClass.swift */; };
 		B37074322B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */; };
 		B37074332B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */; };
 		B37074352B9E088C006FCC4E /* CoreDataBlockHabitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */; };
@@ -123,12 +119,8 @@
 		B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HeightChangePreference.swift"; sourceTree = "<group>"; };
 		B347DE702B81305700F2FA74 /* View+RecordSheetPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+RecordSheetPresentation.swift"; sourceTree = "<group>"; };
 		B37074212B9E0368006FCC4E /* BlockJournalCoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlockJournalCoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
-		B37074242B9E03E8006FCC4E /* ManagedHabit+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedHabit+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedHabit+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B37074262B9E03E8006FCC4E /* ManagedActivityDetail+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedActivityDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedHabitRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B37074282B9E03E8006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedActivityDetailRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
-		B37074292B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedHabitRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedActivityDetailRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedActivityDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBlockHabitStore.swift; sourceTree = "<group>"; };
@@ -283,13 +275,9 @@
 			children = (
 				B37AC76F2BA085640052552B /* DataSources  */,
 				B37074202B9E0368006FCC4E /* BlockHabit.xcdatamodeld */,
-				B37074262B9E03E8006FCC4E /* ManagedActivityDetail+CoreDataClass.swift */,
 				B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */,
-				B37074282B9E03E8006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift */,
 				B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */,
-				B37074242B9E03E8006FCC4E /* ManagedHabit+CoreDataClass.swift */,
 				B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */,
-				B37074292B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataClass.swift */,
 				B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */,
 				B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */,
 				B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */,
@@ -609,7 +597,6 @@
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,
-				B370742E2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataClass.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
 				B347DE362B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift in Sources */,
 				B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */,
@@ -617,9 +604,7 @@
 				B32947AC2B62AD2E007C8C1E /* HabitRecordDetailView.swift in Sources */,
 				B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */,
 				B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */,
-				B370742C2B9E03E9006FCC4E /* ManagedHabit+CoreDataClass.swift in Sources */,
 				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
-				B37074312B9E03E9006FCC4E /* ManagedHabitRecord+CoreDataClass.swift in Sources */,
 				B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */,
 				B37AC7762BA086E50052552B /* HomeViewModel.swift in Sources */,
 				B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */,
@@ -639,7 +624,6 @@
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
 				B37AC7812BAF6C9D0052552B /* HaloRepositoryError.swift in Sources */,
 				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
-				B37074302B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataClass.swift in Sources */,
 				B37AC77D2BAF67310052552B /* ActivityDetailSortable.swift in Sources */,
 				B37AC76E2BA082E00052552B /* Date+GraphDisplayDate.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,

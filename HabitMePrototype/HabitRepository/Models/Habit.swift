@@ -66,7 +66,6 @@ public struct ActivityDetail: ActivityDetailSortable {
         calculationType: ActivityDetailCalculationType,
         valueType: ActivityDetailType
     ) {
-        
         self.id = id
         self.name = name
         self.availableUnits = availableUnits
