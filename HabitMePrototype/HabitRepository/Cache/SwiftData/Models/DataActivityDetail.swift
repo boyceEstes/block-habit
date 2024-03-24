@@ -151,6 +151,15 @@ extension DataActivityDetail {
 }
 
 
+extension Array where Element == DataActivityDetail {
+    
+    func toModel() -> [ActivityDetail] {
+        
+        map { $0.toModel() }
+    }
+}
+
+
 @Model
 final class DataActivityDetailRecord: Hashable {
     

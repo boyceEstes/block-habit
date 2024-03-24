@@ -144,37 +144,15 @@ struct CreateHabitView: View {
             return false
         }
     }
-    
-    
-    func didTapButtonToCreateHabit2() {
-        
-        guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
-            return
-        }
 
-        let newDataHabit = DataHabit(
-            name: nameTextFieldValue,
-            color: stringColorHex,
-            activityDetails: [],
-            habitRecords: []
-        )
-        
-        modelContext.insert(newDataHabit)
-        
-        
-        for selectedDetail in selectedDetails {
-            selectedDetail.habits.append(newDataHabit)
-            modelContext.insert(selectedDetail)
-        }
-        
-//        newDataHabit.activityDetails = selectedDetails
-        
-        DispatchQueue.main.async {
-            dismiss()
-        }
-    }
     
     
+    /**
+     * NOTE: I am inserting into the CoreDataStore because if I enter in SwiftData it will not propogate the change
+     * to the NSFetchedResultsController that I am using on the HomeViewModel.
+     * I do not need everything to be CoreData for now (like the selectedActivityDetails which are SwiftData entities)
+     * so to speed things up I will leave that for now and just do a conversion here at the save point.
+     */
     func didTapButtonToCreateHabit() {
         
         Task {
@@ -187,7 +165,7 @@ struct CreateHabitView: View {
                     id: UUID().uuidString,
                     name: nameTextFieldValue,
                     color: stringColorHex,
-                    activityDetails: [] // FIXME: Create habits with activitydetails
+                    activityDetails: selectedDetails.toModel()
                 )
                 
                 try await blockHabitStore.create(habit)
@@ -195,6 +173,7 @@ struct CreateHabitView: View {
                 DispatchQueue.main.async {
                     dismiss()
                 }
+                
             } catch {
                 // FIXME: Handle errors with saving to core data
                 fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
