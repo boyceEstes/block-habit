@@ -10,5 +10,7 @@ import Foundation
 enum HabitRepositoryError: Error {
     
     case toModelFailedBecausePropertyWasNil
+    // TODO: make Id into ID
     case couldNotFindHabitWithId
+    case couldNotFindActivityDetailWithID
 }

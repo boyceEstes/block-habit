@@ -36,6 +36,20 @@ extension ManagedHabit {
         
         return request
     }
+    
+    
+    static func findHabitRequest(with id: String) -> NSFetchRequest<ManagedHabit> {
+        
+        let request = ManagedHabit.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let predicate = NSPredicate(format: "%K == %@", "id", id)
+        request.predicate = predicate
+        
+        request.fetchLimit = 1
+        
+        return request
+    }
 }
 
 
@@ -83,24 +97,9 @@ extension Array where Element == ManagedHabit {
 
 extension Habit {
     
-    
-    static func findHabitRequest(with id: String) -> NSFetchRequest<ManagedHabit> {
-        
-        let request = ManagedHabit.fetchRequest()
-        request.returnsObjectsAsFaults = false
-        
-        let predicate = NSPredicate(format: "%K == %@", "id", id)
-        request.predicate = predicate
-        
-        request.fetchLimit = 1
-        
-        return request
-    }
-    
-    
     func toManaged(context: NSManagedObjectContext) throws -> ManagedHabit {
         
-        guard let managedHabit = try context.fetch(Habit.findHabitRequest(with: id)).first else {
+        guard let managedHabit = try context.fetch(ManagedHabit.findHabitRequest(with: id)).first else {
             throw HabitRepositoryError.couldNotFindHabitWithId
         }
         

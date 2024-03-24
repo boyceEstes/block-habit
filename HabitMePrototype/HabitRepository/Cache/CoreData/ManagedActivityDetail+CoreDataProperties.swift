@@ -28,6 +28,20 @@ extension ManagedActivityDetail {
     
     @NSManaged public var detailRecords: NSSet? // [DataActivityDetailRecord]
     @NSManaged public var habits: NSSet? // [DataHabit]
+    
+    
+    static func findActivityDetail(with id: String) -> NSFetchRequest<ManagedActivityDetail> {
+        
+        let request = ManagedActivityDetail.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let predicate = NSPredicate(format: "%K == %@", "id", id)
+        request.predicate = predicate
+        
+        request.fetchLimit = 1
+        
+        return request
+    }
 }
 
 
@@ -95,6 +109,21 @@ extension ManagedActivityDetail {
             calculationType: .sum,
             valueType: .text
         )
+    }
+}
+
+
+extension ActivityDetail {
+    
+    /// Called by creating ActivityDetailRecord on HabitRecord
+    /// Searches for an activityDetail matching the one that is being saved, if it is not found throw an error
+    func toManaged(context: NSManagedObjectContext) throws -> ManagedActivityDetail {
+        
+        guard let managedActivityDetail = try context.fetch(ManagedActivityDetail.findActivityDetail(with: id)).first else {
+            throw HabitRepositoryError.couldNotFindActivityDetailWithID
+        }
+        
+        return managedActivityDetail
     }
 }
 

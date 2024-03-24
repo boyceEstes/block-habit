@@ -21,7 +21,11 @@ protocol ActivityRecordCreator {
 extension ActivityRecordCreator {
     
     /// The logic for parsing the dates according to the Business Logic Policy that we have in place and deliver all information necessary to insert into the database
-    func parseDatesAndInsertRecord(for habit: Habit, activityDetailRecords: [ActivityDetailRecord] = [], in store: CoreDataBlockHabitStore) async throws {
+    func parseDatesAndInsertRecord(
+        for habit: Habit,
+        activityDetailRecords: [ActivityDetailRecord] = [],
+        in store: CoreDataBlockHabitStore
+    ) async throws {
         
         let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
         
@@ -102,7 +106,11 @@ extension ActivityRecordCreatorWithDetails {
     
     func createRecord(for habit: Habit, in store: CoreDataBlockHabitStore) async throws {
     
-        try await parseDatesAndInsertRecord(for: habit, in: store)
+        try await parseDatesAndInsertRecord(
+            for: habit,
+            activityDetailRecords: activityDetailRecords,
+            in: store
+        )
     }
 }
 

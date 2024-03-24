@@ -22,8 +22,12 @@ extension CoreDataBlockHabitStore {
                 managedHabitRecord.creationDate = habitRecord.creationDate
                 managedHabitRecord.completionDate = habitRecord.completionDate
                 // FIXME: Create with activity detail records
-                managedHabitRecord.activityDetailRecords = nil //habitRecord.activityDetailRecords.toManaged(context: context)
+                managedHabitRecord.activityDetailRecords = try habitRecord.activityDetailRecords.toManaged(context: context)
                 managedHabitRecord.habit = try habitRecord.habit.toManaged(context: context)
+                
+                print("BOYCE: ActivityDetailRecord count when saving the habit record: '\(habitRecord.activityDetailRecords)'")
+                print("BOYCE: ManagedActivityDetailRecord count when saving the managedHabitRecord: '\(managedHabitRecord.activityDetailRecords?.count ?? -1)'")
+                
                 // save
                 try context.save()
                 

@@ -25,31 +25,44 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     // datetime to autopopulate some details
     let activity: Habit
     let selectedDay: Date
+    let blockHabitStore: CoreDataBlockHabitStore
+    
     let creationDate = Date()
 //    @State private var activityRecord: DataHabitRecord
     // Keeping this separate from the above property just because SwiftData is a little finicky
     // and I want things in smaller pieces for making the relationship connections
-    @State var activityDetailRecords: [ActivityDetailRecord]
+    @State var activityDetailRecords: [ActivityDetailRecord] {
+        didSet {
+            print("BOYCE: DidSet activityDetailRecords in CreateHabitRecordWithDetailsView: \(activityDetailRecords.count)")
+        }
+    }
     @FocusState var focusedActivityDetail: Focusable?
     
-    init(activity: Habit, selectedDay: Date) {
+    init(
+        activity: Habit,
+        selectedDay: Date,
+        blockHabitStore: CoreDataBlockHabitStore
+    ) {
         
         self.activity = activity
         self.selectedDay = selectedDay
+        self.blockHabitStore = blockHabitStore
 
         self._activityDetailRecords = State(
             initialValue: activity.activityDetails.bjSort()
                 .map { activityDetail in
-                
-                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
-                
-                return ActivityDetailRecord(
-                    value: "",
-                    unit: activityDetail.availableUnits,
-                    activityDetail: activityDetail
-                )
-            }
+                    
+                    print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
+                    
+                    return ActivityDetailRecord(
+                        value: "",
+                        unit: activityDetail.availableUnits,
+                        activityDetail: activityDetail
+                    )
+                }
         )
+        
+        print("BOYCE: activityDetailRecords after initializing the state - '\(activityDetailRecords.count)'")
         
         // Maybe I should wait until after we enter the information to do this part?
         // I'm not sure how this will work, inserting this information into activityRecord now
@@ -161,19 +174,19 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
         // FIXME: Update with CoreDataBlockHabitStore
 //        createRecord(for: activity, in: modelContext)
-        print("didTapToCreateActivityRecord from with details")
-//        Task {
-//            do {
-//                
-//                try await createRecord(for: <#T##Habit#>, in: <#T##CoreDataBlockHabitStore#>)
-//                
-//                DispatchQueue.main.async {
-//                    dismiss()
-//                }
-//            } catch {
-//                fatalError("Something went wrong creating from the record with details view \(error)")
-//            }
-//        }
+        print("BOYCE: didTapToCreateActivityRecord from with details - count: '\(activityDetailRecords.count)'")
+        
+        Task {
+            do {
+                try await createRecord(for: activity, in: blockHabitStore)
+                
+                DispatchQueue.main.async {
+                    dismiss()
+                }
+            } catch {
+                fatalError("Something went wrong creating from the record with details view \(error)")
+            }
+        }
     }
 }
 
@@ -219,7 +232,11 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
     
     return NavigationStack {
-        CreateHabitRecordWithDetailsView(activity: habit, selectedDay: Date())
+        CreateHabitRecordWithDetailsView(
+            activity: habit,
+            selectedDay: Date(),
+            blockHabitStore: CoreDataBlockHabitStore.preview()
+        )
     }
     .modelContainer(container)
 }
