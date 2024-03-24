@@ -172,10 +172,6 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
         // We already have the DataHabit so we just need to create the DataHabitRecord
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
-        // FIXME: Update with CoreDataBlockHabitStore
-//        createRecord(for: activity, in: modelContext)
-        print("BOYCE: didTapToCreateActivityRecord from with details - count: '\(activityDetailRecords.count)'")
-        
         Task {
             do {
                 try await createRecord(for: activity, in: blockHabitStore)
@@ -184,6 +180,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
                     dismiss()
                 }
             } catch {
+                // FIXME: 2 - Handle error better on create habit record
                 fatalError("Something went wrong creating from the record with details view \(error)")
             }
         }

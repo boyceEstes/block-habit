@@ -101,14 +101,17 @@ extension ManagedActivityDetail {
             throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
         }
         
+        let valueType = ActivityDetailType(rawValue: stringlyValueType) ?? .text
+        let calculationType = ActivityDetailCalculationType(rawValue: stringlyCalculationType) ?? .sum
+        
         return ActivityDetail(
             id: id,
             name: name,
             availableUnits: availableUnits,
             isArchived: isArchived,
             creationDate: creationDate,
-            calculationType: .sum,
-            valueType: .text
+            calculationType: calculationType,
+            valueType: valueType
         )
     }
 }
