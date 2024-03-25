@@ -78,7 +78,7 @@ struct HomeView: View {
      */
     @State private var viewModel: HomeViewModel
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
-    @State var selectedDay: Date = Date().noon!
+//    @State var selectedDay: Date = Date().noon!
     
     init(
         blockHabitStore: CoreDataBlockHabitStore,
@@ -228,14 +228,20 @@ struct HomeView: View {
             VStack {
                 switch habitRecordVisualMode {
                 case .bar:
-                    BarView(graphWidth: screenWidth, graphHeight: graphHeight, numOfItemsToReachTop: 8, datesWithHabitRecords: datesWithHabitRecords, selectedDay: $selectedDay)
+                    BarView(
+                        graphWidth: screenWidth,
+                        graphHeight: graphHeight,
+                        numOfItemsToReachTop: 8,
+                        datesWithHabitRecords: datesWithHabitRecords,
+                        selectedDay: $viewModel.selectedDay
+                    )
                 case .daily:
                     DayView(
                         goToHabitRecordDetail: goToHabitRecordDetail,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
                         habitRecords: dataHabitRecordsForSelectedDay,
-                        selectedDay: selectedDay
+                        selectedDay: viewModel.selectedDay
                     )
                 }
                 
@@ -387,7 +393,7 @@ struct HomeView: View {
     
     private var dataHabitRecordsForSelectedDay: [DataHabitRecord] {
         
-        guard let dataHabitRecordsSelectedForDay = datesWithHabitRecords[selectedDay] else {
+        guard let dataHabitRecordsSelectedForDay = datesWithHabitRecords[viewModel.selectedDay] else {
             return []
         }
 //        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habitsRecords else {
@@ -407,7 +413,7 @@ struct HomeView: View {
         let threeDaysAgo = Date().noon!.adding(days: -3)
         let fourDaysAgo = Date().noon!.adding(days: -4)
         
-        switch selectedDay {
+        switch viewModel.selectedDay {
         case today:
             return "Today"
         case yesterday:
@@ -419,7 +425,7 @@ struct HomeView: View {
         case fourDaysAgo:
             return "4 Days Ago"
         default:
-            return formatter.string(from: selectedDay)
+            return formatter.string(from: viewModel.selectedDay)
         }
     }
     
@@ -427,7 +433,7 @@ struct HomeView: View {
     private func goToNextDay() {
         
         if isAllowedToGoToNextDay {
-            selectedDay = selectedDay.adding(days: 1)
+            viewModel.selectedDay = viewModel.selectedDay.adding(days: 1)
         }
     }
     
@@ -435,14 +441,14 @@ struct HomeView: View {
     private var isAllowedToGoToNextDay: Bool {
 
         guard let today = Date().noon else { return false }
-        return selectedDay != today ? true : false
+        return viewModel.selectedDay != today ? true : false
     }
     
     
     private func goToPreviousDay() {
         
         if isAllowedToGoToPreviousDay {
-            selectedDay = selectedDay.adding(days: -1)
+            viewModel.selectedDay = viewModel.selectedDay.adding(days: -1)
         }
     }
     
@@ -452,7 +458,7 @@ struct HomeView: View {
         let calendar = Calendar.current
         guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon else { return false }
         
-        return selectedDay != startOf2024 ? true : false
+        return viewModel.selectedDay != startOf2024 ? true : false
     }
 }
 
