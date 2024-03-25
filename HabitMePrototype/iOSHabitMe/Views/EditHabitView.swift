@@ -100,10 +100,6 @@ struct EditHabitView: View {
     
     private func didTapSaveAndExit() {
         
-        // FIXME: Save `Habit` updates
-//        updateHabitName()
-//        updateHabitColor()
-//        updateHabitDetails()
         updateHabit()
         dismiss()
     }
@@ -133,29 +129,6 @@ struct EditHabitView: View {
                 fatalError("I GOT 99 PROBLEMS AND THIS IS 1 - \(error)")
             }
         }
-    }
-    
-    
-    private func updateHabitName() {
-        
-        print("update habit name")
-//        habit.name = nameTextFieldValue
-    }
-    
-    
-    private func updateHabitColor() {
-        
-        guard let selectedColor, let selectedColorString = selectedColor.toHexString() else { return }
-        
-        print("update habit color")
-//        habit.color = selectedColorString
-    }
-    
-    
-    private func updateHabitDetails() {
-        
-        print("update habit details")
-//        habit.activityDetails = selectedDetails
     }
     
     
