@@ -15,6 +15,7 @@ extension ContentView {
         
         EditHabitView(
             habit: habit,
+            blockHabitStore: blockHabitStore,
             goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
         )
         .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in

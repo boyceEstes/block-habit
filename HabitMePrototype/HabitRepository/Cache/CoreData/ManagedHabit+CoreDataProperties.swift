@@ -100,11 +100,7 @@ extension Habit {
     
     func toManaged(context: NSManagedObjectContext) throws -> ManagedHabit {
         
-        guard let managedHabit = try context.fetch(ManagedHabit.findHabitRequest(with: id)).first else {
-            throw HabitRepositoryError.couldNotFindHabitWithId
-        }
-        
-        return managedHabit
+        return try context.fetchHabit(withID: id)
     }
 }
 

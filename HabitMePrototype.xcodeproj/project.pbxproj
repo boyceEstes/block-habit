@@ -51,6 +51,7 @@
 		B37AC77D2BAF67310052552B /* ActivityDetailSortable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77C2BAF67310052552B /* ActivityDetailSortable.swift */; };
 		B37AC77F2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */; };
 		B37AC7812BAF6C9D0052552B /* HaloRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */; };
+		B37AC7852BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -74,7 +75,6 @@
 		B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */; };
 		B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5172B698C7D00153158 /* ModelContext+DeleteHabit.swift */; };
 		B3C9E51A2B698CAC00153158 /* ModelContext+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5192B698CAC00153158 /* ModelContext+Info.swift */; };
-		B3C9E51C2B699BC900153158 /* ModelContext+InsertHabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E51B2B699BC900153158 /* ModelContext+InsertHabitRecord.swift */; };
 		B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */; };
 		B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift */; };
 		B3C9E5442B6BD9FE00153158 /* ActivityDetailSeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */; };
@@ -133,6 +133,7 @@
 		B37AC77C2BAF67310052552B /* ActivityDetailSortable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailSortable.swift; sourceTree = "<group>"; };
 		B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+HabitRecord.swift"; sourceTree = "<group>"; };
 		B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaloRepositoryError.swift; sourceTree = "<group>"; };
+		B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+Habit.swift"; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -156,7 +157,6 @@
 		B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitView.swift; sourceTree = "<group>"; };
 		B3C9E5172B698C7D00153158 /* ModelContext+DeleteHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+DeleteHabit.swift"; sourceTree = "<group>"; };
 		B3C9E5192B698CAC00153158 /* ModelContext+Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+Info.swift"; sourceTree = "<group>"; };
-		B3C9E51B2B699BC900153158 /* ModelContext+InsertHabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+InsertHabitRecord.swift"; sourceTree = "<group>"; };
 		B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailSelectionView.swift; sourceTree = "<group>"; };
 		B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+AddDetailSelectionComposition.swift"; sourceTree = "<group>"; };
 		B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ActivityDetailSeedData.json; sourceTree = "<group>"; };
@@ -281,6 +281,7 @@
 				B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */,
 				B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */,
 				B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */,
+				B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -482,7 +483,6 @@
 				B3C9E5452B6BDC8100153158 /* Models */,
 				B32947A52B606713007C8C1E /* SwiftDataHabitRepository.swift */,
 				B3C9E5172B698C7D00153158 /* ModelContext+DeleteHabit.swift */,
-				B3C9E51B2B699BC900153158 /* ModelContext+InsertHabitRecord.swift */,
 				B3C9E5192B698CAC00153158 /* ModelContext+Info.swift */,
 				B3BFEA1D2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift */,
 			);
@@ -561,7 +561,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B37074322B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift in Sources */,
-				B3C9E51C2B699BC900153158 /* ModelContext+InsertHabitRecord.swift in Sources */,
 				B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */,
 				B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */,
 				B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */,
@@ -618,6 +617,7 @@
 				B37074352B9E088C006FCC4E /* CoreDataBlockHabitStore.swift in Sources */,
 				B370742D2B9E03E9006FCC4E /* ManagedHabit+CoreDataProperties.swift in Sources */,
 				B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */,
+				B37AC7852BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift in Sources */,
 				B3BFEA1C2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,

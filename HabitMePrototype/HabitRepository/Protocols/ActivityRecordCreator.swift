@@ -59,23 +59,7 @@ extension ActivityRecordCreatorOrNavigator {
         
         return !habit.activityDetails.isEmpty
     }
-    
-    
-//    func createRecordWithSwiftData(for activity: Habit, in modelContext: ModelContext) {
-//    
-//        // FIXME: When we have a way to create a `HabitRecord` entry in the database
-//        print("Create Record for \(activity.name)")
-//        if !activity.activityDetails.isEmpty {
-//            
-//            goToCreateActivityRecordWithDetails(activity, selectedDay)
-//            print("It has activity details so bring up that menu")
-//        } else {
-//            
-////            parseDatesAndInsertRecord(for: activity, in: modelContext)
-//            print("No details - insert immediately")
-//        }
-//    }
-    
+
     
     func createRecord(for habit: Habit, in store: CoreDataBlockHabitStore) async throws {
         

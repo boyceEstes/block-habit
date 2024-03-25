@@ -28,19 +28,20 @@ public class ManagedActivityDetailRecord: NSManagedObject {
 extension ManagedActivityDetailRecord : Identifiable {}
 
 
-// FIXME: Create managed ActivityDetailRecord when we can successfully fetch it or create all its pieces - looking at you, fetching activityDetail
 extension Array where Element == ActivityDetailRecord {
     
     // FIXME: What happens when we are trying to update a single activityDetailRecord - we do not want to create a duplicate on accident
+    // This doesn't work if you are trying to update (I think) but we can coast on using SwiftData for this for now
     func toManaged(context: NSManagedObjectContext) throws -> Set<ManagedActivityDetailRecord> {
         
         let managedActivityDetailRecords = try map {
+            
             let managedActivityDetailRecord = ManagedActivityDetailRecord(context: context)
             managedActivityDetailRecord.id = $0.id
             managedActivityDetailRecord.value = $0.value
             managedActivityDetailRecord.unit = $0.unit
             managedActivityDetailRecord.activityDetail = try $0.activityDetail.toManaged(context: context)
-            // FIXME: Verify that this is entered for the right habit - We have not set the "activityRecord" - but that will be okay becaues when we update the activityDetailRecords in the createHabit record this should be okay
+
             return managedActivityDetailRecord
         }
         

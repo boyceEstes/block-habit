@@ -40,14 +40,17 @@ struct EditHabitView: View {
     
     
     let habit: Habit
+    let blockHabitStore: CoreDataBlockHabitStore
     let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
     
     
     init(
         habit: Habit,
+        blockHabitStore: CoreDataBlockHabitStore,
         goToAddDetailsSelection: @escaping (Binding<[ActivityDetail]>, Color?) -> Void
     ) {
         self.habit = habit
+        self.blockHabitStore = blockHabitStore
         self.goToAddDetailsSelection = goToAddDetailsSelection
         
         // FIXME: When `Habit` has `activityDetails` initialize this like expected
@@ -98,10 +101,38 @@ struct EditHabitView: View {
     private func didTapSaveAndExit() {
         
         // FIXME: Save `Habit` updates
-        updateHabitName()
-        updateHabitColor()
-        updateHabitDetails()
+//        updateHabitName()
+//        updateHabitColor()
+//        updateHabitDetails()
+        updateHabit()
         dismiss()
+    }
+    
+    
+    private func updateHabit() {
+        
+        Task {
+            do {
+                let habitID = habit.id
+                
+                guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
+                    // FIXME: Handle color not being set correctly error
+                    return
+                }
+                
+                let habit = Habit(
+                    id: habitID,
+                    name: nameTextFieldValue,
+                    color: selectedColorString,
+                    activityDetails: selectedDetails
+                )
+                
+                try await blockHabitStore.update(habitID: habitID, with: habit)
+            } catch {
+                // FIXME: Handle error updating!
+                fatalError("I GOT 99 PROBLEMS AND THIS IS 1 - \(error)")
+            }
+        }
     }
     
     
@@ -173,6 +204,6 @@ public extension Habit {
     let habit = Habit.preview
     
     return NavigationStack {
-        EditHabitView(habit: habit, goToAddDetailsSelection: { _, _ in })
+        EditHabitView(habit: habit, blockHabitStore: CoreDataBlockHabitStore.preview(), goToAddDetailsSelection: { _, _ in })
     }
 }
