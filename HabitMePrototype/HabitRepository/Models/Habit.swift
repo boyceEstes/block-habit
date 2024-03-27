@@ -14,6 +14,8 @@ public struct Habit: Hashable {
     public let id: String
     public let name: String
     
+    public let isArchived: Bool
+    
     // TODO: Make a computed variable color accessor for the string so this can be private
     public let color: String
     // private let color: String
@@ -21,6 +23,14 @@ public struct Habit: Hashable {
     
     // TODO: Fill in the data for habitRecords and activityDetails that should be known from this struct
     public let activityDetails: [ActivityDetail]
+    
+    init(id: String, name: String, isArchived: Bool, color: String, activityDetails: [ActivityDetail]) {
+        self.id = id
+        self.name = name
+        self.isArchived = isArchived
+        self.color = color
+        self.activityDetails = activityDetails
+    }
 }
 
 

@@ -21,7 +21,7 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var id: String?
     @NSManaged public var name: String?
     @NSManaged public var color: String?
-//    @NSManaged public var isArchived: Bool
+    @NSManaged public var isArchived: Bool
 //    @NSManaged public var completionGoalsPerDay: Double
     @NSManaged public var habitRecords: NSSet? // DataActivityDetails
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
@@ -81,7 +81,13 @@ extension ManagedHabit {
         
         let activityDetails: [ActivityDetail] = try activityDetails?.toModel() ?? []
         
-        return Habit(id: id, name: name, color: color, activityDetails: activityDetails)
+        return Habit(
+            id: id,
+            name: name,
+            isArchived: isArchived,
+            color: color,
+            activityDetails: activityDetails
+        )
     }
 }
 

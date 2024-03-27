@@ -74,7 +74,7 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         Task {
             do {
                 print("archiving \(habit.id) - \(habit.name)")
-//                try await blockHabitStore.update(habitID: <#T##String#>, (habit)
+                try await blockHabitStore.archive(habit)
             } catch {
                 // FIXME: Handle Error in View
                 fatalError("ERROR OH NO - BURN IT ALL DOWN - '\(error.localizedDescription)'")

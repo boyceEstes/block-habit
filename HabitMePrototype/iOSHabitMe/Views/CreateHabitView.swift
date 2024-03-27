@@ -164,6 +164,7 @@ struct CreateHabitView: View {
                 let habit = Habit(
                     id: UUID().uuidString,
                     name: nameTextFieldValue,
+                    isArchived: false,
                     color: stringColorHex,
                     activityDetails: selectedDetails
                 )

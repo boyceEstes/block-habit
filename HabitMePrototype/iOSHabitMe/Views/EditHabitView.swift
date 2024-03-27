@@ -119,6 +119,7 @@ struct EditHabitView: View {
                 let habit = Habit(
                     id: habitID,
                     name: nameTextFieldValue,
+                    isArchived: habit.isArchived,
                     color: selectedColorString,
                     activityDetails: selectedDetails
                 )
@@ -154,6 +155,7 @@ public extension Habit {
     static let preview = Habit(
         id: UUID().uuidString,
         name: "Chugging Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         activityDetails: []
     )

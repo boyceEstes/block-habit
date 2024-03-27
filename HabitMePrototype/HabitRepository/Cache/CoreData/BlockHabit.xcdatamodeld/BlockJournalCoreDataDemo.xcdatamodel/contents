@@ -31,6 +31,7 @@
     <entity name="DataHabit" representedClassName="ManagedHabit" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isArchived" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="activityDetails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DataActivityDetail" inverseName="habits" inverseEntity="DataActivityDetail"/>
         <relationship name="habitRecords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DataHabitRecord" inverseName="habit" inverseEntity="DataHabitRecord"/>

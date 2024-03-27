@@ -53,6 +53,7 @@ extension CoreDataBlockHabitStore {
             
             let managedHabit = try context.fetchHabit(withID: habitID)
             managedHabit.name = habit.name
+            managedHabit.isArchived = habit.isArchived
             managedHabit.color = habit.color
             managedHabit.activityDetails = try habit.activityDetails.toManaged(context: context)
             
@@ -60,6 +61,24 @@ extension CoreDataBlockHabitStore {
             // FIXME: Rollback if there is an error
         }
     }
+    
+    
+    /// Update a habit's `isArchvied` property to true
+    func archive(_ habit: Habit) async throws {
+        
+        let archivedHabit = Habit(
+            id: habit.id,
+            name: habit.name,
+            isArchived: true,
+            color: habit.color,
+            activityDetails: habit.activityDetails
+        )
+        
+        try await update(habitID: habit.id, with: archivedHabit)
+    }
+    
+    
+//    func unarchive() async throws
     
     
     func destroy(_ habit: Habit) async throws {
