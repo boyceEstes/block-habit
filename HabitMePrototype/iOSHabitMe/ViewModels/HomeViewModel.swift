@@ -69,6 +69,20 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     }
     
     
+    func archiveHabit(for habit: Habit) {
+        
+        Task {
+            do {
+                print("archiving \(habit.id) - \(habit.name)")
+//                try await blockHabitStore.update(habitID: <#T##String#>, (habit)
+            } catch {
+                // FIXME: Handle Error in View
+                fatalError("ERROR OH NO - BURN IT ALL DOWN - '\(error.localizedDescription)'")
+            }
+        }
+    }
+    
+    
     func destroyHabit(for habit: Habit) {
         
         Task {

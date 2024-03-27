@@ -151,6 +151,7 @@ struct HabitsMenu: View {
     //    let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (Habit) -> Void
+    let archiveHabit: (Habit) -> Void
     let destroyHabit: (Habit) -> Void
     
     
@@ -231,6 +232,11 @@ struct HabitsMenu: View {
             
             Button("Edit Habit") {
                 goToEditHabit(habit)
+            }
+            
+            
+            Button("Archive Habit", role: .destructive) {
+                archiveHabit(habit)
             }
             
             
