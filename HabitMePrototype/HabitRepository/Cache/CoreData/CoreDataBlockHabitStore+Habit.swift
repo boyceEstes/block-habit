@@ -15,7 +15,7 @@ extension NSManagedObjectContext {
     func fetchHabit(withID habitID: String) throws -> ManagedHabit {
         
         guard let managedHabit = try fetch(ManagedHabit.findHabitRequest(with: habitID)).first else {
-            throw HabitRepositoryError.couldNotFindHabitWithId
+            throw HabitRepositoryError.couldNotFindHabitWithID(id: habitID)
         }
         
         return managedHabit

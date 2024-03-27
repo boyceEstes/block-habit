@@ -62,7 +62,22 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
             do {
                 try await createRecord(for: habit, in: blockHabitStore)
             } catch {
+                // FIXME: Handle Error in View
                 fatalError("ERROR OH NO - BURN IT ALL DOWN")
+            }
+        }
+    }
+    
+    
+    func destroyHabit(for habit: Habit) {
+        
+        Task {
+            do {
+                print("deleting \(habit.id) - \(habit.name)")
+                try await blockHabitStore.destroy(habit)
+            } catch {
+                // FIXME: Handle Error in View
+                fatalError("ERROR OH NO - BURN IT ALL DOWN - '\(error.localizedDescription)'")
             }
         }
     }

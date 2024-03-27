@@ -253,6 +253,8 @@ struct HomeView: View {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
                         viewModel.createHabitRecord(for: habit)
+                    }, destroyHabit: { habit in
+                        viewModel.destroyHabit(for: habit)
                     }
                 )
                 

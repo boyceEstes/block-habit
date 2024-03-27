@@ -148,9 +148,10 @@ struct HabitsMenu: View {
     // TODO: load habits from db
     let habits: [Habit]
     
-//    let habitMenuHeight: CGFloat
+    //    let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (Habit) -> Void
+    let destroyHabit: (Habit) -> Void
     
     
     let columns = [
@@ -181,8 +182,16 @@ struct HabitsMenu: View {
                     LazyVGrid(columns: columns, spacing: 25) {
                         ForEach(0..<habits.count, id: \.self) { i in
                             
-                            let habit = habits[i]
-                            habitButton(habit: habit, goToHabitDetail: goToHabitDetail)
+                            habitButton(
+                                habit: habits[i]
+                            )
+//                            HabitButton(
+//                                habit: habits[i],
+//                                goToHabitDetail: goToHabitDetail,
+//                                goToEditHabit: goToEditHabit,
+//                                destroyHabit: destroyHabit,
+//                                createHabitRecord: didTapHabitButton
+//                            )
                         }
                     }
                     .padding(.bottom)
@@ -206,8 +215,7 @@ struct HabitsMenu: View {
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
     }
     
-    
-    func habitButton(habit: Habit, goToHabitDetail: @escaping (Habit) -> Void) -> some View {
+    func habitButton(habit: Habit) -> some View {
         
         HabitMePrimaryButton(
             title: "\(habit.name)",
@@ -216,20 +224,23 @@ struct HabitsMenu: View {
             action: { didTapHabitButton(habit) }
         )
         .contextMenu {
+            
             Button("Habit Details") {
                 goToHabitDetail(habit)
             }
+            
             Button("Edit Habit") {
                 goToEditHabit(habit)
             }
-            Button("Remove Habit", role: .destructive) {
-                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-                    // FIXME: Deletion broken for habit update
+            
+            
+            Button("Delete Habit and All Data", role: .destructive) {
+//                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
+                    // FIXME: Cannot get alerts to work - it will not get the new state for the next button press on delete
                     print("DELETE HABIT")
-//                        modelContext.delete(habit: habit)
-                    }
-                ).alertData()
-                showAlert = true
+                    destroyHabit(habit)
+//                }).alertData()
+//                showAlert = true
             }
         }
     }
