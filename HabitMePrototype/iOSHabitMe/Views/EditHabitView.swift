@@ -170,6 +170,7 @@ public extension Habit {
     
     let dataHabit = DataHabit(
         name: "Chugging Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )

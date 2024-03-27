@@ -13,7 +13,7 @@ extension CoreDataBlockHabitStore {
     func habitDataSource() -> HabitDataSource {
         
         let frc = NSFetchedResultsController(
-            fetchRequest: ManagedHabit.allManagedHabitsRequest(),
+            fetchRequest: ManagedHabit.allUnarchivedManagedHabitsRequest(),
             managedObjectContext: context,
             sectionNameKeyPath: nil,
             cacheName: nil

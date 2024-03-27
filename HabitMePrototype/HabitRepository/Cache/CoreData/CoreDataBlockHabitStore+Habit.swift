@@ -34,6 +34,7 @@ extension CoreDataBlockHabitStore {
             let managedHabit = ManagedHabit(context: context)
             managedHabit.id = habit.id
             managedHabit.name = habit.name
+            // Do not put the isArchived because it will be false by default, which is good
             managedHabit.color = habit.color
             managedHabit.habitRecords = nil
             managedHabit.activityDetails = try habit.activityDetails.toManaged(context: context)

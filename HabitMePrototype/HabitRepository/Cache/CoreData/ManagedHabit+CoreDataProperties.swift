@@ -27,13 +27,16 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
 
     
-    public class func allManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
+    public class func allUnarchivedManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
         
         let request = ManagedHabit.fetchRequest()
         request.returnsObjectsAsFaults = false
         
         let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
         request.sortDescriptors = [sortDescriptor]
+        
+        let predicate = NSPredicate(format: "isArchived == NO")
+        request.predicate = predicate
         
         return request
     }
@@ -95,9 +98,10 @@ extension ManagedHabit {
 extension Array where Element == ManagedHabit {
     
     func toModel() throws -> [Habit] {
-        try map {
+        let habits = try map {
             try $0.toModel()
         }
+        return habits
     }
 }
 
@@ -114,5 +118,3 @@ extension Habit {
 extension ManagedHabit : Identifiable {
 
 }
-
-

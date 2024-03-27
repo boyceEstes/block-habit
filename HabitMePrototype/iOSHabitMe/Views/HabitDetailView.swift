@@ -505,6 +505,7 @@ struct StatBox: View {
     
     let dataHabit = DataHabit(
         name: "Chugging Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )

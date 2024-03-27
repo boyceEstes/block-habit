@@ -13,6 +13,7 @@ final class DataHabit: Hashable {
     
     @Attribute(.unique) var id: String = UUID().uuidString
     var name: String
+    var isArchived: Bool
     var color: String
     // Initializing to empty should cause a lightweight migration, if coming from an earlier version
     @Relationship(deleteRule: .nullify, inverse: \DataActivityDetail.habits) var activityDetails: [DataActivityDetail] = []
@@ -21,18 +22,18 @@ final class DataHabit: Hashable {
     
     init(
         name: String,
+        isArchived: Bool,
         color: String,
         activityDetails: [DataActivityDetail] = [],
         habitRecords: [DataHabitRecord] = []
     ) {
         self.name = name
+        self.isArchived = isArchived
         self.color = color
         self.activityDetails = activityDetails
         self.habitRecords = habitRecords
     }
 }
-
-
 
 
 

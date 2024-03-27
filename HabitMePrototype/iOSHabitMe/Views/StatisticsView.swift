@@ -338,11 +338,13 @@ struct StatisticsView: View {
     
     let dataHabit = DataHabit(
         name: "Chugged Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )
     let dataHabit2 = DataHabit(
         name: "Smashed Taco",
+        isArchived: false,
         color: Color.orange.toHexString() ?? "#FFFFFF",
         habitRecords: []
     )

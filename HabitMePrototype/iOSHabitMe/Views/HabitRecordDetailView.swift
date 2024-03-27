@@ -236,6 +236,7 @@ struct HabitMeDeleteButton: View {
     // MARK: Create Activity
     let activity = DataHabit(
         name: "Chugged Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         activityDetails: [],
         habitRecords: []
