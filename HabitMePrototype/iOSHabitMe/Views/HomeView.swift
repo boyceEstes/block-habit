@@ -102,65 +102,7 @@ struct HomeView: View {
             )
         )
     }
-//    // Filtering activity menu
-//    @State private var isActivityFilterMenuShowing = false
-////    @State private var activityFilterOptions = ActivityMenuFilterType.allCases.map { ActivityMenuFilter(activityMenuFilterType: $0, isSelected: true) }
-//    
-//    var isActivityMenuFiltered: Bool {
-//        // if there is a single false isSelected, we should make this button filled
-//        activityFilterOptions.contains { activityMenuFilter in
-//            return activityMenuFilter.isSelected == false
-//        }
-//    }
-//    
-//    var allowedActivityFilters: [DataActivityFilter] {
-//        print("Activity: Changed the allowed activityfilteroptions")
-//        return activityFilterOptions.filter { $0.isSelected }
-//    }
-//    
-//    var filteredActivities: [DataHabit] {
-//        
-//        // If there is nothing filtered we just return everything
-//        guard isActivityMenuFiltered else { return
-//            dataHabits
-//        }
-//        
-//        return dataHabits.filter { activity in
-//            
-//            // FIXME: This is atrociously ugly but it might work for now at the cost of performance
-//            var dateActivityRecordDict = [Date: [DataHabitRecord]]()
-//            for record in dataHabitRecords {
-//                
-//                guard let noonDate = record.completionDate.noon else { return false }
-//                
-//                if dateActivityRecordDict[noonDate] != nil {
-//                    dateActivityRecordDict[noonDate]?.append(record)
-//                } else {
-//                    dateActivityRecordDict[noonDate] = [record]
-//                }
-//            }
-//        
-//            guard let selectedDayNoon = selectedDay.noon,
-//                  let recordsForSelectedDay = dateActivityRecordDict[selectedDayNoon] else { return true }
-//            
-//            let isActivityCompleted = activity.isActivityComplete(activityRecords: recordsForSelectedDay)
-//            
-////            let allowedActivityFilters = activityFilterOptions.filter { $0.isSelected }
-//            var isAllowed = false
-//            if isActivityCompleted {
-//                isAllowed = allowedActivityFilters.contains { $0.filterType == .complete }
-//            } else {
-//                isAllowed = allowedActivityFilters.contains { $0.filterType == .incomplete }
-//            }
-//            
-//            guard isAllowed != false else { return false } // Don't continue if we already know its not allowed
-//            
-//            // If there are later conditions add them here
-//            print("Activity: \(activity.name) - isAllowed: \(isAllowed), isActivityCompleted: '\(isActivityCompleted)'")
-//            return isAllowed
-//        }
-//    }
-
+    
     
     var datesWithHabitRecords: [Date: [DataHabitRecord]] {
         

@@ -50,11 +50,11 @@ public struct Habit: Hashable {
 }
 
 
-struct HabitRecord {
+public struct HabitRecord {
     
     let id: String
-    let creationDate: Date?
-    let completionDate: Date?
+    let creationDate: Date
+    let completionDate: Date
     
     let activityDetailRecords: [ActivityDetailRecord]
     let habit: Habit

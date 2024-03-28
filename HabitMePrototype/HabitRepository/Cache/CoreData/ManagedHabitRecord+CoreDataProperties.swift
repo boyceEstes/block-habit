@@ -68,3 +68,32 @@ public class ManagedHabitRecord: NSManagedObject {
 extension ManagedHabitRecord : Identifiable {
 
 }
+
+
+extension ManagedHabitRecord {
+    
+    func toModel() throws -> HabitRecord {
+        
+        guard let id, let creationDate, let completionDate, let habit else {
+            throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
+        }
+        
+        
+        // FIXME: Make sure to convert the activitydetailrecords
+        return HabitRecord(
+            id: id,
+            creationDate: creationDate,
+            completionDate: completionDate,
+            activityDetailRecords: [],
+            habit: try habit.toModel()
+        )
+    }
+}
+
+
+extension Array where Element == ManagedHabitRecord {
+    
+    func toModel() throws -> [HabitRecord] {
+        try map { try $0.toModel() }
+    }
+}

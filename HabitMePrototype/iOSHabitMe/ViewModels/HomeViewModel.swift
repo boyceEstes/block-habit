@@ -17,6 +17,7 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     let blockHabitStore: CoreDataBlockHabitStore
     var habitDataSource: HabitDataSource? // Can get updated when selectedDate changes
+    var habitRecordDataSource: HabitRecordsByDateDataSource
     
     var selectedDay: Date {
         didSet(oldValue) {
@@ -36,6 +37,13 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         }
     }
     
+    var datesWithHabitRecords: [Date: [HabitRecord]] = [:] {
+        didSet {
+            print("didSet habitRecords - count: \(datesWithHabitRecords.count)")
+            print("habit records for today \(datesWithHabitRecords[selectedDay]?.count ?? -1)")
+        }
+    }
+    
     var cancellables = Set<AnyCancellable>()
     var habitDataSourceCancellable: AnyCancellable?
     
@@ -47,10 +55,13 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         let today = Date().noon!
         
         self.blockHabitStore = blockHabitStore
+        self.habitRecordDataSource = blockHabitStore.habitRecordsByDateDataSource()
+        
         self.selectedDay = today
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
         
         bindHabitDataSource()
+        bindHabitRecordsByDateDataSource()
     }
     
     
@@ -64,6 +75,20 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
                 print("BOYCE: habit data source reloaded")
                 self.habits = habits
             }
+    }
+    
+    
+    private func bindHabitRecordsByDateDataSource() {
+        
+        habitRecordDataSource
+            .habitRecordsByDate
+            .sink { error in
+                fatalError("THERES BEEN A HORRIBLE CRASH INVOLVING '\(error)' - prosecute to the highest degree of the law.")
+            } receiveValue: { habitRecordsByDate in
+                print("BOYCE: habit data source reloaded")
+                self.datesWithHabitRecords = habitRecordsByDate
+            }
+            .store(in: &cancellables)
     }
     
     

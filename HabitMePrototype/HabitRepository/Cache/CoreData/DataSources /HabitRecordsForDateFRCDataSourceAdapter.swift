@@ -10,17 +10,17 @@ import Combine
 import CoreData
 
 
-public protocol HabitRecordsForDateDataSource {
+public protocol HabitRecordsByDateDataSource {
     
-    var habitRecordsForDate: AnyPublisher<[Date: [ManagedHabitRecord]], Never> { get }
+    var habitRecordsByDate: AnyPublisher<[Date: [HabitRecord]], Never> { get }
 }
 
 
-public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitRecordsForDateDataSource {
+public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitRecordsByDateDataSource {
     
     private let frc: NSFetchedResultsController<ManagedHabitRecord>
-    public var habitRecordsForDateSubject = CurrentValueSubject<[Date: [ManagedHabitRecord]], Never>([:])
-    public var habitRecordsForDate: AnyPublisher<[Date: [ManagedHabitRecord]], Never>
+    public var habitRecordsForDateSubject = CurrentValueSubject<[Date: [HabitRecord]], Never>([:])
+    public var habitRecordsByDate: AnyPublisher<[Date: [HabitRecord]], Never>
 //    public var routinesSubject = CurrentValueSubject<[Routine], Error>([])
 //    public var routines: AnyPublisher<[Routine], Error>
     
@@ -28,7 +28,7 @@ public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitReco
     public init(frc: NSFetchedResultsController<ManagedHabitRecord>) {
         
         self.frc = frc
-        self.habitRecordsForDate = habitRecordsForDateSubject.eraseToAnyPublisher()
+        self.habitRecordsByDate = habitRecordsForDateSubject.eraseToAnyPublisher()
         
         super.init()
         
@@ -48,7 +48,7 @@ public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitReco
         
         do {
             try frc.performFetch()
-            updateWithLatestValues()
+            try updateWithLatestValues()
 //            routines.value = managedRoutines.toModel()
         } catch {
             let nsError = error as NSError
@@ -57,22 +57,23 @@ public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitReco
     }
     
     
-    private func updateWithLatestValues() {
+    private func updateWithLatestValues() throws{
         
         let managedHabitRecords = frc.fetchedObjects ?? []
         
         print("Update with latest value count: '\(managedHabitRecords.count)'")
         
-        let formatedRecordsWithDate = datesWithHabitRecords(for: managedHabitRecords)
+        let habitRecords = try managedHabitRecords.toModel()
+        let formatedRecordsWithDate = datesWithHabitRecords(for: habitRecords)
         
         habitRecordsForDateSubject.send(formatedRecordsWithDate)
 //        routinesSubject.send(managedRoutines.toModel())
     }
     
     
-    private func datesWithHabitRecords(for habitRecords: [ManagedHabitRecord]) -> [Date: [ManagedHabitRecord]] {
+    private func datesWithHabitRecords(for habitRecords: [HabitRecord]) -> [Date: [HabitRecord]] {
         
-        var _datesWithHabitRecords = [Date: [ManagedHabitRecord]]()
+        var _datesWithHabitRecords = [Date: [HabitRecord]]()
         
         print("update habit records by loading them")
         
@@ -89,11 +90,11 @@ public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitReco
         print("received from habitRepository fetch... \(habitRecords.count)")
         //
         // Convert to a dictionary in order for us to an easier time in searching for dates
-        var dateActivityRecordDict = [Date: [ManagedHabitRecord]]()
+        var dateActivityRecordDict = [Date: [HabitRecord]]()
         
         for record in habitRecords {
             
-            guard let noonDate = record.completionDate?.noon else { return [:] }
+            guard let noonDate = record.completionDate.noon else { return [:] }
             
             if dateActivityRecordDict[noonDate] != nil {
                 dateActivityRecordDict[noonDate]?.append(record)
@@ -127,6 +128,6 @@ extension ManagedHabitRecordsForDateFRCDataSourceAdapter: NSFetchedResultsContro
         
         print("BOYCE: Did change routine core data content")
         
-        updateWithLatestValues()
+        try? updateWithLatestValues()
     }
 }

@@ -33,4 +33,18 @@ extension CoreDataBlockHabitStore {
             }
         )
     }
+    
+    
+    func habitRecordsByDateDataSource() -> HabitRecordsByDateDataSource {
+        
+        
+        let frc = NSFetchedResultsController(
+            fetchRequest: ManagedHabitRecord.allManagedHabitRecordsRequest(),
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        
+        return ManagedHabitRecordsForDateFRCDataSourceAdapter(frc: frc)
+    }
 }
