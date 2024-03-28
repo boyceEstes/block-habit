@@ -265,14 +265,15 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             let graphHeight = screenHeight * 0.3
             ScrollView {
                 LazyVStack(spacing: .vSectionSpacing) {
-                    BarView(
-                        graphWidth: screenWidth,
-                        graphHeight: graphHeight,
-                        numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                        datesWithHabitRecords:
-                            datesWithHabitRecords,
-                        selectedDay: $selectedDay
-                    )
+                    // FIXME: BarView is broken until we can figure out a good way to get the statistics
+//                    BarView(
+//                        graphWidth: screenWidth,
+//                        graphHeight: graphHeight,
+//                        numOfItemsToReachTop: Double(numOfItemsToReachTop),
+//                        datesWithHabitRecords:
+//                            datesWithHabitRecords,
+//                        selectedDay: $selectedDay
+//                    )
                     
                     HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {
                         // FIXME: Update to have the CoreDataHabitBlockStore in this class before we can save

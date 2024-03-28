@@ -110,13 +110,14 @@ struct StatisticsView: View {
                 let graphHeight = screenHeight * 0.3
 
                 VStack(spacing: 0) {
-                    StatisticsBarView(
-                        graphWidth: screenWidth,
-                        graphHeight: graphHeight,
-                        numOfItemsToReachTop: 12,
-                        datesWithHabitRecords: datesWithHabitRecords
-                    )
-                    .padding(.bottom)
+                    // FIXME: Statistics is broken until further notice
+//                    StatisticsBarView(
+//                        graphWidth: screenWidth,
+//                        graphHeight: graphHeight,
+//                        numOfItemsToReachTop: 12,
+//                        datesWithHabitRecords: datesWithHabitRecords
+//                    )
+//                    .padding(.bottom)
                     
                     VStack(alignment: .leading, spacing: 0) {
                         if !selectableHabits.isEmpty {

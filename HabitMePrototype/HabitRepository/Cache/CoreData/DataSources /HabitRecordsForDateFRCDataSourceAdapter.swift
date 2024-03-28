@@ -16,6 +16,12 @@ public protocol HabitRecordsByDateDataSource {
 }
 
 
+//public protocol HabitRecordsStatistics {
+//    
+//    var 
+//}
+
+
 public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitRecordsByDateDataSource {
     
     private let frc: NSFetchedResultsController<ManagedHabitRecord>

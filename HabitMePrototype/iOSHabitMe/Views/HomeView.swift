@@ -174,7 +174,7 @@ struct HomeView: View {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
-                        datesWithHabitRecords: datesWithHabitRecords,
+                        datesWithHabitRecords: viewModel.datesWithHabitRecords,
                         selectedDay: $viewModel.selectedDay
                     )
                 case .daily:

@@ -14,7 +14,7 @@ struct StatisticsBarView: View {
     let graphHeight: CGFloat
     let numOfItemsToReachTop: Double
     
-    let datesWithHabitRecords: [Date: [DataHabitRecord]]
+    let datesWithHabitRecords: [Date: [HabitRecord]]
     
     var body: some View {
         
@@ -45,7 +45,7 @@ struct StatisticsBarView: View {
         graphHeight: Double,
         numOfItemsToReachTop: Double,
         date: Date,
-        habitRecords: [DataHabitRecord]
+        habitRecords: [HabitRecord]
     ) -> some View {
         
         let habitCount = habitRecords.count
@@ -101,7 +101,7 @@ struct BarView: View {
     let numOfItemsToReachTop: Double
     
     
-    let datesWithHabitRecords: [Date: [DataHabitRecord]]
+    let datesWithHabitRecords: [Date: [HabitRecord]]
     @Binding var selectedDay: Date
 
     
@@ -144,7 +144,7 @@ struct BarView: View {
         graphHeight: Double,
         numOfItemsToReachTop: Double,
         date: Date,
-        activityRecords: [DataHabitRecord]
+        activityRecords: [HabitRecord]
     ) -> some View {
         
         let habitCount = activityRecords.count
@@ -179,7 +179,9 @@ struct BarView: View {
             if habitCount > 0 {
                 Button("Delete Last Habit Record") {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
-                        deleteLastHabitRecord(in: activityRecords)
+                        // FIXME: Delete Last Habit Record
+                        print("Delete last habit record needs to be done")
+//                        deleteLastHabitRecord(in: activityRecords)
                     }
                 }
             }
@@ -223,7 +225,7 @@ struct BarView: View {
 
 struct HabitRecordBlocksOnDate: View {
     
-    let habitRecords: [DataHabitRecord]
+    let habitRecords: [HabitRecord]
     let itemWidth: CGFloat
     let itemHeight: CGFloat
     let didTapBlock: () -> Void
@@ -237,7 +239,7 @@ struct HabitRecordBlocksOnDate: View {
             let isLastRecord = habitRecords.first == habitRecord
             
             ActivityBlock(
-                colorHex: habitRecord.habit?.color ?? "#000000",
+                colorHex: habitRecord.habit.color,
                 itemWidth: itemWidth,
                 itemHeight: itemHeight,
                 tapAction: didTapBlock

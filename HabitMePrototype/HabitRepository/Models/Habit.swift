@@ -50,7 +50,7 @@ public struct Habit: Hashable {
 }
 
 
-public struct HabitRecord {
+public struct HabitRecord: Hashable {
     
     let id: String
     let creationDate: Date
