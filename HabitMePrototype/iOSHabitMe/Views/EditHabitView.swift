@@ -73,6 +73,10 @@ struct EditHabitView: View {
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
                 )
+                
+                CreateEditActivityCompletionGoalContent(
+                    completionGoal: $completionGoal
+                )
             }
         }
         .createEditHabitSheetPresentation()
