@@ -46,8 +46,9 @@ public class ManagedHabitRecord: NSManagedObject {
         let request = ManagedHabitRecord.fetchRequest()
         request.returnsObjectsAsFaults = false
         
-        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabitRecord.completionDate, ascending: true)
-        request.sortDescriptors = [sortDescriptor]
+        let sortDescriptorCompletion = NSSortDescriptor(keyPath: \ManagedHabitRecord.completionDate, ascending: false)
+        let sortDescriptorCreation = NSSortDescriptor(keyPath: \ManagedHabitRecord.creationDate, ascending: false)
+        request.sortDescriptors = [sortDescriptorCompletion, sortDescriptorCreation]
         
         let calendar = Calendar.current
         let startDate = calendar.startOfDay(for: date)
@@ -94,6 +95,12 @@ extension ManagedHabitRecord {
 extension Array where Element == ManagedHabitRecord {
     
     func toModel() throws -> [HabitRecord] {
-        try map { try $0.toModel() }
+        try map { try $0.toModel() }.sorted {
+            if $0.completionDate == $1.completionDate {
+                return $0.creationDate > $1.creationDate
+            } else {
+                return $0.completionDate > $1.completionDate
+            }
+        }
     }
 }
