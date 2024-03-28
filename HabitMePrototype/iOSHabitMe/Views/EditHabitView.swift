@@ -35,6 +35,7 @@ struct EditHabitView: View {
     @State private var showAlert: Bool = false
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
+    @State private var completionGoal: Int? = nil
     
     @State private var selectedDetails: [ActivityDetail]
     
@@ -55,6 +56,7 @@ struct EditHabitView: View {
         
         // FIXME: When `Habit` has `activityDetails` initialize this like expected
         self._selectedDetails = State(initialValue: habit.activityDetails)
+        self._completionGoal = State(initialValue: habit.goalCompletionsPerDay)
     }
     
     
@@ -117,6 +119,7 @@ struct EditHabitView: View {
                     id: habitID,
                     name: nameTextFieldValue,
                     isArchived: habit.isArchived,
+                    goalCompletionsPerDay: completionGoal,
                     color: selectedColorString,
                     activityDetails: selectedDetails
                 )
@@ -153,6 +156,7 @@ public extension Habit {
         id: UUID().uuidString,
         name: "Chugging Dew",
         isArchived: false,
+        goalCompletionsPerDay: 1,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         activityDetails: []
     )

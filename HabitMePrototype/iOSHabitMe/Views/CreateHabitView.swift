@@ -170,6 +170,7 @@ struct CreateHabitView: View {
                     id: UUID().uuidString,
                     name: nameTextFieldValue,
                     isArchived: false,
+                    goalCompletionsPerDay: completionGoal,
                     color: stringColorHex,
                     activityDetails: selectedDetails
                 )

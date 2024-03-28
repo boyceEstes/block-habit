@@ -30,7 +30,7 @@
     </entity>
     <entity name="DataHabit" representedClassName="ManagedHabit" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
-        <attribute name="goalCompletionsPerDay" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="goalCompletionsPerDay" optional="YES" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isArchived" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>

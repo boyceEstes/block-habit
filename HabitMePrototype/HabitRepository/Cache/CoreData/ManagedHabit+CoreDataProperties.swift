@@ -22,7 +22,7 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var name: String?
     @NSManaged public var color: String?
     @NSManaged public var isArchived: Bool
-    @NSManaged public var goalCompletionsPerDay: NSNumber?
+    @NSManaged public var goalCompletionsPerDay: Int64 // -1 = unset
     @NSManaged public var habitRecords: NSSet? // DataActivityDetails
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
 
@@ -84,10 +84,13 @@ extension ManagedHabit {
         
         let activityDetails: [ActivityDetail] = try activityDetails?.toModel() ?? []
         
+        // I want to represent no "goalCompletionsPerDay" as a null value instead of a "-1" in the model
+        // This is my favorite option given the Core Data constraints
         return Habit(
             id: id,
             name: name,
             isArchived: isArchived,
+            goalCompletionsPerDay: goalCompletionsPerDay == -1 ? nil : Int(goalCompletionsPerDay),
             color: color,
             activityDetails: activityDetails
         )
@@ -117,4 +120,14 @@ extension Habit {
 
 extension ManagedHabit : Identifiable {
 
+    func populate(from habit: Habit, in context: NSManagedObjectContext) throws {
+        
+        name = habit.name
+        // Do not put the isArchived because it will be false by default, which is good
+        isArchived = habit.isArchived
+        // It is not optional because I am storing as a scalable value
+        goalCompletionsPerDay = Int64(habit.goalCompletionsPerDay ?? -1)
+        color = habit.color
+        activityDetails = try habit.activityDetails.toManaged(context: context)
+    }
 }

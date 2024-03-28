@@ -33,11 +33,9 @@ extension CoreDataBlockHabitStore {
             
             let managedHabit = ManagedHabit(context: context)
             managedHabit.id = habit.id
-            managedHabit.name = habit.name
-            // Do not put the isArchived because it will be false by default, which is good
-            managedHabit.color = habit.color
+            
+            try managedHabit.populate(from: habit, in: context)
             managedHabit.habitRecords = nil
-            managedHabit.activityDetails = try habit.activityDetails.toManaged(context: context)
             
             // save
             try context.save()
@@ -53,10 +51,7 @@ extension CoreDataBlockHabitStore {
         try await context.perform {
             
             let managedHabit = try context.fetchHabit(withID: habitID)
-            managedHabit.name = habit.name
-            managedHabit.isArchived = habit.isArchived
-            managedHabit.color = habit.color
-            managedHabit.activityDetails = try habit.activityDetails.toManaged(context: context)
+            try managedHabit.populate(from: habit, in: context)
             
             try context.save()
             // FIXME: Rollback if there is an error
@@ -67,13 +62,8 @@ extension CoreDataBlockHabitStore {
     /// Update a habit's `isArchvied` property to true
     func archive(_ habit: Habit) async throws {
         
-        let archivedHabit = Habit(
-            id: habit.id,
-            name: habit.name,
-            isArchived: true,
-            color: habit.color,
-            activityDetails: habit.activityDetails
-        )
+        var archivedHabit = habit
+        archivedHabit.isArchived = true
         
         try await update(habitID: habit.id, with: archivedHabit)
     }
@@ -95,3 +85,6 @@ extension CoreDataBlockHabitStore {
         }
     }
 }
+
+
+
