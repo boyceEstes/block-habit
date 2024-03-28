@@ -9,6 +9,13 @@ import Foundation
 
 
 
+public struct IsCompletedHabit {
+    
+    public let habit: Habit
+    public let isCompleted: Bool
+}
+
+
 public struct Habit: Hashable {
     
     public let id: String

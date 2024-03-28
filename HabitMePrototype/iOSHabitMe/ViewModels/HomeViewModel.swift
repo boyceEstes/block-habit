@@ -13,9 +13,10 @@ import Combine
 final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     let blockHabitStore: CoreDataBlockHabitStore
-    let habitDataSource: HabitDataSource
+    let habitDataSource: HabitDataSource // Can get updated when selectedDate changes
     
     var selectedDay: Date
+    
     var goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     var habits = [Habit]() {
         didSet {
@@ -33,12 +34,26 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         blockHabitStore: CoreDataBlockHabitStore,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
+        
+        let today = Date().noon!
+        
         self.blockHabitStore = blockHabitStore
-        self.habitDataSource = blockHabitStore.habitDataSource()
-        self.selectedDay = Date().noon!
+        self.habitDataSource = blockHabitStore.habitDataSource(selectedDay: today)
+        self.selectedDay = today
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
         
         bindHabitDataSource()
+    }
+    
+    
+    private func bindSelectedDay() {
+        
+        /**
+         * When this changes, we want to update the HabitDataSource so that it gets only the habits for today
+         * This requires us to rebind the HabitDataSource so if any edits to the habits take place, we will see
+         * the updates without needing to do anything else
+         */
+//        selectedDay
     }
     
     

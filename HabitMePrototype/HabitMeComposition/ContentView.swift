@@ -41,7 +41,7 @@ struct ContentView: View {
     @State var addDetailsNavigationFlowDisplayedSheet: AddDetailsNavigationFlow.SheetyIdentifier?
     
     var body: some View {
-        let _ = print("Hello world home view")
+        let _ = print("Hello world content view")
         makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
     }
 }
@@ -63,7 +63,6 @@ class AppState {
     func setSelectedDateToPrevious() {
         
         print("Go back in time")
-        
     }
 }
 

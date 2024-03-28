@@ -37,6 +37,31 @@ public class ManagedHabitRecord: NSManagedObject {
         
         return request
     }
+    
+    
+//     FIXME: Remove this if it becomes evident that we can do the same thing by passing in the [HabitRecords] retrieved some other source when configuring our HabitDataSource
+/// This isn't great because it has to be formatted exactly as it was saved. In this case it is usually saved a `noon`
+    public class func allManagedHabitRecordsRequest(for date: Date) -> NSFetchRequest<ManagedHabitRecord> {
+        
+        let request = ManagedHabitRecord.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabitRecord.completionDate, ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+        
+        let calendar = Calendar.current
+        let startDate = calendar.startOfDay(for: date)
+        let endDate = calendar.date(byAdding: .day, value: 1, to: startDate)!
+        
+        print("date: '\(DateFormatter.shortDateShortTime.string(from: date))'")
+        print("startDate: '\(DateFormatter.shortDateShortTime.string(from: startDate))'")
+        print("endDate: '\(DateFormatter.shortDateShortTime.string(from: endDate))'")
+        
+        let predicate = NSPredicate(format: "completionDate >= %@ AND completionDate < %@", startDate as NSDate, endDate as NSDate)
+        request.predicate = predicate
+        
+        return request
+    }
 }
 
 

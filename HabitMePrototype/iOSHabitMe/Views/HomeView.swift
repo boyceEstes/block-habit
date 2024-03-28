@@ -213,7 +213,7 @@ struct HomeView: View {
 
 
     var body: some View {
-        
+        let _ = print("Home View! '\(Self._printChanges())'")
         let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
         
         GeometryReader { proxy in
