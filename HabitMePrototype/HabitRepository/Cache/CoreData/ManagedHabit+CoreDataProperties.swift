@@ -22,7 +22,7 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var name: String?
     @NSManaged public var color: String?
     @NSManaged public var isArchived: Bool
-//    @NSManaged public var completionGoalsPerDay: Double
+    @NSManaged public var goalCompletionsPerDay: NSNumber?
     @NSManaged public var habitRecords: NSSet? // DataActivityDetails
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
 

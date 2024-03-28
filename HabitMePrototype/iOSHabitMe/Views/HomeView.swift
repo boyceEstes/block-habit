@@ -298,8 +298,6 @@ struct HomeView: View {
 //                        }
 //                    )
 //                }
-                .sectionBackground()
-                .padding()
             }
             .background(Color.primaryBackground)
         }
