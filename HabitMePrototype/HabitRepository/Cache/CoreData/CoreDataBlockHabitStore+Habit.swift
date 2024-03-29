@@ -20,6 +20,16 @@ extension NSManagedObjectContext {
         
         return managedHabit
     }
+    
+    
+    func fetchHabitRecord(withID habitRecordID: String) throws -> ManagedHabitRecord {
+        
+        guard let managedHabitRecord = try fetch(ManagedHabitRecord.findHabitRecordRequest(with: habitRecordID)).first else {
+            throw HabitRepositoryError.couldNotFindHabitRecordWithID(id: habitRecordID)
+        }
+        
+        return managedHabitRecord
+    }
 }
 
 

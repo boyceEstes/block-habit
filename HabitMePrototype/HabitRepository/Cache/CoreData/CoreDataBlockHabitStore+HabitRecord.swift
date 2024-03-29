@@ -8,7 +8,6 @@
 import Foundation
 
 
-
 extension CoreDataBlockHabitStore {
     
     func create(_ habitRecord: HabitRecord) async throws {
@@ -48,6 +47,20 @@ extension CoreDataBlockHabitStore {
             let managedHabitRecords = try context.fetch(habitRecordsForSelectedDayRequest)
             print("managedHabitRecords for date count: \(managedHabitRecords.count)")
             return managedHabitRecords
+        }
+    }
+    
+    
+    func destroy(_ habitRecord: HabitRecord) async throws {
+        
+        let context = context
+        try await context.perform {
+            let managedHabitRecord = try habitRecord.toManaged(context: context)
+            context.delete(managedHabitRecord)
+            
+            // save
+            try context.save()
+            // FIXME: Rollback if there is an error
         }
     }
 }

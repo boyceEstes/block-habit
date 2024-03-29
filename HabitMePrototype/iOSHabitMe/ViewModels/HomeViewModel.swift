@@ -105,6 +105,20 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     }
     
     
+    func destroyHabitRecord(_ habitRecord: HabitRecord) {
+        
+        
+        Task {
+            do {
+                try await blockHabitStore.destroy(habitRecord)
+            } catch {
+                // FIXME: Handle Error in View - note this could be called from DayView so not sure how alerts will be affected
+                fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
+            }
+        }
+    }
+    
+    
     func archiveHabit(for habit: Habit) {
         
         Task {

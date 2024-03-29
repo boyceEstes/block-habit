@@ -9,8 +9,7 @@ import SwiftUI
 
 struct DayView: View {
     
-    @Environment(\.modelContext) var modelContext
-    
+    let destroyHabitRecord: (HabitRecord) -> Void
     let goToHabitRecordDetail: (HabitRecord) -> Void
     /// We want this to determine the itemHeight, alternatively we could just set the item height/width
     let graphHeight: CGFloat
@@ -29,12 +28,14 @@ struct DayView: View {
     
     
     init(
+        destroyHabitRecord: @escaping (HabitRecord) -> Void,
         goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
         graphHeight: CGFloat,
         numOfItemsToReachTop: Int,
         habitRecords: [HabitRecord],
         selectedDay: Date
     ) {
+        self.destroyHabitRecord = destroyHabitRecord
         self.goToHabitRecordDetail = goToHabitRecordDetail
         self.graphHeight = graphHeight
         self.numOfItemsToReachTop = numOfItemsToReachTop
@@ -65,15 +66,13 @@ struct DayView: View {
                         .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button {
-                        // FIXME: Delete activity habit record is broken from the day view - AW SHOOT
-//                        deleteActivity(habitRecord: habitRecord)
-                        print("Delete me! (In the future)")
+                    Button(role: .destructive) {
+                        destroyHabitRecord(habitRecord)
+                        print("Deleting!")
                     } label: {
                         Label("Delete", systemImage: "trash")
                           .foregroundStyle(Color.blue)
                     }
-                    .tint(Color(uiColor: .secondarySystemGroupedBackground))
                 }
                 .onTapGesture {
                     // FIXME: This is broken Cannot navigate to habit record detail without a DataHabitRecord right now
@@ -89,14 +88,6 @@ struct DayView: View {
 //        .scrollContentBackground(.hidden)
         .listStyle(.plain)
     }
-    
-    
-    // MARK: Helper methods
-    
-    private func deleteActivity(habitRecord: DataHabitRecord) {
-        modelContext.delete(habitRecord)
-    }
-    
 }
 
 

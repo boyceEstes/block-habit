@@ -26,6 +26,19 @@ public class ManagedHabitRecord: NSManagedObject {
     @NSManaged public var habit: ManagedHabit? // DataHabit
     
     
+    static func findHabitRecordRequest(with id: String) -> NSFetchRequest<ManagedHabitRecord> {
+        
+        let request = ManagedHabitRecord.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let predicate = NSPredicate(format: "%K == %@", "id", id)
+        request.predicate = predicate
+        
+        request.fetchLimit = 1
+        
+        return request
+    }
+    
     
     public class func allManagedHabitRecordsRequest() -> NSFetchRequest<ManagedHabitRecord> {
         
@@ -102,5 +115,14 @@ extension Array where Element == ManagedHabitRecord {
                 return $0.completionDate > $1.completionDate
             }
         }
+    }
+}
+
+
+extension HabitRecord {
+    
+    func toManaged(context: NSManagedObjectContext) throws -> ManagedHabitRecord {
+        
+        return try context.fetchHabitRecord(withID: id)
     }
 }

@@ -125,6 +125,7 @@ struct HomeView: View {
                     )
                 case .daily:
                     DayView(
+                        destroyHabitRecord: viewModel.destroyHabitRecord,
                         goToHabitRecordDetail: goToHabitRecordDetail,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,

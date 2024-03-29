@@ -30,7 +30,6 @@ enum HabitRecordDetailAlert {
 struct HabitRecordDetailView: View {
     
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) var modelContext
     
     // We only want to be able to edit their time, always maintain the date.
     @State private var activityRecord: HabitRecord
@@ -205,16 +204,16 @@ struct HabitRecordDetailView: View {
 //    }
     
     
-    
-    private func removeHabitRecord(_ habitRecord: DataHabitRecord) {
-        
-        DispatchQueue.main.async {
-            
-            modelContext.delete(habitRecord)
-            
-            dismiss()
-        }
-    }
+    // FIXME: Make sure that we can delete the  record from the detail screen
+//    private func removeHabitRecord(_ habitRecord: DataHabitRecord) {
+//        
+//        DispatchQueue.main.async {
+//            
+//            modelContext.delete(habitRecord)
+//            
+//            dismiss()
+//        }
+//    }
     
     
     private func updateHabitRecord(_ habitRecord: DataHabitRecord, withNewCompletionTime newCompletionTime: Date) {

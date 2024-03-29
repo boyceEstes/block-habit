@@ -12,5 +12,6 @@ enum HabitRepositoryError: Error {
     case toModelFailedBecausePropertyWasNil
     // TODO: make Id into ID
     case couldNotFindHabitWithID(id: String)
+    case couldNotFindHabitRecordWithID(id: String)
     case couldNotFindActivityDetailWithID
 }
