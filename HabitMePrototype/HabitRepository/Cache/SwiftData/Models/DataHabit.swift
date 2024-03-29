@@ -76,14 +76,14 @@ final class DataHabitRecord {
 
 extension DataHabitRecord {
     
-    func toModel() -> ActivityRecord {
-        
-        ActivityRecord(
-            id: self.id,
-            title: self.habit?.name ?? "Unknown Title",
-            creationDate: self.creationDate,
-            completionDate: self.completionDate,
-            detailRecords: self.activityDetailRecords.toModel()
-        )
-    }
+//    func toModel() -> ActivityRecord {
+//        
+//        ActivityRecord(
+//            id: self.id,
+//            title: self.habit?.name ?? "Unknown Title",
+//            creationDate: self.creationDate,
+//            completionDate: self.completionDate,
+//            detailRecords: self.activityDetailRecords.toModel()
+//        )
+//    }
 }

@@ -15,7 +15,7 @@ struct ActivityRecordRowTitleDate: View {
     
     // This is for knowing the date to display
     let selectedDay: Date
-    let activityRecord: ActivityRecord
+    let activityRecord: HabitRecord
     
     
     
@@ -23,14 +23,14 @@ struct ActivityRecordRowTitleDate: View {
         
         VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
             HStack(alignment: .center) {
-                Text("\(activityRecord.title)")
+                Text("\(activityRecord.habit.name)")
                     .font(.rowTitle)
                 Spacer()
                 Text("\(DisplayDatePolicy.date(for: activityRecord, on: selectedDay))")
                     .font(.callout)
             }
             
-            let detailRecords = activityRecord.detailRecords
+            let detailRecords = activityRecord.activityDetailRecords
             
             if !detailRecords.isEmpty {
                 ActivityDetailRecordIndicators(detailRecords: detailRecords)
@@ -44,7 +44,7 @@ struct ActivityRecordRowTitleDate: View {
 /// For example, the `HabitDetailView` would show logs with only the date
 struct ActivityRecordRowDateWithInfo: View {
     
-    let activityRecord: ActivityRecord
+    let activityRecord: HabitRecord
     
     var body: some View {
         
@@ -62,7 +62,7 @@ struct ActivityRecordRowDateWithInfo: View {
                     .font(.rowDetail)
             }
             
-            let detailRecords = activityRecord.detailRecords
+            let detailRecords = activityRecord.activityDetailRecords
             
             if !detailRecords.isEmpty {
                 ActivityRecordRowContent(detailRecords: detailRecords)
@@ -97,14 +97,14 @@ struct ActivityRecordRowDateWithInfo: View {
 
 struct ActivityDetailRecordIndicators: View {
     
-    let detailRecords: [ActivityDetailRecord2]
+    let detailRecords: [ActivityDetailRecord]
     
     var body: some View {
         
         HStack {
             ForEach(detailRecords, id: \.id) { detailRecord in
                 
-                let detail = detailRecord.detail
+                let detail = detailRecord.activityDetail
                 
                 detail.valueType.asset.image()
                     .foregroundColor(.secondaryFont)
@@ -116,7 +116,7 @@ struct ActivityDetailRecordIndicators: View {
 
 struct ActivityRecordRowContent: View {
     
-    let detailRecords: [ActivityDetailRecord2]
+    let detailRecords: [ActivityDetailRecord]
     
     var body: some View {
         
@@ -132,14 +132,14 @@ struct ActivityRecordRowContent: View {
 
 struct ActivityDetailRecordRowContentInfo: View {
     
-    let detailRecords: [ActivityDetailRecord2]
+    let detailRecords: [ActivityDetailRecord]
     
     
-    var numberActivityDetailRecords: [ActivityDetailRecord2] {
+    var numberActivityDetailRecords: [ActivityDetailRecord] {
         detailRecords.valueType(.number)
     }
     
-    var textActivityDetailRecords: [ActivityDetailRecord2] {
+    var textActivityDetailRecords: [ActivityDetailRecord] {
         detailRecords.valueType(.text)
     }
     
@@ -162,14 +162,14 @@ struct ActivityDetailRecordRowContentInfo: View {
 // FIXME: How do I ensure that this will only have `activityDetail` values where valueType == .text
 struct ActivityDetailRecordTextList: View {
     
-    let textActivityDetailRecords: [ActivityDetailRecord2]
+    let textActivityDetailRecords: [ActivityDetailRecord]
     
     var body: some View {
         
         ForEach(textActivityDetailRecords) { textActivityDetailRecord in
             
             VStack(alignment: .leading) {
-                Text("\(textActivityDetailRecord.detail.name)")
+                Text("\(textActivityDetailRecord.activityDetail.name)")
                     .font(.callout)
                     .foregroundStyle(Color.secondaryFont)
                 
@@ -187,7 +187,7 @@ struct ActivityDetailRecordTextList: View {
 // FIXME: How do I ensure that this will only have `activityDetail` values where valueType == .number
 struct ActivityDetailRecordNumberGrid: View {
     
-    let numberActivityDetailRecords: [ActivityDetailRecord2]
+    let numberActivityDetailRecords: [ActivityDetailRecord]
     
     let columnCount: Int
     
@@ -195,7 +195,7 @@ struct ActivityDetailRecordNumberGrid: View {
         Array(repeatElement(GridItem(.flexible(), alignment: .top), count: columnCount))
     }
     
-    init(numberActivityDetailRecords: [ActivityDetailRecord2]) {
+    init(numberActivityDetailRecords: [ActivityDetailRecord]) {
         
         self.numberActivityDetailRecords = numberActivityDetailRecords
         
@@ -212,7 +212,7 @@ struct ActivityDetailRecordNumberGrid: View {
             ForEach(numberActivityDetailRecords) { numberActivityDetailRecord in
                 
                 VStack(alignment: .leading) {
-                    Text("\(numberActivityDetailRecord.detail.name)")
+                    Text("\(numberActivityDetailRecord.activityDetail.name)")
                         .font(.callout)
                         .foregroundStyle(Color.secondaryFont)
                     
@@ -230,7 +230,7 @@ struct ActivityDetailRecordNumberGrid: View {
     
     
     @ViewBuilder
-    func hStackFit(for numberActivityDetailRecord: ActivityDetailRecord2) -> some View {
+    func hStackFit(for numberActivityDetailRecord: ActivityDetailRecord) -> some View {
         
         HStack {
             UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
@@ -239,7 +239,7 @@ struct ActivityDetailRecordNumberGrid: View {
     }
     
     @ViewBuilder
-    func vStackFit(for numberActivityDetailRecord: ActivityDetailRecord2) -> some View {
+    func vStackFit(for numberActivityDetailRecord: ActivityDetailRecord) -> some View {
         
         VStack(alignment: .leading) {
             UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
@@ -255,14 +255,14 @@ struct ActivityDetailRecordNumberGrid: View {
 /// Also this is meant to be placed in a VStack or HStack, assuming that you want the units to be shown corrrectly
 struct UnwrappedValueText: View {
     
-    let activityDetailRecord: ActivityDetailRecord2
+    let activityDetailRecord: ActivityDetailRecord
     
     var body: some View {
         
         let value = activityDetailRecord.value
         
         if !value.isEmpty {
-            let units = activityDetailRecord.detail.availableUnits
+            let units = activityDetailRecord.activityDetail.availableUnits
             
             Text("\(activityDetailRecord.value)")
             
@@ -320,6 +320,7 @@ struct UnwrappedValueText: View {
     let completionDateMadeFromSameDay = creationDate
     
     
+    // FIXME: Clean this up - Ideally I should be able to have this as a preview static computed  variable with some corresponding habit previews
     let activityRecordMunchingTacos = ActivityRecord(
         title: "Munching Tacos",
         creationDate: creationDate,
@@ -343,13 +344,13 @@ struct UnwrappedValueText: View {
     )
     
     return VStack {
-        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordMunchingTacos)
+        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordChuggingDew)
+        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowDateWithInfo(activityRecord: activityRecordMunchingTacos)
+        ActivityRecordRowDateWithInfo(activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowDateWithInfo(activityRecord: activityRecordChuggingDew)
+        ActivityRecordRowDateWithInfo(activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
     }
 }

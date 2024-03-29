@@ -57,10 +57,6 @@ struct HomeView: View {
 //    @Query(sort: [
 //        SortDescriptor(\DataActivityFilter.order, order: .forward)
 //    ]) var activityFilterOptions: [DataActivityFilter]
-    @Query(sort: [
-        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-    ], animation: .default) var dataHabitRecords: [DataHabitRecord]
     
     
     let goToHabitDetail: (Habit) -> Void
@@ -104,56 +100,6 @@ struct HomeView: View {
     }
     
     
-    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
-        
-        var _datesWithHabitRecords = [Date: [DataHabitRecord]]()
-        
-        print("update habit records by loading them")
-        
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = .current
-        
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-              let today = Date().noon,
-              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return [:] }
-        
-        
-            print("received from habitRepository fetch... \(dataHabitRecords.count)")
-//
-            // Convert to a dictionary in order for us to an easier time in searching for dates
-            var dateActivityRecordDict = [Date: [DataHabitRecord]]()
-        
-            for record in dataHabitRecords {
-                
-                guard let noonDate = record.completionDate.noon else { return [:] }
-                
-                if dateActivityRecordDict[noonDate] != nil {
-                    dateActivityRecordDict[noonDate]?.append(record)
-                } else {
-                    dateActivityRecordDict[noonDate] = [record]
-                }
-            }
-
-            
-            // Maybe for now, lets just start at january 1, 2024 for the beginning.
-            for day in 0...days {
-                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [:] }
-                
-                
-                if let habitRecordsForDate = dateActivityRecordDict[noonDate] {
-                    _datesWithHabitRecords[noonDate] = habitRecordsForDate
-                } else {
-                    _datesWithHabitRecords[noonDate] = []
-                }
-            }
-            
-            return _datesWithHabitRecords
-    }
-
-
     var body: some View {
         let _ = print("Home View! '\(Self._printChanges())'")
         let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
@@ -182,7 +128,7 @@ struct HomeView: View {
                         goToHabitRecordDetail: goToHabitRecordDetail,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
-                        habitRecords: dataHabitRecordsForSelectedDay,
+                        habitRecords: viewModel.datesWithHabitRecords[viewModel.selectedDay] ?? [],
                         selectedDay: viewModel.selectedDay
                     )
                 }
@@ -320,19 +266,6 @@ struct HomeView: View {
         withAnimation(.easeOut) {
             habitRecordVisualMode = visualMode
         }
-    }
-    
-    
-    private var dataHabitRecordsForSelectedDay: [DataHabitRecord] {
-        
-        guard let dataHabitRecordsSelectedForDay = datesWithHabitRecords[viewModel.selectedDay] else {
-            return []
-        }
-//        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habitsRecords else {
-//            return []
-//        }
-        
-        return dataHabitRecordsSelectedForDay
     }
     
     

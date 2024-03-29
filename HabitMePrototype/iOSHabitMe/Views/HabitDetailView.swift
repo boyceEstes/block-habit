@@ -305,7 +305,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         Text("Activity Records")
                             .font(.sectionTitle)
                         if !filteredDatahabitRecordsForHabit.isEmpty {
-                            allActivtyRecords
+                            // FIXME: PUT THESE BACK!
+                            Text("To be fixed: Habit records - \(filteredDatahabitRecordsForHabit.count)")
+//                            allActivtyRecords
                         } else {
                             Text("No records found for this activity yet")
                         }
@@ -373,8 +375,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         
         ForEach(filteredDatahabitRecordsForHabit) { activityRecord in
             
-            ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
-                .sectionBackground(padding: .detailPadding)
+            Text("Nothing")
+//            ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
+//                .sectionBackground(padding: .detailPadding)
         }
     }
     

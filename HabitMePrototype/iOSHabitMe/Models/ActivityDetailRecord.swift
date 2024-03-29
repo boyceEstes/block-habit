@@ -62,12 +62,12 @@ struct ActivityRecord: Identifiable, Hashable {
 }
 
 
-extension Array where Element == ActivityDetailRecord2 {
+extension Array where Element == ActivityDetailRecord {
     
-    func valueType(_ valueType: ActivityDetailType) -> [ActivityDetailRecord2] {
+    func valueType(_ valueType: ActivityDetailType) -> [ActivityDetailRecord] {
         
         self.filter {
-            $0.detail.valueType == valueType
+            $0.activityDetail.valueType == valueType
         }
     }
 }

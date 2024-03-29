@@ -177,27 +177,8 @@ final class DataActivityDetailRecord: Hashable {
 }
 
 
-extension DataActivityDetailRecord {
-    
-    func toModel() -> ActivityDetailRecord2 {
-        
-        ActivityDetailRecord2(
-            id: self.id,
-            value: self.value,
-            detail: self.activityDetail.toModel()
-        )
-    }
-}
-
-
 extension Array where Element == DataActivityDetailRecord {
     
-    func toModel() -> [ActivityDetailRecord2] {
-        
-        map { $0.toModel() }
-    }
-    
-
     /// This is basically the same logic used in sorting the activity details as well
     func bjSort() -> [DataActivityDetailRecord] {
         

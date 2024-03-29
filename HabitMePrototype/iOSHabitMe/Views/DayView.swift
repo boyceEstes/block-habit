@@ -22,7 +22,7 @@ struct DayView: View {
     var itemWidth: CGFloat { (graphHeight - dateLabelHeight) / CGFloat(numOfItemsToReachTop) }
     var itemHeight: CGFloat { itemWidth }
     
-    var habitRecords: [DataHabitRecord]
+    var habitRecords: [HabitRecord]
     let selectedDay: Date
     
     
@@ -32,7 +32,7 @@ struct DayView: View {
         goToHabitRecordDetail: @escaping (DataHabitRecord) -> Void,
         graphHeight: CGFloat,
         numOfItemsToReachTop: Int,
-        habitRecords: [DataHabitRecord],
+        habitRecords: [HabitRecord],
         selectedDay: Date
     ) {
         self.goToHabitRecordDetail = goToHabitRecordDetail
@@ -50,7 +50,7 @@ struct DayView: View {
                 HStack(spacing: 16) {
                     
                     ActivityBlock(
-                        colorHex: habitRecord.habit?.color ?? UIColor.black.toHexString()!,
+                        colorHex: habitRecord.habit.color,
                         itemWidth: itemWidth,
                         itemHeight: itemHeight
                     )
@@ -61,12 +61,14 @@ struct DayView: View {
 //                            .font(.footnote)
 //                            .foregroundStyle(Color.secondary)
 //                    }
-                    ActivityRecordRowTitleDate(selectedDay: selectedDay, activityRecord: habitRecord.toModel())
+                    ActivityRecordRowTitleDate(selectedDay: selectedDay, activityRecord: habitRecord)
                         .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button {
-                        deleteActivity(habitRecord: habitRecord)
+                        // FIXME: Delete activity habit record is broken from the day view - AW SHOOT
+//                        deleteActivity(habitRecord: habitRecord)
+                        print("Delete me! (In the future)")
                     } label: {
                         Label("Delete", systemImage: "trash")
                           .foregroundStyle(Color.blue)
@@ -74,7 +76,8 @@ struct DayView: View {
                     .tint(Color(uiColor: .secondarySystemGroupedBackground))
                 }
                 .onTapGesture {
-                    goToHabitRecordDetail(habitRecord)
+                    // FIXME: This is broken Cannot navigate to habit record detail without a DataHabitRecord right now
+//                    goToHabitRecordDetail(habitRecord)
                 }
             }
             .listRowSeparator(.hidden)

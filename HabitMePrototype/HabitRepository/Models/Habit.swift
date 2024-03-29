@@ -61,6 +61,21 @@ public struct HabitRecord: Hashable {
 }
 
 
+extension HabitRecord {
+    
+    static var preview: HabitRecord {
+        
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: Habit.preview
+        )
+    }
+}
+
+
 struct ActivityDetailRecord: Identifiable, Hashable {
 
     

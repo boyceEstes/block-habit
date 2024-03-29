@@ -15,7 +15,7 @@ final class DisplayDatePolicy {
     
     /// When the task is retroactively completed, it will have a completionDate time of 23:59:59, so instead of showing that, we would rather
     /// display the creationDate' for activity records
-    static func date(for activityRecord: ActivityRecord, on selectedDay: Date) -> String {
+    static func date(for activityRecord: HabitRecord, on selectedDay: Date) -> String {
         
         let timeDateFormatter: DateFormatter = .shortTime
         let dateTimeDateFormatter: DateFormatter = .shortDateShortTime
