@@ -56,7 +56,8 @@ public struct HabitRecord: Hashable {
     let creationDate: Date
     let completionDate: Date
     
-    let activityDetailRecords: [ActivityDetailRecord]
+    // This can be modified in the view
+    var activityDetailRecords: [ActivityDetailRecord]
     let habit: Habit
 }
 
@@ -85,6 +86,34 @@ struct ActivityDetailRecord: Identifiable, Hashable {
     
     let activityDetail: ActivityDetail
     // FIXME: Include `HabitRecord` when it becomes available
+}
+
+
+extension Array where Element == ActivityDetailRecord {
+    
+    func bjSort() -> [ActivityDetailRecord] {
+        
+        // Prioritize number types at the top
+        // Sort alphabetically
+        var sortedArray = [ActivityDetailRecord]()
+        
+        let numberActivityDetailRecords = filter { $0.activityDetail.valueType == .number }
+        let sortedNumberActivityDetailRecords = numberActivityDetailRecords.sorted {
+            $0.activityDetail.name < $1.activityDetail.name
+        }
+        
+        let textActivityDetailRecords = filter {
+            $0.activityDetail.valueType == .text
+        }
+        let sortedTextActivityDetailsRecords = textActivityDetailRecords.sorted {
+            $0.activityDetail.name < $1.activityDetail.name
+        }
+        
+        sortedArray.append(contentsOf: sortedNumberActivityDetailRecords)
+        sortedArray.append(contentsOf: sortedTextActivityDetailsRecords)
+        
+        return sortedArray
+    }
 }
 
 

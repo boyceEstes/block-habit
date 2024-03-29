@@ -61,7 +61,7 @@ struct HomeView: View {
     
     let goToHabitDetail: (Habit) -> Void
     let goToCreateHabit: () -> Void
-    let goToHabitRecordDetail: (DataHabitRecord) -> Void
+    let goToHabitRecordDetail: (HabitRecord) -> Void
     let goToEditHabit: (Habit) -> Void
     let goToStatistics: () -> Void
     
@@ -80,7 +80,7 @@ struct HomeView: View {
         blockHabitStore: CoreDataBlockHabitStore,
         goToHabitDetail: @escaping (Habit) -> Void,
         goToCreateHabit: @escaping () -> Void,
-        goToHabitRecordDetail: @escaping (DataHabitRecord) -> Void,
+        goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
         goToEditHabit: @escaping (Habit) -> Void,
         goToStatistics: @escaping () -> Void,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void

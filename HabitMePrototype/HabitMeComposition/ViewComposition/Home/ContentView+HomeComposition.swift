@@ -78,7 +78,7 @@ extension ContentView {
     }
     
     
-    private func goToHabitRecordDetailFromHome(habitRecord: DataHabitRecord) {
+    private func goToHabitRecordDetailFromHome(habitRecord: HabitRecord) {
         
         homeNavigationFlowDisplayedSheet = .habitRecordDetail(habitRecord: habitRecord)
     }

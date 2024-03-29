@@ -11,7 +11,7 @@ struct DayView: View {
     
     @Environment(\.modelContext) var modelContext
     
-    let goToHabitRecordDetail: (DataHabitRecord) -> Void
+    let goToHabitRecordDetail: (HabitRecord) -> Void
     /// We want this to determine the itemHeight, alternatively we could just set the item height/width
     let graphHeight: CGFloat
     // We want this to keep the same itemHeight/width when presenting the squares in the list
@@ -29,7 +29,7 @@ struct DayView: View {
     
     
     init(
-        goToHabitRecordDetail: @escaping (DataHabitRecord) -> Void,
+        goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
         graphHeight: CGFloat,
         numOfItemsToReachTop: Int,
         habitRecords: [HabitRecord],
@@ -77,7 +77,7 @@ struct DayView: View {
                 }
                 .onTapGesture {
                     // FIXME: This is broken Cannot navigate to habit record detail without a DataHabitRecord right now
-//                    goToHabitRecordDetail(habitRecord)
+                    goToHabitRecordDetail(habitRecord)
                 }
             }
             .listRowSeparator(.hidden)
