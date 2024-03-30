@@ -66,7 +66,10 @@ struct EditHabitView: View {
             
             VStack(spacing: 20) {
                 
-                CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
+                CreateEditHabitContent(
+                    nameTextFieldValue: $nameTextFieldValue,
+                    selectedColor: $selectedColor
+                )
                 
                 CreateEditHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
@@ -85,7 +88,6 @@ struct EditHabitView: View {
             self.selectedColor = Color(hex: habit.color) ?? .gray
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        
         .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
         .sheetyBottomBarButton(title: "Save", isAbleToTap: isAbleToCreate, action: didTapSaveAndExit)
     }

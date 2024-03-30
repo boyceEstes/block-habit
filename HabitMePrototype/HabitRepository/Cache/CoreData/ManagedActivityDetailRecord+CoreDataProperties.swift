@@ -22,6 +22,20 @@ public class ManagedActivityDetailRecord: NSManagedObject {
     @NSManaged public var unit: String?
     @NSManaged public var activityDetail: ManagedActivityDetail?
     @NSManaged public var activityRecord: ManagedHabitRecord?
+    
+    
+    static func findHabitRecordRequest(with id: String) -> NSFetchRequest<ManagedHabitRecord> {
+        
+        let request = ManagedHabitRecord.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let predicate = NSPredicate(format: "%K == %@", "id", id)
+        request.predicate = predicate
+        
+        request.fetchLimit = 1
+        
+        return request
+    }
 }
 
 

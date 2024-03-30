@@ -32,6 +32,7 @@ struct HabitRecordDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     // We only want to be able to edit their time, always maintain the date.
+    let blockHabitStore: CoreDataBlockHabitStore
     @State private var activityRecord: HabitRecord
     @State private var isHabitRecordDirty = false // Has it been changed?
     
@@ -53,8 +54,9 @@ struct HabitRecordDetailView: View {
     }
     
     
-    init(activityRecord: HabitRecord) {
+    init(blockHabitStore: CoreDataBlockHabitStore, activityRecord: HabitRecord) {
         
+        self.blockHabitStore = blockHabitStore
         self._activityRecord = State(initialValue: activityRecord)
     }
     
@@ -132,7 +134,10 @@ struct HabitRecordDetailView: View {
                 let new = DateFormatter.shortDateShortTime.string(from: editableCompletionTime)
                 print("changed to \(new)")
                 // FIXME: Can no longer update the DateTime
-//                updateHabitRecord(activityRecord, withNewCompletionTime: editableCompletionTime)
+                updateHabitRecord(
+                    activityRecord,
+                    withNewCompletionTime: editableCompletionTime
+                )
             }
         }
         .toolbar {
@@ -216,9 +221,28 @@ struct HabitRecordDetailView: View {
 //    }
     
     
-    private func updateHabitRecord(_ habitRecord: DataHabitRecord, withNewCompletionTime newCompletionTime: Date) {
+    private func updateHabitRecord(
+        _ habitRecord: HabitRecord,
+        withNewCompletionTime newCompletionTime: Date
+    ) {
         
-        habitRecord.completionDate = newCompletionTime
+        Task {
+            do {
+                var habitRecord = habitRecord
+                
+                habitRecord.completionDate = newCompletionTime
+                
+                try await blockHabitStore.update(
+                    habitRecordID: habitRecord.id,
+                    with: habitRecord
+                )
+                
+            } catch {
+                
+                // FIXME: Handle error in view
+                fatalError("UPDATING DIDN'T WORK")
+            }
+        }
     }
 }
 
@@ -300,6 +324,6 @@ struct HabitMeDeleteButton: View {
     let habitRecord = HabitRecord.preview
     
     return NavigationStack {
-        HabitRecordDetailView(activityRecord: habitRecord)
+        HabitRecordDetailView(blockHabitStore: CoreDataBlockHabitStore.preview(), activityRecord: habitRecord)
     }
 }

@@ -16,7 +16,7 @@ extension ContentView {
         let activityDetailCount = activityRecord.habit.activityDetails.count
         
         NavigationStack {
-            HabitRecordDetailView(activityRecord: activityRecord)
+            HabitRecordDetailView(blockHabitStore: blockHabitStore, activityRecord: activityRecord)
         }
         .recordSheetPresentation(activityDetailCount: activityDetailCount)
     }

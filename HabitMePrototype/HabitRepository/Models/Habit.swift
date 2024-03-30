@@ -54,9 +54,8 @@ public struct HabitRecord: Hashable {
     
     let id: String
     let creationDate: Date
-    let completionDate: Date
+    var completionDate: Date
     
-    // This can be modified in the view
     var activityDetailRecords: [ActivityDetailRecord]
     let habit: Habit
 }
