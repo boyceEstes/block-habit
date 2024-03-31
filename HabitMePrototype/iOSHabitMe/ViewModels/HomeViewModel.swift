@@ -138,6 +138,7 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         Task {
             do {
                 try await blockHabitStore.destroy(habitRecord)
+                updateIfHabitIsCompleted(habitRecord.habit)
             } catch {
                 // FIXME: Handle Error in View - note this could be called from DayView so not sure how alerts will be affected
                 fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
