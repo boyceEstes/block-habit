@@ -12,7 +12,7 @@ import Foundation
 public struct IsCompletedHabit {
     
     public let habit: Habit
-    public let isCompleted: Bool
+    public var isCompleted: Bool
 }
 
 

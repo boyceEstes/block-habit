@@ -97,11 +97,39 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         Task {
             do {
                 try await createRecord(for: habit, in: blockHabitStore)
+                
+                updateIfHabitIsCompleted(habit)
             } catch {
                 // FIXME: Handle Error in View
                 fatalError("ERROR OH NO - BURN IT ALL DOWN")
             }
         }
+    }
+    
+    
+    private func updateIfHabitIsCompleted(_ habit: Habit) {
+        
+        // If there is no goal for the day, it will never be completed
+        guard let goalCompletionsPerDay = habit.goalCompletionsPerDay else {
+            return
+        }
+        
+        // TODO: We could make this more efficient by passing the index to the `createHabitRecord` call
+        // Find the habit being recorded
+        let isCompletedHabitIndex = habits.firstIndex { isCompletedHabit in
+            isCompletedHabit.habit == habit
+        }
+        
+        // We need an index to update
+        guard let isCompletedHabitIndex else { return }
+        
+        // TODO: Move this logic out of the view model - it has nothing to do with presenting
+        // if there is nothing here, then just say there's 0 records found
+        let habitRecordsForDayCount = datesWithHabitRecords[selectedDay]?.filter { $0.habit == habit }.count ?? 0
+        
+        let isCompleted = habitRecordsForDayCount >= goalCompletionsPerDay
+        
+        habits[isCompletedHabitIndex].isCompleted = isCompleted
     }
     
     
