@@ -13,6 +13,8 @@ import CoreData
 public protocol HabitRecordsByDateDataSource {
     
     var habitRecordsByDate: AnyPublisher<[Date: [HabitRecord]], Never> { get }
+    
+    func trigger()
 }
 
 
@@ -124,6 +126,14 @@ public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitReco
         }
         
         return _datesWithHabitRecords
+    }
+    
+    
+    /// This is purely for reloading when we have habits loaded - I only want this to happen when there is an update to a habit like color changes
+    public func trigger() {
+        
+        print("BOYCE: Trigger")
+        try? updateWithLatestValues()
     }
 }
 

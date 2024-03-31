@@ -9,7 +9,7 @@ import Foundation
 
 
 
-public struct IsCompletedHabit {
+public struct IsCompletedHabit: Hashable {
     
     public let habit: Habit
     public var isCompleted: Bool

@@ -76,7 +76,18 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
                 fatalError("THERES BEEN A HORRIBLE CRASH INVOLVING '\(error)' - prosecute to the highest degree of the law.")
             } receiveValue: { habits in
                 print("BOYCE: habit data source reloaded")
+                
+                let currentHabitsCount = self.habits.count
+                
                 self.habits = habits
+                // I want to update the habitRecords if there is a habit that is different than its previous value
+                // the easiest way to do this just to reload all of the habitRecords... But I don't really want to do that lol
+                // lets do it anyway
+                // I have to do some sort of validation that this is only going to happen one time if there is a change in the habits
+                if currentHabitsCount == habits.count {
+                    // We only want to trigger when there is an update, not a create or destroy
+                    self.habitRecordDataSource.trigger()
+                }
             }
     }
     
