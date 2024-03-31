@@ -28,11 +28,11 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     }
     
     var goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
-    var habits = [Habit]() {
+    var habits = [IsCompletedHabit]() {
         didSet {
             print("didSet habits - count: \(habits.count)")
             for habit in habits {
-                print("activityDetails - count: \(habit.activityDetails.count)")
+                print("activityDetails - count: \(habit.habit.activityDetails.count)")
             }
         }
     }

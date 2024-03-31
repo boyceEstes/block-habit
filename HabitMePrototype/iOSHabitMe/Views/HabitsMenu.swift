@@ -146,7 +146,7 @@ struct HabitsMenu: View {
     @State private var alertDetail: AlertDetail? = nil
     
     // TODO: load habits from db
-    let habits: [Habit]
+    let habits: [IsCompletedHabit]
     
     //    let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
@@ -216,27 +216,27 @@ struct HabitsMenu: View {
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
     }
     
-    func habitButton(habit: Habit) -> some View {
+    func habitButton(habit: IsCompletedHabit) -> some View {
         
         HabitMePrimaryButton(
-            title: "\(habit.name)",
-            color: Color(hex: habit.color),
+            title: "\(habit.habit.name)",
+            color: Color(hex: habit.isCompleted ? "#FFFFFF" : habit.habit.color),
             buttonWidth: 150,
-            action: { didTapHabitButton(habit) }
+            action: { didTapHabitButton(habit.habit) }
         )
         .contextMenu {
             
             Button("Habit Details") {
-                goToHabitDetail(habit)
+                goToHabitDetail(habit.habit)
             }
             
             Button("Edit Habit") {
-                goToEditHabit(habit)
+                goToEditHabit(habit.habit)
             }
             
             
             Button("Archive Habit", role: .destructive) {
-                archiveHabit(habit)
+                archiveHabit(habit.habit)
             }
             
             
@@ -244,7 +244,7 @@ struct HabitsMenu: View {
 //                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
                     // FIXME: Cannot get alerts to work - it will not get the new state for the next button press on delete
                     print("DELETE HABIT")
-                    destroyHabit(habit)
+                destroyHabit(habit.habit)
 //                }).alertData()
 //                showAlert = true
             }

@@ -12,7 +12,7 @@ import CoreData
 
 public protocol HabitDataSource {
     
-    var habits: AnyPublisher<[Habit], Never> { get }
+    var habits: AnyPublisher<[IsCompletedHabit], Never> { get }
 }
 
 
@@ -41,7 +41,7 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
     private let getHabitRecordsForDay: () async throws -> [ManagedHabitRecord]
     
     public var habitsSubject = CurrentValueSubject<[Habit], Never>([])
-    public var habits: AnyPublisher<[Habit], Never>
+    public var habits: AnyPublisher<[IsCompletedHabit], Never>
 //    public var routinesSubject = CurrentValueSubject<[Routine], Error>([])
 //    public var routines: AnyPublisher<[Routine], Error>
 
@@ -56,14 +56,34 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
         
         self.habits = habitsSubject
             .asyncMap({ habits in
-                let habitRecordsForDay = try? await getHabitRecordsForDay()
-                print("habitRecordsForDay from Habit datasource - count: \(habitRecordsForDay?.count ?? -1)")
-//                // Do logic to determine if habits are comopleted or not
-//                for habit in habits {
-//                    
-//                }
                 
-                return habits
+                guard let habitRecordsForDay = try? await getHabitRecordsForDay().toModel() else {
+                    // FIXME: Handle this, don't be dumb
+                    fatalError("If we can get the records for the day, we can't do any math to see the habits we should deliver")
+                }
+                
+                print("habitRecordsForDay from Habit datasource - count: \(habitRecordsForDay.count)")
+                
+                // Do logic to determine if habits are comopleted or not
+                
+                var isCompletedHabits = [IsCompletedHabit]()
+                for habit in habits {
+                    // We continue if it is nil because we will never hit the completion goal
+                    guard let completionGoalForHabit = habit.goalCompletionsPerDay else {
+                        isCompletedHabits.append(IsCompletedHabit(habit: habit, isCompleted: false))
+                        continue
+                    }
+                    
+                    let habitRecordsForDayForHabitCount = habitRecordsForDay.filter { $0.habit == habit }.count
+                    
+                    let isCompletedHabit = IsCompletedHabit(
+                        habit: habit,
+                        isCompleted: habitRecordsForDayForHabitCount >= completionGoalForHabit
+                    )
+                    isCompletedHabits.append(isCompletedHabit)
+                }
+                
+                return isCompletedHabits
             })
             .eraseToAnyPublisher()
         
