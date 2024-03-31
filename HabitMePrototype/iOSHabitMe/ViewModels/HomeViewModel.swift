@@ -85,7 +85,7 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
             .sink { error in
                 fatalError("THERES BEEN A HORRIBLE CRASH INVOLVING '\(error)' - prosecute to the highest degree of the law.")
             } receiveValue: { habitRecordsByDate in
-                print("BOYCE: habit data source reloaded")
+                print("BOYCE: habit record data source reloaded")
                 self.datesWithHabitRecords = habitRecordsByDate
             }
             .store(in: &cancellables)
@@ -134,7 +134,6 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     
     func destroyHabitRecord(_ habitRecord: HabitRecord) {
-        
         
         Task {
             do {

@@ -121,7 +121,8 @@ struct HomeView: View {
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
                         datesWithHabitRecords: viewModel.datesWithHabitRecords,
-                        selectedDay: $viewModel.selectedDay
+                        selectedDay: $viewModel.selectedDay,
+                        destroyHabitRecord: viewModel.destroyHabitRecord
                     )
                 case .daily:
                     DayView(

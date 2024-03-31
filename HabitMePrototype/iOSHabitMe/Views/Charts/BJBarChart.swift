@@ -103,7 +103,7 @@ struct BarView: View {
     
     let datesWithHabitRecords: [Date: [HabitRecord]]
     @Binding var selectedDay: Date
-
+    let destroyHabitRecord: (HabitRecord) -> Void
     
     var body: some View {
         
@@ -179,9 +179,7 @@ struct BarView: View {
             if habitCount > 0 {
                 Button("Delete Last Habit Record") {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
-                        // FIXME: Delete Last Habit Record
-                        print("Delete last habit record needs to be done")
-//                        deleteLastHabitRecord(in: activityRecords)
+                        deleteLastHabitRecord(in: activityRecords)
                     }
                 }
             }
@@ -189,13 +187,13 @@ struct BarView: View {
     }
     
     
-    private func deleteLastHabitRecord(in habitRecords: [DataHabitRecord]) {
+    private func deleteLastHabitRecord(in habitRecords: [HabitRecord]) {
         
         // They are in reverse order so they will need to have the first (not the last) to fetch the
         // most recent habit record
         guard let lastHabitRecord = habitRecords.first else { return }
         
-        modelContext.delete(lastHabitRecord)
+        destroyHabitRecord(lastHabitRecord)
     }
     
     
