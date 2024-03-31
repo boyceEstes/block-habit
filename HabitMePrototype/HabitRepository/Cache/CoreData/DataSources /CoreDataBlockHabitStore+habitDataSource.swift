@@ -22,14 +22,16 @@ extension CoreDataBlockHabitStore {
         
         return ManagedHabitFRCDataSourceAdapter(
             frc: frc,
-            getHabitRecordsForDay: { [weak self] in
+            selectedDay: selectedDay,
+            getHabitRecordsForDay: { [weak self] dataSourceSelectedDay in
                 
                 guard let self else {
                     print("FAILED to get coredatablockhabitstore - out of memory")
                     return []
                 }
                 
-                return try await self.readManagedHabitRecords(for: selectedDay)
+                print("BOYCE: dataSourceSelectedDay = \(DateFormatter.shortDateShortTime.string(from: dataSourceSelectedDay))")
+                return try await self.readManagedHabitRecords(for: dataSourceSelectedDay)
             }
         )
     }

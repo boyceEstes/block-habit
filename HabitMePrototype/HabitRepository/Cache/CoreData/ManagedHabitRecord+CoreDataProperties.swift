@@ -67,9 +67,9 @@ public class ManagedHabitRecord: NSManagedObject {
         let startDate = calendar.startOfDay(for: date)
         let endDate = calendar.date(byAdding: .day, value: 1, to: startDate)!
         
-        print("date: '\(DateFormatter.shortDateShortTime.string(from: date))'")
-        print("startDate: '\(DateFormatter.shortDateShortTime.string(from: startDate))'")
-        print("endDate: '\(DateFormatter.shortDateShortTime.string(from: endDate))'")
+        print("BOYCE: date: '\(DateFormatter.shortDateShortTime.string(from: date))'")
+        print("BOYCE: startDate: '\(DateFormatter.shortDateShortTime.string(from: startDate))'")
+        print("BOYCE: endDate: '\(DateFormatter.shortDateShortTime.string(from: endDate))'")
         
         let predicate = NSPredicate(format: "completionDate >= %@ AND completionDate < %@", startDate as NSDate, endDate as NSDate)
         request.predicate = predicate

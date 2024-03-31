@@ -13,6 +13,8 @@ import CoreData
 public protocol HabitDataSource {
     
     var habits: AnyPublisher<[IsCompletedHabit], Never> { get }
+    
+    func setSelectedDay(to selectedDay: Date)
 }
 
 
@@ -38,26 +40,33 @@ fileprivate extension Publisher {
 public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
     
     private let frc: NSFetchedResultsController<ManagedHabit>
-    private let getHabitRecordsForDay: () async throws -> [ManagedHabitRecord]
-    
+    private let getHabitRecordsForDay: (Date) async throws -> [ManagedHabitRecord]
+
     public var habitsSubject = CurrentValueSubject<[Habit], Never>([])
+    public var selectedDaySubject: CurrentValueSubject<Date, Never>
     public var habits: AnyPublisher<[IsCompletedHabit], Never>
+    
+    
 //    public var routinesSubject = CurrentValueSubject<[Routine], Error>([])
 //    public var routines: AnyPublisher<[Routine], Error>
 
     
     public init(
         frc: NSFetchedResultsController<ManagedHabit>,
-        getHabitRecordsForDay: @escaping () async throws -> [ManagedHabitRecord]
+        selectedDay: Date,
+        getHabitRecordsForDay: @escaping (Date) async throws -> [ManagedHabitRecord]
     ) {
         
         self.frc = frc
+        self.selectedDaySubject = CurrentValueSubject<Date, Never>(selectedDay)
         self.getHabitRecordsForDay = getHabitRecordsForDay
         
-        self.habits = habitsSubject
-            .asyncMap({ habits in
+        self.habits = habitsSubject.combineLatest(selectedDaySubject)
+            .asyncMap({ habits, selectedDay in
                 
-                guard let habitRecordsForDay = try? await getHabitRecordsForDay().toModel() else {
+                print("BOYCE: when going to calculate the ish selected day is \(DateFormatter.shortDateShortTime.string(from: selectedDay))")
+                
+                guard let habitRecordsForDay = try? await getHabitRecordsForDay(selectedDay).toModel() else {
                     // FIXME: Handle this, don't be dumb
                     fatalError("If we can get the records for the day, we can't do any math to see the habits we should deliver")
                 }
@@ -118,7 +127,7 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
         
         let managedHabits = frc.fetchedObjects ?? []
         
-        print("Update with latest value count: '\(managedHabits.count)'")
+        print("BOYCE: Update with latest value count: '\(managedHabits.count)'")
         
         let habits = try managedHabits.toModel()
         
@@ -126,6 +135,14 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
 //            print("I found this many records for this day: \(managedHabitRecordsForDay.count)")
         
         habitsSubject.send(habits)
+    }
+    
+    
+    public func setSelectedDay(to selectedDay: Date) {
+        
+        print("BOYCE: setting habit datasource selected day to \(DateFormatter.shortDateShortTime.string(from: selectedDay))")
+        self.selectedDaySubject.send(selectedDay)
+        try? updateWithLatestValues()
     }
 }
 

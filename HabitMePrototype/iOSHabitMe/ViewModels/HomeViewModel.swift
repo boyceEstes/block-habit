@@ -16,13 +16,14 @@ import Combine
 final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     let blockHabitStore: CoreDataBlockHabitStore
-    var habitDataSource: HabitDataSource? // Can get updated when selectedDate changes
+    var habitDataSource: HabitDataSource // Can get updated when selectedDate changes
     var habitRecordDataSource: HabitRecordsByDateDataSource
     
     var selectedDay: Date {
         didSet(oldValue) {
             if oldValue != selectedDay {
-                bindHabitDataSource()
+                habitDataSource.setSelectedDay(to: selectedDay)
+//                bindHabitDataSource()
             }
         }
     }
@@ -55,7 +56,9 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
         let today = Date().noon!
         
         self.blockHabitStore = blockHabitStore
+        self.habitDataSource = blockHabitStore.habitDataSource(selectedDay: today)
         self.habitRecordDataSource = blockHabitStore.habitRecordsByDateDataSource()
+        
         
         self.selectedDay = today
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
@@ -67,7 +70,7 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     private func bindHabitDataSource() {
         
-        habitDataSourceCancellable = blockHabitStore.habitDataSource(selectedDay: selectedDay)
+        habitDataSourceCancellable = habitDataSource
             .habits
             .sink { error in
                 fatalError("THERES BEEN A HORRIBLE CRASH INVOLVING '\(error)' - prosecute to the highest degree of the law.")
