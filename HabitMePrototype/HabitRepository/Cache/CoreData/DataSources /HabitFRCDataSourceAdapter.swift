@@ -142,7 +142,6 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
         
         print("BOYCE: setting habit datasource selected day to \(DateFormatter.shortDateShortTime.string(from: selectedDay))")
         self.selectedDaySubject.send(selectedDay)
-        try? updateWithLatestValues()
     }
 }
 
