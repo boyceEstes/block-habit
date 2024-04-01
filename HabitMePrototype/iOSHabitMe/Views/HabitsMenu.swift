@@ -220,7 +220,8 @@ struct HabitsMenu: View {
         
         HabitMePrimaryButton(
             title: "\(habit.habit.name)",
-            color: Color(hex: habit.habit.color)?.opacity(habit.isCompleted ? 0.5 : 1),
+            looksDisabled: habit.isCompleted,
+            color: Color(hex: habit.habit.color),
             buttonWidth: 150,
             action: { didTapHabitButton(habit.habit) }
         )

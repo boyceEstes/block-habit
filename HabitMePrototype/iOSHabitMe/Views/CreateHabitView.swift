@@ -407,17 +407,25 @@ struct HabitMePrimaryButton: View {
     
     let title: String
     let isAbleToTap: Bool
+    let looksDisabled: Bool
     let color: Color
     let buttonWidth: CGFloat?
     let action: () -> Void
     
-    init(title: String, isAbleToTap: Bool = true, color: Color? = nil, buttonWidth: CGFloat? = nil, action: @escaping () -> Void) {
+    init(title: String, isAbleToTap: Bool = true, looksDisabled: Bool = false, color: Color? = nil, buttonWidth: CGFloat? = nil, action: @escaping () -> Void) {
         
         self.title = title
         self.action = action
         self.color = color ?? .blue
         self.isAbleToTap = isAbleToTap
         self.buttonWidth = buttonWidth
+        
+        // Make sure this is true if actually disabled
+        if !isAbleToTap {
+            self.looksDisabled = true
+        } else {
+            self.looksDisabled = looksDisabled
+        }
     }
     
     var body: some View {
@@ -429,8 +437,9 @@ struct HabitMePrimaryButton: View {
                 .font(.headline)
                 .frame(maxWidth: buttonWidth ?? .infinity)
                 .frame(height: 50)
-                .background(isAbleToTap ? color : color.opacity(0.5))
-                .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
+                .background(!looksDisabled ? color : color.opacity(0.5))
+                .foregroundStyle(!looksDisabled ? Color.white : Color.white.opacity(0.5))
+                .shadow(color: !looksDisabled ? .clear : .black.opacity(0.6), radius: 20)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10))
         }
