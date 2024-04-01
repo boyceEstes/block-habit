@@ -30,13 +30,14 @@ import SwiftUI
 struct CreateEditActivityCompletionGoalContent: View {
     
     @State private var isCompletionGoalWanted: Bool
-    // This will only be used to keep track of values, but `completionGoal` is
-    // the important one.
-    @State private var transientCompletionGoal: Int = 1
+    /// This will only be used to keep track of values, but `completionGoal` is
+    /// the important one.
+    @State private var transientCompletionGoal: Int
     @Binding var completionGoal: Int?
     
     init(completionGoal: Binding<Int?>) {
         
+        self._transientCompletionGoal = State(initialValue: completionGoal.wrappedValue ?? -1)
         self._completionGoal = completionGoal
         self._isCompletionGoalWanted = State(initialValue: completionGoal.wrappedValue != nil)
     }
