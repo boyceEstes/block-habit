@@ -74,25 +74,34 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
                 print("habitRecordsForDay from Habit datasource - count: \(habitRecordsForDay.count)")
                 
                 // Do logic to determine if habits are comopleted or not
-                
+                // We are making two separate arrays and then putting them together at the end to maintain the sorting order as the same for completed and incompleted habits
                 var isCompletedHabits = [IsCompletedHabit]()
+                var isIncompletedHabits = [IsCompletedHabit]()
+                
                 for habit in habits {
                     // We continue if it is nil because we will never hit the completion goal
                     guard let completionGoalForHabit = habit.goalCompletionsPerDay else {
-                        isCompletedHabits.append(IsCompletedHabit(habit: habit, isCompleted: false))
+                        isIncompletedHabits.append(IsCompletedHabit(habit: habit, isCompleted: false))
                         continue
                     }
                     
                     let habitRecordsForDayForHabitCount = habitRecordsForDay.filter { $0.habit == habit }.count
                     
+                    let isCompleted = habitRecordsForDayForHabitCount >= completionGoalForHabit 
+                    
                     let isCompletedHabit = IsCompletedHabit(
                         habit: habit,
-                        isCompleted: habitRecordsForDayForHabitCount >= completionGoalForHabit
+                        isCompleted: isCompleted
                     )
-                    isCompletedHabits.append(isCompletedHabit)
+                    
+                    if isCompleted {
+                        isCompletedHabits.append(isCompletedHabit)
+                    } else {
+                        isIncompletedHabits.append(isCompletedHabit)
+                    }
                 }
                 
-                return isCompletedHabits
+                return isIncompletedHabits + isCompletedHabits
             })
             .eraseToAnyPublisher()
         
