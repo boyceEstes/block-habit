@@ -47,6 +47,7 @@ extension ContentView {
         
         HabitDetailView(
             activity: activity,
+            blockHabitStore: blockHabitStore,
             goToEditHabit: { goToEditHabitFromHabitDetail(habit: activity) },
             goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHabitDetail
         )

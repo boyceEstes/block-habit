@@ -36,6 +36,7 @@
 		B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */; };
 		B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */; };
 		B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE702B81305700F2FA74 /* View+RecordSheetPresentation.swift */; };
+		B347DE7D2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE7C2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift */; };
 		B37074222B9E0368006FCC4E /* BlockHabit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B37074202B9E0368006FCC4E /* BlockHabit.xcdatamodeld */; };
 		B370742D2B9E03E9006FCC4E /* ManagedHabit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */; };
 		B370742F2B9E03E9006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */; };
@@ -52,7 +53,6 @@
 		B37AC77F2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */; };
 		B37AC7812BAF6C9D0052552B /* HaloRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */; };
 		B37AC7852BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */; };
-		B347DE7D2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE7C2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -86,6 +86,7 @@
 		B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54F2B6F16F100153158 /* View+Font.swift */; };
 		B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5622B6F25EB00153158 /* View+toolbar.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
+		B3E34F6D2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E34F6C2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +120,7 @@
 		B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeKey.swift; sourceTree = "<group>"; };
 		B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HeightChangePreference.swift"; sourceTree = "<group>"; };
 		B347DE702B81305700F2FA74 /* View+RecordSheetPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+RecordSheetPresentation.swift"; sourceTree = "<group>"; };
+		B347DE7C2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditActivityCompletionGoalContent.swift; sourceTree = "<group>"; };
 		B37074212B9E0368006FCC4E /* BlockJournalCoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlockJournalCoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedHabit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedHabitRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -135,7 +137,6 @@
 		B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+HabitRecord.swift"; sourceTree = "<group>"; };
 		B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaloRepositoryError.swift; sourceTree = "<group>"; };
 		B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+Habit.swift"; sourceTree = "<group>"; };
-		B347DE7C2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditActivityCompletionGoalContent.swift; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -169,6 +170,7 @@
 		B3C9E54F2B6F16F100153158 /* View+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Font.swift"; sourceTree = "<group>"; };
 		B3C9E5622B6F25EB00153158 /* View+toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+toolbar.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
+		B3E34F6C2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRecordsForDateByHabitFRCDataSourceAdapter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +296,7 @@
 				B37AC7702BA0859D0052552B /* HabitRecordsForDateFRCDataSourceAdapter.swift */,
 				B37AC7722BA0860F0052552B /* HabitFRCDataSourceAdapter.swift */,
 				B37AC7772BA0880F0052552B /* CoreDataBlockHabitStore+habitDataSource.swift */,
+				B3E34F6C2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift */,
 			);
 			path = "DataSources ";
 			sourceTree = "<group>";
@@ -597,6 +600,7 @@
 				B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */,
 				B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */,
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
+				B3E34F6D2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift in Sources */,
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,

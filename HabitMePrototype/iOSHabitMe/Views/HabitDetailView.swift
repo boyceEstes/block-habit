@@ -26,9 +26,51 @@ enum HabitDetailAlert {
     }
 }
 
+import Combine
+
+@Observable
+class HabitDetailViewModel {
+    
+    let habit: Habit
+    let blockHabitStore: CoreDataBlockHabitStore
+    let habitRecordsByDateForHabitDataSource: HabitRecordsByDateDataSource
+    
+    var habitRecordsByDateForHabit = [Date: [HabitRecord]]()
+    var cancellables = Set<AnyCancellable>()
+    
+    init(
+        habit: Habit,
+        blockHabitStore: CoreDataBlockHabitStore
+    ) {
+        self.habit = habit
+        self.blockHabitStore = blockHabitStore
+        
+        do {
+            self.habitRecordsByDateForHabitDataSource = try blockHabitStore.habitRecordsByDateForHabitDataSource(habit: habit)
+        } catch {
+            // FIXME: Be polite with the error
+            fatalError("Could not load the habit records for the datasource '\(error)'")
+        }
+        
+        bindHabitRecordsByDateForHabitDataSource()
+    }
+    
+    
+    private func bindHabitRecordsByDateForHabitDataSource() {
+        
+        habitRecordsByDateForHabitDataSource
+            .habitRecordsByDate.sink { error in
+                fatalError("BEEN A CRASH GETTING THE HABITRECORDS FOR HABIT TO DISPLAY PAGE DETAILS - '\(error)'")
+            } receiveValue: { habitRecordsByDate in
+                self.habitRecordsByDateForHabit = habitRecordsByDate
+            }.store(in: &cancellables)
+    }
+}
+
 
 struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
 
+    @State private var viewModel: HabitDetailViewModel
     let activity: Habit
     let goToEditHabit: () -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
@@ -246,11 +288,20 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     init(
         activity: Habit,
+        blockHabitStore: CoreDataBlockHabitStore,
         goToEditHabit: @escaping () -> Void,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         
         self.activity = activity
+        
+        self._viewModel = State(
+            wrappedValue: HabitDetailViewModel(
+                habit: activity,
+                blockHabitStore: blockHabitStore
+            )
+        )
+        
         self.goToEditHabit = goToEditHabit
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
     }
@@ -266,14 +317,17 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             ScrollView {
                 LazyVStack(spacing: .vSectionSpacing) {
                     // FIXME: BarView is broken until we can figure out a good way to get the statistics
-//                    BarView(
-//                        graphWidth: screenWidth,
-//                        graphHeight: graphHeight,
-//                        numOfItemsToReachTop: Double(numOfItemsToReachTop),
-//                        datesWithHabitRecords:
-//                            datesWithHabitRecords,
-//                        selectedDay: $selectedDay
-//                    )
+                    BarView(
+                        graphWidth: screenWidth,
+                        graphHeight: graphHeight,
+                        numOfItemsToReachTop: Double(numOfItemsToReachTop),
+                        datesWithHabitRecords:
+                            viewModel.habitRecordsByDateForHabit,
+                        selectedDay: $selectedDay,                        
+                        destroyHabitRecord: { _ in
+                            print("destroy last record logic")
+                        }
+                    )
                     
                     HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {
                         // FIXME: Update to have the CoreDataHabitBlockStore in this class before we can save
@@ -307,7 +361,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         if !filteredDatahabitRecordsForHabit.isEmpty {
                             // FIXME: PUT THESE BACK!
                             Text("To be fixed: Habit records - \(filteredDatahabitRecordsForHabit.count)")
-//                            allActivtyRecords
+//                            allHabitRecordsByDateView
                         } else {
                             Text("No records found for this activity yet")
                         }
@@ -373,14 +427,14 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     var allActivtyRecords: some View {
         
-        ForEach(filteredDatahabitRecordsForHabit) { activityRecord in
+        ForEach(filteredDatahabitRecordsForHabit) { habitRecord in
             
             Text("Nothing")
 //            ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
 //                .sectionBackground(padding: .detailPadding)
         }
     }
-    
+
     
     private func removeHabit() {
         
@@ -578,6 +632,7 @@ struct StatBox: View {
     return NavigationStack {
         HabitDetailView(
             activity: habit,
+            blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToEditHabit: { },
             goToCreateActivityRecordWithDetails: { _, _ in }
         )

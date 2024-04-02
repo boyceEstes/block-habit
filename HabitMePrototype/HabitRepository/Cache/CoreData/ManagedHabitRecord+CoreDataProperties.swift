@@ -40,6 +40,22 @@ public class ManagedHabitRecord: NSManagedObject {
     }
     
     
+    /// Used in DataSource to fetch habit records for a given habit
+    static func findHabitRecordsRequest(for managedHabit: ManagedHabit) -> NSFetchRequest<ManagedHabitRecord> {
+        
+        let request = ManagedHabitRecord.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabitRecord.completionDate, ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+        
+        let predicate = NSPredicate(format: "habit == %@", managedHabit)
+        request.predicate = predicate
+        
+        return request
+    }
+    
+    
     public class func allManagedHabitRecordsRequest() -> NSFetchRequest<ManagedHabitRecord> {
         
         let request = ManagedHabitRecord.fetchRequest()
