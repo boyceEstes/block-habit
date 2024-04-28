@@ -1,0 +1,26 @@
+{
+  "configurations" : [
+    {
+      "id" : "F4588A83-641F-4CB6-8C33-7E41ECCEBB32",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:HabitMePrototype.xcodeproj",
+        "identifier" : "B3621E552BDDE0F900BE88C2",
+        "name" : "HabitRepositoryFWTests"
+      }
+    }
+  ],
+  "version" : 1
+}

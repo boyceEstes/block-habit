@@ -28,6 +28,30 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B3621E552BDDE0F900BE88C2"
+               BuildableName = "HabitRepositoryFWTests.xctest"
+               BlueprintName = "HabitRepositoryFWTests"
+               ReferencedContainer = "container:HabitMePrototype.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B3621E6F2BDDE3E500BE88C2"
+               BuildableName = "HabitMePrototypeTests.xctest"
+               BlueprintName = "HabitMePrototypeTests"
+               ReferencedContainer = "container:HabitMePrototype.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
