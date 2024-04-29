@@ -410,12 +410,6 @@
 		B37074232B9E03C9006FCC4E /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				B37AC76F2BA085640052552B /* DataSources  */,
-				B37074202B9E0368006FCC4E /* BlockHabit.xcdatamodeld */,
-				B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */,
-				B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */,
-				B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */,
-				B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */,
 				B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */,
 				B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */,
 				B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */,
@@ -457,6 +451,7 @@
 		B3B2F2F62BDFC9C800240EB0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B3B2F30B2BE0036800240EB0 /* CoreData */,
 				B3B2F2F72BDFC9D800240EB0 /* Habit.swift */,
 				B3B2F2FE2BDFCA4E00240EB0 /* HabitRecord.swift */,
 				B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */,
@@ -467,6 +462,19 @@
 				B3B2F3002BDFCA9700240EB0 /* ActivityDetailRecord.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B3B2F30B2BE0036800240EB0 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				B37AC76F2BA085640052552B /* DataSources  */,
+				B37074202B9E0368006FCC4E /* BlockHabit.xcdatamodeld */,
+				B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */,
+				B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */,
+				B37074252B9E03E8006FCC4E /* ManagedHabit+CoreDataProperties.swift */,
+				B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		B3B403852B71237900D1967E /* Policies */ = {
