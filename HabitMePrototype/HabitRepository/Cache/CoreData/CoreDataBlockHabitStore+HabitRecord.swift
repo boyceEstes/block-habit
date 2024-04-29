@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import HabitRepositoryFW
 
 
 extension CoreDataBlockHabitStore {

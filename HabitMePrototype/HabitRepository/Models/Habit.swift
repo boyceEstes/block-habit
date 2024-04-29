@@ -6,59 +6,7 @@
 //
 
 import Foundation
-
-
-
-public struct IsCompletedHabit: Hashable {
-    
-    public let habit: Habit
-    public var isCompleted: Bool
-}
-
-
-public struct Habit: Hashable {
-    
-    public let id: String
-    public let name: String
-    
-    public var isArchived: Bool
-    public let goalCompletionsPerDay: Int?
-    
-    // TODO: Make a computed variable color accessor for the string so this can be private
-    public let color: String
-    // private let color: String
-    // public var colorfulColor: Color { Color(decipherString: color) }
-    
-    // TODO: Fill in the data for habitRecords and activityDetails that should be known from this struct
-    public let activityDetails: [ActivityDetail]
-    
-    init(
-        id: String,
-        name: String,
-        isArchived: Bool,
-        goalCompletionsPerDay: Int?,
-        color: String,
-        activityDetails: [ActivityDetail]
-    ) {
-        self.id = id
-        self.name = name
-        self.isArchived = isArchived
-        self.goalCompletionsPerDay = goalCompletionsPerDay
-        self.color = color
-        self.activityDetails = activityDetails
-    }
-}
-
-
-public struct HabitRecord: Hashable {
-    
-    let id: String
-    let creationDate: Date
-    var completionDate: Date
-    
-    var activityDetailRecords: [ActivityDetailRecord]
-    let habit: Habit
-}
+import HabitRepositoryFW
 
 
 extension HabitRecord {
@@ -75,17 +23,6 @@ extension HabitRecord {
     }
 }
 
-
-struct ActivityDetailRecord: Identifiable, Hashable {
-
-    
-    let id = UUID().uuidString
-    var value: String
-    let unit: String?
-    
-    let activityDetail: ActivityDetail
-    // FIXME: Include `HabitRecord` when it becomes available
-}
 
 
 extension Array where Element == ActivityDetailRecord {
@@ -116,36 +53,6 @@ extension Array where Element == ActivityDetailRecord {
 }
 
 
-public struct ActivityDetail: ActivityDetailSortable {
-    
-    public let id: String
-    public let name: String
-    public let availableUnits: String?
-    public let isArchived: Bool
-    public let creationDate: Date
-    let calculationType: ActivityDetailCalculationType
-    let valueType: ActivityDetailType
-    
-    init(
-        id: String,
-        name: String,
-        availableUnits: String?, 
-        isArchived: Bool,
-        creationDate: Date,
-        calculationType: ActivityDetailCalculationType,
-        valueType: ActivityDetailType
-    ) {
-        self.id = id
-        self.name = name
-        self.availableUnits = availableUnits
-        self.isArchived = isArchived
-        self.creationDate = creationDate
-        self.calculationType = calculationType
-        self.valueType = valueType
-    }
-}
-
-
 extension ActivityDetail {
     
     var example: String {
@@ -166,7 +73,7 @@ extension ActivityDetail {
 }
 
 
-extension ActivityDetail: Identifiable, Hashable {
+extension ActivityDetail {
     
     static let time = ActivityDetail(
         id: UUID().uuidString,
@@ -176,7 +83,6 @@ extension ActivityDetail: Identifiable, Hashable {
         creationDate: Date(),
         calculationType: .sum,
         valueType: .number
-        
     )
     
     

@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import HabitRepositoryFW
 
 extension CoreDataBlockHabitStore {
     

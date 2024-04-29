@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HabitRepositoryFW
 
 struct ActivityDetailSummaryRow: View {
     

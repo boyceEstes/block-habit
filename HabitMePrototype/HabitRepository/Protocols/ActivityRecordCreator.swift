@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import HabitRepositoryFW
 
 
 // MARK: Base layer of creating an activity record - this is used to give a single flow of logic for creating activity records within the app

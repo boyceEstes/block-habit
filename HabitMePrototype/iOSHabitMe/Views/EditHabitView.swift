@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum EditHabitAlert {
@@ -153,19 +154,6 @@ struct EditHabitView: View {
             dismiss()
         }
     }
-}
-
-
-public extension Habit {
-    
-    static let preview = Habit(
-        id: UUID().uuidString,
-        name: "Chugging Dew",
-        isArchived: false,
-        goalCompletionsPerDay: 1,
-        color: Color.indigo.toHexString() ?? "#FFFFFF",
-        activityDetails: []
-    )
 }
 
 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum HabitDetailAlert {
@@ -417,7 +418,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                     data: chartInfo,
                     lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue),
                     // Average should be more focused because there will probably be less variability
-                    isFocusedDomain: activityDetail.calculationType == .average
+                    isFocusedDomain: activityDetail.calculationType == ActivityDetailCalculationType.average
                 )
             }
             .sectionBackground()

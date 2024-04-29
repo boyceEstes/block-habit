@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-
+import HabitRepositoryFW
 
 // FIXME: For some reason when we go to another day, the habitDataSource loads data twice - investigate if there is room for optimization
 
@@ -15,6 +15,7 @@ import Combine
 @Observable
 final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
+    let mortery = Mortery()
     let blockHabitStore: CoreDataBlockHabitStore
     var habitDataSource: HabitDataSource // Can get updated when selectedDate changes
     var habitRecordDataSource: HabitRecordsByDateDataSource

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import HabitRepositoryFW
 
 
 /// Intended for use when displaying activity records that will have some sort of Title and Date in the title
@@ -280,68 +280,7 @@ struct UnwrappedValueText: View {
 
 #Preview {
     
-    let activityDetailRecordTimeRecord = ActivityDetailRecord2(
-        value: "1000",
-        detail: ActivityDetail.time
-    )
-    
-    
-    let activityDetailRecordAmountRecord = ActivityDetailRecord2(
-        value: "28",
-        detail: ActivityDetail.amount
-    )
-    
-    
-    let activityDetailLengthRecord = ActivityDetailRecord2(
-        value: "203",
-        detail: ActivityDetail.length
-    )
-    
-    
-    let activityDetailTouchdownsRecord = ActivityDetailRecord2(
-        value: "",
-        detail: ActivityDetail.touchdowns
-    )
-    
-    let activityDetailRecordNoteRecord = ActivityDetailRecord2(
-        value: "It was tough. I understood the meaning behind Code Red today. It is the code of blood. The code of pushing through the pain. It is the code of war.",
-        detail: ActivityDetail.note
-    )
-    
-    
-    let activityDetailMoodRecord = ActivityDetailRecord2(
-        value: "",
-        detail: ActivityDetail.mood
-    )
-    
-    
     let creationDate = DateComponents(calendar: .current, year: 2024, month: 2, day: 10, hour: 16, minute: 30, second: 01).date!
-    let completionDateMadeFromAnotherDay = DateComponents(calendar: .current, year: 2024, month: 2, day: 9, hour: 23, minute: 59, second: 59).date!
-    let completionDateMadeFromSameDay = creationDate
-    
-    
-    // FIXME: Clean this up - Ideally I should be able to have this as a preview static computed  variable with some corresponding habit previews
-    let activityRecordMunchingTacos = ActivityRecord(
-        title: "Munching Tacos",
-        creationDate: creationDate,
-        completionDate: completionDateMadeFromSameDay,
-        detailRecords: []
-    )
-    // I want an activity record for this date and a creationDate that is different than the completionDate
-    
-    let activityRecordChuggingDew = ActivityRecord(
-        title: "Chugging Dew",
-        creationDate: creationDate,
-        completionDate: completionDateMadeFromAnotherDay,
-        detailRecords: [
-            activityDetailRecordTimeRecord,
-            activityDetailRecordAmountRecord,
-            activityDetailLengthRecord,
-            activityDetailRecordNoteRecord,
-            activityDetailTouchdownsRecord,
-            activityDetailMoodRecord
-        ]
-    )
     
     return VStack {
         ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: HabitRecord.preview)

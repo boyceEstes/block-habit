@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum AddDetailsAlert {
