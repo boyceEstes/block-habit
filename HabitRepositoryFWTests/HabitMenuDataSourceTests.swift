@@ -18,12 +18,15 @@ protocol HabitMenuDataSource {
 }
 
 
+// Is this just trying to test AnyPublisher? - it is we aren't actually testing anything attached to it. This might be pointless
+
 class HabitMenuDataSourceSpy: HabitMenuDataSource {
     
     var habitsForDayPublisher: AnyPublisher<[IsCompletedHabit], Never>
-    private var habitsForDay = CurrentValueSubject<[IsCompletedHabit], Never>([])
+    private var habitsForDay: CurrentValueSubject<[IsCompletedHabit], Never>
     
-    init() {
+    init(habits: [IsCompletedHabit] = []) {
+        self.habitsForDay = CurrentValueSubject(habits)
         self.habitsForDayPublisher = habitsForDay.eraseToAnyPublisher()
     }
 }
@@ -41,6 +44,36 @@ class HabitMenuDataSourceTests: XCTestCase {
         
         var initialHabitsForDay = [IsCompletedHabit]()
         
+        // when
+        sut.habitsForDayPublisher
+            .sink { isCompletedHabits in
+            
+                initialHabitsForDay = isCompletedHabits
+                exp.fulfill()
+            }.store(in: &cancellables)
+        
+        // then
+        waitForExpectations(timeout: 1)
+        XCTAssertEqual(initialHabitsForDay, [])
+    }
+    
+    
+    func test_init_oneHabitAvailable_deliversOneIsCompletedHabit() {
+
+        let anyHabit = Habit(id: UUID().uuidString, name: "Mood", isArchived: false, goalCompletionsPerDay: 0, color: "#ffffff", activityDetails: [])
+        let anyIsCompletedHabit = IsCompletedHabit(habit: anyHabit, isCompleted: false)
+        
+        let isCompletedHabits = [anyIsCompletedHabit]
+        
+        let sut = HabitMenuDataSourceSpy(habits: isCompletedHabits)
+        
+        
+        let exp = expectation(description: "Wait for initial habits")
+        var cancellables = Set<AnyCancellable>()
+        
+        
+        var initialHabitsForDay = [IsCompletedHabit]()
+        
         sut.habitsForDayPublisher
             .sink { isCompletedHabits in
             
@@ -50,8 +83,9 @@ class HabitMenuDataSourceTests: XCTestCase {
         
         // when/then
         waitForExpectations(timeout: 1)
-        XCTAssertEqual(initialHabitsForDay, [])
+        XCTAssertEqual(initialHabitsForDay, isCompletedHabits)
     }
+    
     
     // have a habit datasource
     // create habit updates habits list
