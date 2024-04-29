@@ -9,8 +9,8 @@ import XCTest
 import HabitRepositoryFW
 
 
-
 import Combine
+import CoreData
 
 protocol HabitMenuDataSource {
     
@@ -32,13 +32,26 @@ class HabitMenuDataSourceSpy: HabitMenuDataSource {
 }
 
 
+class HabitMenuDataSourceFRCAdapter: HabitMenuDataSource {
+    
+    var habitsForDayPublisher: AnyPublisher<[IsCompletedHabit], Never>
+    private var habitsForDay: CurrentValueSubject<[IsCompletedHabit], Never>
+    
+    
+    init(habits: [IsCompletedHabit] = []) {
+        self.habitsForDay = CurrentValueSubject(habits)
+        self.habitsForDayPublisher = habitsForDay.eraseToAnyPublisher()
+    }
+}
+
+
 class HabitMenuDataSourceTests: XCTestCase {
     
     // test initialize habitmenu datasource for a day with no habits inside should return no habits
     func test_init_noHabitsAvailable_deliversEmptyArray() {
         
         // given
-        let sut = HabitMenuDataSourceSpy()
+        let sut = HabitMenuDataSourceFRCAdapter()
         let exp = expectation(description: "Wait for initial habits")
         var cancellables = Set<AnyCancellable>()
         
@@ -65,7 +78,7 @@ class HabitMenuDataSourceTests: XCTestCase {
         
         let isCompletedHabits = [anyIsCompletedHabit]
         
-        let sut = HabitMenuDataSourceSpy(habits: isCompletedHabits)
+        let sut = HabitMenuDataSourceFRCAdapter(habits: isCompletedHabits)
         
         
         let exp = expectation(description: "Wait for initial habits")

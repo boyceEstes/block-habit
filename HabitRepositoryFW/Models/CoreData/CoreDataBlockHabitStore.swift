@@ -15,7 +15,7 @@ public class CoreDataBlockHabitStore {
     let context: NSManagedObjectContext
     
     
-    static func preview() -> CoreDataBlockHabitStore {
+    public static func preview() -> CoreDataBlockHabitStore {
         
         let inMemoryURL = URL(fileURLWithPath: "/dev/null")
         return try! CoreDataBlockHabitStore(storeURL: inMemoryURL)

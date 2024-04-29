@@ -32,13 +32,4 @@ final class HabitRepositoryFWTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-    
-    
-    func testMortery() {
-        
-        let mortery = Mortery()
-        
-        XCTAssertEqual(mortery.attemptToProduceMorty(), "Oh gee wiz")
-    }
-
 }

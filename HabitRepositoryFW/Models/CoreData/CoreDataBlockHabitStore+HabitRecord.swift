@@ -6,12 +6,11 @@
 //
 
 import Foundation
-import HabitRepositoryFW
 
 
 extension CoreDataBlockHabitStore {
     
-    func create(_ habitRecord: HabitRecord) async throws {
+    public func create(_ habitRecord: HabitRecord) async throws {
         
         let context = context
         try await context.perform {
@@ -52,7 +51,7 @@ extension CoreDataBlockHabitStore {
     }
     
     
-    func update(habitRecordID: String, with habitRecord: HabitRecord) async throws {
+    public func update(habitRecordID: String, with habitRecord: HabitRecord) async throws {
         
         let context = context
         try await context.perform {
@@ -84,7 +83,7 @@ extension CoreDataBlockHabitStore {
     }
     
     
-    func destroy(_ habitRecord: HabitRecord) async throws {
+    public func destroy(_ habitRecord: HabitRecord) async throws {
         
         let context = context
         try await context.perform {

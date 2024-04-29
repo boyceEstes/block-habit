@@ -65,8 +65,6 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
         self.habits = habitsSubject.combineLatest(selectedDaySubject)
             .asyncMap({ habits, selectedDay in
                 
-                print("BOYCE: when going to calculate the ish selected day is \(DateFormatter.shortDateShortTime.string(from: selectedDay))")
-                
                 guard let habitRecordsForDay = try? await getHabitRecordsForDay(selectedDay).toModel() else {
                     // FIXME: Handle this, don't be dumb
                     fatalError("If we can get the records for the day, we can't do any math to see the habits we should deliver")
@@ -150,7 +148,6 @@ public class ManagedHabitFRCDataSourceAdapter: NSObject, HabitDataSource {
     
     public func setSelectedDay(to selectedDay: Date) {
         
-        print("BOYCE: setting habit datasource selected day to \(DateFormatter.shortDateShortTime.string(from: selectedDay))")
         self.selectedDaySubject.send(selectedDay)
     }
 }

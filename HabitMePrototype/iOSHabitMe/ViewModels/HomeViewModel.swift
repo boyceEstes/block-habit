@@ -15,7 +15,6 @@ import HabitRepositoryFW
 @Observable
 final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
-    let mortery = Mortery()
     let blockHabitStore: CoreDataBlockHabitStore
     var habitDataSource: HabitDataSource // Can get updated when selectedDate changes
     var habitRecordDataSource: HabitRecordsByDateDataSource

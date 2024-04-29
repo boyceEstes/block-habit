@@ -19,6 +19,16 @@ public protocol HabitRecordsByDateDataSource {
 }
 
 
+extension Date {
+    var noon: Date? {
+        Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)
+    }
+    
+    func adding(days: Int, calendar: Calendar = Calendar(identifier: .gregorian)) -> Date {
+        return calendar.date(byAdding: .day, value: days, to: self)!
+    }
+}
+
 //public protocol HabitRecordsStatistics {
 //    
 //    var 
@@ -90,7 +100,12 @@ public class ManagedHabitRecordsForDateFRCDataSourceAdapter: NSObject, HabitReco
         calendar.timeZone = .current
         calendar.locale = .current
         
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
+        guard let startOf2024 = DateComponents(
+            calendar: calendar,
+            year: 2024,
+            month: 1,
+            day: 1
+        ).date?.noon,
               let today = Date().noon,
               let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
         else { return [:] }

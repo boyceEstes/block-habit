@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import HabitRepositoryFW
 
 
 
@@ -37,7 +36,7 @@ extension NSManagedObjectContext {
 extension CoreDataBlockHabitStore {
     
     
-    func create(_ habit: Habit) async throws {
+    public func create(_ habit: Habit) async throws {
         
         let context = context
         try await context.perform {
@@ -55,7 +54,7 @@ extension CoreDataBlockHabitStore {
     }
     
     
-    func update(habitID: String, with habit: Habit) async throws {
+    public func update(habitID: String, with habit: Habit) async throws {
         
         let context = context
         
@@ -71,7 +70,7 @@ extension CoreDataBlockHabitStore {
     
     
     /// Update a habit's `isArchvied` property to true
-    func archive(_ habit: Habit) async throws {
+    public func archive(_ habit: Habit) async throws {
         
         var archivedHabit = habit
         archivedHabit.isArchived = true
@@ -83,7 +82,7 @@ extension CoreDataBlockHabitStore {
 //    func unarchive() async throws
     
     
-    func destroy(_ habit: Habit) async throws {
+    public func destroy(_ habit: Habit) async throws {
         
         let context = context
         try await context.perform {

@@ -7,11 +7,10 @@
 
 import Foundation
 import CoreData
-import HabitRepositoryFW
 
 extension CoreDataBlockHabitStore {
     
-    func habitDataSource(selectedDay: Date) -> HabitDataSource {
+    public func habitDataSource(selectedDay: Date) -> HabitDataSource {
         
         
         let frc = NSFetchedResultsController(
@@ -31,14 +30,13 @@ extension CoreDataBlockHabitStore {
                     return []
                 }
                 
-                print("BOYCE: dataSourceSelectedDay = \(DateFormatter.shortDateShortTime.string(from: dataSourceSelectedDay))")
                 return try await self.readManagedHabitRecords(for: dataSourceSelectedDay)
             }
         )
     }
     
     
-    func habitRecordsByDateDataSource() -> HabitRecordsByDateDataSource {
+    public func habitRecordsByDateDataSource() -> HabitRecordsByDateDataSource {
         
         let frc = NSFetchedResultsController(
             fetchRequest: ManagedHabitRecord.allManagedHabitRecordsRequest(),
@@ -51,7 +49,7 @@ extension CoreDataBlockHabitStore {
     }
     
     
-    func habitRecordsByDateForHabitDataSource(habit: Habit) throws -> HabitRecordsByDateDataSource {
+    public func habitRecordsByDateForHabitDataSource(habit: Habit) throws -> HabitRecordsByDateDataSource {
         
         let managedHabit = try habit.toManaged(context: context)
         
