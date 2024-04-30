@@ -115,54 +115,103 @@ extension ManagedHabit {
 class HabitMenuDataSourceTests: XCTestCase {
     
     // test initialize habitmenu datasource for a day with no habits inside should return no habits
-    func test_init_noHabitsAvailable_deliversEmptyArray() async{
+    func test_initWithNothingInCache_deliversEmptyArray() async {
         
         // given
         let (sut, _) = makeSUT()
         
         // when
-        await expect(sut, toCompleteWith: [])
+        var cancellables = Set<AnyCancellable>()
+        let exp = expectation(description: "waiting for habit menu items")
+        
+        var receivedHabitsForDay = [[IsCompletedHabit]]()
+        
+        sut.habitsForDayPublisher
+            .sink { isCompletedHabits in
+            
+                receivedHabitsForDay.append(isCompletedHabits)
+                exp.fulfill()
+            }.store(in: &cancellables)
+        
+        // then
+        await fulfillment(of: [exp])
+        XCTAssertEqual(receivedHabitsForDay, [[]])
     }
     
     
-    func test_init_oneHabitCreatedWithNoRecords_deliversOneIncompleteHabit() async {
+    func test_initWithOneHabitWithNoRecordsInCache_deliversOneIncompleteHabit() async {
         
         // given
         let (sut, store) = makeSUT()
         let someHabit = anyHabit
         let expectedHabitsForDay = [IsCompletedHabit(habit: someHabit, isCompleted: false)]
         
+        // when
         do {
             try await store.create(someHabit)
         } catch {
             XCTFail("\(error as NSError)")
         }
         
-        await expect(sut, toCompleteWith: expectedHabitsForDay)
-    }
-    
-    
-    private func expect(_ sut: HabitMenuDataSourceFRCAdapter, toCompleteWith expectedHabitsForDay: [IsCompletedHabit]) async{
-        
-        let exp = expectation(description: "Wait for initial habits")
         var cancellables = Set<AnyCancellable>()
+        let exp = expectation(description: "waiting for habit menu items")
         
-        var receivedHabitsForDay = [IsCompletedHabit]()
+        var receivedHabitsForDay = [[IsCompletedHabit]]()
         
-        // when
         sut.habitsForDayPublisher
             .sink { isCompletedHabits in
             
-                receivedHabitsForDay = isCompletedHabits
+                receivedHabitsForDay.append(isCompletedHabits)
                 exp.fulfill()
             }.store(in: &cancellables)
         
+        // then
+        await fulfillment(of: [exp])
+        XCTAssertEqual(receivedHabitsForDay, [expectedHabitsForDay])
+        
+    }
+    
+    
+    func test_createNewHabit_deliversNewHabitInArray() async {
+        
+        // given
+        let (sut, store) = makeSUT()
+        let someHabit = anyHabit
+        let someHabit2 = anyHabit
+        let expectedHabitsForDay = [IsCompletedHabit(habit: someHabit, isCompleted: false)]
+        let expectedHabitsForDay2 = [IsCompletedHabit(habit: someHabit, isCompleted: false), IsCompletedHabit(habit: someHabit2, isCompleted: false)]
+        
+        // when
+        do {
+            try await store.create(someHabit)
+        } catch {
+            XCTFail("\(error as NSError)")
+        }
+        
+        var cancellables = Set<AnyCancellable>()
+        let exp = expectation(description: "waiting for habit menu items")
+        exp.expectedFulfillmentCount = 2
+        
+        var receivedHabitsForDay = [[IsCompletedHabit]]()
+        
+        sut.habitsForDayPublisher
+            .sink { isCompletedHabits in
+            
+                receivedHabitsForDay.append(isCompletedHabits)
+                exp.fulfill()
+            }.store(in: &cancellables)
+        
+        do {
+            try await store.create(someHabit2)
+        } catch {
+            XCTFail("\(error as NSError)")
+        }
         
         // then
         await fulfillment(of: [exp])
-//        waitForExpectations(timeout: 1)
-        XCTAssertEqual(receivedHabitsForDay, expectedHabitsForDay)
+        XCTAssertEqual(receivedHabitsForDay, [expectedHabitsForDay, expectedHabitsForDay2])
     }
+    
     
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (dataSource: HabitMenuDataSourceFRCAdapter, store: CoreDataBlockHabitStore) {
@@ -197,7 +246,8 @@ class HabitMenuDataSourceTests: XCTestCase {
     
     
     private var anyHabit: Habit {
-        Habit(id: UUID().uuidString, name: "Mood", isArchived: false, goalCompletionsPerDay: 0, color: "#ffffff", activityDetails: [])
+        let uuid = UUID().uuidString
+        return Habit(id: uuid, name: "\(uuid)", isArchived: false, goalCompletionsPerDay: 0, color: "#ffffff", activityDetails: [])
     }
     
     
