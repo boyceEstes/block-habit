@@ -99,7 +99,7 @@ extension ManagedHabit {
 }
 
 
-extension Array where Element == ManagedHabit {
+public extension Array where Element == ManagedHabit {
     
     func toModel() throws -> [Habit] {
         let habits = try map {

@@ -12,7 +12,7 @@ import CoreData
 public class CoreDataBlockHabitStore {
     
     private let container: NSPersistentContainer
-    let context: NSManagedObjectContext
+    public let context: NSManagedObjectContext
     
     
     public static func preview() -> CoreDataBlockHabitStore {
