@@ -115,36 +115,57 @@ extension ManagedHabit {
 class HabitMenuDataSourceTests: XCTestCase {
     
     // test initialize habitmenu datasource for a day with no habits inside should return no habits
-    func test_init_noHabitsAvailable_deliversEmptyArray() {
+    func test_init_noHabitsAvailable_deliversEmptyArray() async{
         
-        let sut = makeSUT()
+        // given
+        let (sut, _) = makeSUT()
+        
+        // when
+        await expect(sut, toCompleteWith: [])
+    }
+    
+    
+    func test_init_oneHabitCreatedWithNoRecords_deliversOneIncompleteHabit() async {
+        
+        // given
+        let (sut, store) = makeSUT()
+        let someHabit = anyHabit
+        let expectedHabitsForDay = [IsCompletedHabit(habit: someHabit, isCompleted: false)]
+        
+        do {
+            try await store.create(someHabit)
+        } catch {
+            XCTFail("\(error as NSError)")
+        }
+        
+        await expect(sut, toCompleteWith: expectedHabitsForDay)
+    }
+    
+    
+    private func expect(_ sut: HabitMenuDataSourceFRCAdapter, toCompleteWith expectedHabitsForDay: [IsCompletedHabit]) async{
         
         let exp = expectation(description: "Wait for initial habits")
         var cancellables = Set<AnyCancellable>()
         
-        var initialHabitsForDay = [IsCompletedHabit]()
+        var receivedHabitsForDay = [IsCompletedHabit]()
         
         // when
         sut.habitsForDayPublisher
             .sink { isCompletedHabits in
             
-                initialHabitsForDay = isCompletedHabits
+                receivedHabitsForDay = isCompletedHabits
                 exp.fulfill()
             }.store(in: &cancellables)
         
+        
         // then
-        waitForExpectations(timeout: 1)
-        XCTAssertEqual(initialHabitsForDay, [])
+        await fulfillment(of: [exp])
+//        waitForExpectations(timeout: 1)
+        XCTAssertEqual(receivedHabitsForDay, expectedHabitsForDay)
     }
     
     
-//    func test_init_oneHabitCreatedWithNoRecords_deliversOneIncompleteHabit() {
-//        
-//        
-//    }
-    
-    
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> HabitMenuDataSourceFRCAdapter {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (dataSource: HabitMenuDataSourceFRCAdapter, store: CoreDataBlockHabitStore) {
         
         
         let storeURL = URL(fileURLWithPath: "/dev/null") // specificTestStoreURL()
@@ -163,7 +184,7 @@ class HabitMenuDataSourceTests: XCTestCase {
         
         let habitsMenuPublisher = HabitMenuDataSourceFRCAdapter(frc: frc)
         
-        return habitsMenuPublisher
+        return (habitsMenuPublisher, blockHabitStore)
     }
     
     private func specificTestStoreURL() -> URL {
@@ -172,6 +193,11 @@ class HabitMenuDataSourceTests: XCTestCase {
     
     private func cachesDirectory() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    }
+    
+    
+    private var anyHabit: Habit {
+        Habit(id: UUID().uuidString, name: "Mood", isArchived: false, goalCompletionsPerDay: 0, color: "#ffffff", activityDetails: [])
     }
     
     
