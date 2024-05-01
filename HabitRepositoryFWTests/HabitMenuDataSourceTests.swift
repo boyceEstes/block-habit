@@ -6,24 +6,9 @@
 //
 
 import XCTest
-import HabitRepositoryFW
+@testable import HabitRepositoryFW
 import Combine
 import CoreData
-
-
-extension ManagedHabit {
-    
-    class func habitsMenuRequest() -> NSFetchRequest<ManagedHabit> {
-        
-        let request = ManagedHabit.fetchRequest()
-        request.returnsObjectsAsFaults = false
-        
-        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
-        request.sortDescriptors = [sortDescriptor]
-        
-        return request
-    }
-}
 
 
 
@@ -171,6 +156,8 @@ class HabitMenuDataSourceTests: XCTestCase {
     }
     
     
+    // TODO: Test when the completion goal is updated while there is a record in there
+    // TODO: Test removing a record will make sure that the right thing is still completed
     
     
     /// Input with specific date if work needs to be tested with inserting records since this is date-specific

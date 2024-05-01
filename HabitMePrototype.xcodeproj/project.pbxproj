@@ -70,6 +70,7 @@
 		B3B2F3172BE02AD500240EB0 /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */; };
 		B3B2F3182BE02AD500240EB0 /* CoreDataBlockHabitStore+Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */; };
 		B3B2F31B2BE2850000240EB0 /* HabitMenuDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F31A2BE2850000240EB0 /* HabitMenuDataSource.swift */; };
+		B3B2F31E2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F31D2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
 		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
@@ -215,6 +216,7 @@
 		B3B2F3062BDFCC2100240EB0 /* Habit+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+UI.swift"; sourceTree = "<group>"; };
 		B3B2F3082BDFCC9000240EB0 /* ActivityDetailType+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityDetailType+UI.swift"; sourceTree = "<group>"; };
 		B3B2F31A2BE2850000240EB0 /* HabitMenuDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMenuDataSource.swift; sourceTree = "<group>"; };
+		B3B2F31D2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedHabit+FetchRequest.swift"; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
 		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
@@ -463,14 +465,13 @@
 		B3B2F30B2BE0036800240EB0 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				B3B2F31C2BE285E400240EB0 /* Habit */,
+				B3B2F31C2BE285E400240EB0 /* Models */,
 				B3B2F3192BE2846900240EB0 /* DataSources2 */,
 				B37AC76F2BA085640052552B /* DataSources  */,
 				B37074202B9E0368006FCC4E /* BlockHabit.xcdatamodeld */,
 				B37074342B9E088C006FCC4E /* CoreDataBlockHabitStore.swift */,
 				B370742B2B9E03E9006FCC4E /* ManagedActivityDetail+CoreDataProperties.swift */,
 				B370742A2B9E03E9006FCC4E /* ManagedActivityDetailRecord+CoreDataProperties.swift */,
-				B37074252B9E03E8006FCC4E /* ManagedHabit.swift */,
 				B37074272B9E03E8006FCC4E /* ManagedHabitRecord+CoreDataProperties.swift */,
 				B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */,
 				B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */,
@@ -486,11 +487,13 @@
 			path = DataSources2;
 			sourceTree = "<group>";
 		};
-		B3B2F31C2BE285E400240EB0 /* Habit */ = {
+		B3B2F31C2BE285E400240EB0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B37074252B9E03E8006FCC4E /* ManagedHabit.swift */,
+				B3B2F31D2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift */,
 			);
-			path = Habit;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B3B403852B71237900D1967E /* Policies */ = {
@@ -925,6 +928,7 @@
 				B3B2F31B2BE2850000240EB0 /* HabitMenuDataSource.swift in Sources */,
 				B3B2F3122BE005F300240EB0 /* ManagedActivityDetailRecord+CoreDataProperties.swift in Sources */,
 				B3B2F3182BE02AD500240EB0 /* CoreDataBlockHabitStore+Habit.swift in Sources */,
+				B3B2F31E2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift in Sources */,
 				B3B2F3102BE005F300240EB0 /* ManagedHabitRecord+CoreDataProperties.swift in Sources */,
 				B3B2F3162BE02AA700240EB0 /* CoreDataBlockHabitStore.swift in Sources */,
 				B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */,

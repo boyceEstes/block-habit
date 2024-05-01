@@ -13,10 +13,6 @@ import CoreData
 
 @objc(ManagedHabit)
 public class ManagedHabit: NSManagedObject {
-    
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedHabit> {
-        return NSFetchRequest<ManagedHabit>(entityName: "DataHabit")
-    }
 
     @NSManaged public var id: String?
     @NSManaged public var name: String?
