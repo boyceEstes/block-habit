@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import CoreData
-import HabitRepositoryFW
 
 
 public protocol HabitDataSource {
@@ -19,7 +18,7 @@ public protocol HabitDataSource {
 }
 
 
-fileprivate extension Publisher {
+public extension Publisher {
     
     func asyncMap<T>(
         _ transform: @escaping (Output) async -> T

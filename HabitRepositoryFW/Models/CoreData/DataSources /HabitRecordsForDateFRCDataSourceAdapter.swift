@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import CoreData
-import HabitRepositoryFW
 
 
 public protocol HabitRecordsByDateDataSource {
@@ -19,7 +18,7 @@ public protocol HabitRecordsByDateDataSource {
 }
 
 
-extension Date {
+public extension Date {
     var noon: Date? {
         Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)
     }

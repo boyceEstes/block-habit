@@ -38,7 +38,7 @@ extension CoreDataBlockHabitStore {
     }
     
     
-    func readManagedHabitRecords(for selectedDay: Date) async throws -> [ManagedHabitRecord] {
+    public func readManagedHabitRecords(for selectedDay: Date) async throws -> [ManagedHabitRecord] {
         
         let context = context
         return try await context.perform {

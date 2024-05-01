@@ -3,4 +3,54 @@
    uuid = "489062BD-3786-427B-95AE-D2F9D13EB059"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5E700320-1F99-4E3A-B32E-993EC3DB64E0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HabitRepositoryFWTests/HabitMenuDataSourceTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "init(frc:selectedDay:getHabitRecordsForDay:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5E700320-1F99-4E3A-B32E-993EC3DB64E0 - 4cf9c84674b464f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) suspend resume partial function for closure #1 (Swift.Array&lt;HabitRepositoryFW.Habit&gt;, Foundation.Date) async -&gt; Swift.Array&lt;HabitRepositoryFW.IsCompletedHabit&gt; in HabitRepositoryFWTests.HabitMenuDataSourceFRCAdapter.init(frc: __C.NSFetchedResultsController&lt;HabitRepositoryFW.ManagedHabit&gt;, selectedDay: Foundation.Date, getHabitRecordsForDay: (Foundation.Date) async throws -&gt; Swift.Array&lt;HabitRepositoryFW.ManagedHabitRecord&gt;) -&gt; HabitRepositoryFWTests.HabitMenuDataSourceFRCAdapter"
+                  moduleName = "HabitRepositoryFWTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitRepositoryFWTests/HabitMenuDataSourceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "1011">
+               </Location>
+               <Location
+                  uuid = "5E700320-1F99-4E3A-B32E-993EC3DB64E0 - ab5e4eae2376c676"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 (Swift.Array&lt;HabitRepositoryFW.Habit&gt;, Foundation.Date) async -&gt; Swift.Array&lt;HabitRepositoryFW.IsCompletedHabit&gt; in HabitRepositoryFWTests.HabitMenuDataSourceFRCAdapter.init(frc: __C.NSFetchedResultsController&lt;HabitRepositoryFW.ManagedHabit&gt;, selectedDay: Foundation.Date, getHabitRecordsForDay: (Foundation.Date) async throws -&gt; Swift.Array&lt;HabitRepositoryFW.ManagedHabitRecord&gt;) -&gt; HabitRepositoryFWTests.HabitMenuDataSourceFRCAdapter"
+                  moduleName = "HabitRepositoryFWTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/HabitMePrototype/HabitRepositoryFWTests/HabitMenuDataSourceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "983">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
