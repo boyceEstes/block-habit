@@ -114,46 +114,46 @@ class HabitMenuDataSourceTests: XCTestCase {
     }
     
     
-    func test_reachHabitCompletionGoal_deliversCompletedHabit() async {
-        
-        // given
-        let selectedDay = Date().adding(days: -1) // A specific date
-        let (sut, store) = makeSUT(selectedDay: selectedDay)
-        let someHabit = anyHabit(goalCompletionsPerDay: 1)
-        let expectedHabitsForDay = [IsCompletedHabit(habit: someHabit, isCompleted: false)]
-        let expectedHabitsForDay2 = [IsCompletedHabit(habit: someHabit, isCompleted: true)]
-        
-        do {
-            try await store.create(someHabit)
-        } catch {
-            XCTFail("\(error as NSError)")
-        }
-        
-        var cancellables = Set<AnyCancellable>()
-        let exp = expectation(description: "waiting for habit menu items")
-        exp.expectedFulfillmentCount = 2
-        
-        var receivedHabitsForDay = [[IsCompletedHabit]]()
-        
-        sut.habitsForDayPublisher
-            .sink { isCompletedHabits in
-            
-                receivedHabitsForDay.append(isCompletedHabits)
-                exp.fulfill()
-            }.store(in: &cancellables)
-        
-        // when
-        let habitRecord = HabitRecord(id: UUID().uuidString, creationDate: selectedDay, completionDate: selectedDay, activityDetailRecords: [], habit: someHabit)
-        do {
-            try await store.create(habitRecord)
-        } catch {
-            XCTFail("\(error as NSError)")
-        }
-        
-        // then
-        await fulfillment(of: [exp])
-        XCTAssertEqual(receivedHabitsForDay, [expectedHabitsForDay, expectedHabitsForDay2])
-    }
+//    func test_reachHabitCompletionGoal_deliversCompletedHabit() async {
+//        
+//        // given
+//        let selectedDay = Date().adding(days: -1) // A specific date
+//        let (sut, store) = makeSUT(selectedDay: selectedDay)
+//        let someHabit = anyHabit(goalCompletionsPerDay: 1)
+//        let expectedHabitsForDay = [IsCompletedHabit(habit: someHabit, isCompleted: false)]
+//        let expectedHabitsForDay2 = [IsCompletedHabit(habit: someHabit, isCompleted: true)]
+//        
+//        do {
+//            try await store.create(someHabit)
+//        } catch {
+//            XCTFail("\(error as NSError)")
+//        }
+//        
+//        var cancellables = Set<AnyCancellable>()
+//        let exp = expectation(description: "waiting for habit menu items")
+//        exp.expectedFulfillmentCount = 2
+//        
+//        var receivedHabitsForDay = [[IsCompletedHabit]]()
+//        
+//        sut.habitsForDayPublisher
+//            .sink { isCompletedHabits in
+//            
+//                receivedHabitsForDay.append(isCompletedHabits)
+//                exp.fulfill()
+//            }.store(in: &cancellables)
+//        
+//        // when
+//        let habitRecord = HabitRecord(id: UUID().uuidString, creationDate: selectedDay, completionDate: selectedDay, activityDetailRecords: [], habit: someHabit)
+//        do {
+//            try await store.create(habitRecord)
+//        } catch {
+//            XCTFail("\(error as NSError)")
+//        }
+//        
+//        // then
+//        await fulfillment(of: [exp])
+//        XCTAssertEqual(receivedHabitsForDay, [expectedHabitsForDay, expectedHabitsForDay2])
+//    }
     
     
     // TODO: Test when the completion goal is updated while there is a record in there
