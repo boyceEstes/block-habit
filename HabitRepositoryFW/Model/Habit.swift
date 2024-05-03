@@ -14,6 +14,7 @@ public struct Habit: Hashable {
     public let name: String
     
     public var isArchived: Bool
+    /// I don't think I actually want this to ever be nil. If there is no goal, make this 0
     public let goalCompletionsPerDay: Int?
     
     // TODO: Make a computed variable color accessor for the string so this can be private
