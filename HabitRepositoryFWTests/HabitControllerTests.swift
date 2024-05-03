@@ -203,8 +203,15 @@ class HabitController {
     
     /// This must be done first in order to have the information to successfully organize the completed habits
     private func populateHabitRecordsForDay() async {
-        let allHabitRecords = try? await blockHabitRepository.readAllHabitRecords()
         
+        do {
+            let allHabitRecords = try await blockHabitRepository.readAllHabitRecords()
+            habitRecordsForDay.send(allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay.value))
+            
+        } catch {
+            // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
+            fatalError("Problem getting habit records")
+        }
     }
     
     
@@ -244,33 +251,72 @@ class HabitControllerTests: XCTestCase {
     }
     
     
-//    func test_initWithHabitRecordsInRepository_correctlyCalculatesRecordsForDates() async {
-//        
-//        // given/when
-//        let (sut, _) = await makeSUTWithStubbedRepository(selectedDay: someDay)
-//        
-//        let expectedHabitRecordsPerDays = [
-//            someDay: [habitRecord1, habitRecord2, habitRecord3],
-//            someDaysYesterday: [habitRecord4, habitRecord5, habitRecord6, habitRecord7, habitRecord8]
-//        ]
-//        
-//        var receivedHabitRecordsPerDays = [Date: [HabitRecord]]()
-//        var cancellables = Set<AnyCancellable>()
-//        
-//        let expRecordsPerDays = expectation(description: "Wait for records")
-//        
-//        sut.habitRecordsForDay
-//            .sink { habitRecordsForDate in
-//                
-//                receivedHabitRecordsPerDays = habitRecordsForDate
-//                expRecordsPerDays.fulfill()
-//            }
-//            .store(in: &cancellables)
-//        
-//        await fulfillment(of: [expRecordsPerDays], timeout: 1)
-//        XCTAssertEqual(receivedHabitRecordsPerDays, expectedHabitRecordsPerDays)
-//    }
-//    
+    func test_initWithHabitRecordsInRepository_correctlyCalculatesRecordsForDates() async {
+        
+        // given/when
+        let selectedDay = someDay
+        let selectedDayNoon = someDay.noon!
+        
+        let selectedDayNoonsYesterday = selectedDayNoon.adding(days: -1)
+        let selectedDayNoonsMinusTwo = selectedDayNoon.adding(days: -2)
+        let selectedDayNoonsMinusThree = selectedDayNoon.adding(days: -3)
+        let selectedDayNoonsMinusFour = selectedDayNoon.adding(days: -4)
+        let selectedDayNoonsMinusFive = selectedDayNoon.adding(days: -5)
+        let selectedDayNoonsMinusSix = selectedDayNoon.adding(days: -6)
+        
+        let habitRecord1 = HabitRecord.habitRecord(date: selectedDayNoon, habit: nonArchivedOneGoal)
+        let habitRecord2 = HabitRecord.habitRecord(date: selectedDayNoon, habit: nonArchivedTwoGoal)
+        let habitRecord3 = HabitRecord.habitRecord(date: selectedDayNoon, habit: nonArchivedZeroGoal)
+        
+        let habitRecord4 = HabitRecord.habitRecord(date: selectedDayNoonsYesterday, habit: nonArchivedOneGoal)
+        let habitRecord5 = HabitRecord.habitRecord(date: selectedDayNoonsYesterday, habit: nonArchivedTwoGoal)
+        let habitRecord6 = HabitRecord.habitRecord(date: selectedDayNoonsYesterday, habit: nonArchivedTwoGoal)
+        let habitRecord7 = HabitRecord.habitRecord(date: selectedDayNoonsYesterday, habit: nonArchivedZeroGoal)
+        let habitRecord8 = HabitRecord.habitRecord(date: selectedDayNoonsYesterday, habit: archivedOneGoal)
+        
+        
+        let stubRecords = [
+            habitRecord1,
+            habitRecord2,
+            habitRecord3,
+            habitRecord4,
+            habitRecord5,
+            habitRecord6,
+            habitRecord7,
+            habitRecord8
+        ]
+        
+        let (sut, _) = await makeSUTWithStubbedRepository(selectedDay: selectedDay, stubRecords: stubRecords)
+
+        
+        let expectedHabitRecordsPerDays = [
+            selectedDayNoon: [habitRecord1, habitRecord2, habitRecord3],
+            selectedDayNoonsYesterday: [habitRecord4, habitRecord5, habitRecord6, habitRecord7, habitRecord8],
+            selectedDayNoonsMinusTwo: [],
+            selectedDayNoonsMinusThree: [],
+            selectedDayNoonsMinusFour: [],
+            selectedDayNoonsMinusFive: [],
+            selectedDayNoonsMinusSix: []
+        ]
+        
+        
+        var receivedHabitRecordsPerDays = [Date: [HabitRecord]]()
+        var cancellables = Set<AnyCancellable>()
+        
+        let expRecordsPerDays = expectation(description: "Wait for records")
+        
+        sut.habitRecordsForDay
+            .sink { habitRecordsForDate in
+                
+                receivedHabitRecordsPerDays = habitRecordsForDate
+                expRecordsPerDays.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        await fulfillment(of: [expRecordsPerDays], timeout: 1)
+        XCTAssertEqual(receivedHabitRecordsPerDays, expectedHabitRecordsPerDays)
+    }
+    
 //    
 //    func test_initWithHabits_populatesTheControllerAsExpected() async {
 //        
@@ -315,7 +361,7 @@ class HabitControllerTests: XCTestCase {
     
     // Test to make sure only habits that are not archived are retrieved
     
-    private func makeSUTWithStubbedRepository(selectedDay: Date = Date()) async -> (HabitController, BlockHabitRepositoryMultipleHabitsAndRecordsStub) {
+    private func makeSUTWithStubbedRepository(selectedDay: Date = Date(), stubRecords: [HabitRecord] = []) async -> (HabitController, BlockHabitRepositoryMultipleHabitsAndRecordsStub) {
         
         
         
@@ -324,17 +370,6 @@ class HabitControllerTests: XCTestCase {
             nonArchivedZeroGoal,
             nonArchivedOneGoal,
             nonArchivedTwoGoal
-        ]
-        
-        let stubRecords = [
-            habitRecord1,
-            habitRecord2,
-            habitRecord3,
-            habitRecord4,
-            habitRecord5,
-            habitRecord6,
-            habitRecord7,
-            habitRecord8
         ]
         
         /*
@@ -372,16 +407,6 @@ class HabitControllerTests: XCTestCase {
     
     var someDay: Date { Date(timeIntervalSince1970: 1714674435) }
     var someDaysYesterday: Date { someDay.adding(days: -1) }
-    
-    var habitRecord1: HabitRecord { HabitRecord.habitRecord(date: someDay, habit: nonArchivedOneGoal) }
-    var habitRecord2: HabitRecord { HabitRecord.habitRecord(date: someDay, habit: nonArchivedTwoGoal) }
-    var habitRecord3: HabitRecord { HabitRecord.habitRecord(date: someDay, habit: nonArchivedZeroGoal) }
-    
-    var habitRecord4: HabitRecord { HabitRecord.habitRecord(date: someDaysYesterday, habit: nonArchivedOneGoal) }
-    var habitRecord5: HabitRecord { HabitRecord.habitRecord(date: someDaysYesterday, habit: nonArchivedTwoGoal) }
-    var habitRecord6: HabitRecord { HabitRecord.habitRecord(date: someDaysYesterday, habit: nonArchivedTwoGoal) }
-    var habitRecord7: HabitRecord { HabitRecord.habitRecord(date: someDaysYesterday, habit: nonArchivedZeroGoal) }
-    var habitRecord8: HabitRecord { HabitRecord.habitRecord(date: someDaysYesterday, habit: archivedOneGoal) }
 }
 
 
