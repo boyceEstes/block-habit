@@ -12,9 +12,9 @@ import XCTest
 
 extension Array where Element == Habit {
     
-    func toIsCompleteHabits(recordsForSelectedDay: [HabitRecord]) -> [IsCompletedHabit] {
+    func toIsCompleteHabits(recordsForSelectedDay: [HabitRecord]) -> Set<IsCompletedHabit> {
         
-        var isCompletedHabits = [IsCompletedHabit]()
+        var isCompletedHabits = Set<IsCompletedHabit>()
         
         for habit in self {
             
@@ -24,13 +24,13 @@ extension Array where Element == Habit {
             
             guard let completionGoal = habit.goalCompletionsPerDay,
                     completionGoal != 0 else {
-                isCompletedHabits.append(IsCompletedHabit(habit: habit, isCompleted: false))
+                isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
                 continue
             }
             
             let numOfRecordsForHabit = recordsForSelectedDay.filter { $0.habit.id == habit.id }.count
             
-            isCompletedHabits.append(IsCompletedHabit(habit: habit, isCompleted: numOfRecordsForHabit >= completionGoal))
+            isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: numOfRecordsForHabit >= completionGoal))
         }
         return isCompletedHabits
     }
@@ -60,7 +60,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
         let habits: [Habit] = [habit]
         let habitRecordsForDay: [HabitRecord] = []
         
-        let expectedIsCompletedHabits = [IsCompletedHabit(habit: habit, isCompleted: false)]
+        let expectedIsCompletedHabits = Set<IsCompletedHabit>(arrayLiteral: IsCompletedHabit(habit: habit, isCompleted: false))
         
         // when
         let isCompletedHabits = habits.toIsCompleteHabits(recordsForSelectedDay: habitRecordsForDay)
@@ -79,7 +79,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
         let habitRecord = HabitRecord.habitRecord(date: Date(), habit: habit)
         let habitRecordsForDay: [HabitRecord] = [habitRecord]
         
-        let expectedIsCompletedHabits = [IsCompletedHabit(habit: habit, isCompleted: true)]
+        let expectedIsCompletedHabits = Set<IsCompletedHabit>(arrayLiteral: IsCompletedHabit(habit: habit, isCompleted: true))
         
         // when
         let isCompletedHabits = habits.toIsCompleteHabits(recordsForSelectedDay: habitRecordsForDay)
@@ -99,7 +99,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
         let habitRecord2 = HabitRecord.habitRecord(habit: habit)
         let habitRecordsForDay: [HabitRecord] = [habitRecord, habitRecord2]
         
-        let expectedIsCompletedHabits = [IsCompletedHabit(habit: habit, isCompleted: true)]
+        let expectedIsCompletedHabits = Set<IsCompletedHabit>(arrayLiteral: IsCompletedHabit(habit: habit, isCompleted: true))
         
         // when
         let isCompletedHabits = habits.toIsCompleteHabits(recordsForSelectedDay: habitRecordsForDay)
@@ -118,7 +118,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
         let habitRecord = HabitRecord.habitRecord(habit: habit)
         let habitRecordsForDay: [HabitRecord] = [habitRecord]
         
-        let expectedIsCompletedHabits = [IsCompletedHabit(habit: habit, isCompleted: false)]
+        let expectedIsCompletedHabits = Set<IsCompletedHabit>(arrayLiteral: IsCompletedHabit(habit: habit, isCompleted: false))
         
         // when
         let isCompletedHabits = habits.toIsCompleteHabits(recordsForSelectedDay: habitRecordsForDay)
@@ -137,7 +137,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
         let habitRecord = HabitRecord.habitRecord(habit: habit)
         let habitRecordsForDay: [HabitRecord] = [habitRecord]
         
-        let expectedIsCompletedHabits = [IsCompletedHabit]()
+        let expectedIsCompletedHabits = Set<IsCompletedHabit>()
         
         // when
         let isCompletedHabits = habits.toIsCompleteHabits(recordsForSelectedDay: habitRecordsForDay)
