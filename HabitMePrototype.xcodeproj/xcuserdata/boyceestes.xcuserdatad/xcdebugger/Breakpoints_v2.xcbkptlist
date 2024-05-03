@@ -14,8 +14,8 @@
             filePath = "HabitRepositoryFWTests/Model/Array+HabitRecordsForDaysTests.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "test_arrayOneRecordOnCurrentDay_delivers6PriorDaysThatAreEmpty()"
             landmarkType = "7">
          </BreakpointContent>

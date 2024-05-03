@@ -11,29 +11,6 @@ import HabitRepositoryFW
 
 
 
-/// Used as a boundary to allow us to replace our CoreDataHabitStore with some other mechanism for saving/retrieving data
-protocol HabitStore {
-    
-    func createHabit(_ habit: Habit) async throws
-    func readAllNonarchivedHabits() async throws -> [Habit]
-    func updateHabit(id: String, with habit: Habit) async throws
-    func destroyHabit(_ habit: Habit) async throws
-}
-
-
-protocol HabitRecordStore {
-    
-    func createHabitRecord(_ habitRecord: HabitRecord) async throws
-    func readAllHabitRecords() async throws -> [HabitRecord]
-    func updateHabitRecord(id: String, with habitRecord: HabitRecord) async throws
-    func destroyHabitRecord(_ habitRecord: HabitRecord) async throws
-}
-
-
-protocol BlockHabitRepository: HabitStore, HabitRecordStore { }
-
-
-
 extension Habit {
     
     static let archivedOneGoal = Habit(
@@ -169,71 +146,6 @@ actor BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
 
 
 import Combine
-
-class HabitController {
-    
-    let blockHabitRepository: BlockHabitRepository
-    
-    private let isCompletedHabits = CurrentValueSubject<Set<IsCompletedHabit>, Never>([])
-    let habitRecordsForDay = CurrentValueSubject<[Date: [HabitRecord]], Never>([:])
-    let selectedDay: CurrentValueSubject<Date, Never>
-    
-    var completeHabits: AnyPublisher<[Habit], Never> {
-        isCompletedHabits.map { isCompletedHabits in
-            return isCompletedHabits
-                .filter { $0.isCompleted == true }
-                .map { $0.habit }
-                .sorted(by: { $0.name < $1.name })
-        }.eraseToAnyPublisher()
-    }
-    
-    var incompleteHabits: AnyPublisher<[Habit], Never> {
-        
-        isCompletedHabits.map { isCompletedHabits in
-            return isCompletedHabits
-                .filter { $0.isCompleted == false }
-                .map { $0.habit }
-                .sorted(by: { $0.name < $1.name })
-        }.eraseToAnyPublisher()
-    }
-    
-    init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) async {
-        
-        self.blockHabitRepository = blockHabitRepository
-        self.selectedDay = CurrentValueSubject(selectedDay)
-        
-        await populateHabitRecordsForDay()
-        await populateHabits()
-    }
-    
-    
-    /// This must be done first in order to have the information to successfully organize the completed habits
-    private func populateHabitRecordsForDay() async {
-        
-        do {
-            let allHabitRecords = try await blockHabitRepository.readAllHabitRecords()
-            habitRecordsForDay.send(allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay.value))
-            
-        } catch {
-            // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
-            fatalError("Problem getting habit records")
-        }
-    }
-    
-    
-    private func populateHabits() async {
-        
-        do {
-            let nonArchivedHabits = try await blockHabitRepository.readAllNonarchivedHabits()
-            let recordsForDays = habitRecordsForDay.value
-            let recordsForSelectedDay = recordsForDays[selectedDay.value] ?? []
-            isCompletedHabits.send(nonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay))
-        } catch {
-            // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
-            fatalError("Problem getting habits")
-        }
-    }
-}
 
 
 

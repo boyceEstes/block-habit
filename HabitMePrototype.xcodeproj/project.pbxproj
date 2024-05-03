@@ -46,6 +46,10 @@
 		B37AC77B2BAF53760052552B /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77A2BAF53760052552B /* Habit.swift */; };
 		B389D2F52BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */; };
 		B389D2F72BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */; };
+		B389D2F92BE59280004A8CF0 /* HabitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F82BE59280004A8CF0 /* HabitController.swift */; };
+		B389D2FB2BE592B6004A8CF0 /* BlockHabitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2FA2BE592B6004A8CF0 /* BlockHabitRepository.swift */; };
+		B389D2FD2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */; };
+		B389D2FF2BE59343004A8CF0 /* Array+IsCompletedHabits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */; };
 		B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */; };
 		B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F72BDFC9D800240EB0 /* Habit.swift */; };
 		B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */; };
@@ -211,6 +215,10 @@
 		B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+Habit.swift"; sourceTree = "<group>"; };
 		B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+HabitRecordsForDaysTests.swift"; sourceTree = "<group>"; };
 		B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsCompletedHabitsTests.swift"; sourceTree = "<group>"; };
+		B389D2F82BE59280004A8CF0 /* HabitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitController.swift; sourceTree = "<group>"; };
+		B389D2FA2BE592B6004A8CF0 /* BlockHabitRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockHabitRepository.swift; sourceTree = "<group>"; };
+		B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+HabitRecordsForDays.swift"; sourceTree = "<group>"; };
+		B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsCompletedHabits.swift"; sourceTree = "<group>"; };
 		B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMenuDataSourceTests.swift; sourceTree = "<group>"; };
 		B3B2F2F72BDFC9D800240EB0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetail.swift; sourceTree = "<group>"; };
@@ -394,6 +402,10 @@
 				B3B2F30B2BE0036800240EB0 /* CoreData */,
 				B3B2F2F62BDFC9C800240EB0 /* Model */,
 				B3621E512BDDE0F900BE88C2 /* HabitRepositoryFW.h */,
+				B389D2F82BE59280004A8CF0 /* HabitController.swift */,
+				B389D2FA2BE592B6004A8CF0 /* BlockHabitRepository.swift */,
+				B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */,
+				B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */,
 			);
 			path = HabitRepositoryFW;
 			sourceTree = "<group>";
@@ -936,7 +948,9 @@
 			files = (
 				B3B2F3152BE02A8C00240EB0 /* HaloRepositoryError.swift in Sources */,
 				B3B2F30D2BE005E600240EB0 /* BlockHabit.xcdatamodeld in Sources */,
+				B389D2FD2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift in Sources */,
 				B3B2F3132BE005F300240EB0 /* ManagedActivityDetail+CoreDataProperties.swift in Sources */,
+				B389D2FB2BE592B6004A8CF0 /* BlockHabitRepository.swift in Sources */,
 				B3B2F3032BDFCAE500240EB0 /* ActivityDetailType.swift in Sources */,
 				B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */,
 				B3B2F2FD2BDFCA3700240EB0 /* IsCompletedHabit.swift in Sources */,
@@ -950,10 +964,12 @@
 				B3B2F3162BE02AA700240EB0 /* CoreDataBlockHabitStore.swift in Sources */,
 				B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */,
 				B3B2F30E2BE005F300240EB0 /* HabitFRCDataSourceAdapter.swift in Sources */,
+				B389D2FF2BE59343004A8CF0 /* Array+IsCompletedHabits.swift in Sources */,
 				B3B2F3172BE02AD500240EB0 /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */,
 				B3B2F2FB2BDFCA0700240EB0 /* ActivityDetailSortable.swift in Sources */,
 				B3B2F30C2BE005DA00240EB0 /* ManagedHabit.swift in Sources */,
 				B3B2F3112BE005F300240EB0 /* CoreDataBlockHabitStore+habitDataSource.swift in Sources */,
+				B389D2F92BE59280004A8CF0 /* HabitController.swift in Sources */,
 				B3B2F3012BDFCA9700240EB0 /* ActivityDetailRecord.swift in Sources */,
 				B3B2F3142BE005F300240EB0 /* HabitRecordsForDateFRCDataSourceAdapter.swift in Sources */,
 				B3B2F3022BDFCAE500240EB0 /* ActivityDetailCalculationType.swift in Sources */,
