@@ -95,15 +95,13 @@ struct StatisticsBarView: View {
 
 struct BarView: View {
     
+    @Environment(HabitMeController.self) private var habitController
     @Environment(\.modelContext) var modelContext
     
     let graphWidth: CGFloat
     let graphHeight: CGFloat
     let numOfItemsToReachTop: Double
     
-    
-    let datesWithHabitRecords: [Date: [HabitRecord]]
-    @Binding var selectedDay: Date
     let destroyHabitRecord: (HabitRecord) -> Void
     
     var body: some View {
@@ -117,7 +115,7 @@ struct BarView: View {
                 
                 LazyHStack(spacing: 0) {
                     
-                    ForEach(datesWithHabitRecords.sorted(by: { $0.key < $1.key}), id: \.key) { date, activityRecords in
+                    ForEach(habitController.habitRecordsForDays.sorted(by: { $0.key < $1.key}), id: \.key) { date, activityRecords in
                         dateColumn(
                             graphHeight: graphHeight,
                             numOfItemsToReachTop: numOfItemsToReachTop,
@@ -130,7 +128,7 @@ struct BarView: View {
                 }
                 .frame(height: graphHeight)
             }
-            .onChange(of: selectedDay) { oldValue, newValue in
+            .onChange(of: habitController.selectedDay) { oldValue, newValue in
                 scrollToSelectedDay(value: value)
             }
             .onAppear {
@@ -170,7 +168,7 @@ struct BarView: View {
             
             Text("\(date.displayDate)")
                 .font(.footnote)
-                .fontWeight(date == selectedDay ? .bold : .regular)
+                .fontWeight(date == habitController.selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)
                 .onTapGesture {
                     setSelectedDay(to: date)
@@ -201,7 +199,7 @@ struct BarView: View {
     private func setSelectedDay(to date: Date) {
         
         guard let dateNoon = date.noon else { return }
-        selectedDay = dateNoon
+        habitController.selectedDay = dateNoon
     }
     
     
@@ -212,10 +210,10 @@ struct BarView: View {
             // set the id as a date
             if animate {
                 withAnimation(.easeInOut) {
-                    value.scrollTo(selectedDay, anchor: .center)
+                    value.scrollTo(habitController.selectedDay, anchor: .center)
                 }
             } else {
-                value.scrollTo(selectedDay, anchor: .center)
+                value.scrollTo(habitController.selectedDay, anchor: .center)
             }
         }
     }

@@ -54,8 +54,8 @@ enum HabitRecordVisualMode {
 struct HomeView: View {
     
     @Environment(HabitMeController.self) private var habitController
-    @Environment(\.modelContext) var modelContext
-    @Query var dataHabits: [DataHabit]
+//    @Environment(\.modelContext) var modelContext
+//    @Query var dataHabits: [DataHabit]
 //    @Query(sort: [
 //        SortDescriptor(\DataActivityFilter.order, order: .forward)
 //    ]) var activityFilterOptions: [DataActivityFilter]
@@ -74,7 +74,7 @@ struct HomeView: View {
      * bar graphs... or maybe I should just decipher it here. This will be everything I should
      * have so I think it should be fine.
      */
-    @State private var viewModel: HomeViewModel
+//    @State private var viewModel: HomeViewModel
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
 //    @State var selectedDay: Date = Date().noon!
     
@@ -93,18 +93,19 @@ struct HomeView: View {
         self.goToEditHabit = goToEditHabit
         self.goToStatistics = goToStatistics
         
-        self._viewModel = State(
-            wrappedValue: HomeViewModel(
-                blockHabitStore: blockHabitStore,
-                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-            )
-        )
+        // FIXME: 2 GoToCreateActivityRecordsWithDetails
+//        self._viewModel = State(
+//            wrappedValue: HomeViewModel(
+//                blockHabitStore: blockHabitStore,
+//                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+//            )
+//        )
     }
     
     
     var body: some View {
-        let _ = print("Home View! '\(Self._printChanges())'")
-        let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
+//        let _ = print("Home View! '\(Self._printChanges())'")
+//        let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
         
         GeometryReader { proxy in
             
@@ -117,44 +118,40 @@ struct HomeView: View {
             
             VStack {
                 
-                VStack {
-                    Text("Is the habitController's habitRecordsForDays empty? \(habitController.habitRecordsForDays.isEmpty ? "yeah" : "no")")
-                }
-                
-                
                 switch habitRecordVisualMode {
                 case .bar:
                     BarView(
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
-                        datesWithHabitRecords: viewModel.datesWithHabitRecords,
-                        selectedDay: $viewModel.selectedDay,
-                        destroyHabitRecord: viewModel.destroyHabitRecord
+                        destroyHabitRecord: { _ in } // FIXME: 2 viewModel.destroyHabitRecord
                     )
                 case .daily:
                     DayView(
-                        destroyHabitRecord: viewModel.destroyHabitRecord,
+                        destroyHabitRecord: { _ in }, // FIXME: 2 viewModel.destroyHabitRecord,
                         goToHabitRecordDetail: goToHabitRecordDetail,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
-                        habitRecords: viewModel.datesWithHabitRecords[viewModel.selectedDay] ?? [],
-                        selectedDay: viewModel.selectedDay
+                        habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [],
+                        selectedDay: habitController.selectedDay
                     )
                 }
                 
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
-                    habits: viewModel.habits, //dataHabits/*filteredActivities*/,
+                    habits: habitController.isCompletedHabits, //dataHabits/*filteredActivities*/,
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
-                        viewModel.createHabitRecord(for: habit)
+                        // FIXME: 2 - viewModel.createHabitRecord(for: habit)
+                        print("record habit")
                     }, archiveHabit: { habit in
-                        viewModel.archiveHabit(for: habit)
+                        // FIXME: 2 - viewModel.archiveHabit(for: habit)
+                        print("ARCHIVE HABIT")
                     }, destroyHabit: { habit in
-                        viewModel.destroyHabit(for: habit)
+                        // FIXME: 2 - viewModel.destroyHabit(for: habit)
+                        print("DESTROY HABIT")
                     }
                 )
 //                VStack(spacing: .vSectionSpacing) {
@@ -209,7 +206,8 @@ struct HomeView: View {
                         Image(systemName: "chevron.left")
                             .fontWeight(.semibold)
                     }
-                    .disabled(isAllowedToGoToPreviousDay ? false : true)
+                    // FIXME: 2 See more at the definition for that
+//                    .disabled(isAllowedToGoToPreviousDay ? false : true)
                     
                     Text(displaySelectedDate)
                         .font(.title2)
@@ -288,7 +286,7 @@ struct HomeView: View {
         let threeDaysAgo = Date().noon!.adding(days: -3)
         let fourDaysAgo = Date().noon!.adding(days: -4)
         
-        switch viewModel.selectedDay {
+        switch habitController.selectedDay {
         case today:
             return "Today"
         case yesterday:
@@ -300,7 +298,7 @@ struct HomeView: View {
         case fourDaysAgo:
             return "4 Days Ago"
         default:
-            return formatter.string(from: viewModel.selectedDay)
+            return formatter.string(from: habitController.selectedDay)
         }
     }
     
@@ -308,7 +306,7 @@ struct HomeView: View {
     private func goToNextDay() {
         
         if isAllowedToGoToNextDay {
-            viewModel.selectedDay = viewModel.selectedDay.adding(days: 1)
+            habitController.selectedDay = habitController.selectedDay.adding(days: 1)
         }
     }
     
@@ -316,25 +314,26 @@ struct HomeView: View {
     private var isAllowedToGoToNextDay: Bool {
 
         guard let today = Date().noon else { return false }
-        return viewModel.selectedDay != today ? true : false
+        return habitController.selectedDay != today ? true : false
     }
     
     
     private func goToPreviousDay() {
         
-        if isAllowedToGoToPreviousDay {
-            viewModel.selectedDay = viewModel.selectedDay.adding(days: -1)
-        }
+//        if isAllowedToGoToPreviousDay {
+            habitController.selectedDay = habitController.selectedDay.adding(days: -1)
+//        }
     }
     
     
-    private var isAllowedToGoToPreviousDay: Bool {
-        
-        let calendar = Calendar.current
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon else { return false }
-        
-        return viewModel.selectedDay != startOf2024 ? true : false
-    }
+    // FIXME: 2 Make sure that we are allowed to go to the previous day as long as we have the date available in our habitRecordsForDays
+//    private var isAllowedToGoToPreviousDay: Bool {
+//        
+//        let calendar = Calendar.current
+//        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon else { return false }
+//        
+//        return viewModel.selectedDay != startOf2024 ? true : false
+//    }
 }
 
 

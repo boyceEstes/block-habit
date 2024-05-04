@@ -15,8 +15,15 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
     }
     
     public func readAllNonarchivedHabits() async throws -> [Habit] {
-        // TODO: later
-        []
+
+        let context = context
+        return try await context.perform {
+                
+            let unarchivedHabitsRequest = ManagedHabit.allUnarchivedManagedHabitsRequest()
+            let managedUnarchivedHabits = try context.fetch(unarchivedHabitsRequest)
+            print("BOYCE: managedHabitRecords for date count: \(managedUnarchivedHabits.count)")
+            return try managedUnarchivedHabits.toModel()
+        }
     }
     
     public func updateHabit(id: String, with habit: Habit) async throws {

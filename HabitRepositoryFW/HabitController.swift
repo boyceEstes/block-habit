@@ -17,7 +17,7 @@ public class HabitController {
     
     public let habitRecordsForDays = CurrentValueSubject<[Date: [HabitRecord]], Never>([:])
     
-    private let isCompletedHabits = CurrentValueSubject<Set<IsCompletedHabit>, Never>([])
+    public let isCompletedHabits = CurrentValueSubject<Set<IsCompletedHabit>, Never>([])
     
     public var completeHabits: AnyPublisher<[Habit], Never> {
         

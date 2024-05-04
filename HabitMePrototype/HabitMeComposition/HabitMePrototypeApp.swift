@@ -17,8 +17,9 @@ import Combine
     
     var selectedDay: Date = Date()
     var habitRecordsForDays: [Date: [HabitRecord]] = [:]
-    var completedHabits: [Habit] = []
-    var incompletedHabits: [Habit] = []
+//    var completedHabits: [Habit] = []
+//    var incompletedHabits: [Habit] = []
+    var isCompletedHabits = [IsCompletedHabit]()
     
     var cancellables = Set<AnyCancellable>()
     
@@ -39,6 +40,30 @@ import Combine
             self?.habitRecordsForDays = hcHabitRecordsForDays
             print("hcHabitRecordsForDays: \(hcHabitRecordsForDays)")
         }.store(in: &cancellables)
+        
+        
+        habitController.isCompletedHabits
+            .sink { [weak self] habits in
+                self?.isCompletedHabits = habits.sorted(by: { $0.habit.name < $1.habit.name })
+            }.store(in: &cancellables)
+        
+        // FIXME: 2 Switchup to deliver two lists, one complete and one incomplete for easier display
+//        habitController.incompleteHabits
+//            .sink { [weak self] habits in
+//                self?.incompletedHabits = habits
+//            }.store(in: &cancellables)
+//        
+//        
+//        habitController.completeHabits
+//            .sink { [weak self] habits in
+//                self?.completedHabits = habits
+//            }.store(in: &cancellables)
+//        
+//        
+        habitController.selectedDay
+            .sink { [weak self] date in
+                self?.selectedDay = date
+            }.store(in: &cancellables)
     }
 }
 

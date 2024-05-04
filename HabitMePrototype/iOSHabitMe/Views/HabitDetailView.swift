@@ -322,9 +322,6 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                        datesWithHabitRecords:
-                            viewModel.habitRecordsByDateForHabit,
-                        selectedDay: $selectedDay,                        
                         destroyHabitRecord: { _ in
                             print("destroy last record logic")
                         }
