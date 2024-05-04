@@ -53,6 +53,7 @@ enum HabitRecordVisualMode {
 
 struct HomeView: View {
     
+    @Environment(HabitMeController.self) private var habitController
     @Environment(\.modelContext) var modelContext
     @Query var dataHabits: [DataHabit]
 //    @Query(sort: [
@@ -115,6 +116,12 @@ struct HomeView: View {
 //            let itemHeight = graphHeight / 8
             
             VStack {
+                
+                VStack {
+                    Text("Is the habitController's habitRecordsForDays empty? \(habitController.habitRecordsForDays.isEmpty ? "yeah" : "no")")
+                }
+                
+                
                 switch habitRecordVisualMode {
                 case .bar:
                     BarView(

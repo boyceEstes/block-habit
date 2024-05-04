@@ -10,6 +10,38 @@ import SwiftData
 import CoreData
 import HabitRepositoryFW
 
+import Combine
+@Observable class HabitMeController {
+    
+    private let habitController: HabitController
+    
+    var selectedDay: Date = Date()
+    var habitRecordsForDays: [Date: [HabitRecord]] = [:]
+    var completedHabits: [Habit] = []
+    var incompletedHabits: [Habit] = []
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) {
+        self.selectedDay = selectedDay
+        
+        self.habitController = HabitController(blockHabitRepository: blockHabitRepository, selectedDay: selectedDay)
+        
+        setupSubscriptions()
+    }
+    
+    
+    private func setupSubscriptions() {
+        
+        habitController.habitRecordsForDays
+            .dropFirst()
+            .sink { [weak self] hcHabitRecordsForDays in
+            self?.habitRecordsForDays = hcHabitRecordsForDays
+            print("hcHabitRecordsForDays: \(hcHabitRecordsForDays)")
+        }.store(in: &cancellables)
+    }
+}
+
 
 @main
 struct HabitMePrototypeApp: App {
@@ -19,6 +51,7 @@ struct HabitMePrototypeApp: App {
      * We need to ensure that we can use this same store to setup CoreData PersistentContainer
      * Do that logic in the initialization, here.
      */
+    @State private var habitController: HabitMeController
     
     let blockHabitStore: CoreDataBlockHabitStore
     var container: ModelContainer
@@ -40,10 +73,14 @@ struct HabitMePrototypeApp: App {
             )
 
             if let storeURL = container.mainContext.sqliteStore {
-                
                 let bundle = Bundle(for: CoreDataBlockHabitStore.self)
                 blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
                 
+                self.habitController = HabitMeController(blockHabitRepository: blockHabitStore, selectedDay: Date())
+//                self.habitController = HabitController(
+//                    blockHabitRepository: blockHabitStore,
+//                    selectedDay: Date()
+//                )
             } else {
                 throw NSError(domain: "Could not find sqliteStore", code: 0)
             }
@@ -58,6 +95,7 @@ struct HabitMePrototypeApp: App {
             ContentView(blockHabitStore: blockHabitStore)
         }
         .modelContainer(container)
+        .environment(habitController)
 //        .modelContainer(
 //            for: [
 //                DataHabit.self,

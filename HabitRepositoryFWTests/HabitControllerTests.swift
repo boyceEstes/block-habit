@@ -248,7 +248,7 @@ class HabitControllerTests: XCTestCase {
         
         let expRecordsPerDays = expectation(description: "Wait for records")
         
-        sut.habitRecordsForDay
+        sut.habitRecordsForDays
             .dropFirst()
             .sink { habitRecordsForDate in
                 

@@ -15,7 +15,7 @@ public class HabitController {
     
     public let selectedDay: CurrentValueSubject<Date, Never>
     
-    public let habitRecordsForDay = CurrentValueSubject<[Date: [HabitRecord]], Never>([:])
+    public let habitRecordsForDays = CurrentValueSubject<[Date: [HabitRecord]], Never>([:])
     
     private let isCompletedHabits = CurrentValueSubject<Set<IsCompletedHabit>, Never>([])
     
@@ -57,7 +57,7 @@ public class HabitController {
         
         do {
             let allHabitRecords = try await blockHabitRepository.readAllHabitRecords()
-            habitRecordsForDay.send(allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay.value))
+            habitRecordsForDays.send(allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay.value))
             
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
@@ -70,7 +70,7 @@ public class HabitController {
         
         do {
             let nonArchivedHabits = try await blockHabitRepository.readAllNonarchivedHabits()
-            let recordsForDays = habitRecordsForDay.value
+            let recordsForDays = habitRecordsForDays.value
             let recordsForSelectedDay = recordsForDays[selectedDay.value] ?? []
             isCompletedHabits.send(nonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay))
         } catch {

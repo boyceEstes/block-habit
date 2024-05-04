@@ -27,13 +27,25 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
         // TODO: later
     }
     
+    
+    // MARK: BlockHabitRepository
+    
     public func createHabitRecord(_ habitRecord: HabitRecord) async throws {
         // TODO: later
     }
     
+    
+    /// expected to be in order by completionDate when returned - this makes it easier to do further calculations
     public func readAllHabitRecords() async throws -> [HabitRecord] {
-        // TODO: later
-        []
+        
+        let context = context
+        return try await context.perform {
+                
+            let habitRecordsForSelectedDayRequest = ManagedHabitRecord.allManagedHabitRecordsRequest()
+            let managedHabitRecords = try context.fetch(habitRecordsForSelectedDayRequest)
+            print("BOYCE: managedHabitRecords for date count: \(managedHabitRecords.count)")
+            return try managedHabitRecords.toModel()
+        }
     }
     
     public func updateHabitRecord(id: String, with habitRecord: HabitRecord) async throws {
