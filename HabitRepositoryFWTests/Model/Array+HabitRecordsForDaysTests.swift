@@ -206,7 +206,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         
         
         // when
-        let habitRecordsForDay = habitRecords.toHabitRecordsForDays(onCurrentDate: someDate, delimiter: delimiter)
+        let habitRecordsForDay = habitRecords.toHabitRecordsForDays(onCurrentDate: someDateNoon, delimiter: delimiter)
         
         // then
         XCTAssertEqual(habitRecordsForDay, expectedHabitRecordsForDay)
@@ -240,7 +240,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         
         
         // when
-        let habitRecordsForDay = habitRecords.toHabitRecordsForDays(onCurrentDate: someDate, delimiter: delimiter)
+        let habitRecordsForDay = habitRecords.toHabitRecordsForDays(onCurrentDate: someDateNoon, delimiter: delimiter)
         
         // then
         XCTAssertEqual(habitRecordsForDay, expectedHabitRecordsForDay)

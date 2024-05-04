@@ -62,7 +62,7 @@ extension HabitRecord {
 }
 
 
-actor BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
+class BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
     
     enum ReceivedMessage: Equatable {
 //        case createHabit
@@ -80,9 +80,15 @@ actor BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
     let habits: [Habit]
     let records: [HabitRecord]
     
+    var expHabitRecords: XCTestExpectation?
+    var expHabits: XCTestExpectation?
+    
     private(set) var requests = [ReceivedMessage]()
     
-    init(habits: [Habit], records: [HabitRecord]) {
+    init(
+        habits: [Habit],
+        records: [HabitRecord]
+    ) {
         self.habits = habits
         self.records = records
     }
@@ -107,13 +113,17 @@ actor BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
      */
 
     func readAllNonarchivedHabits() async throws -> [HabitRepositoryFW.Habit] {
+        
         requests.append(.readAllNonarchivedHabits)
+        expHabits?.fulfill()
         return habits
     }
     
     // records should never be returned for archived habits
     func readAllHabitRecords() async throws -> [HabitRepositoryFW.HabitRecord] {
+        
         requests.append(.readAllHabitRecords)
+        expHabitRecords?.fulfill()
         return records
     }
     
@@ -156,10 +166,19 @@ class HabitControllerTests: XCTestCase {
     func test_init_makesRequestsToReadFromStore() async {
         
         // given/when
-        let (_, repository) = await makeSUTWithStubbedRepository()
+        let exp = expectation(description: "Wait for initial fetches for records and habits to be made")
+        exp.expectedFulfillmentCount = 2
+        
+        let (_, repository) = makeSUTWithStubbedRepository()
+        
+        repository.expHabits = exp
+        repository.expHabitRecords = exp
         
         // then
-        let requests = await repository.requests
+        
+        await fulfillment(of: [exp], timeout: 1)
+        
+        let requests = repository.requests
         XCTAssertEqual(requests, [.readAllHabitRecords, .readAllNonarchivedHabits])
     }
     
@@ -168,7 +187,7 @@ class HabitControllerTests: XCTestCase {
         
         // given/when
         let selectedDay = someDay
-        let (sut, _) = await makeSUTWithStubbedRepository(selectedDay: selectedDay)
+        let (sut, _) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
         
         // then
         XCTAssertEqual(sut.selectedDay.value, selectedDay)
@@ -210,7 +229,7 @@ class HabitControllerTests: XCTestCase {
             habitRecord8
         ]
         
-        let (sut, _) = await makeSUTWithStubbedRepository(selectedDay: selectedDay, stubRecords: stubRecords)
+        let (sut, _) = makeSUTWithStubbedRepository(selectedDay: selectedDay, stubRecords: stubRecords)
 
         
         let expectedHabitRecordsPerDays = [
@@ -230,6 +249,7 @@ class HabitControllerTests: XCTestCase {
         let expRecordsPerDays = expectation(description: "Wait for records")
         
         sut.habitRecordsForDay
+            .dropFirst()
             .sink { habitRecordsForDate in
                 
                 receivedHabitRecordsPerDays = habitRecordsForDate
@@ -273,7 +293,7 @@ class HabitControllerTests: XCTestCase {
             habitRecord8
         ]
         
-        let (sut, _) = await makeSUTWithStubbedRepository(selectedDay: selectedDayNoon, stubRecords: stubRecords)
+        let (sut, _) = makeSUTWithStubbedRepository(selectedDay: selectedDayNoon, stubRecords: stubRecords)
         
         // given
         
@@ -289,6 +309,7 @@ class HabitControllerTests: XCTestCase {
         let expIncompleteHabits = expectation(description: "Wait for incomplete habits")
         
         sut.completeHabits
+            .dropFirst()
             .sink { completeHabits in
                 
                 receivedCompleteHabitsForOneDayAgo = completeHabits
@@ -297,6 +318,7 @@ class HabitControllerTests: XCTestCase {
             .store(in: &cancellables)
         
         sut.incompleteHabits
+            .dropFirst()
             .sink { incompleteHabits in
                 
                 receivedIncompleteHabitsForOneDayAgo = incompleteHabits
@@ -314,7 +336,7 @@ class HabitControllerTests: XCTestCase {
     
     // Test to make sure only habits that are not archived are retrieved
     
-    private func makeSUTWithStubbedRepository(selectedDay: Date = Date(), stubRecords: [HabitRecord] = []) async -> (HabitController, BlockHabitRepositoryMultipleHabitsAndRecordsStub) {
+    private func makeSUTWithStubbedRepository(selectedDay: Date = Date(), stubRecords: [HabitRecord] = []) -> (HabitController, BlockHabitRepositoryMultipleHabitsAndRecordsStub) {
         
         
         
@@ -347,7 +369,7 @@ class HabitControllerTests: XCTestCase {
         
         let multipleHabitsAndRecordsRepositoryStub = BlockHabitRepositoryMultipleHabitsAndRecordsStub(habits: stubHabits, records: stubRecords)
         
-        let sut = await HabitController(blockHabitRepository: multipleHabitsAndRecordsRepositoryStub, selectedDay: selectedDay)
+        let sut = HabitController(blockHabitRepository: multipleHabitsAndRecordsRepositoryStub, selectedDay: selectedDay)
         
         return (sut, multipleHabitsAndRecordsRepositoryStub)
     }

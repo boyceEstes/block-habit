@@ -40,13 +40,15 @@ public class HabitController {
         }.eraseToAnyPublisher()
     }
     
-    public init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) async {
+    public init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) {
         
         self.blockHabitRepository = blockHabitRepository
         self.selectedDay = CurrentValueSubject(selectedDay)
         
-        await populateHabitRecordsForDay()
-        await populateHabits()
+        Task {
+            await populateHabitRecordsForDay()
+            await populateHabits()
+        }
     }
     
     

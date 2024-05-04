@@ -20,7 +20,6 @@ public extension Array where Element == HabitRecord {
         
         let bufferDaysForHabitRecordsForDays = bufferDaysForHabitRecordsForDays(currentDay: date, delimiter: delimiter)
         
-        
         var daysForDict = 0
         if let earliestRecordDate = self.first?.completionDate {
             // earliest date is today - which is the same as current date
