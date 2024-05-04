@@ -334,6 +334,107 @@ class HabitControllerTests: XCTestCase {
     }
     
     
+    //MARK: NextDayAndPreviousDays
+    /*
+     * These are probably bad tests because I am assuming that the number of minimum records will always be 7
+     */
+    
+    func test_allowedToGoToNextDayAtEndOfAvailableDays_deliversFalse() async {
+        
+        // given
+        let selectedDay = someDay.noon!
+        let (sut, repository) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
+        
+        // Wait for all of the information to be gathered
+        let exp = expectation(description: "Wait for initial fetches for records and habits to be made")
+        exp.expectedFulfillmentCount = 2
+        
+        repository.expHabits = exp
+        repository.expHabitRecords = exp
+        
+        await fulfillment(of: [exp], timeout: 1)
+        
+        // When
+        let allowedToGoToNextDay = sut.allowedToGoToNextDay()
+        
+        // Then
+        XCTAssertFalse(allowedToGoToNextDay)
+    }
+    
+    
+    func test_allowedToGoToNextDayInMiddleOfAvailableDays_deliversTrue() async {
+        
+        // given
+        let selectedDay = someDay.noon! // It has to be created with this for the habitRecordsForDays to be set up correctly
+        let (sut, repository) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
+        
+        // Wait for all of the information to be gathered
+        let exp = expectation(description: "Wait for initial fetches for records and habits to be made")
+        exp.expectedFulfillmentCount = 2
+        
+        repository.expHabits = exp
+        repository.expHabitRecords = exp
+        
+        await fulfillment(of: [exp], timeout: 1)
+        
+        // Wait change the selected day to 3 days ago
+        let expDate = expectation(description: "Wait for selectedDay to be changed")
+        var cancellables = Set<AnyCancellable>()
+        
+        sut.selectedDay.send(selectedDay.adding(days: -3))
+        
+        var isAllowedToGoToNextDay = false
+        
+        sut.selectedDay
+            .sink { _ in
+                isAllowedToGoToNextDay = sut.allowedToGoToNextDay()
+                expDate.fulfill()
+            }.store(in: &cancellables)
+        
+        // then
+        await fulfillment(of: [expDate], timeout: 1)
+        XCTAssertTrue(isAllowedToGoToNextDay)
+    }
+    
+    
+    func test_allowedToGoToNextDayAtBeginningOfAvailableDays_deliversTrue() async {
+        
+        // given
+        let selectedDay = someDay.noon! // It has to be created with this for the habitRecordsForDays to be set up correctly
+        let (sut, repository) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
+        
+        // Wait for all of the information to be gathered
+        let exp = expectation(description: "Wait for initial fetches for records and habits to be made")
+        exp.expectedFulfillmentCount = 2
+        
+        repository.expHabits = exp
+        repository.expHabitRecords = exp
+        
+        await fulfillment(of: [exp], timeout: 1)
+        
+        // Wait change the selected day to 3 days ago
+        let expDate = expectation(description: "Wait for selectedDay to be changed")
+        var cancellables = Set<AnyCancellable>()
+        
+        sut.selectedDay.send(selectedDay.adding(days: -6))
+        
+        var isAllowedToGoToNextDay = false
+        
+        sut.selectedDay
+            .sink { _ in
+                isAllowedToGoToNextDay = sut.allowedToGoToNextDay()
+                expDate.fulfill()
+            }.store(in: &cancellables)
+        
+        // then
+        await fulfillment(of: [expDate], timeout: 1)
+        XCTAssertTrue(isAllowedToGoToNextDay)
+    }
+    
+    
+    
+    
+    
     // Test to make sure only habits that are not archived are retrieved
     
     private func makeSUTWithStubbedRepository(selectedDay: Date = Date(), stubRecords: [HabitRecord] = []) -> (HabitController, BlockHabitRepositoryMultipleHabitsAndRecordsStub) {

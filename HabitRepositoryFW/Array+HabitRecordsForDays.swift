@@ -21,13 +21,16 @@ public extension Array where Element == HabitRecord {
         let bufferDaysForHabitRecordsForDays = bufferDaysForHabitRecordsForDays(currentDay: date, delimiter: delimiter)
         
         var daysForDict = 0
-        if let earliestRecordDate = self.first?.completionDate {
+        if let earliestRecordDate = self.last?.completionDate {
             // earliest date is today - which is the same as current date
             // if the earliest date was another day, like Date-3, we'd have a buffer day for habit records of 3, right? yeah and from there we'd want to get 3 days before the current day. But since this is the current day we don't
 //            if earliestRecordDate == date { bufferDaysForHabitRecordsForDays + 1 }
-            
+
             let numOfDaysToEarliestRecord = Calendar.current.dateComponents([.day], from: earliestRecordDate, to: currentDateNoon).day ?? 0
+            
             daysForDict = numOfDaysToEarliestRecord + bufferDaysForHabitRecordsForDays
+            
+            print("earliest record day: \(earliestRecordDate) - number of days from current day to earliest day \(daysForDict)")
         } else {
             daysForDict = bufferDaysForHabitRecordsForDays
         }

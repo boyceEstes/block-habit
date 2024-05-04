@@ -9,41 +9,41 @@ import Foundation
 import Combine
 
 
-public class HabitController {
+public class HabitController: ObservableObject {
     
+    let minimumNumberOfDays = 7
     let blockHabitRepository: BlockHabitRepository
     
-    public let selectedDay: CurrentValueSubject<Date, Never>
+    @Published public var selectedDay: Date
+    @Published public var habitRecordsForDays = [Date: [HabitRecord]]()
+    @Published public var isCompletedHabits = Set<IsCompletedHabit>()
     
-    public let habitRecordsForDays = CurrentValueSubject<[Date: [HabitRecord]], Never>([:])
-    
-    public let isCompletedHabits = CurrentValueSubject<Set<IsCompletedHabit>, Never>([])
-    
-    public var completeHabits: AnyPublisher<[Habit], Never> {
+    public var completeHabits: [Habit] {
         
-        isCompletedHabits.map { isCompletedHabits in
-            return isCompletedHabits
-                .filter { $0.isCompleted == true }
-                .map { $0.habit }
-                .sorted(by: { $0.name < $1.name })
-        }.eraseToAnyPublisher()
+        isCompletedHabits
+            .filter { $0.isCompleted == true }
+            .map { $0.habit }
+            .sorted(by: { $0.name < $1.name })
     }
     
     
-    public var incompleteHabits: AnyPublisher<[Habit], Never> {
+    public var incompleteHabits: [Habit] {
         
-        isCompletedHabits.map { isCompletedHabits in
-            return isCompletedHabits
-                .filter { $0.isCompleted == false }
-                .map { $0.habit }
-                .sorted(by: { $0.name < $1.name })
-        }.eraseToAnyPublisher()
+        isCompletedHabits
+            .filter { $0.isCompleted == false }
+            .map { $0.habit }
+            .sorted(by: { $0.name < $1.name })
+        
     }
     
-    public init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) {
+    
+    public init(
+        blockHabitRepository: BlockHabitRepository,
+        selectedDay: Date
+    ) {
         
         self.blockHabitRepository = blockHabitRepository
-        self.selectedDay = CurrentValueSubject(selectedDay)
+        self.selectedDay = selectedDay
         
         Task {
             await populateHabitRecordsForDay()
@@ -57,7 +57,7 @@ public class HabitController {
         
         do {
             let allHabitRecords = try await blockHabitRepository.readAllHabitRecords()
-            habitRecordsForDays.send(allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay.value))
+            habitRecordsForDays = allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay, delimiter: minimumNumberOfDays)
             
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
@@ -70,12 +70,60 @@ public class HabitController {
         
         do {
             let nonArchivedHabits = try await blockHabitRepository.readAllNonarchivedHabits()
-            let recordsForDays = habitRecordsForDays.value
-            let recordsForSelectedDay = recordsForDays[selectedDay.value] ?? []
-            isCompletedHabits.send(nonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay))
+            let recordsForDays = habitRecordsForDays
+            let recordsForSelectedDay = recordsForDays[selectedDay] ?? []
+            isCompletedHabits = nonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay)
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
             fatalError("Problem getting habits")
         }
+    }
+    
+    
+    public func setSelectedDay(to date: Date) {
+        
+        let habitRecordsForNewDay = habitRecordsForDays[date]
+        if habitRecordsForNewDay != nil {
+            selectedDay = date
+        }
+    }
+     
+    
+    public func goToNextDay() {
+        
+        if isAllowedToGoToNextDay() {
+            let nextDay = selectedDay.adding(days: 1)
+            selectedDay = nextDay
+        }
+    }
+    
+    
+    public func goToPrevDay() {
+        
+        if isAllowedToGoToPrevDay() {
+            
+            let prevDay = selectedDay.adding(days: -1)
+            selectedDay = prevDay
+        }
+    }
+    
+    
+    /// Useful for disabling buttons if necessary
+    public func isAllowedToGoToNextDay() -> Bool {
+        
+        let nextDay = selectedDay.adding(days: 1)
+        let habitRecordsForNextDay = habitRecordsForDays[nextDay]
+        
+        return habitRecordsForNextDay != nil
+    }
+    
+    
+    /// Useful for disabling buttons if necessary
+    public func isAllowedToGoToPrevDay() -> Bool {
+        
+        let prevDay = selectedDay.adding(days: -1)
+        let habitRecordsForPrevDay = habitRecordsForDays[prevDay]
+        
+        return habitRecordsForPrevDay != nil
     }
 }

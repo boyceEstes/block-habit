@@ -71,6 +71,7 @@ class HabitDetailViewModel {
 
 struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
 
+    @EnvironmentObject var habitController: HabitController
     @State private var viewModel: HabitDetailViewModel
     let activity: Habit
     let goToEditHabit: () -> Void
@@ -322,6 +323,9 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
+                        habitRecordsForDays:
+                            habitController.habitRecordsForDays,
+                        selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { _ in
                             print("destroy last record logic")
                         }

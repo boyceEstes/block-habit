@@ -95,12 +95,14 @@ struct StatisticsBarView: View {
 
 struct BarView: View {
     
-    @Environment(HabitMeController.self) private var habitController
+//    @EnvironmentObject var habitController: HabitController
     @Environment(\.modelContext) var modelContext
     
     let graphWidth: CGFloat
     let graphHeight: CGFloat
     let numOfItemsToReachTop: Double
+    let habitRecordsForDays: [Date: [HabitRecord]]
+    @Binding var selectedDay: Date
     
     let destroyHabitRecord: (HabitRecord) -> Void
     
@@ -108,31 +110,33 @@ struct BarView: View {
         
         // TODO: If the device is horizontal, do not use this calculation
         let columnWidth = graphWidth / 5
-        
-        ScrollViewReader { value in
+        VStack {
             
-            ScrollView(.horizontal) {
+            ScrollViewReader { value in
                 
-                LazyHStack(spacing: 0) {
+                ScrollView(.horizontal) {
                     
-                    ForEach(habitController.habitRecordsForDays.sorted(by: { $0.key < $1.key}), id: \.key) { date, activityRecords in
-                        dateColumn(
-                            graphHeight: graphHeight,
-                            numOfItemsToReachTop: numOfItemsToReachTop,
-                            date: date,
-                            activityRecords: activityRecords
-                        )
+                    LazyHStack(spacing: 0) {
+                        
+                        ForEach(habitRecordsForDays.sorted(by: { $0.key < $1.key}), id: \.key) { date, activityRecords in
+                            dateColumn(
+                                graphHeight: graphHeight,
+                                numOfItemsToReachTop: numOfItemsToReachTop,
+                                date: date,
+                                activityRecords: activityRecords
+                            )
                             .frame(width: columnWidth, height: graphHeight, alignment: .bottom)
                             .id(date)
+                        }
                     }
+                    .frame(height: graphHeight)
                 }
-                .frame(height: graphHeight)
-            }
-            .onChange(of: habitController.selectedDay) { oldValue, newValue in
-                scrollToSelectedDay(value: value)
-            }
-            .onAppear {
-                scrollToSelectedDay(value: value, animate: false)
+                .onChange(of: selectedDay) { oldValue, newValue in
+                    scrollToSelectedDay(value: value)
+                }
+                .onAppear {
+                    scrollToSelectedDay(value: value, animate: false)
+                }
             }
         }
     }
@@ -166,9 +170,11 @@ struct BarView: View {
                 .fill(.ultraThickMaterial)
                 .frame(height: 1)
             
+            let _ = print("Hi I am setting up the text for '\(DateFormatter.shortDate.string(from: date))' vs selectedDay, '\(DateFormatter.shortDate.string(from: selectedDay))'")
+            
             Text("\(date.displayDate)")
                 .font(.footnote)
-                .fontWeight(date == habitController.selectedDay ? .bold : .regular)
+                .fontWeight(date == selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)
                 .onTapGesture {
                     setSelectedDay(to: date)
@@ -199,21 +205,22 @@ struct BarView: View {
     private func setSelectedDay(to date: Date) {
         
         guard let dateNoon = date.noon else { return }
-        habitController.selectedDay = dateNoon
+        selectedDay = dateNoon
     }
     
     
     private func scrollToSelectedDay(value: ScrollViewProxy, animate: Bool = true) {
         
+        print("Hi I have appeared and now I am meant to be scrolling to the selected Day '\(DateFormatter.shortDate.string(from: selectedDay))'")
         DispatchQueue.main.async {
             // get days since january and then count back to get their ids, or I could
             // set the id as a date
             if animate {
                 withAnimation(.easeInOut) {
-                    value.scrollTo(habitController.selectedDay, anchor: .center)
+                    value.scrollTo(selectedDay, anchor: .center)
                 }
             } else {
-                value.scrollTo(habitController.selectedDay, anchor: .center)
+                value.scrollTo(selectedDay, anchor: .center)
             }
         }
     }

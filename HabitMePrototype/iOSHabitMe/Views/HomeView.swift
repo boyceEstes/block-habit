@@ -53,7 +53,7 @@ enum HabitRecordVisualMode {
 
 struct HomeView: View {
     
-    @Environment(HabitMeController.self) private var habitController
+    @EnvironmentObject var habitController: HabitController
 //    @Environment(\.modelContext) var modelContext
 //    @Query var dataHabits: [DataHabit]
 //    @Query(sort: [
@@ -124,6 +124,8 @@ struct HomeView: View {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
+                        habitRecordsForDays: habitController.habitRecordsForDays,
+                        selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { _ in } // FIXME: 2 viewModel.destroyHabitRecord
                     )
                 case .daily:
@@ -140,7 +142,7 @@ struct HomeView: View {
                 HabitsMenu(
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
-                    habits: habitController.isCompletedHabits, //dataHabits/*filteredActivities*/,
+                    habits: habitController.isCompletedHabits.sorted(by: { $0.habit.name < $1.habit.name }), //dataHabits/*filteredActivities*/,
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
@@ -201,25 +203,25 @@ struct HomeView: View {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
                     Button {
-                        goToPreviousDay()
+                        habitController.goToPrevDay()
                     } label: {
                         Image(systemName: "chevron.left")
                             .fontWeight(.semibold)
                     }
                     // FIXME: 2 See more at the definition for that
-//                    .disabled(isAllowedToGoToPreviousDay ? false : true)
+                    .disabled(habitController.isAllowedToGoToPrevDay() ? false : true)
                     
                     Text(displaySelectedDate)
                         .font(.title2)
                         .fontWeight(.semibold)
                     
                     Button {
-                        goToNextDay()
+                        habitController.goToNextDay()
                     } label: {
                         Image(systemName: "chevron.right")
                             .fontWeight(.semibold)
                     }
-                    .disabled(isAllowedToGoToNextDay ? false : true)
+                    .disabled(habitController.isAllowedToGoToNextDay() ? false : true)
                 }
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
@@ -300,29 +302,6 @@ struct HomeView: View {
         default:
             return formatter.string(from: habitController.selectedDay)
         }
-    }
-    
-    
-    private func goToNextDay() {
-        
-        if isAllowedToGoToNextDay {
-            habitController.selectedDay = habitController.selectedDay.adding(days: 1)
-        }
-    }
-    
-    
-    private var isAllowedToGoToNextDay: Bool {
-
-        guard let today = Date().noon else { return false }
-        return habitController.selectedDay != today ? true : false
-    }
-    
-    
-    private func goToPreviousDay() {
-        
-//        if isAllowedToGoToPreviousDay {
-            habitController.selectedDay = habitController.selectedDay.adding(days: -1)
-//        }
     }
     
     

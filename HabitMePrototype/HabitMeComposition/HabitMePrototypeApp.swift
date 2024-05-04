@@ -11,61 +11,75 @@ import CoreData
 import HabitRepositoryFW
 
 import Combine
-@Observable class HabitMeController {
-    
-    private let habitController: HabitController
-    
-    var selectedDay: Date = Date()
-    var habitRecordsForDays: [Date: [HabitRecord]] = [:]
-//    var completedHabits: [Habit] = []
-//    var incompletedHabits: [Habit] = []
-    var isCompletedHabits = [IsCompletedHabit]()
-    
-    var cancellables = Set<AnyCancellable>()
-    
-    init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) {
-        self.selectedDay = selectedDay
-        
-        self.habitController = HabitController(blockHabitRepository: blockHabitRepository, selectedDay: selectedDay)
-        
-        setupSubscriptions()
-    }
-    
-    
-    private func setupSubscriptions() {
-        
-        habitController.habitRecordsForDays
-            .dropFirst()
-            .sink { [weak self] hcHabitRecordsForDays in
-            self?.habitRecordsForDays = hcHabitRecordsForDays
-            print("hcHabitRecordsForDays: \(hcHabitRecordsForDays)")
-        }.store(in: &cancellables)
-        
-        
-        habitController.isCompletedHabits
-            .sink { [weak self] habits in
-                self?.isCompletedHabits = habits.sorted(by: { $0.habit.name < $1.habit.name })
-            }.store(in: &cancellables)
-        
-        // FIXME: 2 Switchup to deliver two lists, one complete and one incomplete for easier display
-//        habitController.incompleteHabits
+//@Observable class HabitMeController {
+//    
+//    private let habitController: HabitController
+//    
+//    var selectedDay: Date = Date()
+//    var habitRecordsForDays: [Date: [HabitRecord]] = [:]
+////    var completedHabits: [Habit] = []
+////    var incompletedHabits: [Habit] = []
+//    var isCompletedHabits = [IsCompletedHabit]()
+//    
+//    var cancellables = Set<AnyCancellable>()
+//    
+//    init(blockHabitRepository: BlockHabitRepository, selectedDay: Date) {
+//        self.selectedDay = selectedDay
+//        
+//        self.habitController = HabitController(blockHabitRepository: blockHabitRepository, selectedDay: selectedDay)
+//        
+//        setupSubscriptions()
+//    }
+//    
+//    
+//    private func setupSubscriptions() {
+//        
+//        habitController.habitRecordsForDays
+//            .dropFirst()
+//            .sink { [weak self] hcHabitRecordsForDays in
+//            self?.habitRecordsForDays = hcHabitRecordsForDays
+//            print("hcHabitRecordsForDays: \(hcHabitRecordsForDays)")
+//        }.store(in: &cancellables)
+//        
+//        
+//        habitController.isCompletedHabits
 //            .sink { [weak self] habits in
-//                self?.incompletedHabits = habits
+//                self?.isCompletedHabits = habits.sorted(by: { $0.habit.name < $1.habit.name })
 //            }.store(in: &cancellables)
 //        
-//        
-//        habitController.completeHabits
-//            .sink { [weak self] habits in
-//                self?.completedHabits = habits
+//        // FIXME: 2 Switchup to deliver two lists, one complete and one incomplete for easier display
+////        habitController.incompleteHabits
+////            .sink { [weak self] habits in
+////                self?.incompletedHabits = habits
+////            }.store(in: &cancellables)
+////        
+////        
+////        habitController.completeHabits
+////            .sink { [weak self] habits in
+////                self?.completedHabits = habits
+////            }.store(in: &cancellables)
+////        
+////        
+//        habitController.selectedDay
+//            .sink { [weak self] date in
+//                print("BOYCE: gets here")
+//                self?.selectedDay = date
 //            }.store(in: &cancellables)
+//    }
+//    
+//    
+//    func goToNextDay() {
 //        
-//        
-        habitController.selectedDay
-            .sink { [weak self] date in
-                self?.selectedDay = date
-            }.store(in: &cancellables)
-    }
-}
+//        habitController.goToNextDay()
+//    }
+//    
+//    
+//    func goToPrevDay() {
+//        let prevDay = selectedDay.adding(days: -1)
+//        selectedDay = prevDay
+////        habitController.goToPrevDay()
+//    }
+//}
 
 
 @main
@@ -76,7 +90,7 @@ struct HabitMePrototypeApp: App {
      * We need to ensure that we can use this same store to setup CoreData PersistentContainer
      * Do that logic in the initialization, here.
      */
-    @State private var habitController: HabitMeController
+    @State private var habitController: HabitController
     
     let blockHabitStore: CoreDataBlockHabitStore
     var container: ModelContainer
@@ -101,7 +115,7 @@ struct HabitMePrototypeApp: App {
                 let bundle = Bundle(for: CoreDataBlockHabitStore.self)
                 blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
                 
-                self.habitController = HabitMeController(blockHabitRepository: blockHabitStore, selectedDay: Date())
+                self.habitController = HabitController(blockHabitRepository: blockHabitStore, selectedDay: Date().noon!)
 //                self.habitController = HabitController(
 //                    blockHabitRepository: blockHabitStore,
 //                    selectedDay: Date()
@@ -120,7 +134,7 @@ struct HabitMePrototypeApp: App {
             ContentView(blockHabitStore: blockHabitStore)
         }
         .modelContainer(container)
-        .environment(habitController)
+        .environmentObject(habitController)
 //        .modelContainer(
 //            for: [
 //                DataHabit.self,
