@@ -190,7 +190,7 @@ class HabitControllerTests: XCTestCase {
         let (sut, _) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
         
         // then
-        XCTAssertEqual(sut.selectedDay.value, selectedDay)
+        XCTAssertEqual(sut.selectedDay, selectedDay)
     }
     
     
@@ -248,7 +248,7 @@ class HabitControllerTests: XCTestCase {
         
         let expRecordsPerDays = expectation(description: "Wait for records")
         
-        sut.habitRecordsForDays
+        sut.$habitRecordsForDays
             .dropFirst()
             .sink { habitRecordsForDate in
                 
@@ -258,6 +258,7 @@ class HabitControllerTests: XCTestCase {
             .store(in: &cancellables)
         
         await fulfillment(of: [expRecordsPerDays], timeout: 1)
+        XCTAssertEqual(receivedHabitRecordsPerDays.keys.sorted(), expectedHabitRecordsPerDays.keys.sorted())
         XCTAssertEqual(receivedHabitRecordsPerDays, expectedHabitRecordsPerDays)
     }
     
@@ -297,40 +298,58 @@ class HabitControllerTests: XCTestCase {
         
         // given
         
-        let expectedCompleteHabitsForOneDayAgo = [nonArchivedOneGoal]
-        let expectedIncompleteHabitsForOneDayAgo = [nonArchivedTwoGoal, nonArchivedZeroGoal]
-
-        var receivedCompleteHabitsForOneDayAgo = [Habit]()
-        var receivedIncompleteHabitsForOneDayAgo = [Habit]()
+//        let expectedCompleteHabitsForOneDayAgo = [nonArchivedOneGoal]
+//        let expectedIncompleteHabitsForOneDayAgo = [nonArchivedTwoGoal, nonArchivedZeroGoal]
+        let expectedIsCompletedHabitsForOneDayAgo = Set<IsCompletedHabit>(
+            arrayLiteral: IsCompletedHabit(habit: nonArchivedOneGoal, isCompleted: true),
+            IsCompletedHabit(habit: nonArchivedTwoGoal, isCompleted: false),
+            IsCompletedHabit(habit: nonArchivedZeroGoal, isCompleted: false)
+        )
+        
+//        var receivedCompleteHabitsForOneDayAgo = [Habit]()
+//        var receivedIncompleteHabitsForOneDayAgo = [Habit]()
         
         var cancellables = Set<AnyCancellable>()
         
-        let expCompletedHabits = expectation(description: "Wait for completed habits")
-        let expIncompleteHabits = expectation(description: "Wait for incomplete habits")
+        let exp = expectation(description: "Wait for iscompleted habits")
+//        let expCompletedHabits = expectation(description: "Wait for completed habits")
+//        let expIncompleteHabits = expectation(description: "Wait for incomplete habits")
         
-        sut.completeHabits
+        var isCompletedHabits = Set<IsCompletedHabit>()
+        sut.$isCompletedHabits
             .dropFirst()
-            .sink { completeHabits in
-                
-                receivedCompleteHabitsForOneDayAgo = completeHabits
-                expCompletedHabits.fulfill()
-            }
-            .store(in: &cancellables)
+            .sink { isCompletedHabitsSet in
+                isCompletedHabits = isCompletedHabitsSet
+                exp.fulfill()
+//                expCompletedHabits.fulfill()
+//                expIncompleteHabits.fulfill()
+            }.store(in: &cancellables)
         
-        sut.incompleteHabits
-            .dropFirst()
-            .sink { incompleteHabits in
-                
-                receivedIncompleteHabitsForOneDayAgo = incompleteHabits
-                expIncompleteHabits.fulfill()
-            }
-            .store(in: &cancellables)
+//        sut.completeHabits
+//            .dropFirst()
+//            .sink { completeHabits in
+//                
+//                receivedCompleteHabitsForOneDayAgo = completeHabits
+//                expCompletedHabits.fulfill()
+//            }
+//            .store(in: &cancellables)
+//        
+//        sut.incompleteHabits
+//            .dropFirst()
+//            .sink { incompleteHabits in
+//                
+//                receivedIncompleteHabitsForOneDayAgo = incompleteHabits
+//                expIncompleteHabits.fulfill()
+//            }
+//            .store(in: &cancellables)
+//        
         
+        await fulfillment(of: [exp], timeout: 1)
+//
+//        XCTAssertEqual(receivedCompleteHabitsForOneDayAgo, expectedCompleteHabitsForOneDayAgo)
+//        XCTAssertEqual(receivedIncompleteHabitsForOneDayAgo, expectedIncompleteHabitsForOneDayAgo)
         
-        await fulfillment(of: [expCompletedHabits, expIncompleteHabits], timeout: 1)
-        
-        XCTAssertEqual(receivedCompleteHabitsForOneDayAgo, expectedCompleteHabitsForOneDayAgo)
-        XCTAssertEqual(receivedIncompleteHabitsForOneDayAgo, expectedIncompleteHabitsForOneDayAgo)
+        XCTAssertEqual(isCompletedHabits, expectedIsCompletedHabitsForOneDayAgo)
     }
     
     
@@ -355,7 +374,7 @@ class HabitControllerTests: XCTestCase {
         await fulfillment(of: [exp], timeout: 1)
         
         // When
-        let allowedToGoToNextDay = sut.allowedToGoToNextDay()
+        let allowedToGoToNextDay = sut.isAllowedToGoToNextDay()
         
         // Then
         XCTAssertFalse(allowedToGoToNextDay)
@@ -381,13 +400,13 @@ class HabitControllerTests: XCTestCase {
         let expDate = expectation(description: "Wait for selectedDay to be changed")
         var cancellables = Set<AnyCancellable>()
         
-        sut.selectedDay.send(selectedDay.adding(days: -3))
+        sut.selectedDay = selectedDay.adding(days: -3)
         
         var isAllowedToGoToNextDay = false
         
-        sut.selectedDay
+        sut.$selectedDay
             .sink { _ in
-                isAllowedToGoToNextDay = sut.allowedToGoToNextDay()
+                isAllowedToGoToNextDay = sut.isAllowedToGoToNextDay()
                 expDate.fulfill()
             }.store(in: &cancellables)
         
@@ -416,13 +435,13 @@ class HabitControllerTests: XCTestCase {
         let expDate = expectation(description: "Wait for selectedDay to be changed")
         var cancellables = Set<AnyCancellable>()
         
-        sut.selectedDay.send(selectedDay.adding(days: -6))
+        sut.selectedDay = selectedDay.adding(days: -6)
         
         var isAllowedToGoToNextDay = false
         
-        sut.selectedDay
+        sut.$selectedDay
             .sink { _ in
-                isAllowedToGoToNextDay = sut.allowedToGoToNextDay()
+                isAllowedToGoToNextDay = sut.isAllowedToGoToNextDay()
                 expDate.fulfill()
             }.store(in: &cancellables)
         

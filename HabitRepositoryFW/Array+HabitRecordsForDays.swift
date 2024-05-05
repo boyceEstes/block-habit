@@ -72,7 +72,7 @@ public extension Array where Element == HabitRecord {
         if self.isEmpty {
             return delimiter
             
-        } else if let earliestRecordDate = self.first?.completionDate,
+        } else if let earliestRecordDate = self.last?.completionDate,
                   let numDaysBetweenEarliestToCurrent = Calendar.current.dateComponents([.day], from: earliestRecordDate, to: currentDay).day,
                       numDaysBetweenEarliestToCurrent < delimiter {
                 

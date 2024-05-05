@@ -95,8 +95,8 @@ class Array_HabitRecordsForDays_BufferDaysTests: XCTestCase {
         
         // ORDER MATTERS!!
         let habitRecords: [HabitRecord] = [
-            HabitRecord.habitRecord(date: sevenDaysAgo, habit: Habit.nonArchivedOneGoal),
-            HabitRecord.habitRecord(date: threeDaysAgo, habit: Habit.nonArchivedTwoGoal)
+            HabitRecord.habitRecord(date: threeDaysAgo, habit: Habit.nonArchivedTwoGoal),
+            HabitRecord.habitRecord(date: sevenDaysAgo, habit: Habit.nonArchivedOneGoal)
         ]
         
         // when
@@ -284,8 +284,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
     
     func test_arrayTwoRecordOn7DaysAgoAnd3DaysAgo_delivers0DayBuffer() {
         
-        let someDate = Date() // I want to give a basic current date to our method and have it give the noon date
-        let someDateNoon = someDate.noon!
+        let someDateNoon = Date().noon!
         let someDateMinus1 = someDateNoon.adding(days: -1)
         let someDateMinus2 = someDateNoon.adding(days: -2)
         let someDateMinus3 = someDateNoon.adding(days: -3)
@@ -315,9 +314,10 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         
         
         // when
-        let habitRecordsForDay = habitRecords.toHabitRecordsForDays(onCurrentDate: someDate, delimiter: delimiter)
+        let habitRecordsForDay = habitRecords.toHabitRecordsForDays(onCurrentDate: someDateNoon, delimiter: delimiter)
         
         // then
+        XCTAssertEqual(habitRecordsForDay.keys.sorted(), expectedHabitRecordsForDay.keys.sorted())
         XCTAssertEqual(habitRecordsForDay, expectedHabitRecordsForDay)
     }
     
