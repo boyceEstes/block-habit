@@ -95,7 +95,7 @@ struct StatisticsBarView: View {
 
 struct BarView: View {
     
-//    @EnvironmentObject var habitController: HabitController
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.modelContext) var modelContext
     
     let graphWidth: CGFloat
@@ -163,7 +163,7 @@ struct BarView: View {
                 itemWidth: itemWidth,
                 itemHeight: itemHeight
             ) {
-                setSelectedDay(to: date)
+                habitController.setSelectedDay(to: date)
             }
             
             Rectangle()
@@ -177,7 +177,7 @@ struct BarView: View {
                 .fontWeight(date == selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)
                 .onTapGesture {
-                    setSelectedDay(to: date)
+                    habitController.setSelectedDay(to: date)
                 }
         }
         .contextMenu {

@@ -16,7 +16,14 @@ public class HabitController: ObservableObject {
     
     @Published public var selectedDay: Date
     @Published public var habitRecordsForDays = [Date: [HabitRecord]]()
-    @Published public var isCompletedHabits = Set<IsCompletedHabit>()
+    @Published public var isCompletedHabits = Set<IsCompletedHabit>() {
+        didSet {
+            print("BOYCE: did change isCompletedHabits")
+        }
+    }
+    
+    // These values don't need to be published, they are only here to reduce need to get them repeatedly from the database if there are no changes
+    var latestNonArchivedHabits = [Habit]()
     
     public var completeHabits: [Habit] {
         
@@ -69,10 +76,8 @@ public class HabitController: ObservableObject {
     private func populateHabits() async {
         
         do {
-            let nonArchivedHabits = try await blockHabitRepository.readAllNonarchivedHabits()
-            let recordsForDays = habitRecordsForDays
-            let recordsForSelectedDay = recordsForDays[selectedDay] ?? []
-            isCompletedHabits = nonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay)
+            latestNonArchivedHabits = try await blockHabitRepository.readAllNonarchivedHabits()
+            updateHabitsIsCompletedForDay()
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
             fatalError("Problem getting habits")
@@ -80,11 +85,26 @@ public class HabitController: ObservableObject {
     }
     
     
+    private func updateHabitsIsCompletedForDay() {
+        
+        let recordsForSelectedDay = habitRecordsForDays[selectedDay] ?? []
+        isCompletedHabits = latestNonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay)
+    }
+    
+    
+    /// This is assumed that it is already been guarded to go here
+    private func setSelectedDayRaw(to date: Date) {
+        
+        selectedDay = date
+        updateHabitsIsCompletedForDay()
+    }
+    
+    
     public func setSelectedDay(to date: Date) {
         
         let habitRecordsForNewDay = habitRecordsForDays[date]
         if habitRecordsForNewDay != nil {
-            selectedDay = date
+            setSelectedDayRaw(to: date)
         }
     }
      
@@ -93,7 +113,7 @@ public class HabitController: ObservableObject {
         
         if isAllowedToGoToNextDay() {
             let nextDay = selectedDay.adding(days: 1)
-            selectedDay = nextDay
+            setSelectedDayRaw(to: nextDay)
         }
     }
     
@@ -103,7 +123,7 @@ public class HabitController: ObservableObject {
         if isAllowedToGoToPrevDay() {
             
             let prevDay = selectedDay.adding(days: -1)
-            selectedDay = prevDay
+            setSelectedDayRaw(to: prevDay)
         }
     }
     
