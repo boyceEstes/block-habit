@@ -17,7 +17,9 @@ enum Focusable: Hashable {
 }
 
 
-struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails {
+struct CreateHabitRecordWithDetailsView: View {
+    
+    @EnvironmentObject var habitController: HabitController
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
@@ -173,17 +175,10 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
         // We already have the DataHabit so we just need to create the DataHabitRecord
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
-        Task {
-            do {
-                try await createRecord(for: activity, in: blockHabitStore)
-                
-                DispatchQueue.main.async {
-                    dismiss()
-                }
-            } catch {
-                // FIXME: 2 - Handle error better on create habit record
-                fatalError("Something went wrong creating from the record with details view \(error)")
-            }
+        habitController.createRecord(for: activity, activityDetailRecords: activityDetailRecords)// createRecord(for: activity, in: blockHabitStore)
+        
+        DispatchQueue.main.async {
+            dismiss()
         }
     }
 }
