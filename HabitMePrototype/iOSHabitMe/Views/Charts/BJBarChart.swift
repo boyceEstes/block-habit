@@ -170,8 +170,6 @@ struct BarView: View {
                 .fill(.ultraThickMaterial)
                 .frame(height: 1)
             
-            let _ = print("Hi I am setting up the text for '\(DateFormatter.shortDate.string(from: date))' vs selectedDay, '\(DateFormatter.shortDate.string(from: selectedDay))'")
-            
             Text("\(date.displayDate)")
                 .font(.footnote)
                 .fontWeight(date == selectedDay ? .bold : .regular)
@@ -236,9 +234,6 @@ struct HabitRecordBlocksOnDate: View {
     
     var body: some View {
         ForEach(habitRecords, id: \.self) { habitRecord in
-            
-            let _ = print("-- completionDate: \(habitRecord.completionDate)")
-            let _ = print("-- creationDate: \(habitRecord.creationDate)")
             
             let isLastRecord = habitRecords.first == habitRecord
             

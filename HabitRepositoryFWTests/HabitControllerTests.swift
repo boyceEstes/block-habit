@@ -446,22 +446,24 @@ class HabitControllerTests: XCTestCase {
         repository.expCreateHabitRecord = exp
         
         let habit = Habit.nonArchivedOneGoal
-        sut.createRecord(for: habit)
+        sut.createRecord(for: habit, goToCreateActivityRecordWithDetails: { _, _ in })
         
         await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertEqual(repository.requests, expectedRepositoryReceivedMessages)
     }
     
-    func test_createHabitRecord_createsHabitRecordWithCorrectInformation() {
-        
-    }
+    func test_createHabitRecord_createsHabitRecordWithCorrectInformation() {}
     
-    func test_createHabitRecordWithHabitDoesNotExistError_throwsError() {}
+    func test_createHabitRecordWithHabitDoesNotExistError_throwsErrorAndDoesNotUpdateInMemory() {}
     
-    func test_createHabitRecordWithInsertionError_throwsError() {}
+    func test_createHabitRecordWithInsertionError_throwsErrorAndDoesNotUpdateInMemory() {}
     
     func test_createHabitRecord_updatesInMemoryRecordsAndUpdatesIsCompleteHabits() {}
+    
+    func test_createHabitRecordWithActivityDetailsOnHabit_executesOnlyTheNavigationClosure() {}
+    
+    func test_createHabitRecordWithActivityDetailsInHabitRecord_savesWithAllTheActivityDetailInfo() {}
 
     
     

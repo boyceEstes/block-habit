@@ -95,8 +95,11 @@ public class HabitController: ObservableObject {
     /// This is assumed that it is already been guarded to go here
     private func setSelectedDayRaw(to date: Date) {
         
-        selectedDay = date
-        updateHabitsIsCompletedForDay()
+        Task { @MainActor in
+            
+            selectedDay = date
+            updateHabitsIsCompletedForDay()
+        }
     }
     
     
