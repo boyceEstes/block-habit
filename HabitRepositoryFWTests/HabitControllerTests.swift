@@ -460,10 +460,12 @@ class HabitControllerTests: XCTestCase {
     func test_createHabitRecordWithInsertionError_throwsErrorAndDoesNotUpdateInMemory() {}
     
     func test_createHabitRecord_updatesInMemoryRecordsAndUpdatesIsCompleteHabits() {}
+    func test_createHabitRecord_placesInMemoryRecordsInCorrectSpotInDictionary() {}
     
     func test_createHabitRecordWithActivityDetailsOnHabit_executesOnlyTheNavigationClosure() {}
     
     func test_createHabitRecordWithActivityDetailsInHabitRecord_savesWithAllTheActivityDetailInfo() {}
+
 
     
     

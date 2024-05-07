@@ -149,7 +149,7 @@ struct HomeView: View {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
 //                         FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                        habitController.createRecord(
+                        habitController.createRecordOrNavigateToRecordWithDetails(
                             for: habit,
                             goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                         )

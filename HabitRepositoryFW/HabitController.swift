@@ -157,37 +157,45 @@ public class HabitController: ObservableObject {
     // I am moving away from using that fun protocol system that I made because this
     // logic should be pretty central and shared with everything. If I need to break it up
     // I know how, but simplicity is the name of the game for now.
-    public func createRecord(
+    public func createRecordOrNavigateToRecordWithDetails(
         for habit: Habit,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         
+        if isNavigatingToCreateRecordWithDetails(for: habit) {
+            goToCreateActivityRecordWithDetails(habit, selectedDay)
+        } else {
+            createRecord(for: habit, activityDetailRecords: [])
+        }
+    }
+    
+    
+    public func createRecord(
+        for habit: Habit,
+        activityDetailRecords: [ActivityDetailRecord] = []
+    ) {
         Task {
             do {
-                if isNavigatingToCreateRecordWithDetails(for: habit) {
-                    goToCreateActivityRecordWithDetails(habit, selectedDay)
-                } else {
-                    
-                    let habitRecord = await makeHabitRecord(
-                        for: habit,
-                        activityDetailRecords: []
-                    )
-                    
-                    try await insertRecord(
-                        habitRecord: habitRecord,
-                        in: blockHabitRepository
-                    )
-                    
-                    Task { @MainActor in
-                        // This should never be nil because we set each date in the dictionary to have an empty array
-                        habitRecordsForDays[selectedDay]?.append(habitRecord)
-                        await populateHabits()
-                    }
-                }
+                let habitRecord = await makeHabitRecord(for: habit, activityDetailRecords: activityDetailRecords)
+                try await insertRecord(habitRecord: habitRecord, in: blockHabitRepository)
+                
+                
+                await updateLocalWithNewRecord(habitRecord)
+                
             } catch {
-                // FIXME: Handle Error in View
+                // FIXME: Handle Errors
                 fatalError("ERROR OH NO - BURN IT ALL DOWN")
             }
+        }
+    }
+    
+    
+    private func updateLocalWithNewRecord(_ habitRecord: HabitRecord) async {
+        
+        Task { @MainActor in
+            // This should never be nil because we set each date in the dictionary to have an empty array
+            habitRecordsForDays[selectedDay]?.append(habitRecord)
+            await populateHabits()
         }
     }
     
@@ -200,7 +208,7 @@ public class HabitController: ObservableObject {
     
     private func makeHabitRecord(
         for habit: Habit,
-        activityDetailRecords: [ActivityDetailRecord] = []
+        activityDetailRecords: [ActivityDetailRecord]
     ) async -> HabitRecord {
         
         let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
