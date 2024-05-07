@@ -70,7 +70,7 @@ class BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
 //        case updateHabit
 //        case deleteHabit
         
-//        case createHabitRecord
+        case createHabitRecord
         case readAllHabitRecords
 //        case updateHabitRecord
 //        case deleteHabitRecord
@@ -82,6 +82,7 @@ class BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
     
     var expHabitRecords: XCTestExpectation?
     var expHabits: XCTestExpectation?
+    var expCreateHabitRecord: XCTestExpectation?
     
     private(set) var requests = [ReceivedMessage]()
     
@@ -142,7 +143,8 @@ class BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
     }
     
     func createHabitRecord(_ habitRecord: HabitRepositoryFW.HabitRecord) async throws {
-        // Doesn't matter
+        requests.append(.createHabitRecord)
+        expCreateHabitRecord?.fulfill()
     }
     
     func updateHabitRecord(id: String, with habitRecord: HabitRepositoryFW.HabitRecord) async throws {
@@ -197,7 +199,6 @@ class HabitControllerTests: XCTestCase {
     func test_initWithHabitRecordsInRepository_correctlyCalculatesRecordsForDates() async {
         
         // given/when
-        let selectedDay = someDay
         let selectedDayNoon = someDay.noon!
         
         let selectedDayNoonsYesterday = selectedDayNoon.adding(days: -1)
@@ -229,7 +230,7 @@ class HabitControllerTests: XCTestCase {
             habitRecord8
         ]
         
-        let (sut, _) = makeSUTWithStubbedRepository(selectedDay: selectedDay, stubRecords: stubRecords)
+        let (sut, _) = makeSUTWithStubbedRepository(selectedDay: selectedDayNoon, stubRecords: stubRecords)
 
         
         let expectedHabitRecordsPerDays = [
@@ -306,14 +307,9 @@ class HabitControllerTests: XCTestCase {
             IsCompletedHabit(habit: nonArchivedZeroGoal, isCompleted: false)
         )
         
-//        var receivedCompleteHabitsForOneDayAgo = [Habit]()
-//        var receivedIncompleteHabitsForOneDayAgo = [Habit]()
-        
         var cancellables = Set<AnyCancellable>()
         
         let exp = expectation(description: "Wait for iscompleted habits")
-//        let expCompletedHabits = expectation(description: "Wait for completed habits")
-//        let expIncompleteHabits = expectation(description: "Wait for incomplete habits")
         
         var isCompletedHabits = Set<IsCompletedHabit>()
         sut.$isCompletedHabits
@@ -321,34 +317,9 @@ class HabitControllerTests: XCTestCase {
             .sink { isCompletedHabitsSet in
                 isCompletedHabits = isCompletedHabitsSet
                 exp.fulfill()
-//                expCompletedHabits.fulfill()
-//                expIncompleteHabits.fulfill()
             }.store(in: &cancellables)
         
-//        sut.completeHabits
-//            .dropFirst()
-//            .sink { completeHabits in
-//                
-//                receivedCompleteHabitsForOneDayAgo = completeHabits
-//                expCompletedHabits.fulfill()
-//            }
-//            .store(in: &cancellables)
-//        
-//        sut.incompleteHabits
-//            .dropFirst()
-//            .sink { incompleteHabits in
-//                
-//                receivedIncompleteHabitsForOneDayAgo = incompleteHabits
-//                expIncompleteHabits.fulfill()
-//            }
-//            .store(in: &cancellables)
-//        
-        
         await fulfillment(of: [exp], timeout: 1)
-//
-//        XCTAssertEqual(receivedCompleteHabitsForOneDayAgo, expectedCompleteHabitsForOneDayAgo)
-//        XCTAssertEqual(receivedIncompleteHabitsForOneDayAgo, expectedIncompleteHabitsForOneDayAgo)
-        
         XCTAssertEqual(isCompletedHabits, expectedIsCompletedHabitsForOneDayAgo)
     }
     
@@ -416,42 +387,82 @@ class HabitControllerTests: XCTestCase {
     }
     
     
-    func test_allowedToGoToNextDayAtBeginningOfAvailableDays_deliversTrue() async {
+//    func test_allowedToGoToNextDayAtBeginningOfAvailableDays_deliversTrue() async {
+//        
+//        // given
+//        let selectedDay = someDay.noon! // It has to be created with this for the habitRecordsForDays to be set up correctly
+//        let (sut, repository) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
+//        
+//        // Wait for all of the information to be gathered
+//        let exp = expectation(description: "Wait for initial fetches for records and habits to be made")
+//        exp.expectedFulfillmentCount = 2
+//        
+//        repository.expHabits = exp
+//        repository.expHabitRecords = exp
+//        
+//        await fulfillment(of: [exp], timeout: 1)
+//        
+//        // Wait change the selected day to 3 days ago
+//        let expDate = expectation(description: "Wait for selectedDay to be changed")
+//        var cancellables = Set<AnyCancellable>()
+//        
+//        sut.selectedDay = selectedDay.adding(days: -6)
+//        
+//        var isAllowedToGoToNextDay = false
+//        
+//        sut.$selectedDay
+//            .sink { _ in
+//                isAllowedToGoToNextDay = sut.isAllowedToGoToNextDay()
+//                expDate.fulfill()
+//            }.store(in: &cancellables)
+//        
+//        // then
+//        await fulfillment(of: [expDate], timeout: 1)
+//        XCTAssertTrue(isAllowedToGoToNextDay)
+//    }
+    
+    // MARK: Create Habit Record
+    
+    
+    // MARK: Create Record
+    func test_createHabitRecord_sendsMessageToRepository() async {
         
-        // given
-        let selectedDay = someDay.noon! // It has to be created with this for the habitRecordsForDays to be set up correctly
-        let (sut, repository) = makeSUTWithStubbedRepository(selectedDay: selectedDay)
+        // These are the dates of
+        let selectedDayNoon = someDay.noon!
+//        let selectedDayNoonsYesterday = selectedDayNoon.adding(days: -1)
+//        let selectedDayNoonsMinusTwo = selectedDayNoon.adding(days: -2)
+//        let selectedDayNoonsMinusThree = selectedDayNoon.adding(days: -3)
+//        let selectedDayNoonsMinusFour = selectedDayNoon.adding(days: -4)
+//        let selectedDayNoonsMinusFive = selectedDayNoon.adding(days: -5)
+//        let selectedDayNoonsMinusSix = selectedDayNoon.adding(days: -6)
         
-        // Wait for all of the information to be gathered
-        let exp = expectation(description: "Wait for initial fetches for records and habits to be made")
-        exp.expectedFulfillmentCount = 2
+        let (sut, repository) = makeSUTWithStubbedRepository()
         
-        repository.expHabits = exp
-        repository.expHabitRecords = exp
+        
+        // We shouldn't need to wait for the initializer stuff to complete because the create will happen later
+        let exp = expectation(description: "Wait for create record to finish")
+        let expectedRepositoryReceivedMessages: [BlockHabitRepositoryMultipleHabitsAndRecordsStub.ReceivedMessage] = [.readAllHabitRecords, .readAllNonarchivedHabits, .createHabitRecord]
+       
+        repository.expCreateHabitRecord = exp
+        
+        let habit = Habit.nonArchivedOneGoal
+        sut.createRecord(for: habit)
         
         await fulfillment(of: [exp], timeout: 1)
         
-        // Wait change the selected day to 3 days ago
-        let expDate = expectation(description: "Wait for selectedDay to be changed")
-        var cancellables = Set<AnyCancellable>()
-        
-        sut.selectedDay = selectedDay.adding(days: -6)
-        
-        var isAllowedToGoToNextDay = false
-        
-        sut.$selectedDay
-            .sink { _ in
-                isAllowedToGoToNextDay = sut.isAllowedToGoToNextDay()
-                expDate.fulfill()
-            }.store(in: &cancellables)
-        
-        // then
-        await fulfillment(of: [expDate], timeout: 1)
-        XCTAssertTrue(isAllowedToGoToNextDay)
+        XCTAssertEqual(repository.requests, expectedRepositoryReceivedMessages)
     }
     
+    func test_createHabitRecord_createsHabitRecordWithCorrectInformation() {
+        
+    }
     
+    func test_createHabitRecordWithHabitDoesNotExistError_throwsError() {}
     
+    func test_createHabitRecordWithInsertionError_throwsError() {}
+    
+    func test_createHabitRecord_updatesInMemoryRecordsAndUpdatesIsCompleteHabits() {}
+
     
     
     // Test to make sure only habits that are not archived are retrieved

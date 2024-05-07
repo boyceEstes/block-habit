@@ -13,7 +13,7 @@ import HabitRepositoryFW
 
 
 @Observable
-final class HomeViewModel: ActivityRecordCreatorOrNavigator {
+final class HomeViewModel {
     
     let blockHabitStore: CoreDataBlockHabitStore
     var habitDataSource: HabitDataSource // Can get updated when selectedDate changes
@@ -108,16 +108,16 @@ final class HomeViewModel: ActivityRecordCreatorOrNavigator {
     
     func createHabitRecord(for habit: Habit) {
         
-        Task {
-            do {
-                try await createRecord(for: habit, in: blockHabitStore)
-                
-                updateIfHabitIsCompleted(habit)
-            } catch {
-                // FIXME: Handle Error in View
-                fatalError("ERROR OH NO - BURN IT ALL DOWN")
-            }
-        }
+//        Task {
+//            do {
+//                try await createRecord(for: habit, in: blockHabitStore)
+//                
+//                updateIfHabitIsCompleted(habit)
+//            } catch {
+//                // FIXME: Handle Error in View
+//                fatalError("ERROR OH NO - BURN IT ALL DOWN")
+//            }
+//        }
     }
     
     

@@ -146,4 +146,77 @@ public class HabitController: ObservableObject {
         
         return habitRecordsForPrevDay != nil
     }
+    
+    
+    // MARK: Create record
+    // I am moving away from using that fun protocol system that I made because this
+    // logic should be pretty central and shared with everything. If I need to break it up
+    // I know how, but simplicity is the name of the game for now.
+    public func createRecord(
+        for habit: Habit,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+    ) {
+        
+        Task {
+            do {
+                if isNavigatingToCreateRecordWithDetails(for: habit) {
+                    goToCreateActivityRecordWithDetails(habit, selectedDay)
+                } else {
+                    
+                    let habitRecord = await makeHabitRecord(
+                        for: habit,
+                        activityDetailRecords: []
+                    )
+                    
+                    try await insertRecord(
+                        habitRecord: habitRecord,
+                        in: blockHabitRepository
+                    )
+                    
+                    Task { @MainActor in
+                        // This should never be nil because we set each date in the dictionary to have an empty array
+                        habitRecordsForDays[selectedDay]?.append(habitRecord)
+                        await populateHabits()
+                    }
+                }
+            } catch {
+                // FIXME: Handle Error in View
+                fatalError("ERROR OH NO - BURN IT ALL DOWN")
+            }
+        }
+    }
+    
+    
+    private func isNavigatingToCreateRecordWithDetails(for habit: Habit) -> Bool {
+        
+        return !habit.activityDetails.isEmpty
+    }
+    
+    
+    private func makeHabitRecord(
+        for habit: Habit,
+        activityDetailRecords: [ActivityDetailRecord] = []
+    ) async -> HabitRecord {
+        
+        let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
+        
+        let habitRecord = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: creationDate,
+            completionDate: completionDate,
+            activityDetailRecords: activityDetailRecords,
+            habit: habit
+        )
+        
+        return habitRecord
+    }
+    
+    
+    private func  insertRecord(
+        habitRecord: HabitRecord,
+        in store: BlockHabitRepository
+    ) async throws {
+        
+        try await store.createHabitRecord(habitRecord)
+    }
 }

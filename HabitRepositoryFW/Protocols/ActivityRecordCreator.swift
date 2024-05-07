@@ -7,25 +7,24 @@
 
 import Foundation
 import SwiftData
-import HabitRepositoryFW
 
 
 // MARK: Base layer of creating an activity record - this is used to give a single flow of logic for creating activity records within the app
 /// This is meant to be a base-level for other, more complicated protocols like `ActivityRecordCreatorOrNavigator` and `ActivityRecordCreatorWithDetails` - Use those
 /// to actually use the `createRecord(for:in:)` functionality
-protocol ActivityRecordCreator {
+public protocol ActivityRecordCreator {
     
     var selectedDay: Date { get }
 }
 
 
-extension ActivityRecordCreator {
+public extension ActivityRecordCreator {
     
     /// The logic for parsing the dates according to the Business Logic Policy that we have in place and deliver all information necessary to insert into the database
     func parseDatesAndInsertRecord(
         for habit: Habit,
         activityDetailRecords: [ActivityDetailRecord] = [],
-        in store: CoreDataBlockHabitStore
+        in store: BlockHabitRepository
     ) async throws {
         
         let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
@@ -38,7 +37,7 @@ extension ActivityRecordCreator {
             habit: habit
         )
         
-        try await store.create(habitRecord)
+        try await store.createHabitRecord(habitRecord)
     }
 }
 
@@ -47,14 +46,10 @@ extension ActivityRecordCreator {
 // MARK: ActivityRecordCreaterOrNavigator - Used anywhere that we will need to input or navigate to detail insertion (First layer of creation)
 
 /// Allow the conforming instance to create the record or navigate if needed (there are details to be filled first)
-protocol ActivityRecordCreatorOrNavigator: ActivityRecordCreator {
-    
-    var selectedDay: Date { get }
-    var goToCreateActivityRecordWithDetails: (Habit, Date) -> Void { get }
-}
+public protocol ActivityRecordCreatorOrNavigator: ActivityRecordCreator {}
 
 
-extension ActivityRecordCreatorOrNavigator {
+public extension ActivityRecordCreatorOrNavigator {
     
     private func isNavigatingToCreateRecordWithDetails(for habit: Habit) -> Bool {
         
@@ -62,7 +57,11 @@ extension ActivityRecordCreatorOrNavigator {
     }
 
     
-    func createRecord(for habit: Habit, in store: CoreDataBlockHabitStore) async throws {
+    func createRecord(
+        for habit: Habit,
+        in store: BlockHabitRepository,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+    ) async throws {
         
         if isNavigatingToCreateRecordWithDetails(for: habit) {
             goToCreateActivityRecordWithDetails(habit, selectedDay)
@@ -75,13 +74,13 @@ extension ActivityRecordCreatorOrNavigator {
 
 // MARK: ActivityRecordCreatorWithDetails - Used when we have acitivity detail records to input with our habit record (Final layer of creation)
 /// Allows the conforming instance to create the record with the details that were required
-protocol ActivityRecordCreatorWithDetails: ActivityRecordCreator {
+public protocol ActivityRecordCreatorWithDetails: ActivityRecordCreator {
     
     var activityDetailRecords: [ActivityDetailRecord] { get }
 }
 
 
-extension ActivityRecordCreatorWithDetails {
+public extension ActivityRecordCreatorWithDetails {
     
 //    func createRecord(for activity: Habit, in modelContext: ModelContext) {
 //        

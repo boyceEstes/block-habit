@@ -66,6 +66,7 @@ struct HomeView: View {
     let goToHabitRecordDetail: (HabitRecord) -> Void
     let goToEditHabit: (Habit) -> Void
     let goToStatistics: () -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
     /*
      * So now the goal is to setup all of the data record stuff here from SwiftData.
@@ -92,6 +93,7 @@ struct HomeView: View {
         self.goToHabitRecordDetail = goToHabitRecordDetail
         self.goToEditHabit = goToEditHabit
         self.goToStatistics = goToStatistics
+        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
         
         // FIXME: 2 GoToCreateActivityRecordsWithDetails
 //        self._viewModel = State(
@@ -146,7 +148,11 @@ struct HomeView: View {
                     didTapCreateHabitButton: {
                         goToCreateHabit()
                     }, didTapHabitButton: { habit in
-                        // FIXME: 2 - viewModel.createHabitRecord(for: habit)
+//                         FIXME: 2 - viewModel.createHabitRecord(for: habit)
+                        habitController.createRecord(
+                            for: habit,
+                            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+                        )
                         print("record habit")
                     }, archiveHabit: { habit in
                         // FIXME: 2 - viewModel.archiveHabit(for: habit)

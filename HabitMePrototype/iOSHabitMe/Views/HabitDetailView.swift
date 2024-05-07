@@ -69,7 +69,7 @@ class HabitDetailViewModel {
 }
 
 
-struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
+struct HabitDetailView: View {
 
     @EnvironmentObject var habitController: HabitController
     @State private var viewModel: HabitDetailViewModel

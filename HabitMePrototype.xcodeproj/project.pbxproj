@@ -51,6 +51,8 @@
 		B389D2FD2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */; };
 		B389D2FF2BE59343004A8CF0 /* Array+IsCompletedHabits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */; };
 		B389D3012BE66C45004A8CF0 /* CoreDataBlockHabitStore+BlockHabitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D3002BE66C45004A8CF0 /* CoreDataBlockHabitStore+BlockHabitRepository.swift */; };
+		B39A274B2BE9B119002A5A88 /* ActivityRecordCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */; };
+		B39A274C2BE9B12E002A5A88 /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */; };
 		B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F72BDFC9D800240EB0 /* Habit.swift */; };
 		B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */; };
@@ -80,9 +82,7 @@
 		B3B2F31E2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F31D2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift */; };
 		B3B2F33F2BE2C46B00240EB0 /* HabitControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F33E2BE2C46B00240EB0 /* HabitControllerTests.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
-		B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
 		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
-		B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */; };
 		B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */; };
 		B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */; };
 		B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */; };
@@ -401,10 +401,12 @@
 		B3621E502BDDE0F900BE88C2 /* HabitRepositoryFW */ = {
 			isa = PBXGroup;
 			children = (
+				B3B4038A2B71331E00D1967E /* Protocols */,
 				B3B2F30B2BE0036800240EB0 /* CoreData */,
 				B3B2F2F62BDFC9C800240EB0 /* Model */,
 				B3621E512BDDE0F900BE88C2 /* HabitRepositoryFW.h */,
 				B389D2F82BE59280004A8CF0 /* HabitController.swift */,
+				B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */,
 				B389D2FA2BE592B6004A8CF0 /* BlockHabitRepository.swift */,
 				B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */,
 				B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */,
@@ -531,7 +533,6 @@
 		B3B403852B71237900D1967E /* Policies */ = {
 			isa = PBXGroup;
 			children = (
-				B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */,
 				B3BFEA132B77FF6B00DE7617 /* DisplayDatePolicy.swift */,
 				B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */,
 			);
@@ -589,7 +590,6 @@
 			isa = PBXGroup;
 			children = (
 				B37AC7792BAF53690052552B /* Models */,
-				B3B4038A2B71331E00D1967E /* Protocols */,
 				B3C97F142B5CE83600211B4C /* Cache */,
 				B3B403852B71237900D1967E /* Policies */,
 			);
@@ -894,7 +894,6 @@
 				B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */,
 				B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */,
 				B3B2F3092BDFCC9000240EB0 /* ActivityDetailType+UI.swift in Sources */,
-				B3B4038C2B7133F100D1967E /* ActivityRecordCreator.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */,
 				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
@@ -919,7 +918,6 @@
 				B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */,
 				B37AC7762BA086E50052552B /* HomeViewModel.swift in Sources */,
 				B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */,
-				B3B403872B7128A100D1967E /* ActivityRecordCreationPolicy.swift in Sources */,
 				B3BFEA0F2B76769900DE7617 /* NumberTextField.swift in Sources */,
 				B3BFEA1E2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift in Sources */,
 				B32947C82B65950D007C8C1E /* StatisticsView.swift in Sources */,
@@ -963,6 +961,7 @@
 				B3B2F31B2BE2850000240EB0 /* HabitMenuDataSource.swift in Sources */,
 				B3B2F3122BE005F300240EB0 /* ManagedActivityDetailRecord+CoreDataProperties.swift in Sources */,
 				B3B2F3182BE02AD500240EB0 /* CoreDataBlockHabitStore+Habit.swift in Sources */,
+				B39A274C2BE9B12E002A5A88 /* ActivityRecordCreationPolicy.swift in Sources */,
 				B3B2F31E2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift in Sources */,
 				B3B2F3102BE005F300240EB0 /* ManagedHabitRecord+CoreDataProperties.swift in Sources */,
 				B3B2F3162BE02AA700240EB0 /* CoreDataBlockHabitStore.swift in Sources */,
@@ -970,6 +969,7 @@
 				B3B2F30E2BE005F300240EB0 /* HabitFRCDataSourceAdapter.swift in Sources */,
 				B389D2FF2BE59343004A8CF0 /* Array+IsCompletedHabits.swift in Sources */,
 				B3B2F3172BE02AD500240EB0 /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */,
+				B39A274B2BE9B119002A5A88 /* ActivityRecordCreator.swift in Sources */,
 				B3B2F2FB2BDFCA0700240EB0 /* ActivityDetailSortable.swift in Sources */,
 				B3B2F30C2BE005DA00240EB0 /* ManagedHabit.swift in Sources */,
 				B3B2F3112BE005F300240EB0 /* CoreDataBlockHabitStore+habitDataSource.swift in Sources */,
