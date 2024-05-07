@@ -194,7 +194,7 @@ public class HabitController: ObservableObject {
         
         Task { @MainActor in
             // This should never be nil because we set each date in the dictionary to have an empty array
-            habitRecordsForDays[selectedDay]?.append(habitRecord)
+            habitRecordsForDays[selectedDay]?.insert(habitRecord, at: 0)
             await populateHabits()
         }
     }
