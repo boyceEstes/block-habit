@@ -87,8 +87,10 @@ public class HabitController: ObservableObject {
     
     private func updateHabitsIsCompletedForDay() {
         
-        let recordsForSelectedDay = habitRecordsForDays[selectedDay] ?? []
-        isCompletedHabits = latestNonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay)
+        Task { @MainActor in
+            let recordsForSelectedDay = habitRecordsForDays[selectedDay] ?? []
+            isCompletedHabits = latestNonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay)
+        }
     }
     
     
