@@ -112,7 +112,7 @@ public class HabitController: ObservableObject {
             setSelectedDayRaw(to: date)
         }
     }
-     
+    
     
     public func goToNextDay() {
         
@@ -153,7 +153,31 @@ public class HabitController: ObservableObject {
     }
     
     
-    // MARK: Create record
+}
+
+
+// MARK: Create habit
+extension HabitController {
+    
+    public func createHabit(_ habit: Habit) {
+        
+        Task {
+            do {
+                try await blockHabitRepository.createHabit(habit)
+                
+                // It will always be false because it can't be done on creation
+                isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
+                
+            } catch {
+                fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
+            }
+        }
+    }
+}
+
+// MARK: Create record
+extension HabitController {
+
     // I am moving away from using that fun protocol system that I made because this
     // logic should be pretty central and shared with everything. If I need to break it up
     // I know how, but simplicity is the name of the game for now.
@@ -177,8 +201,8 @@ public class HabitController: ObservableObject {
         Task {
             do {
                 let habitRecord = await makeHabitRecord(for: habit, activityDetailRecords: activityDetailRecords)
-                try await insertRecord(habitRecord: habitRecord, in: blockHabitRepository)
                 
+                try await insertRecord(habitRecord: habitRecord, in: blockHabitRepository)
                 
                 await updateLocalWithNewRecord(habitRecord)
                 
@@ -225,7 +249,7 @@ public class HabitController: ObservableObject {
     }
     
     
-    private func  insertRecord(
+    private func insertRecord(
         habitRecord: HabitRecord,
         in store: BlockHabitRepository
     ) async throws {

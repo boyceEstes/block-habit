@@ -11,7 +11,20 @@ import Foundation
 extension CoreDataBlockHabitStore: BlockHabitRepository {
     
     public func createHabit(_ habit: Habit) async throws {
-        // TODO: later
+
+        let context = context
+        try await context.perform {
+            
+            let managedHabit = ManagedHabit(context: context)
+            managedHabit.id = habit.id
+            
+            try managedHabit.populate(from: habit, in: context)
+            managedHabit.habitRecords = nil
+            
+            // save
+            try context.save()
+            // FIXME: Rollback if there is an error
+        }
     }
     
     public func readAllNonarchivedHabits() async throws -> [Habit] {

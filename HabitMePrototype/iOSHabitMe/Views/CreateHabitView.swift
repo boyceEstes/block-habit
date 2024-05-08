@@ -108,6 +108,7 @@ struct HabitDetail: Hashable, Identifiable {
 
 struct CreateHabitView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
@@ -160,32 +161,24 @@ struct CreateHabitView: View {
      * so to speed things up I will leave that for now and just do a conversion here at the save point.
      */
     func didTapButtonToCreateHabit() {
+
+        guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
+            return
+        }
         
-        Task {
-            do {
-                guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
-                    return
-                }
-                
-                let habit = Habit(
-                    id: UUID().uuidString,
-                    name: nameTextFieldValue,
-                    isArchived: false,
-                    goalCompletionsPerDay: completionGoal,
-                    color: stringColorHex,
-                    activityDetails: selectedDetails
-                )
-                
-                try await blockHabitStore.create(habit)
-                
-                DispatchQueue.main.async {
-                    dismiss()
-                }
-                
-            } catch {
-                // FIXME: Handle errors with saving to core data
-                fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
-            }
+        let habit = Habit(
+            id: UUID().uuidString,
+            name: nameTextFieldValue,
+            isArchived: false,
+            goalCompletionsPerDay: completionGoal,
+            color: stringColorHex,
+            activityDetails: selectedDetails
+        )
+        
+        habitController.createHabit(habit)
+        
+        DispatchQueue.main.async {
+            dismiss()
         }
     }
 }
