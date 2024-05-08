@@ -29,7 +29,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
     func test_oneHabitWithNoRecords_deliversOneIncompleteHabit() {
         
         // given
-        let habit = Habit.nonArchivedOneGoal
+        let habit = Habit.nonArchivedOneGoal()
         let habits: [Habit] = [habit]
         let habitRecordsForDay: [HabitRecord] = []
         
@@ -46,7 +46,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
     func test_oneHabitWithGoalRecords_deliversOneCompleteHabit() {
         
         // given
-        let habit = Habit.nonArchivedOneGoal
+        let habit = Habit.nonArchivedOneGoal()
         let habits: [Habit] = [habit]
         // We are trusting that we have gotten the date right from the habitRecordsForDays calculations
         let habitRecord = HabitRecord.habitRecord(date: Date(), habit: habit)
@@ -65,7 +65,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
     func test_oneHabitWithMoreRecordsThanGoal_deliversOneCompleteHabit() {
         
         // given
-        let habit = Habit.nonArchivedOneGoal
+        let habit = Habit.nonArchivedOneGoal()
         let habits: [Habit] = [habit]
         // We are trusting that we have gotten the date right from the habitRecordsForDays calculations
         let habitRecord = HabitRecord.habitRecord(habit: habit)
@@ -85,7 +85,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
     func test_oneHabitWithZeroGoalAndRecords_deliversOneIncompleteHabit() {
         
         // given
-        let habit = Habit.nonArchivedZeroGoal
+        let habit = Habit.nonArchivedZeroGoal()
         let habits: [Habit] = [habit]
         // We are trusting that we have gotten the date right from the habitRecordsForDays calculations
         let habitRecord = HabitRecord.habitRecord(habit: habit)
@@ -104,7 +104,7 @@ class Array_IsCompletedHabitsTests: XCTestCase {
     func test_oneArchivedHabitWithGoalRecords_deliversNothing() {
         
         // given
-        let habit = Habit.archivedOneGoal
+        let habit = Habit.archivedOneGoal()
         let habits: [Habit] = [habit]
         // We are trusting that we have gotten the date right from the habitRecordsForDays calculations
         let habitRecord = HabitRecord.habitRecord(habit: habit)

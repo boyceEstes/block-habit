@@ -31,7 +31,7 @@ class Array_HabitRecordsForDays_BufferDaysTests: XCTestCase {
         
         // given
         let currentDay = Date().noon!
-        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: currentDay, habit: Habit.archivedOneGoal)]
+        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: currentDay, habit: Habit.archivedOneGoal())]
         
         // when
         let bufferDays = habitRecords.bufferDaysForHabitRecordsForDays(currentDay: currentDay, delimiter: delimiter)
@@ -46,7 +46,7 @@ class Array_HabitRecordsForDays_BufferDaysTests: XCTestCase {
         // given
         let currentDay = Date().noon!
         let threeDaysAgo = currentDay.adding(days: -3)
-        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: threeDaysAgo, habit: Habit.archivedOneGoal)]
+        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: threeDaysAgo, habit: Habit.archivedOneGoal())]
         
         // when
         let bufferDays = habitRecords.bufferDaysForHabitRecordsForDays(currentDay: currentDay, delimiter: delimiter)
@@ -61,7 +61,7 @@ class Array_HabitRecordsForDays_BufferDaysTests: XCTestCase {
         // given
         let currentDay = Date().noon!
         let sixDaysAgo = currentDay.adding(days: -6)
-        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: sixDaysAgo, habit: Habit.archivedOneGoal)]
+        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: sixDaysAgo, habit: Habit.archivedOneGoal())]
         
         // when
         let bufferDays = habitRecords.bufferDaysForHabitRecordsForDays(currentDay: currentDay, delimiter: delimiter)
@@ -76,7 +76,7 @@ class Array_HabitRecordsForDays_BufferDaysTests: XCTestCase {
         // given
         let currentDay = Date().noon!
         let sevenDaysAgo = currentDay.adding(days: -7)
-        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: sevenDaysAgo, habit: Habit.archivedOneGoal)]
+        let habitRecords: [HabitRecord] = [HabitRecord.habitRecord(date: sevenDaysAgo, habit: Habit.archivedOneGoal())]
         
         // when
         let bufferDays = habitRecords.bufferDaysForHabitRecordsForDays(currentDay: currentDay, delimiter: delimiter)
@@ -95,8 +95,8 @@ class Array_HabitRecordsForDays_BufferDaysTests: XCTestCase {
         
         // ORDER MATTERS!!
         let habitRecords: [HabitRecord] = [
-            HabitRecord.habitRecord(date: threeDaysAgo, habit: Habit.nonArchivedTwoGoal),
-            HabitRecord.habitRecord(date: sevenDaysAgo, habit: Habit.nonArchivedOneGoal)
+            HabitRecord.habitRecord(date: threeDaysAgo, habit: Habit.nonArchivedTwoGoal()),
+            HabitRecord.habitRecord(date: sevenDaysAgo, habit: Habit.nonArchivedOneGoal())
         ]
         
         // when
@@ -158,7 +158,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         let someDateMinus5 = someDateNoon.adding(days: -5)
         let someDateMinus6 = someDateNoon.adding(days: -6)
         
-        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateNoon, habit: Habit.nonArchivedOneGoal)
+        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateNoon, habit: Habit.nonArchivedOneGoal())
         let habitRecords = [oneHabitRecordOnCurrentDay]
         
         let expectedHabitRecordsForDay: [Date: [HabitRecord]] = [
@@ -191,7 +191,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         let someDateMinus5 = someDateNoon.adding(days: -5)
         let someDateMinus6 = someDateNoon.adding(days: -6)
         
-        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateMinus3, habit: Habit.nonArchivedOneGoal)
+        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateMinus3, habit: Habit.nonArchivedOneGoal())
         let habitRecords = [oneHabitRecordOnCurrentDay]
         
         let expectedHabitRecordsForDay: [Date: [HabitRecord]] = [
@@ -225,7 +225,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         let someDateMinus5 = someDateNoon.adding(days: -5)
         let someDateMinus6 = someDateNoon.adding(days: -6)
         
-        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateMinus6, habit: Habit.nonArchivedOneGoal)
+        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateMinus6, habit: Habit.nonArchivedOneGoal())
         let habitRecords = [oneHabitRecordOnCurrentDay]
         
         let expectedHabitRecordsForDay: [Date: [HabitRecord]] = [
@@ -259,7 +259,7 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         let someDateMinus6 = someDateNoon.adding(days: -6)
         let someDateMinus7 = someDateNoon.adding(days: -7)
         
-        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateMinus7, habit: Habit.nonArchivedOneGoal)
+        let oneHabitRecordOnCurrentDay = HabitRecord.habitRecord(date: someDateMinus7, habit: Habit.nonArchivedOneGoal())
         let habitRecords = [oneHabitRecordOnCurrentDay]
         
         let expectedHabitRecordsForDay: [Date: [HabitRecord]] = [
@@ -293,8 +293,8 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
         let someDateMinus6 = someDateNoon.adding(days: -6)
         let someDateMinus7 = someDateNoon.adding(days: -7)
         
-        let oneHabitRecordOnSevenDaysAgo = HabitRecord.habitRecord(date: someDateMinus7, habit: Habit.nonArchivedOneGoal)
-        let oneHabitRecordOnThreeDaysAgo = HabitRecord.habitRecord(date: someDateMinus3, habit: Habit.nonArchivedTwoGoal)
+        let oneHabitRecordOnSevenDaysAgo = HabitRecord.habitRecord(date: someDateMinus7, habit: Habit.nonArchivedOneGoal())
+        let oneHabitRecordOnThreeDaysAgo = HabitRecord.habitRecord(date: someDateMinus3, habit: Habit.nonArchivedTwoGoal())
         
         let habitRecords: [HabitRecord] = [
             oneHabitRecordOnSevenDaysAgo,
@@ -322,7 +322,5 @@ class Array_HabitRecordsForDaysTests: XCTestCase {
     }
     
     
-    
     var delimiter: Int { return 7 }
 }
-

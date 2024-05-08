@@ -13,38 +13,49 @@ import HabitRepositoryFW
 
 extension Habit {
     
-    static let archivedOneGoal = Habit(
-        id: UUID().uuidString,
-        name: "Mood",
-        isArchived: true,
-        goalCompletionsPerDay: 1,
-        color: "#ffffff",
-        activityDetails: []
-    )
-    static let nonArchivedZeroGoal = Habit(
-        id: UUID().uuidString,
-        name: "Water",
-        isArchived: false,
-        goalCompletionsPerDay: 0,
-        color: "#ffffff",
-        activityDetails: []
-    )
-    static let nonArchivedOneGoal = Habit(
-        id: UUID().uuidString,
-        name: "Exercise",
-        isArchived: false,
-        goalCompletionsPerDay: 1,
-        color: "#ffffff",
-        activityDetails: []
-    )
-    static let nonArchivedTwoGoal = Habit(
-        id: UUID().uuidString,
-        name: "Exercise",
-        isArchived: false,
-        goalCompletionsPerDay: 2,
-        color: "#ffffff",
-        activityDetails: []
-    )
+    static func archivedOneGoal(id: String = UUID().uuidString) -> Habit {
+        Habit(
+            id: id,
+            name: "Mood",
+            isArchived: true,
+            goalCompletionsPerDay: 1,
+            color: "#ffffff",
+            activityDetails: []
+        )
+    }
+    
+    static func nonArchivedZeroGoal(id: String = UUID().uuidString) -> Habit {
+        Habit(
+            id: id,
+            name: "Water",
+            isArchived: false,
+            goalCompletionsPerDay: 0,
+            color: "#ffffff",
+            activityDetails: []
+        )
+    }
+    
+    static func nonArchivedOneGoal(id: String = UUID().uuidString) -> Habit {
+        Habit(
+            id: id,
+            name: "Exercise",
+            isArchived: false,
+            goalCompletionsPerDay: 1,
+            color: "#ffffff",
+            activityDetails: []
+        )
+    }
+    
+    static func nonArchivedTwoGoal(id: String = UUID().uuidString) -> Habit {
+        Habit(
+            id: id,
+            name: "Exercise",
+            isArchived: false,
+            goalCompletionsPerDay: 2,
+            color: "#ffffff",
+            activityDetails: []
+        )
+    }
 }
 
 
@@ -510,10 +521,10 @@ class HabitControllerTests: XCTestCase {
     }
     
     
-    var archivedOneGoal: Habit { Habit.archivedOneGoal }
-    var nonArchivedZeroGoal: Habit { Habit.nonArchivedZeroGoal }
-    var nonArchivedOneGoal: Habit { Habit.nonArchivedOneGoal }
-    var nonArchivedTwoGoal: Habit { Habit.nonArchivedTwoGoal }
+    var archivedOneGoal: Habit { Habit.archivedOneGoal(id: "-1") }
+    var nonArchivedZeroGoal: Habit { Habit.nonArchivedZeroGoal(id: "0") }
+    var nonArchivedOneGoal: Habit { Habit.nonArchivedOneGoal(id: "1") }
+    var nonArchivedTwoGoal: Habit { Habit.nonArchivedTwoGoal(id: "2") }
     
     var someDay: Date { Date(timeIntervalSince1970: 1714674435) }
     var someDaysYesterday: Date { someDay.adding(days: -1) }
