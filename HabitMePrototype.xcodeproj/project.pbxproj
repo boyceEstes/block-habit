@@ -53,6 +53,7 @@
 		B389D3012BE66C45004A8CF0 /* CoreDataBlockHabitStore+BlockHabitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D3002BE66C45004A8CF0 /* CoreDataBlockHabitStore+BlockHabitRepository.swift */; };
 		B39A274B2BE9B119002A5A88 /* ActivityRecordCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */; };
 		B39A274C2BE9B12E002A5A88 /* ActivityRecordCreationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */; };
+		B39A274E2BEBA805002A5A88 /* StatisticsCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A274D2BEBA805002A5A88 /* StatisticsCalculatorTests.swift */; };
 		B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */; };
 		B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F72BDFC9D800240EB0 /* Habit.swift */; };
 		B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */; };
@@ -221,6 +222,7 @@
 		B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+HabitRecordsForDays.swift"; sourceTree = "<group>"; };
 		B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsCompletedHabits.swift"; sourceTree = "<group>"; };
 		B389D3002BE66C45004A8CF0 /* CoreDataBlockHabitStore+BlockHabitRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+BlockHabitRepository.swift"; sourceTree = "<group>"; };
+		B39A274D2BEBA805002A5A88 /* StatisticsCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalculatorTests.swift; sourceTree = "<group>"; };
 		B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMenuDataSourceTests.swift; sourceTree = "<group>"; };
 		B3B2F2F72BDFC9D800240EB0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetail.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 				B3621E5D2BDDE0F900BE88C2 /* HabitRepositoryFWTests.swift */,
 				B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */,
 				B3B2F33E2BE2C46B00240EB0 /* HabitControllerTests.swift */,
+				B39A274D2BEBA805002A5A88 /* StatisticsCalculatorTests.swift */,
 			);
 			path = HabitRepositoryFWTests;
 			sourceTree = "<group>";
@@ -988,6 +991,7 @@
 				B3B2F33F2BE2C46B00240EB0 /* HabitControllerTests.swift in Sources */,
 				B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */,
 				B389D2F52BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift in Sources */,
+				B39A274E2BEBA805002A5A88 /* StatisticsCalculatorTests.swift in Sources */,
 				B3621E5E2BDDE0F900BE88C2 /* HabitRepositoryFWTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
