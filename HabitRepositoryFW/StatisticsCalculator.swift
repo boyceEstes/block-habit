@@ -16,14 +16,7 @@ public enum StatisticsCalculator {
     // O(N)
     public static func findTotalRecords(for recordsForDays: RecordsForDays) -> Int {
         
-        var numOfRecords = 0
-        
-        for (_, records) in recordsForDays {
-            
-            numOfRecords += records.count
-        }
-        
-        return numOfRecords
+        return recordsForDays.values.reduce(0) { $0 + $1.count}
     }
     
     
@@ -31,6 +24,17 @@ public enum StatisticsCalculator {
     public static func findTotalDays(for recordsForDays: RecordsForDays) -> Int {
         
         return recordsForDays.count
+    }
+    
+    
+    public static func findAverageRecordsPerDay(for recordsForDays: RecordsForDays) -> Double {
+        
+        let totalDays = findTotalDays(for: recordsForDays)
+        guard totalDays != 0 else { return -1 }
+        let totalRecords = findTotalRecords(for: recordsForDays)
+        
+        let average = Double(totalRecords) / Double(totalDays)
+        return average
     }
     
     

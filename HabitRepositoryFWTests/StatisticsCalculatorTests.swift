@@ -73,6 +73,47 @@ class StatisticsCalculatorTests: XCTestCase {
     }
     
     
+    // MARK: findAverageRecordsPerDay
+    func test_findAverageRecordsPerDays_withNoDays_deliversZero() {
+        
+        // given/when
+        let avgRecordsPerDay = StatisticsCalculator.findAverageRecordsPerDay(for: [:])
+        
+        // then
+        XCTAssertEqual(avgRecordsPerDay, -1)
+    }
+    
+    
+    func test_findAverageRecordsPerDays_withMultipleEmptyDays_deliversAverageOfZero() {
+        
+        // given
+        let daysWithEmptyRecords = setupDaysForDictionary()
+        let expectedAverage: Double = 0
+        
+        // when
+        let avgRecordsPerDay = StatisticsCalculator.findAverageRecordsPerDay(for: daysWithEmptyRecords)
+        
+        // then
+        XCTAssertEqual(avgRecordsPerDay, expectedAverage)
+    }
+    
+    
+    func test_findAverageRecordsPerDays_multipleRecordsMultipleHabitsOverDifferentDates_deliversNumberOfDays() {
+        
+        // given
+        let habitRecordsForDays = setupRecordsForDays()
+        let expectedNumberOfDays = habitRecordsForDays.keys.count
+        let expectedNumberOfRecords = habitRecordsForDays.values.reduce(0) { $0 + $1.count }
+        let expectedAverage = Double(expectedNumberOfRecords) / Double(expectedNumberOfDays)
+        
+        // when
+        let avgRecordsPerDay = StatisticsCalculator.findAverageRecordsPerDay(for: habitRecordsForDays)
+        
+        // then
+        XCTAssertEqual(avgRecordsPerDay, expectedAverage)
+    }
+    
+    
     // MARK: findHabitWithMostCompletions
     func test_findHabitWithMostCompletions_withNoDaysSomeHabits_deliversNil() {
         
