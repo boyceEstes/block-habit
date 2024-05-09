@@ -54,12 +54,6 @@ enum HabitRecordVisualMode {
 struct HomeView: View {
     
     @EnvironmentObject var habitController: HabitController
-//    @Environment(\.modelContext) var modelContext
-//    @Query var dataHabits: [DataHabit]
-//    @Query(sort: [
-//        SortDescriptor(\DataActivityFilter.order, order: .forward)
-//    ]) var activityFilterOptions: [DataActivityFilter]
-    
     
     let goToHabitDetail: (Habit) -> Void
     let goToCreateHabit: () -> Void
@@ -68,16 +62,7 @@ struct HomeView: View {
     let goToStatistics: () -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
-    /*
-     * So now the goal is to setup all of the data record stuff here from SwiftData.
-     * The big problem is habitsOnDates is a little bit hairy. I wonder if it is better
-     * for me to be able to query all of the datahabits and then deliver them to the
-     * bar graphs... or maybe I should just decipher it here. This will be everything I should
-     * have so I think it should be fine.
-     */
-//    @State private var viewModel: HomeViewModel
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
-//    @State var selectedDay: Date = Date().noon!
     
     init(
         blockHabitStore: CoreDataBlockHabitStore,
@@ -94,29 +79,22 @@ struct HomeView: View {
         self.goToEditHabit = goToEditHabit
         self.goToStatistics = goToStatistics
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
+    }
+    
+    
+    var habitRecordsForDays: [Date: [HabitRecord]] {
         
-        // FIXME: 2 GoToCreateActivityRecordsWithDetails
-//        self._viewModel = State(
-//            wrappedValue: HomeViewModel(
-//                blockHabitStore: blockHabitStore,
-//                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-//            )
-//        )
+        return habitController.habitRecordsForDays
     }
     
     
     var body: some View {
-//        let _ = print("Home View! '\(Self._printChanges())'")
-//        let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
         
         GeometryReader { proxy in
             
             let screenWidth = proxy.size.width
             let screenHeight = proxy.size.height
-//            let safeAreaInsetTop = proxy.safeAreaInsets.top
             let graphHeight = screenHeight * 0.4
-//            let habitMenuHeight = screenHeight * 0.3
-//            let itemHeight = graphHeight / 8
             
             VStack {
                 
@@ -126,7 +104,7 @@ struct HomeView: View {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
-                        habitRecordsForDays: habitController.habitRecordsForDays,
+                        habitRecordsForDays: habitRecordsForDays,
                         selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { habitRecord in
                             habitController.destroyRecord(habitRecord)
@@ -166,45 +144,6 @@ struct HomeView: View {
                         print("DESTROY HABIT")
                     }
                 )
-//                VStack(spacing: .vSectionSpacing) {
-//                    VStack(alignment: .leading, spacing: .vItemSpacing) {
-//                        HStack {
-//                            Text("Habits")
-//                            Spacer()
-//                            HStack(spacing: 16) {
-//                                Button {
-//                                    withAnimation {
-//                                        isActivityFilterMenuShowing.toggle()
-//                                    }
-//                                } label: {
-//                                    
-//                                    Image(systemName: isActivityFilterMenuFilled ?  "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-//                                }
-//                                Button {
-//                                    goToCreateHabit()
-//                                } label: {
-//                                    Image(systemName: "plus.circle")
-//                                }
-//                            }
-//                        }
-//                        .homeDetailTitle()
-//                        
-//                        if isActivityFilterMenuShowing {
-//                            HorizontalScrollySelectableList(items: $activityFilterOptions)
-//                        }
-//                    }
-//                    
-//                    HabitsMenu(
-//                        goToHabitDetail: goToHabitDetail,
-//                        goToEditHabit: goToEditHabit,
-//                        habits: dataHabits,
-//                        didTapCreateHabitButton: {
-//                            goToCreateHabit()
-//                        }, didTapHabitButton: { habit in
-//                            createRecord(for: habit, in: modelContext)
-//                        }
-//                    )
-//                }
             }
             .background(Color.primaryBackground)
         }
@@ -265,21 +204,6 @@ struct HomeView: View {
         }
     }
     
-//    
-//    private func logRecord(for habit: DataHabit) {
-//        
-//        if !habit.activityDetails.isEmpty {
-//            
-//            goToCreateActivityRecordWithDetails(habit, selectedDay)
-//            
-//        } else {
-//            
-//            let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
-//            
-//            modelContext.createHabitRecordOnDate(activity: habit, creationDate: creationDate, completionDate: completionDate)
-//        }
-//    }
-
     
     private func setHabitRecordViewMode(to visualMode: HabitRecordVisualMode) {
         
@@ -313,16 +237,6 @@ struct HomeView: View {
             return formatter.string(from: habitController.selectedDay)
         }
     }
-    
-    
-    // FIXME: 2 Make sure that we are allowed to go to the previous day as long as we have the date available in our habitRecordsForDays
-//    private var isAllowedToGoToPreviousDay: Bool {
-//        
-//        let calendar = Calendar.current
-//        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon else { return false }
-//        
-//        return viewModel.selectedDay != startOf2024 ? true : false
-//    }
 }
 
 

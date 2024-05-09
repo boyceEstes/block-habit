@@ -131,6 +131,10 @@ struct BarView: View {
                     }
                     .frame(height: graphHeight)
                 }
+                .onChange(of: habitRecordsForDays, { oldValue, newValue in
+                    
+                    scrollToSelectedDay(value: value, animate: false)
+                })
                 .onChange(of: selectedDay) { oldValue, newValue in
                     scrollToSelectedDay(value: value)
                 }
