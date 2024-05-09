@@ -352,8 +352,10 @@ struct HabitDetailView: View {
                     
                     HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {
                         // FIXME: Update to have the CoreDataHabitBlockStore in this class before we can save
-                        print("Create record from detail page")
-//                        createRecord(for: activity, in: modelContext)
+                        habitController.createRecordOrNavigateToRecordWithDetails(
+                            for: activity,
+                            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+                        )
                     }
                     .padding(.horizontal)
                     
