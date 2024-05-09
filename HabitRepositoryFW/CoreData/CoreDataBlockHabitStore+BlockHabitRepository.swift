@@ -27,6 +27,7 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
         }
     }
     
+    
     public func readAllNonarchivedHabits() async throws -> [Habit] {
 
         let context = context
@@ -39,9 +40,21 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
         }
     }
     
+    
     public func updateHabit(id: String, with habit: Habit) async throws {
-        // TODO: later
+
+        let context = context
+        
+        try await context.perform {
+            
+            let managedHabit = try context.fetchHabit(withID: id)
+            try managedHabit.populate(from: habit, in: context)
+            
+            try context.save()
+            // FIXME: Rollback if there is an error
+        }
     }
+    
     
     public func destroyHabit(_ habit: Habit) async throws {
         // TODO: later

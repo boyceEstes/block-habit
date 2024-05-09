@@ -56,9 +56,8 @@ struct StatisticsView: View {
     }
     
     private var avgRecordsPerDay: Double {
-        return -1
-//        guard totalDays != 0 else { return 0 }
-//        return Double(totalRecords)/Double(totalDays)
+        
+        return StatisticsCalculator.findAverageRecordsPerDay(for: selectedHabitRecordsForDays)
     }
     
     private var mostCompletions: (recordCount: Int, habit: Habit)? {

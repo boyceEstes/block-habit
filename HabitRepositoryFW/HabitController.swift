@@ -15,7 +15,11 @@ public class HabitController: ObservableObject {
     let blockHabitRepository: BlockHabitRepository
     
     @Published public var selectedDay: Date
-    @Published public var habitRecordsForDays = [Date: [HabitRecord]]()
+    @Published public var habitRecordsForDays = [Date: [HabitRecord]]() {
+        didSet {
+            print("habitRecordsForDays")
+        }
+    }
     @Published public var isCompletedHabits = Set<IsCompletedHabit>() {
         didSet {
             print("BOYCE: did change isCompletedHabits")
@@ -173,7 +177,71 @@ extension HabitController {
             }
         }
     }
+    
+    
+    /// Expected to be given the updated habit (it should have all the fields updated and is expected to have the same ID as the previous store)
+    public func updateHabit(_ updatedHabit: Habit) {
+        
+        Task {
+            do {
+                try await blockHabitRepository.updateHabit(id: updatedHabit.id, with: updatedHabit)
+                
+                guard let outdatedHabit = isCompletedHabits.first(where: { $0.habit.id == updatedHabit.id }) else { throw NSError(domain: "Could not find habit locally", code: 1)}
+                
+                
+                await populateHabits()
+                
+                // TODO: We can optimize this by not always pulling from Core Data if we don't need to but for now I am just going to do it all the same way
+//                if outdatedHabit.habit.goalCompletionsPerDay != updatedHabit.goalCompletionsPerDay {
+//                    
+//                    // Need to repopulate the habits in order to have the correct isCompletedStatus - this will set everything from the database so we know it'll be right
+//                    await populateHabits()
+//                    
+//                } else {
+//                    // Instead of reading the update from core data, we can just update locally
+//                    isCompletedHabits.remove(outdatedHabit)
+//                    let updatedIsCompletedHabit = IsCompletedHabit(habit: updatedHabit, isCompleted: outdatedHabit.isCompleted)
+//                    isCompletedHabits.insert(updatedIsCompletedHabit)
+//                }
+                
+                
+                // if there is a change in the color, we need to update the habits color in the habitRecordsForDays
+                if outdatedHabit.habit.color != updatedHabit.color {
+                    
+                    updateHabitInHabitRecordsForDays(from: outdatedHabit.habit, to: updatedHabit)
+                }
+            } catch {
+                // FIXME: Handle error updating!
+                fatalError("I GOT 99 PROBLEMS AND THIS IS 1 - \(error)")
+            }
+        }
+    }
+    
+    
+    private func updateHabitInHabitRecordsForDays(from outdatedHabit: Habit, to updatedHabit: Habit) {
+        
+        // loop through all of the habitRecords
+        let updatedHabitRecordsForDays = habitRecordsForDays.mapValues { habitRecords in
+            habitRecords.map { habitRecord in
+                // for each habit record
+                if habitRecord.habit.id == outdatedHabit.id {
+                    return HabitRecord(
+                        id: habitRecord.id,
+                        creationDate: habitRecord.creationDate,
+                        completionDate: habitRecord.completionDate,
+                        activityDetailRecords: habitRecord.activityDetailRecords,
+                        habit: updatedHabit
+                    )
+                } else {
+                    return habitRecord
+                }
+            }
+        }
+        
+        self.habitRecordsForDays = updatedHabitRecordsForDays
+    }
 }
+
 
 // MARK: Create record
 extension HabitController {

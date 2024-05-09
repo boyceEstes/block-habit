@@ -30,6 +30,7 @@ enum EditHabitAlert {
 
 struct EditHabitView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
     
     @State private var alertDetail: AlertDetail?
@@ -113,30 +114,45 @@ struct EditHabitView: View {
     
     private func updateHabit() {
         
-        Task {
-            do {
-                let habitID = habit.id
-                
-                guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
-                    // FIXME: Handle color not being set correctly error
-                    return
-                }
-                
-                let habit = Habit(
-                    id: habitID,
-                    name: nameTextFieldValue,
-                    isArchived: habit.isArchived,
-                    goalCompletionsPerDay: completionGoal,
-                    color: selectedColorString,
-                    activityDetails: selectedDetails
-                )
-                
-                try await blockHabitStore.update(habitID: habitID, with: habit)
-            } catch {
-                // FIXME: Handle error updating!
-                fatalError("I GOT 99 PROBLEMS AND THIS IS 1 - \(error)")
-            }
+        guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
+            // FIXME: Handle color not being set correctly error
+            return
         }
+
+        let habit = Habit(
+            id: habit.id,
+            name: nameTextFieldValue,
+            isArchived: habit.isArchived,
+            goalCompletionsPerDay: completionGoal,
+            color: selectedColorString,
+            activityDetails: selectedDetails
+        )
+        
+        habitController.updateHabit(habit)
+//        Task {
+//            do {
+//                let habitID = habit.id
+//                
+//                guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
+//                    // FIXME: Handle color not being set correctly error
+//                    return
+//                }
+//                
+//                let habit = Habit(
+//                    id: habitID,
+//                    name: nameTextFieldValue,
+//                    isArchived: habit.isArchived,
+//                    goalCompletionsPerDay: completionGoal,
+//                    color: selectedColorString,
+//                    activityDetails: selectedDetails
+//                )
+//                
+//                try await blockHabitStore.update(habitID: habitID, with: habit)
+//            } catch {
+//                // FIXME: Handle error updating!
+//                fatalError("I GOT 99 PROBLEMS AND THIS IS 1 - \(error)")
+//            }
+//        }
     }
     
     
