@@ -48,6 +48,16 @@ public class HabitController: ObservableObject {
     }
     
     
+    public func habitRecordsForDays(for habit: Habit) -> [Date: [HabitRecord]] {
+        
+        // Loop through all of the habit records for each day: [habitRecord]
+        habitRecordsForDays.mapValues { habitRecordForDay in
+            
+            habitRecordForDay.filter { $0.habit == habit }
+        }
+    }
+    
+    
     public init(
         blockHabitRepository: BlockHabitRepository,
         selectedDay: Date

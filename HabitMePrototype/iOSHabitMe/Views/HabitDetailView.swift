@@ -324,7 +324,7 @@ struct HabitDetailView: View {
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
                         habitRecordsForDays:
-                            habitController.habitRecordsForDays,
+                            habitController.habitRecordsForDays(for: activity),
                         selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { _ in
                             print("destroy last record logic")
