@@ -282,6 +282,31 @@ extension HabitController {
     }
     
     
+    /// `day` is really just to make this more available for other - default is current selectedDay
+    public func destroyRecord(
+        _ habitRecord: HabitRecord,
+        day: Date? = nil
+    ) {
+        
+        Task { @MainActor in
+            let day = day ?? selectedDay
+            
+            do {
+                try await blockHabitRepository.destroyHabitRecord(habitRecord)
+                
+                // Update habitRecordsForDays locally
+                habitRecordsForDays[day]?.removeAll(where: { $0.id == habitRecord.id })
+                
+                // Ensure that habits are updated for isCompleted
+                updateHabitsIsCompletedForDay()
+            } catch {
+                
+                fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
+            }
+        }
+    }
+    
+    
     private func updateLocalWithNewRecord(_ habitRecord: HabitRecord) async {
         
         Task { @MainActor in

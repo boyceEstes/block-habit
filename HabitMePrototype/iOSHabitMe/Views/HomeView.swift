@@ -128,7 +128,9 @@ struct HomeView: View {
                         numOfItemsToReachTop: 8,
                         habitRecordsForDays: habitController.habitRecordsForDays,
                         selectedDay: $habitController.selectedDay,
-                        destroyHabitRecord: { _ in } // FIXME: 2 viewModel.destroyHabitRecord
+                        destroyHabitRecord: { habitRecord in
+                            habitController.destroyRecord(habitRecord)
+                        } // FIXME: 2 viewModel.destroyHabitRecord
                     )
                 case .daily:
                     DayView(
