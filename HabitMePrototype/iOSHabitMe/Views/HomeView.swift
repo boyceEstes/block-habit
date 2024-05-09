@@ -130,11 +130,13 @@ struct HomeView: View {
                         selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { habitRecord in
                             habitController.destroyRecord(habitRecord)
-                        } // FIXME: 2 viewModel.destroyHabitRecord
+                        }
                     )
                 case .daily:
                     DayView(
-                        destroyHabitRecord: { _ in }, // FIXME: 2 viewModel.destroyHabitRecord,
+                        destroyHabitRecord: { habitRecord in
+                            habitController.destroyRecord(habitRecord)
+                        },
                         goToHabitRecordDetail: goToHabitRecordDetail,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: 8,
