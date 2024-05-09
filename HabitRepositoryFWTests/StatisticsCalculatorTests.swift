@@ -9,79 +9,6 @@ import XCTest
 import HabitRepositoryFW
 
 
-typealias RecordsForDays = [Date: [HabitRecord]]
-typealias HabitWithCount = (habit: Habit, count: Int)
-
-enum StatisticsCalculator {
-    
-    // O(N)
-    static func findTotalRecords(for recordsForDays: RecordsForDays) -> Int {
-        
-        var numOfRecords = 0
-        
-        for (_, records) in recordsForDays {
-            
-            numOfRecords += records.count
-        }
-        
-        return numOfRecords
-    }
-    
-    
-    // O(1) (?)
-    static func findTotalDays(for recordsForDays: RecordsForDays) -> Int {
-        
-        return recordsForDays.count
-    }
-    
-    
-    // Should I have only the given habits in the dictionary? I think so.
-    // I would want to call this after I filter the recordsForDays by whatever habits are left, but regardless, I would want to only see these habits
-    // Either way, I would need to count up for each habit
-    // O(H*D*R) - habits * days
-    static func findHabitWithMostCompletions(for recordsForDays: RecordsForDays, with habits: [Habit]) -> HabitWithCount? {
-        
-        var mostHabit: Habit?
-        var mostHabitCount: Int = 0
-        
-        // 1. Loop through each habit,
-        for habit in habits {
-            
-            // 2. see how many records each has
-            var filteredRecordsForDays = RecordsForDays()
-            for (day, records) in recordsForDays {
-                
-                for record in records {
-                    
-                    if record.habit == habit {
-                        
-                        if filteredRecordsForDays[day] == nil {
-                            filteredRecordsForDays[day] = [record]
-                        } else {
-                            filteredRecordsForDays[day]?.append(record)
-                        }
-                    }
-                }
-            }
-            
-            let filteredRecordsCount = findTotalRecords(for: filteredRecordsForDays)
-            
-            // 3. if recordCount > maxRecordCount set as new one
-            if filteredRecordsCount > mostHabitCount {
-                mostHabit = habit
-                mostHabitCount = filteredRecordsCount
-            }
-        }
-        
-        // 4. return the habitCount pair
-        return mostHabit == nil ? nil : (mostHabit!, mostHabitCount)
-    }
-    
-    
-//    static func findHabitWithBestStreak() {}
-}
-
-
 class StatisticsCalculatorTests: XCTestCase {
     
     
@@ -187,6 +114,52 @@ class StatisticsCalculatorTests: XCTestCase {
         // then
         XCTAssertEqual(mostCompletionsHabit, expectedHabit)
         XCTAssertEqual(mostCompletionsCount, expectedCount)
+    }
+    
+    
+    // MARK: findHabitWithBestStreak
+    func test_findHabitWithBestStreak_withNoDaysSomeHabits_deliversNil() {
+        
+        // given
+        let availableHabits = availableHabits()
+        
+        // when
+        let bestStreak = StatisticsCalculator.findHabitWithBestStreak(for: [:], with: availableHabits)
+        
+        // then
+        XCTAssertNil(bestStreak)
+    }
+    
+    
+    func test_findHabitWithBestStreak_withMultipleEmptyDays_deliversNil() {
+        
+        // given
+        let availableHabits = availableHabits()
+        let habitRecordsForDays = setupDaysForDictionary()
+        
+        // when
+        let bestStreak = StatisticsCalculator.findHabitWithBestStreak(for: habitRecordsForDays, with: availableHabits)
+        
+        // then
+        XCTAssertNil(bestStreak)
+    }
+    
+    
+    func test_findHabitWithBestStreak_withMultipleRecordsMultipleHabitsOverDifferentDates_deliversBestStreakHabitAndCount() { 
+        
+        // given
+        let availableHabits = availableHabits()
+        let habitRecordsForDays = setupRecordsForDays()
+        
+        // when
+        guard let (bestStreakHabit, bestStreakCount) = StatisticsCalculator.findHabitWithBestStreak(for: habitRecordsForDays, with: availableHabits) else {
+            XCTFail("Retrieved nil for some reason")
+            return
+        }
+        
+        // then
+        XCTAssertEqual(bestStreakHabit, nonArchivedOneGoalHabit)
+        XCTAssertEqual(bestStreakCount, 3)
     }
     
     
