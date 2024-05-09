@@ -86,33 +86,41 @@ struct HabitDetailView: View {
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
 //     Query to fetch all of the habit records for the habit
-    @Query(sort: [
-        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-    ],
-        animation: .default
-    ) var dataHabitRecordsForHabit: [DataHabitRecord]
+//    @Query(sort: [
+//        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
+//        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
+//    ],
+//        animation: .default
+//    ) var dataHabitRecordsForHabit: [DataHabitRecord]
     
     
-    var filteredDatahabitRecordsForHabit: [DataHabitRecord] {
-        
-        dataHabitRecordsForHabit.filter {
-            
-            guard let habitForHabitRecord = $0.habit else { return false }
-            
-            let habitID = activity.id
-            return habitForHabitRecord.id == habitID
-        }
+//    var filteredDatahabitRecordsForHabit: [DataHabitRecord] {
+//        
+//        dataHabitRecordsForHabit.filter {
+//            
+//            guard let habitForHabitRecord = $0.habit else { return false }
+//            
+//            let habitID = activity.id
+//            return habitForHabitRecord.id == habitID
+//        }
+//    }
+    
+    var habitControllerRecordsForDaysForHabit: [Date: [HabitRecord]] {
+        habitController.habitRecordsForDays(for: activity)
     }
+    
     
     // TODO: Unit test this
     // We are returning specific detail records associated with the detail because if we just looked at the detail's records,
     // we would get back the results for ALL activities that it has been associated with, instead of just this one.
     /// Translate activity records into usable activity detail data that can be iterated over to display chart information (Used as a piece of later computation)
-    var chartActivityDetailRecordsForActivityRecords: [DataActivityDetail: [DataActivityDetailRecord]] {
+    var chartActivityDetailRecordsForActivityRecords: [ActivityDetail: [ActivityDetailRecord]] {
         
-        // Translate to dictionary of all of the activitydetails and all of the activity detail records for each
-        filteredDatahabitRecordsForHabit.reduce(into: [DataActivityDetail: [DataActivityDetailRecord]]()) { dict, activityRecord in
+        // Translate to dictionary of all of the activitydetails and all of the activity
+        let habitRecords = habitControllerRecordsForDaysForHabit.values.flatMap { $0 }
+        let uniqueHabitRecords = Set(habitRecords)
+        
+        return uniqueHabitRecords.reduce(into: [ActivityDetail: [ActivityDetailRecord]]()) { dict, activityRecord in
             
             for activityDetailRecord in activityRecord.activityDetailRecords {
                 
@@ -128,22 +136,26 @@ struct HabitDetailView: View {
         }
     }
     
+    /*
+     * We need to get a date and value for each record and either combine or sum depending on the activity detail stat
+     */
+
     
     /// Convert data to only dates and values for charts to consume, keyed by activity detail in order to set up each separate chart
-    var allDetailChartData: [DataActivityDetail: [LineChartActivityDetailData]] {
+    var allDetailChartData: [ActivityDetail: [LineChartActivityDetailData]] {
         
         // FIXME: Handle some details by averaging and some details by summing
 
-        return chartActivityDetailRecordsForActivityRecords.reduce(into: [DataActivityDetail: [LineChartActivityDetailData]]()) { allDetailDataDict, chartActivityDetailRecordsForActivityRecord in
+        return chartActivityDetailRecordsForActivityRecords.reduce(into: [ActivityDetail: [LineChartActivityDetailData]]()) { allDetailDataDict, chartActivityDetailRecordsForActivityRecord in
             
             let (activityDetail, activityDetailRecords) = chartActivityDetailRecordsForActivityRecord
             
             var dateCountDictionary = [Date: (count: Int, amount: Double)]()
+            
             for activityDetailRecord in activityDetailRecords {
-
                 
                 guard let activityDetailRecordValue = Double(activityDetailRecord.value),
-                      let completionDate = activityDetailRecord.activityRecord?.completionDate.noon
+                      let completionDate = activityDetailRecord.habitRecord?.completionDate.noon
                 else {
                     // FIXME: Log if this happens, it really should never occur but shouldn't hurt anything if it skips
                     continue // If there is inconsistent data transforming a value, then continue on to the next row
@@ -179,7 +191,7 @@ struct HabitDetailView: View {
     
     // Alphabetical order -> transforms into single tuple array
     /// Final iteration of transforming data to be used to display in chart
-    var allDetailChartDataSorted: [(DataActivityDetail, [LineChartActivityDetailData])] {
+    var allDetailChartDataSorted: [(ActivityDetail, [LineChartActivityDetailData])] {
         
         allDetailChartData.sorted { $0.key.name < $1.key.name }
     }
@@ -191,100 +203,102 @@ struct HabitDetailView: View {
     
     let numOfItemsToReachTop = 5
     
-    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
-        
-        var _datesWithHabitRecords = [Date: [DataHabitRecord]]()
-        
-        print("update habit records by loading them")
-        
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = .current
-        
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-              let today = Date().noon,
-              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return [:] }
-        
-        
-        print("received from habitRepository fetch... \(filteredDatahabitRecordsForHabit.count)")
-        //
-        // Convert to a dictionary in order for us to an easier time in searching for dates
-        var dict = [Date: [DataHabitRecord]]()
-        // It is ordered from first date (jan. 1st) -> last date (today), the key is the last date in the streak
-        var streakingCount = 0
-        var lastStreakCount = 0
-        var maxStreakCount = 0
-        
-        // average records / day
-        /*
-         * NOTE: This is being calculated for only the days that the record is done.
-         * I think it would be demoralizing to see if you fell off and were trying to get back on
-         */
-        var daysRecordHasBeenDone = 0
-        var recordsThatHaveBeenDone = 0
-        
-        
-        for record in filteredDatahabitRecordsForHabit {
-            
-            guard let noonDate = record.completionDate.noon else { return [:] }
-            if dict[noonDate] != nil {
-                dict[noonDate]?.append(record)
-            } else {
-                dict[noonDate] = [record]
-            }
-        }
-        
-        
-        // Maybe for now, lets just start at january 1, 2024 for the beginning.
-        for day in 0...days {
-            // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [:] }
-            
-            if let habitRecordsForDate = dict[noonDate] {
-                // graph logic
-                _datesWithHabitRecords[noonDate] = habitRecordsForDate
-                
-                daysRecordHasBeenDone += 1
-                recordsThatHaveBeenDone += habitRecordsForDate.count
-                
-                // streak logic
-                streakingCount += 1
-                
-            } else {
-                
-                _datesWithHabitRecords[noonDate] = []
-                // streak logic
-                if streakingCount >= maxStreakCount {
-                    maxStreakCount = streakingCount
-                }
-                lastStreakCount = streakingCount
-                streakingCount = 0
-            }
-        }
-        
-        // streak logic
-        if streakingCount > 0 {
-            // Streak has continued to today
-            if streakingCount >= maxStreakCount {
-                maxStreakCount = streakingCount
-            }
-            lastStreakCount = streakingCount
-        }
-        
-        DispatchQueue.main.async {
-            currentStreak = lastStreakCount
-            avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
-            bestStreak = maxStreakCount
-        }
-        
-        
-        return _datesWithHabitRecords
-    }
+//    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
+//        
+//        var _datesWithHabitRecords = [Date: [DataHabitRecord]]()
+//        
+//        print("update habit records by loading them")
+//        
+//        var calendar = Calendar.current
+//        calendar.timeZone = .current
+//        calendar.locale = .current
+//        
+//        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
+//              let today = Date().noon,
+//              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
+//        else { return [:] }
+//        
+//        
+//        print("received from habitRepository fetch... \(filteredDatahabitRecordsForHabit.count)")
+//        //
+//        // Convert to a dictionary in order for us to an easier time in searching for dates
+//        var dict = [Date: [DataHabitRecord]]()
+//        // It is ordered from first date (jan. 1st) -> last date (today), the key is the last date in the streak
+//        var streakingCount = 0
+//        var lastStreakCount = 0
+//        var maxStreakCount = 0
+//        
+//        // average records / day
+//        /*
+//         * NOTE: This is being calculated for only the days that the record is done.
+//         * I think it would be demoralizing to see if you fell off and were trying to get back on
+//         */
+//        var daysRecordHasBeenDone = 0
+//        var recordsThatHaveBeenDone = 0
+//        
+//        
+//        for record in filteredDatahabitRecordsForHabit {
+//            
+//            guard let noonDate = record.completionDate.noon else { return [:] }
+//            if dict[noonDate] != nil {
+//                dict[noonDate]?.append(record)
+//            } else {
+//                dict[noonDate] = [record]
+//            }
+//        }
+//        
+//        
+//        // Maybe for now, lets just start at january 1, 2024 for the beginning.
+//        for day in 0...days {
+//            // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
+//            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [:] }
+//            
+//            if let habitRecordsForDate = dict[noonDate] {
+//                // graph logic
+//                _datesWithHabitRecords[noonDate] = habitRecordsForDate
+//                
+//                daysRecordHasBeenDone += 1
+//                recordsThatHaveBeenDone += habitRecordsForDate.count
+//                
+//                // streak logic
+//                streakingCount += 1
+//                
+//            } else {
+//                
+//                _datesWithHabitRecords[noonDate] = []
+//                // streak logic
+//                if streakingCount >= maxStreakCount {
+//                    maxStreakCount = streakingCount
+//                }
+//                lastStreakCount = streakingCount
+//                streakingCount = 0
+//            }
+//        }
+//        
+//        // streak logic
+//        if streakingCount > 0 {
+//            // Streak has continued to today
+//            if streakingCount >= maxStreakCount {
+//                maxStreakCount = streakingCount
+//            }
+//            lastStreakCount = streakingCount
+//        }
+//        
+//        DispatchQueue.main.async {
+//            currentStreak = lastStreakCount
+//            avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
+//            bestStreak = maxStreakCount
+//        }
+//        
+//        
+//        return _datesWithHabitRecords
+//    }
     
     
     var totalRecords: String {
-        return "\(filteredDatahabitRecordsForHabit.count)"
+        return "-1"
+        // FIXME: 2 - totalRecords
+        // return "\(filteredDatahabitRecordsForHabit.count)"
     }
     
     
@@ -323,8 +337,7 @@ struct HabitDetailView: View {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                        habitRecordsForDays:
-                            habitController.habitRecordsForDays(for: activity),
+                        habitRecordsForDays: habitControllerRecordsForDaysForHabit,
                         selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { _ in
                             print("destroy last record logic")
@@ -360,13 +373,15 @@ struct HabitDetailView: View {
                     LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                         Text("Activity Records")
                             .font(.sectionTitle)
-                        if !filteredDatahabitRecordsForHabit.isEmpty {
-                            // FIXME: PUT THESE BACK!
-                            Text("To be fixed: Habit records - \(filteredDatahabitRecordsForHabit.count)")
-//                            allHabitRecordsByDateView
-                        } else {
-                            Text("No records found for this activity yet")
-                        }
+                        // FIXME: 2 Orient this so that all the information is given
+                        Text("TO BE FIXED")
+//                        if !filteredDatahabitRecordsForHabit.isEmpty {
+//                            // FIXME: PUT THESE BACK!
+//                            Text("To be fixed: Habit records - \(filteredDatahabitRecordsForHabit.count)")
+////                            allHabitRecordsByDateView
+//                        } else {
+//                            Text("No records found for this activity yet")
+//                        }
                     }
                     .padding(.horizontal)
                 }
@@ -426,17 +441,6 @@ struct HabitDetailView: View {
         }
     }
     
-    
-    var allActivtyRecords: some View {
-        
-        ForEach(filteredDatahabitRecordsForHabit) { habitRecord in
-            
-            Text("Nothing")
-//            ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
-//                .sectionBackground(padding: .detailPadding)
-        }
-    }
-
     
     private func removeHabit() {
         

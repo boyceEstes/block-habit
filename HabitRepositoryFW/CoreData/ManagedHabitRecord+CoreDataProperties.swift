@@ -108,13 +108,19 @@ extension ManagedHabitRecord {
         
         
         // FIXME: Make sure to convert the activitydetailrecords
-        return HabitRecord(
+        var habitRecord = HabitRecord(
             id: id,
             creationDate: creationDate,
             completionDate: completionDate,
-            activityDetailRecords: [],
+            activityDetailRecords: [], // We are going to be setting this later so we can init them with this instance of habitRecord
             habit: try habit.toModel()
         )
+        
+        let _activityDetailRecords = try activityDetailRecords?.toModel(for: habitRecord) ?? []
+        
+        habitRecord.activityDetailRecords = _activityDetailRecords
+        
+        return habitRecord
     }
 }
 

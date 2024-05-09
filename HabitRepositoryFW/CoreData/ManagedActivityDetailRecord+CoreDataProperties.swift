@@ -63,3 +63,26 @@ extension Array where Element == ActivityDetailRecord {
         return Set(managedActivityDetailRecords)
     }
 }
+
+
+extension Set where Element == ManagedActivityDetailRecord {
+    
+    func toModel(for habitRecord: HabitRecord) throws -> [ActivityDetailRecord] {
+        
+        try map { managedActivityDetailRecord in
+            
+            guard let value = managedActivityDetailRecord.value,
+                  let activityDetail = managedActivityDetailRecord.activityDetail
+            else {
+                throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
+            }
+            
+            return ActivityDetailRecord(
+                value: value,
+                unit: managedActivityDetailRecord.unit,
+                activityDetail: try activityDetail.toModel(),
+                habitRecord: habitRecord
+            )
+        }
+    }
+}

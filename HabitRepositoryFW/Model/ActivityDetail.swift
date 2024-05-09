@@ -17,6 +17,7 @@ public struct ActivityDetail: ActivityDetailSortable, Identifiable, Hashable  {
     public let calculationType: ActivityDetailCalculationType
     public let valueType: ActivityDetailType
     
+    
     public init(
         id: String,
         name: String,

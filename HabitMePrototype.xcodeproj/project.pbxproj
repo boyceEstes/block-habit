@@ -84,7 +84,6 @@
 		B3B2F31E2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F31D2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift */; };
 		B3B2F33F2BE2C46B00240EB0 /* HabitControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F33E2BE2C46B00240EB0 /* HabitControllerTests.swift */; };
 		B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */; };
-		B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */; };
 		B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */; };
 		B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */; };
 		B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BFEA072B765C5500DE7617 /* CGFloat+Constants.swift */; };
@@ -239,7 +238,6 @@
 		B3B2F33E2BE2C46B00240EB0 /* HabitControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitControllerTests.swift; sourceTree = "<group>"; };
 		B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+CreateActivityRecordWithDetailsComposition.swift"; sourceTree = "<group>"; };
 		B3B403862B7128A100D1967E /* ActivityRecordCreationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreationPolicy.swift; sourceTree = "<group>"; };
-		B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailRecord.swift; sourceTree = "<group>"; };
 		B3B4038B2B7133F100D1967E /* ActivityRecordCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRecordCreator.swift; sourceTree = "<group>"; };
 		B3BFE9E42B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailLineMarkChart.swift; sourceTree = "<group>"; };
 		B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartActivityDetailData.swift; sourceTree = "<group>"; };
@@ -620,7 +618,6 @@
 		B3C97F212B5CE91500211B4C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B3B403882B7132F000D1967E /* ActivityDetailRecord.swift */,
 				B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */,
 			);
 			path = Models;
@@ -887,7 +884,6 @@
 				B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */,
 				B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */,
 				B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */,
-				B3B403892B7132F000D1967E /* ActivityDetailRecord.swift in Sources */,
 				B3C9E51A2B698CAC00153158 /* ModelContext+Info.swift in Sources */,
 				B32947A82B61E0E1007C8C1E /* DayView.swift in Sources */,
 				B3C97F2A2B5CE99200211B4C /* HomeView.swift in Sources */,
