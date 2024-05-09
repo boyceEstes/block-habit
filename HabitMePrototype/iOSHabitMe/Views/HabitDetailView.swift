@@ -105,8 +105,14 @@ struct HabitDetailView: View {
 //        }
 //    }
     
-    var habitControllerRecordsForDaysForHabit: [Date: [HabitRecord]] {
+    var habitRecordsForDays: [Date: [HabitRecord]] {
         habitController.habitRecordsForDays(for: activity)
+    }
+    
+    var habitRecordsForDaysLogged: [Date: [HabitRecord]] {
+        habitRecordsForDays.filter {
+            !$0.value.isEmpty
+        }
     }
     
     
@@ -117,7 +123,7 @@ struct HabitDetailView: View {
     var chartActivityDetailRecordsForActivityRecords: [ActivityDetail: [ActivityDetailRecord]] {
         
         // Translate to dictionary of all of the activitydetails and all of the activity
-        let habitRecords = habitControllerRecordsForDaysForHabit.values.flatMap { $0 }
+        let habitRecords = habitRecordsForDays.values.flatMap { $0 }
         let uniqueHabitRecords = Set(habitRecords)
         
         return uniqueHabitRecords.reduce(into: [ActivityDetail: [ActivityDetailRecord]]()) { dict, activityRecord in
@@ -337,7 +343,7 @@ struct HabitDetailView: View {
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                        habitRecordsForDays: habitControllerRecordsForDaysForHabit,
+                        habitRecordsForDays: habitRecordsForDays,
                         selectedDay: $habitController.selectedDay,
                         destroyHabitRecord: { _ in
                             print("destroy last record logic")
@@ -371,14 +377,34 @@ struct HabitDetailView: View {
                         .padding(.horizontal)
                     
                     LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-                        Text("Activity Records")
+                        Text("Habit Records")
                             .font(.sectionTitle)
+                        
+                        ForEach(habitRecordsForDaysLogged.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
+                            
+                            Text("\(DateFormatter.shortDate.string(from: day))")
+                            
+                            ForEach(records, id: \.id) { record in
+                                
+                                VStack {
+                                    ForEach(record.activityDetailRecords, id: \.id) { activityDetailRecord in
+                                        
+                                        HStack {
+                                            Text("\(activityDetailRecord.activityDetail.name)")
+                                            Spacer()
+                                            Text("\(activityDetailRecord.value) \(activityDetailRecord.unit ?? "")")
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         // FIXME: 2 Orient this so that all the information is given
-                        Text("TO BE FIXED")
+//                        Text("TO BE FIXED")
 //                        if !filteredDatahabitRecordsForHabit.isEmpty {
 //                            // FIXME: PUT THESE BACK!
 //                            Text("To be fixed: Habit records - \(filteredDatahabitRecordsForHabit.count)")
-////                            allHabitRecordsByDateView
+                        
+                        
 //                        } else {
 //                            Text("No records found for this activity yet")
 //                        }
