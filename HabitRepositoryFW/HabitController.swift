@@ -66,6 +66,17 @@ public class HabitController: ObservableObject {
     }
     
     
+    public func latestHabitInformation(for habit: Habit) -> AnyPublisher<IsCompletedHabit, Error> {
+        
+        $isCompletedHabits.tryMap { receivedIsCompletedHabits in
+            guard let latestForHabit: IsCompletedHabit = receivedIsCompletedHabits.first(where: { $0.habit.id == habit.id}) else {
+                throw NSError(domain: "We couldn't find the habit was sent up", code: 1)
+            }
+            return latestForHabit
+        }.eraseToAnyPublisher()
+    }
+    
+    
     public init(
         blockHabitRepository: BlockHabitRepository,
         selectedDay: Date

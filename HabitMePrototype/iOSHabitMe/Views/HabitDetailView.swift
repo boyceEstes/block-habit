@@ -72,8 +72,7 @@ class HabitDetailViewModel {
 struct HabitDetailView: View {
 
     @EnvironmentObject var habitController: HabitController
-    @State private var viewModel: HabitDetailViewModel
-    let activity: Habit
+//    @State private var viewModel: HabitDetailViewModel
     let goToEditHabit: () -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
@@ -87,8 +86,9 @@ struct HabitDetailView: View {
     @State private var alertDetail: AlertDetail? = nil
 
     
+    @State private var activity: Habit
     @State private var habitRecordsForDays = [Date: [HabitRecord]]()
-    
+    @State private var cancellables = Set<AnyCancellable>()
     
     /// Does not show all of empty day logs
     var habitRecordsForDaysLogged: [Date: [HabitRecord]] {
@@ -297,18 +297,13 @@ struct HabitDetailView: View {
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         
-        self.activity = activity
-        
-        self._viewModel = State(
-            wrappedValue: HabitDetailViewModel(
-                habit: activity,
-                blockHabitStore: blockHabitStore
-            )
-        )
+        self._activity = State(initialValue: activity)
         
         self.goToEditHabit = goToEditHabit
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
+        
     }
+    
     
     
     var body: some View {
@@ -420,10 +415,26 @@ struct HabitDetailView: View {
             }
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
+        .onAppear {
+            bindToLatestHabitInformation()
+        }
         .onReceive(habitController.habitRecordsForDays(for: activity)) { receivedHabitRecordsForDays in
             print("BOYCE: Setting habitRecordsForDays in HabitDetail to \(receivedHabitRecordsForDays.count)")
             self.habitRecordsForDays = receivedHabitRecordsForDays
         }
+    }
+    
+    
+    private func bindToLatestHabitInformation() {
+        
+        habitController.latestHabitInformation(for: activity)
+            .sink { error in
+                // FIXME: There really should never be an error here but handle it if there is!
+                fatalError("Where oh where did my habitttt go - oh where oh where did it go - its not longer in the available list and i'm no longer rhyming but man I'm still having a good timeeeee")
+            } receiveValue: { receivedIsCompletedHabit in
+                self.activity = receivedIsCompletedHabit.habit
+            }
+            .store(in: &cancellables)
     }
     
     
