@@ -85,30 +85,12 @@ struct HabitDetailView: View {
     @State var selectedDay: Date = Date().noon ?? Date()
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
-//     Query to fetch all of the habit records for the habit
-//    @Query(sort: [
-//        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-//        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-//    ],
-//        animation: .default
-//    ) var dataHabitRecordsForHabit: [DataHabitRecord]
+
+    
+    @State private var habitRecordsForDays = [Date: [HabitRecord]]()
     
     
-//    var filteredDatahabitRecordsForHabit: [DataHabitRecord] {
-//        
-//        dataHabitRecordsForHabit.filter {
-//            
-//            guard let habitForHabitRecord = $0.habit else { return false }
-//            
-//            let habitID = activity.id
-//            return habitForHabitRecord.id == habitID
-//        }
-//    }
-    
-    var habitRecordsForDays: [Date: [HabitRecord]] {
-        habitController.habitRecordsForDays(for: activity)
-    }
-    
+    /// Does not show all of empty day logs
     var habitRecordsForDaysLogged: [Date: [HabitRecord]] {
         habitRecordsForDays.filter {
             !$0.value.isEmpty
@@ -438,6 +420,10 @@ struct HabitDetailView: View {
             }
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
+        .onReceive(habitController.habitRecordsForDays(for: activity)) { receivedHabitRecordsForDays in
+            print("BOYCE: Setting habitRecordsForDays in HabitDetail to \(receivedHabitRecordsForDays.count)")
+            self.habitRecordsForDays = receivedHabitRecordsForDays
+        }
     }
     
     

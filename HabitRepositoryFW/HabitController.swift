@@ -48,13 +48,21 @@ public class HabitController: ObservableObject {
     }
     
     
-    public func habitRecordsForDays(for habit: Habit) -> [Date: [HabitRecord]] {
+    public func habitRecordsForDays(for habit: Habit) -> AnyPublisher<[Date: [HabitRecord]], Never> {
         
-        // Loop through all of the habit records for each day: [habitRecord]
-        habitRecordsForDays.mapValues { habitRecordForDay in
-            
-            habitRecordForDay.filter { $0.habit == habit }
-        }
+        $habitRecordsForDays
+            .map { habitRecordsForDaysEmission in
+                
+                print("BOYCE: habitRecordsForDays emitted \(habitRecordsForDaysEmission.count)")
+                let filteredHabitRecordsForDays = habitRecordsForDaysEmission.mapValues { habitRecordForDay in
+        
+                    // NOTE: This must be id in case the color changes
+                    habitRecordForDay.filter { $0.habit.id == habit.id }
+                }
+                print("BOYCE: habitRecordsForDays emitted \(filteredHabitRecordsForDays.count)")
+                return filteredHabitRecordsForDays
+            }
+            .eraseToAnyPublisher()
     }
     
     
@@ -198,7 +206,7 @@ extension HabitController {
                 
                 guard let outdatedHabit = isCompletedHabits.first(where: { $0.habit.id == updatedHabit.id }) else { throw NSError(domain: "Could not find habit locally", code: 1)}
                 
-                
+                // I actually think we don't need to even populate for core data we can just rely on the inmemory stuff
                 await populateHabits()
                 
                 // TODO: We can optimize this by not always pulling from Core Data if we don't need to but for now I am just going to do it all the same way
