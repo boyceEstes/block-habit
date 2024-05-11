@@ -204,11 +204,185 @@ class StatisticsCalculatorTests: XCTestCase {
     }
     
     
+    // MARK: Find Current Streak For habit
+    func test_findCurrentStreakInRecordsForHabit_withNoDays_deliversZero() {
+        
+        // given
+        let records: [Date: [HabitRecord]] = [:]
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: records)
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
+    
+    
+    func test_findCurrentStreakInRecordsForHabit_withEmptyDays_deliversZero() {
+        
+        // given
+        let records: [Date: [HabitRecord]] = setupDaysForDictionary()
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: records)
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
+    
+    
+    
+    func test_currentStreakInRecordsForHabit_multipleConsecutiveRecordsAtBeginning_deliversZero() {
+        
+        // given
+        
+        /*
+         *   o  -  -  -  -  -  -
+         *   o  o  o  -  -  -  -
+         * [-6 -5 -4 -3 -2 -1  0]
+         */
+        
+        
+        let sixDaysPrevious = someDay.adding(days: -6) // This should be beginning of the dictionary
+        let fiveDaysPrevious = someDay.adding(days: -5)
+        let fourDaysPrevious = someDay.adding(days: -4)
+        
+        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordSixDaysAgo2 = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordFiveDaysAgo = HabitRecord.habitRecord(date: fiveDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+        
+        var recordsForDays = setupDaysForDictionary()
+        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
+        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo2)
+        recordsForDays[fiveDaysPrevious]?.append(recordFiveDaysAgo)
+        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: recordsForDays)
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
+    
+    func test_currentStreakInRecordsForHabit_multipleConsecutiveRecordsInMiddle_deliversZero() { 
+        
+        // given
+        
+        /*
+         *   -  -  -  o  -  -  -
+         *   -  -  o  o  o  -  -
+         * [-6 -5 -4 -3 -2 -1  0]
+         */
+        
+        let fourDaysPrevious = someDay.adding(days: -4) // This should be beginning of the dictionary
+        let threeDaysPrevious = someDay.adding(days: -3)
+        let twoDaysPrevious = someDay.adding(days: -2)
+        
+        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordTwoDaysAgo = HabitRecord.habitRecord(date: twoDaysPrevious, habit: nonArchivedOneGoalHabit)
+        
+        var recordsForDays = setupDaysForDictionary()
+        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo)
+        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo2)
+        recordsForDays[twoDaysPrevious]?.append(recordTwoDaysAgo)
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: recordsForDays)
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
+    
+    
+    func test_currentStreakInRecordsForHabit_multipleConsecutiveRecordsAtEndLatestDay() { 
+        
+        // given
+        
+        /*
+         *   -  -  -  o  -  o  -
+         *   -  -  o  o  o  o  -
+         * [-6 -5 -4 -3 -2 -1  0]
+         */
+        
+        let fourDaysPrevious = someDay.adding(days: -4) // This should be beginning of the dictionary
+        let threeDaysPrevious = someDay.adding(days: -3)
+        let twoDaysPrevious = someDay.adding(days: -2)
+        let oneDaysPrevious = someDay.adding(days: -1)
+        
+        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordTwoDaysAgo = HabitRecord.habitRecord(date: twoDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordOneDaysAgo = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordOneDaysAgo2 = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+        
+        var recordsForDays = setupDaysForDictionary()
+        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo)
+        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo2)
+        recordsForDays[twoDaysPrevious]?.append(recordTwoDaysAgo)
+        recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo)
+        recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo2)
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: recordsForDays)
+        
+        // then
+        XCTAssertEqual(currentStreak, 4)
+    }
+    
+    
+    func test_currentStreakInRecordsForHabit_multipleConsecutiveRecordsAtEndDayBeforeLatestDay() { 
+        
+        // given
+        
+        /*
+         *   -  -  -  o  -  o  -
+         *   -  -  o  o  o  o  o
+         * [-6 -5 -4 -3 -2 -1  0]
+         */
+        
+        let fourDaysPrevious = someDay.adding(days: -4) // This should be beginning of the dictionary
+        let threeDaysPrevious = someDay.adding(days: -3)
+        let twoDaysPrevious = someDay.adding(days: -2)
+        let oneDaysPrevious = someDay.adding(days: -1)
+        
+        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordTwoDaysAgo = HabitRecord.habitRecord(date: twoDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordOneDaysAgo = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordOneDaysAgo2 = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordToday = HabitRecord.habitRecord(date: someDay, habit: nonArchivedOneGoalHabit)
+        
+        var recordsForDays = setupDaysForDictionary()
+        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo)
+        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo2)
+        recordsForDays[twoDaysPrevious]?.append(recordTwoDaysAgo)
+        recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo)
+        recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo2)
+        recordsForDays[someDay]?.append(recordToday)
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: recordsForDays)
+        
+        // then
+        XCTAssertEqual(currentStreak, 5)
+    }
+    
+    
+    
     // MARK: Helpers
+    
     private func setupRecordsForDays() -> RecordsForDays {
         
         // Setting this many just because it is our minimum number of dates in the dictionary
-        let someDayNoon = someDay.noon!
+        let someDayNoon = someDay
         let oneDayPrevious = someDayNoon.adding(days: -1)
         let twoDayPrevious = someDayNoon.adding(days: -2)
         let threeDayPrevious = someDayNoon.adding(days: -3)
@@ -253,7 +427,7 @@ class StatisticsCalculatorTests: XCTestCase {
         let numberOfDays = 7
         
         var recordsForDays = RecordsForDays()
-        let startDate = someDay.noon!
+        let startDate = someDay
         
         for i in 0..<numberOfDays {
             
@@ -271,7 +445,7 @@ class StatisticsCalculatorTests: XCTestCase {
     }
     
         
-    var someDay: Date { Date(timeIntervalSince1970: 1714674435) }
+    var someDay: Date { Date(timeIntervalSince1970: 1714674435).noon! }
     
     // given
     let nonArchivedZeroGoalHabit = Habit.nonArchivedZeroGoal(id: "0")

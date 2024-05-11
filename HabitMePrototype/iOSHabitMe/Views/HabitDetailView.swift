@@ -29,45 +29,6 @@ enum HabitDetailAlert {
 
 import Combine
 
-@Observable
-class HabitDetailViewModel {
-    
-    let habit: Habit
-    let blockHabitStore: CoreDataBlockHabitStore
-    let habitRecordsByDateForHabitDataSource: HabitRecordsByDateDataSource
-    
-    var habitRecordsByDateForHabit = [Date: [HabitRecord]]()
-    var cancellables = Set<AnyCancellable>()
-    
-    init(
-        habit: Habit,
-        blockHabitStore: CoreDataBlockHabitStore
-    ) {
-        self.habit = habit
-        self.blockHabitStore = blockHabitStore
-        
-        do {
-            self.habitRecordsByDateForHabitDataSource = try blockHabitStore.habitRecordsByDateForHabitDataSource(habit: habit)
-        } catch {
-            // FIXME: Be polite with the error
-            fatalError("Could not load the habit records for the datasource '\(error)'")
-        }
-        
-        bindHabitRecordsByDateForHabitDataSource()
-    }
-    
-    
-    private func bindHabitRecordsByDateForHabitDataSource() {
-        
-        habitRecordsByDateForHabitDataSource
-            .habitRecordsByDate.sink { error in
-                fatalError("BEEN A CRASH GETTING THE HABITRECORDS FOR HABIT TO DISPLAY PAGE DETAILS - '\(error)'")
-            } receiveValue: { habitRecordsByDate in
-                self.habitRecordsByDateForHabit = habitRecordsByDate
-            }.store(in: &cancellables)
-    }
-}
-
 
 struct HabitDetailView: View {
 

@@ -144,3 +144,46 @@ public enum StatisticsCalculator {
         return (bestStreak.key, bestStreak.value)
     }
 }
+
+
+// MARK: Statistics for records of only one Habit
+extension StatisticsCalculator {
+    
+    /// If there is no date found there is no current streak
+    public static func findCurrentStreakInRecordsForHabit(for recordsForDays: RecordsForDays) -> Int {
+        
+        var streakCount = 0
+        
+        let numOfDays = recordsForDays.count
+        
+        guard let startDay = recordsForDays.min(by: { $0.key < $1.key })?.key,
+              let lastDay = recordsForDays.max(by: {$0.key < $1.key})?.key
+        else { return 0 }
+        
+        
+        for i in 0..<numOfDays {
+            
+            let currentDay = startDay.adding(days: i)
+            
+            
+            let recordsForCurrentDay = recordsForDays[currentDay]
+            // if nil, then it means that theres nothing in it (that shouldn't happen though)
+            if !(recordsForCurrentDay?.isEmpty ?? true) {
+                
+                streakCount += 1
+                
+            } else {
+                
+                guard currentDay != lastDay else {
+                    // This should be the last day, which we don't want to count if it has
+                    // not been done yet
+                    continue
+                }
+                
+                streakCount = 0
+            }
+        }
+        
+        return streakCount
+    }
+}
