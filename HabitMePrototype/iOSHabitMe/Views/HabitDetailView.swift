@@ -146,9 +146,6 @@ struct HabitDetailView: View {
     }
     
     
-    @State private var currentStreak = 0
-    @State private var bestStreak = 0
-    
     let numOfItemsToReachTop = 5
     
 //    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
@@ -251,6 +248,15 @@ struct HabitDetailView: View {
     
     var avgRecordsPerDay: Double {
         StatisticsCalculator.findAverageRecordsPerDay(for: habitRecordsForDaysLogged)
+    }
+    
+    
+    var currentStreak: Int {
+        StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: habitRecordsForDays)
+    }
+    
+    var bestStreak: Int {
+        StatisticsCalculator.findBestStreakInRecordsForHabit(for: habitRecordsForDays)
     }
     
     

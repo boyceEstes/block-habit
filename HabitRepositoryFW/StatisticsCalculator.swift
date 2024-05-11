@@ -149,28 +149,107 @@ public enum StatisticsCalculator {
 // MARK: Statistics for records of only one Habit
 extension StatisticsCalculator {
     
+    struct ImportantDayIntervalInfo {
+        
+        let startDay: Date
+        let lastDay: Date
+        let numOfDays: Int
+    }
+    
+    private static func calculateImportantDayIntervalInfo(
+        for recordsForDays: RecordsForDays
+    ) throws -> ImportantDayIntervalInfo {
+        
+        guard let startDay = recordsForDays.min(by: { $0.key < $1.key })?.key,
+              let lastDay = recordsForDays.max(by: {$0.key < $1.key})?.key
+        else { throw NSError(domain: "Cannot calculate start and end day", code: 1) }
+        
+        // We have to do it this way because there COULD (shouldn't be but it has happened) gaps between the inserted dates in the recordsForDays
+        guard let daysBetweenEdges = Calendar.current.dateComponents([.day], from: startDay, to: lastDay).day
+        else { throw NSError(domain: "Cannot calculate interval between start and end day", code: 1) }
+        
+        // add one to include edge day (instead of just the difference in days)
+        let numOfDays = daysBetweenEdges + 1
+        
+        return ImportantDayIntervalInfo(startDay: startDay, lastDay: lastDay, numOfDays: numOfDays)
+    }
+    
+    
     /// If there is no date found there is no current streak
     public static func findCurrentStreakInRecordsForHabit(for recordsForDays: RecordsForDays) -> Int {
         
         var streakCount = 0
+
+        guard let dayIntervalInfo = try? calculateImportantDayIntervalInfo(for: recordsForDays) else { return 0 }
         
-        let numOfDays = recordsForDays.count
+        let startDay = dayIntervalInfo.startDay
+        let lastDay = dayIntervalInfo.lastDay
+        let numOfDays = dayIntervalInfo.numOfDays
+
         
-        guard let startDay = recordsForDays.min(by: { $0.key < $1.key })?.key,
-              let lastDay = recordsForDays.max(by: {$0.key < $1.key})?.key
-        else { return 0 }
+        print("BOYCE: startDay - \(startDay)")
+        print("BOYCE: lastDay - \(lastDay)")
+        print("BOYCE: recordsForLastDay - \(recordsForDays[lastDay]?.count ?? -1)")
+        
+        for i in 0..<numOfDays {
+            
+            let currentDay = startDay.adding(days: i).noon!
+            
+            let recordsForCurrentDay = recordsForDays[currentDay]
+            // if nil, then it means that theres nothing in it (that shouldn't happen though)
+            if !(recordsForCurrentDay?.isEmpty ?? true) {
+                
+                if currentDay == lastDay {
+                    streakCount += 1
+                    print("BOYCE: last day - increase count to \(streakCount)")
+                } else {
+                    streakCount += 1
+                    print("BOYCE: record in \(currentDay) increase count")
+                }
+            } else {
+                
+                guard currentDay != lastDay else {
+                    // This should be the last day, which we don't want to count if it has
+                    // not been done yet
+                    print("BOYCE: last day - let be and end on \(streakCount)")
+                    continue
+                }
+                
+                print("BOYCE: zero out count")
+                streakCount = 0
+            }
+        }
+        
+        return streakCount
+    }
+    
+    
+    /// If there is no date found there is no current streak
+    public static func findBestStreakInRecordsForHabit(for recordsForDays: RecordsForDays) -> Int {
+        
+        var maxStreak = 0
+        var streakCount = 0
+        
+        guard let dayIntervalInfo = try? calculateImportantDayIntervalInfo(for: recordsForDays) else { return 0 }
+        
+        let startDay = dayIntervalInfo.startDay
+        let lastDay = dayIntervalInfo.lastDay
+        let numOfDays = dayIntervalInfo.numOfDays
         
         
         for i in 0..<numOfDays {
             
             let currentDay = startDay.adding(days: i)
             
-            
             let recordsForCurrentDay = recordsForDays[currentDay]
             // if nil, then it means that theres nothing in it (that shouldn't happen though)
             if !(recordsForCurrentDay?.isEmpty ?? true) {
                 
                 streakCount += 1
+                
+                if streakCount > maxStreak {
+                    maxStreak = streakCount
+                }
                 
             } else {
                 
@@ -184,6 +263,6 @@ extension StatisticsCalculator {
             }
         }
         
-        return streakCount
+        return maxStreak
     }
 }
