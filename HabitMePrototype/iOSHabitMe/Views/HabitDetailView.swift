@@ -186,7 +186,6 @@ struct HabitDetailView: View {
     
     
     @State private var currentStreak = 0
-    @State private var avgRecordsPerDay: Double = 0
     @State private var bestStreak = 0
     
     let numOfItemsToReachTop = 5
@@ -284,9 +283,13 @@ struct HabitDetailView: View {
     
     
     var totalRecords: String {
-        return "-1"
-        // FIXME: 2 - totalRecords
-        // return "\(filteredDatahabitRecordsForHabit.count)"
+        
+        "\(StatisticsCalculator.findTotalRecords(for: habitRecordsForDays))"
+    }
+    
+    
+    var avgRecordsPerDay: Double {
+        StatisticsCalculator.findAverageRecordsPerDay(for: habitRecordsForDaysLogged)
     }
     
     
@@ -301,7 +304,6 @@ struct HabitDetailView: View {
         
         self.goToEditHabit = goToEditHabit
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
-        
     }
     
     
