@@ -7,7 +7,23 @@
 
 import Foundation
 import HabitRepositoryFW
+ 
 
+extension ActivityDetail {
+    
+    static var preview: ActivityDetail {
+        
+        ActivityDetail(
+            id: UUID().uuidString,
+            name: "Hoodlum",
+            availableUnits: nil,
+            isArchived: false,
+            creationDate: Date(),
+            calculationType: .sum,
+            valueType: .text
+        )
+    }
+}
 
 extension HabitRecord {
     
@@ -17,7 +33,9 @@ extension HabitRecord {
             id: UUID().uuidString,
             creationDate: Date(),
             completionDate: Date(),
-            activityDetailRecords: [],
+            activityDetailRecords: [
+                ActivityDetailRecord(value: "This is a lot of string, don'tcha know - Where is it I'm going to out\n", unit: nil, activityDetail: .preview)
+            ],
             habit: Habit.preview
         )
     }

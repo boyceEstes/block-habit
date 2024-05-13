@@ -44,30 +44,23 @@ struct ActivityRecordRowTitleDate: View {
 /// For example, the `HabitDetailView` would show logs with only the date
 struct ActivityRecordRowDateWithInfo: View {
     
-    let activityRecord: HabitRecord
+    let habitRecord: HabitRecord
     
     var body: some View {
         
-        let completionDate = activityRecord.completionDate
-        let titleDate = completionDate.displayDate
-        
         VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
-            
-            HStack {
-                Text("\(titleDate)")
-                    .font(.rowTitle)
-                    .layoutPriority(1)
-                Spacer()
-                Text("\(DisplayDatePolicy.date(for: activityRecord, on: completionDate))")
-                    .font(.rowDetail)
-            }
-            
-            let detailRecords = activityRecord.activityDetailRecords
-            
+
+            let detailRecords = habitRecord.activityDetailRecords
+            let displayDate = DisplayDatePolicy.date(for: habitRecord, on: habitRecord.completionDate)
             if !detailRecords.isEmpty {
-                ActivityRecordRowContent(detailRecords: detailRecords)
+                
+                ActivityDetailRecordRowContentInfo(
+                    recordDisplayDateTime: displayDate,
+                    detailRecords: detailRecords
+                )
             }
         }
+        .sectionBackground()
     }
 }
 
@@ -107,33 +100,32 @@ struct ActivityDetailRecordIndicators: View {
                 let detail = detailRecord.activityDetail
                 
                 detail.valueType.asset.image()
-                    .foregroundColor(.secondaryFont)
             }
         }
     }
 }
 
 
-struct ActivityRecordRowContent: View {
-    
-    let detailRecords: [ActivityDetailRecord]
-    
-    var body: some View {
-        
-        // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
-        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-
-            ActivityDetailRecordIndicators(detailRecords: detailRecords)
-            ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
-        }
-    }
-}
+//struct ActivityRecordRowContent: View {
+//    
+//    let habitRecord: HabitRecord
+//    let detailRecords: [ActivityDetailRecord]
+//    
+//    var body: some View {
+//        
+//        // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
+//        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
+//            ActivityDetailRecordIndicators(detailRecords: detailRecords)
+//            ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
+//        }
+//    }
+//}
 
 
 struct ActivityDetailRecordRowContentInfo: View {
     
+    let recordDisplayDateTime: String
     let detailRecords: [ActivityDetailRecord]
-    
     
     var numberActivityDetailRecords: [ActivityDetailRecord] {
         detailRecords.valueType(.number)
@@ -145,13 +137,26 @@ struct ActivityDetailRecordRowContentInfo: View {
     
     var body: some View {
         
-        VStack(spacing: .detailPadding) {
-            if !numberActivityDetailRecords.isEmpty {
-                ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
-            }
+        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
             
-            if !textActivityDetailRecords.isEmpty {
-                ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
+            HStack {
+                Text("\(recordDisplayDateTime)")
+                    .font(.rowDetail)
+                Spacer()
+                ActivityDetailRecordIndicators(detailRecords: detailRecords)
+            }
+            .foregroundColor(.secondaryFont)
+            
+            if !detailRecords.isEmpty {
+                VStack(spacing: .detailPadding) {
+                    if !numberActivityDetailRecords.isEmpty {
+                        ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
+                    }
+                    
+                    if !textActivityDetailRecords.isEmpty {
+                        ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
+                    }
+                }
             }
         }
     }
@@ -287,9 +292,9 @@ struct UnwrappedValueText: View {
             .sectionBackground(padding: .detailPadding)
         ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowDateWithInfo(activityRecord: HabitRecord.preview)
+        ActivityRecordRowDateWithInfo(habitRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowDateWithInfo(activityRecord: HabitRecord.preview)
+        ActivityRecordRowDateWithInfo(habitRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
     }
 }

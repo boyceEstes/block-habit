@@ -326,37 +326,49 @@ struct HabitDetailView: View {
                         .padding(.horizontal)
                     
                     LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-                        Text("Habit Records")
-                            .font(.sectionTitle)
-                        
-                        ForEach(habitRecordsForDaysLogged.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
-                            
-                            Text("\(DateFormatter.shortDate.string(from: day))")
-                            
-                            ForEach(records, id: \.id) { record in
+//                        Text("Habit Records")
+//                            .font(.sectionTitle)
+//                        
+//                        ForEach(habitRecordsForDaysLogged.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
+//                            
+//                            Text("\(DateFormatter.shortDate.string(from: day))")
+//                            
+//                            ForEach(records, id: \.id) { record in
+//                                
+//                                VStack {
+//                                    ForEach(record.activityDetailRecords, id: \.id) { activityDetailRecord in
+//                                        
+//                                        HStack {
+//                                            Text("\(activityDetailRecord.activityDetail.name)")
+//                                            Spacer()
+//                                            Text("\(activityDetailRecord.value) \(activityDetailRecord.unit ?? "")")
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+                        // FIXME: 2 Orient this so that all the information is given
+                        Text("Records")
+                            .font(.title3)
+                        if !habitRecordsForDaysLogged.isEmpty {
+                            ForEach(habitRecordsForDaysLogged.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
                                 
-                                VStack {
-                                    ForEach(record.activityDetailRecords, id: \.id) { activityDetailRecord in
-                                        
-                                        HStack {
-                                            Text("\(activityDetailRecord.activityDetail.name)")
-                                            Spacer()
-                                            Text("\(activityDetailRecord.value) \(activityDetailRecord.unit ?? "")")
-                                        }
-                                    }
+                                HStack {
+                                    Text("\(day.displayDate)")
+                                        .font(.rowTitle)
+                                        .layoutPriority(1)
+                                    Spacer()
+                                }
+                                
+                                ForEach(records, id: \.self) { record in
+                                    ActivityRecordRowDateWithInfo(habitRecord: record)
                                 }
                             }
+                        } else {
+                            Text("You've never done this before. You should try it. Come on, do it. You won't... wimp.")
+                                .foregroundColor(.secondaryFont)
+                                .font(.rowDetail)
                         }
-                        // FIXME: 2 Orient this so that all the information is given
-//                        Text("TO BE FIXED")
-//                        if !filteredDatahabitRecordsForHabit.isEmpty {
-//                            // FIXME: PUT THESE BACK!
-//                            Text("To be fixed: Habit records - \(filteredDatahabitRecordsForHabit.count)")
-                        
-                        
-//                        } else {
-//                            Text("No records found for this activity yet")
-//                        }
                     }
                     .padding(.horizontal)
                 }
