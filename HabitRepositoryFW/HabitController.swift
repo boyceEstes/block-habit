@@ -274,7 +274,7 @@ extension HabitController {
 
 // MARK: Create record
 extension HabitController {
-
+    
     // I am moving away from using that fun protocol system that I made because this
     // logic should be pretty central and shared with everything. If I need to break it up
     // I know how, but simplicity is the name of the game for now.
@@ -377,5 +377,21 @@ extension HabitController {
     ) async throws {
         
         try await store.createHabitRecord(habitRecord)
+    }
+    
+    
+    public func updateHabitRecord(_ updatedHabitRecord: HabitRecord) {
+        
+        Task {
+            do {
+                try await blockHabitRepository.updateHabitRecord(id: updatedHabitRecord.id, with: updatedHabitRecord)
+                
+                // Update it locally if it is successful
+                // Find the habitRecord, and replace it with the new one
+                
+            } catch {
+                fatalError("This aint a problem is an issue")
+            }
+        }
     }
 }

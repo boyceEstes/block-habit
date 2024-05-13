@@ -105,7 +105,34 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
     }
     
     public func updateHabitRecord(id: String, with habitRecord: HabitRecord) async throws {
-        // TODO: later
+
+        let context = context
+        try await context.perform {
+            
+            let managedHabitRecord = try context.fetchHabitRecord(withID: id)
+            
+            managedHabitRecord.creationDate = habitRecord.creationDate
+            managedHabitRecord.completionDate = habitRecord.completionDate
+            
+            
+            // Can I have a dictionary organized by activityDetailRecord ID's?
+            // Then when I want to find a particular one I can
+            for activityDetailRecord in habitRecord.activityDetailRecords {
+                // For each activityDetailRecord
+                // Create a new managed one and delete the old ones?
+                if let managedActivityDetailRecord = managedHabitRecord.activityDetailRecords?.first(where: { managedActivityDetailRecord in
+                    managedActivityDetailRecord.id == activityDetailRecord.id
+                }) {
+                    // If we can find a managedActivityDetailRecord that matches the id of one in our model
+                    // Value is the only thing that really needs to be modified
+                    managedActivityDetailRecord.value = activityDetailRecord.value
+                }
+            }
+            
+            // save
+            try context.save()
+            // FIXME: Rollback if there is an error
+        }
     }
     
     public func destroyHabitRecord(_ habitRecord: HabitRecord) async throws {

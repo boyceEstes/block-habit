@@ -30,17 +30,22 @@ enum HabitRecordDetailAlert {
 
 struct HabitRecordDetailView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
     
     // We only want to be able to edit their time, always maintain the date.
     let blockHabitStore: CoreDataBlockHabitStore
-    @State private var activityRecord: HabitRecord
-    @State private var isHabitRecordDirty = false // Has it been changed?
+    let ogHabitRecord: HabitRecord
     
-    @State private var editableCompletionTime: Date = Date()
+    @State private var activityRecord: HabitRecord
+    
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     @FocusState private var focused: Focusable?
+    
+    var isHabitRecordDirty: Bool {
+        activityRecord != ogHabitRecord
+    }
     
     
     // FIXME: Ensure that Sorting the ActivityDetailRecords is working correctly
@@ -58,6 +63,7 @@ struct HabitRecordDetailView: View {
     init(blockHabitStore: CoreDataBlockHabitStore, activityRecord: HabitRecord) {
         
         self.blockHabitStore = blockHabitStore
+        self.ogHabitRecord = activityRecord
         self._activityRecord = State(initialValue: activityRecord)
     }
     
@@ -69,23 +75,17 @@ struct HabitRecordDetailView: View {
      */
     
     var body: some View {
+        
         ScrollView {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
             LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                 
-//                let sortedActivityRecordDetailsCount = sortedActivityRecordDetails.count
                 let activityDetailRecordCount = activityRecord.activityDetailRecords.count
+                
                 if activityDetailRecordCount > 0 {
                     ForEach(0..<activityDetailRecordCount, id: \.self) { i in
                         
                         let activityDetail = activityRecord.activityDetailRecords[i].activityDetail
-//                        let valueBinding = valueBinding(for: sortedActivityRecordDetails[i])
-                        
-//                        let valueBinding = Binding {
-//                            sortedActivityRecordDetails[i].value
-//                        } set: { newValue in
-//                            
-//                        }
                         let valueBinding = $activityRecord.activityDetailRecords[i].value
 //
                         switch activityDetail.valueType {
@@ -113,34 +113,26 @@ struct HabitRecordDetailView: View {
                     Text("Completion Time")
                         .font(.rowDetail)
                     Spacer()
-                    DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
+                    DatePicker("Completion Time", selection: Binding(get: {
+                        activityRecord.completionDate
+                    }, set: { updatedCompletionDate in
+                        activityRecord.completionDate = updatedCompletionDate
+                    }), displayedComponents: .hourAndMinute)
+                    .labelsHidden()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .sectionBackground(padding: .detailPadding)
                 
                 Spacer()
+                
+                
             }
             .padding(.horizontal)
             .padding(.top)
         }
         .scrollDismissesKeyboard(.interactively)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        .onAppear {
-            editableCompletionTime = activityRecord.completionDate
-        }
-        .onChange(of: editableCompletionTime) {
-            // Adding this check to prevent from doing update logic when we first tap on the row
-            if editableCompletionTime != activityRecord.completionDate {
-                let new = DateFormatter.shortDateShortTime.string(from: editableCompletionTime)
-                print("changed to \(new)")
-                // FIXME: Can no longer update the DateTime
-                updateHabitRecord(
-                    activityRecord,
-                    withNewCompletionTime: editableCompletionTime
-                )
-            }
-        }
+        .sheetyBottomBarButton(title: "Update Record", isAbleToTap: isHabitRecordDirty, action: didTapButtonToUpdateHabitRecord)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -222,28 +214,10 @@ struct HabitRecordDetailView: View {
 //    }
     
     
-    private func updateHabitRecord(
-        _ habitRecord: HabitRecord,
-        withNewCompletionTime newCompletionTime: Date
-    ) {
+    private func didTapButtonToUpdateHabitRecord() {
         
-        Task {
-            do {
-                var habitRecord = habitRecord
-                
-                habitRecord.completionDate = newCompletionTime
-                
-                try await blockHabitStore.update(
-                    habitRecordID: habitRecord.id,
-                    with: habitRecord
-                )
-                
-            } catch {
-                
-                // FIXME: Handle error in view
-                fatalError("UPDATING DIDN'T WORK")
-            }
-        }
+        habitController.updateHabitRecord(activityRecord)
+        dismiss()
     }
 }
 
