@@ -118,7 +118,7 @@ struct CreateHabitView: View {
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     @State private var selectedDetails = [ActivityDetail]()
-    @State private var completionGoal: Int? = nil
+    @State private var completionGoal: Int? = 1
     
     var body: some View {
         ScrollView {
