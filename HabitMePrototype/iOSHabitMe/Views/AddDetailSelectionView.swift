@@ -82,7 +82,9 @@ struct AddDetailsView: View {
     
 
     var body: some View {
+        
         List {
+            Section {
 //            VStack(spacing: .vItemSpacing) {
                 ForEach(activityDetails) { dataActivityDetail in
                     
@@ -143,22 +145,24 @@ struct AddDetailsView: View {
                         }
                     }
                 }
-//            }
+            } header: {
+                HStack {
+                    Text("Activity Details")
+                    Spacer()
+                    Button {
+                        goToCreateActivityDetail()
+                    } label: {
+                        Text("New")
+                            .font(.subheadline)
+                    }
+                }
+                .padding(.horizontal)
+            }
         }
         .listStyle(.plain)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .navigationTitle(String.addActivityDetails_navTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                
-                Button {
-                    goToCreateActivityDetail()
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-        }
     }
     
     
