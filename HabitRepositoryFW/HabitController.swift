@@ -388,9 +388,24 @@ extension HabitController {
                 
                 // Update it locally if it is successful
                 // Find the habitRecord, and replace it with the new one
-                
+                // Get today's habits (Because it had to be the selected day to see the detail view)
+                // TODO: Make a general version of this for the future in case there is ever a need to go to this screen without having that day selected. this could easily happen in the habit detail view.
+                replaceHabitRecord(withId: updatedHabitRecord.id, in: &habitRecordsForDays, newRecord: updatedHabitRecord)
             } catch {
                 fatalError("This aint a problem is an issue")
+            }
+        }
+    }
+    
+
+    // TODO: Make generic
+    func replaceHabitRecord(withId id: String, in dictionary: inout [Date: [HabitRecord]], newRecord: HabitRecord) {
+        
+        for (date, habitRecords) in dictionary {
+            if let index = habitRecords.firstIndex(where: { $0.id == id }) {
+                // Replace the HabitRecord at the found index with the new instance
+                dictionary[date]?[index] = newRecord
+                return
             }
         }
     }
