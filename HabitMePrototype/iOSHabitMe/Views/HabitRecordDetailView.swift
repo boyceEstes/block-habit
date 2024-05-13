@@ -186,33 +186,6 @@ struct HabitRecordDetailView: View {
     }
     
     
-//    private func valueBinding(for activityDetailRecord: ActivityDetailRecord) -> Binding<String> {
-//        
-//        return Binding {
-//            activityDetailRecord.value
-//        } set: { newValue in
-//            activityDetailRecord.value = newValue
-//        }
-//    }
-    
-//    
-//    // MARK: Logic
-//    private func didTapButtonToUpdateActivityRecord() {
-//        print("did tap button to update activity record)")
-//    }
-    
-    
-    // FIXME: Make sure that we can delete the  record from the detail screen
-//    private func removeHabitRecord(_ habitRecord: DataHabitRecord) {
-//        
-//        DispatchQueue.main.async {
-//            
-//            modelContext.delete(habitRecord)
-//            
-//            dismiss()
-//        }
-//    }
-    
     
     private func didTapButtonToUpdateHabitRecord() {
         

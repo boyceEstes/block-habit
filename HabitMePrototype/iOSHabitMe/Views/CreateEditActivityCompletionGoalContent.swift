@@ -37,7 +37,9 @@ struct CreateEditActivityCompletionGoalContent: View {
     
     init(completionGoal: Binding<Int?>) {
         
-        self._transientCompletionGoal = State(initialValue: completionGoal.wrappedValue ?? -1)
+        let initialCompletionGoal = completionGoal.wrappedValue ?? 1
+        
+        self._transientCompletionGoal = State(initialValue: initialCompletionGoal)
         self._completionGoal = completionGoal
         self._isCompletionGoalWanted = State(initialValue: completionGoal.wrappedValue != nil)
     }
@@ -90,6 +92,10 @@ struct CreateEditActivityCompletionGoalContent: View {
     }
 }
 
+
 #Preview {
-    CreateEditActivityCompletionGoalContent(completionGoal: .constant(nil))
+    
+    @State var completionGoal: Int? = 1
+    
+    return CreateEditActivityCompletionGoalContent(completionGoal: $completionGoal)
 }
