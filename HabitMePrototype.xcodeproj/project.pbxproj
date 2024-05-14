@@ -56,6 +56,7 @@
 		B39A274E2BEBA805002A5A88 /* StatisticsCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A274D2BEBA805002A5A88 /* StatisticsCalculatorTests.swift */; };
 		B39A27502BEC5063002A5A88 /* StatisticsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A274F2BEC5062002A5A88 /* StatisticsCalculator.swift */; };
 		B39A27522BF3A3D0002A5A88 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A27512BF3A3D0002A5A88 /* SettingsView.swift */; };
+		B39A27542BF3A614002A5A88 /* ContentView+SettingsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A27532BF3A614002A5A88 /* ContentView+SettingsComposition.swift */; };
 		B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */; };
 		B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F72BDFC9D800240EB0 /* Habit.swift */; };
 		B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */; };
@@ -226,6 +227,7 @@
 		B39A274D2BEBA805002A5A88 /* StatisticsCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalculatorTests.swift; sourceTree = "<group>"; };
 		B39A274F2BEC5062002A5A88 /* StatisticsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalculator.swift; sourceTree = "<group>"; };
 		B39A27512BF3A3D0002A5A88 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B39A27532BF3A614002A5A88 /* ContentView+SettingsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+SettingsComposition.swift"; sourceTree = "<group>"; };
 		B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMenuDataSourceTests.swift; sourceTree = "<group>"; };
 		B3B2F2F72BDFC9D800240EB0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetail.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 				B3B403832B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift */,
 				B3BFEA1B2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift */,
 				B347DE702B81305700F2FA74 /* View+RecordSheetPresentation.swift */,
+				B39A27532BF3A614002A5A88 /* ContentView+SettingsComposition.swift */,
 			);
 			path = ViewComposition;
 			sourceTree = "<group>";
@@ -921,6 +924,7 @@
 				B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */,
 				B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */,
 				B32947B12B633DEB007C8C1E /* NavigationFlow.swift in Sources */,
+				B39A27542BF3A614002A5A88 /* ContentView+SettingsComposition.swift in Sources */,
 				B347DE6B2B7FF4EE00F2FA74 /* SizeKey.swift in Sources */,
 				B37AC7762BA086E50052552B /* HomeViewModel.swift in Sources */,
 				B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */,

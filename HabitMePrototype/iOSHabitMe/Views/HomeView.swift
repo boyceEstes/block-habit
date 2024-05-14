@@ -61,6 +61,7 @@ struct HomeView: View {
     let goToEditHabit: (Habit) -> Void
     let goToStatistics: () -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
+    let goToSettings: () -> Void
     
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
     
@@ -71,7 +72,8 @@ struct HomeView: View {
         goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
         goToEditHabit: @escaping (Habit) -> Void,
         goToStatistics: @escaping () -> Void,
-        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void,
+        goToSettings: @escaping () -> Void
     ) {
         self.goToHabitDetail = goToHabitDetail
         self.goToCreateHabit = goToCreateHabit
@@ -79,6 +81,7 @@ struct HomeView: View {
         self.goToEditHabit = goToEditHabit
         self.goToStatistics = goToStatistics
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
+        self.goToSettings = goToSettings
     }
     
     
@@ -176,7 +179,7 @@ struct HomeView: View {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 
                 Button {
-                    print("")
+                    goToSettings()
                 } label : {
                     Image(systemName: "gear")
                 }
@@ -296,7 +299,8 @@ struct HomeView: View {
             goToHabitRecordDetail: { _ in },
             goToEditHabit: { _ in },
             goToStatistics: { },
-            goToCreateActivityRecordWithDetails: { _, _ in }
+            goToCreateActivityRecordWithDetails: { _, _ in },
+            goToSettings: { }
         )
         .modelContainer(container)
     }

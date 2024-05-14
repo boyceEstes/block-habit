@@ -24,6 +24,7 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
 
         case habitDetail(habit: Habit)
         case statistics
+        case settings
     }
     
     
