@@ -48,28 +48,6 @@ struct ContentView: View {
 }
 
 
-class AppState {
-    
-    static let shared = AppState()
-    
-    private init() {}
-    
-    private(set) var selectedDate = Date().noon!
-    
-    func setSelectedDateToNext() {
-        
-        print("Go forward in time unless its today")
-    }
-    
-    func setSelectedDateToPrevious() {
-        
-        print("Go back in time")
-    }
-}
-
-
-
-
 #Preview {
     ContentView(blockHabitStore: CoreDataBlockHabitStore.preview())
 }
