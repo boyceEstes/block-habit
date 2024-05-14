@@ -14,6 +14,8 @@ extension Color {
     // tertiaryBackground color that I have in Assets because it is more custom
     
     static let secondaryFont: Color = .secondary
+    
+    static let restore: Color = .purple
 }
 
 

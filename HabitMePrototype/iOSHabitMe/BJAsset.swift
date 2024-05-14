@@ -14,6 +14,9 @@ enum BJAsset: String, CustomStringConvertible {
     case numberSquare = "number.square"// Number Detail
     case characterBubble = "character.bubble" // Text Detail
     
+    case tip = "info.circle" // Tip
+    case restore = "staroflife" // Unarchive/Restore
+    
     /// access string by typecasting `AssetLibrary` instance.
     ///
     /// Example:
@@ -23,7 +26,7 @@ enum BJAsset: String, CustomStringConvertible {
     }
     
     
-    func image() -> some View {
+    func image() -> Image {
         Image(systemName: self.rawValue)
     }
 }

@@ -10,6 +10,7 @@ import SwiftData
 import CoreData
 import HabitRepositoryFW
 
+import TipKit
 import Combine
 //@Observable class HabitMeController {
 //    
@@ -97,6 +98,8 @@ struct HabitMePrototypeApp: App {
     
     
     init() {
+        
+        try? Tips.configure()
         
         do {
             let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("default.store")

@@ -7,6 +7,22 @@
 
 import SwiftUI
 import HabitRepositoryFW
+import TipKit
+
+
+struct ArchiveTip: Tip {
+    var title: Text {
+        Text("Restore or Delete Archived Items")
+    }
+    
+    var message: Text {
+        Text("Swipe left to right to Restore a habit. Swipe right to left to Delete a habit... forever")
+    }
+    
+    var image: Image? {
+        BJAsset.tip.image()
+    }
+}
 
 
 struct ArchivedHabitsView: View {
@@ -16,20 +32,47 @@ struct ArchivedHabitsView: View {
     // MARK: Note This is a good place to put a TipKit for swiping to unarchive or delete
     @State private var archivedHabitList = [Habit]()
     
+    private let archiveTip = ArchiveTip()
     
     
     var body: some View {
-        
-        List {
-            ForEach(archivedHabitList, id: \.id) { archivedHabit in
-                
-                Text("\(archivedHabit.name)")
+        VStack {
+            TipView(archiveTip)
+                .padding()
+            
+            List {
+                ForEach(archivedHabitList, id: \.id) { archivedHabit in
+                    
+                    Text("\(archivedHabit.name)")
+                        .swipeActions(edge: .leading) {
+                            // Restore
+                            Button {
+                                print("restore!")
+                            } label: {
+                                Label {
+                                    Text("Restore")
+                                } icon: {
+                                    BJAsset.restore.image()
+                                }
+                            }
+                            .tint(Color.restore)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            // Delete
+                            Button(role: .destructive) {
+                                print("delete.. for real - but first give a warning")
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
+                }
             }
         }
+
         .task {
             self.archivedHabitList = await habitController.archivedHabits()
         }
-        .navigationTitle("Archvied Habits")
+        .navigationTitle("Archived Habits")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
