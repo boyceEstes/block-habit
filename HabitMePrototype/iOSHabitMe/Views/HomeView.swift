@@ -160,7 +160,7 @@ struct HomeView: View {
                     // FIXME: 2 See more at the definition for that
                     .disabled(habitController.isAllowedToGoToPrevDay() ? false : true)
                     
-                    Text(displaySelectedDate)
+                    Text(habitController.selectedDay.displayDate)
                         .font(.title2)
                         .fontWeight(.semibold)
                     
@@ -174,6 +174,12 @@ struct HomeView: View {
                 }
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
+                
+                Button {
+                    print("")
+                } label : {
+                    Image(systemName: "gear")
+                }
                 
                 Button {
                     goToStatistics()
@@ -209,32 +215,6 @@ struct HomeView: View {
         
         withAnimation(.easeOut) {
             habitRecordVisualMode = visualMode
-        }
-    }
-    
-    
-    private var displaySelectedDate: String {
-        let formatter: DateFormatter = .shortDate
-        
-        let today = Date().noon!
-        let yesterday = Date().noon!.adding(days: -1)
-        let twoDaysAgo = Date().noon!.adding(days: -2)
-        let threeDaysAgo = Date().noon!.adding(days: -3)
-        let fourDaysAgo = Date().noon!.adding(days: -4)
-        
-        switch habitController.selectedDay {
-        case today:
-            return "Today"
-        case yesterday:
-            return "Yesterday"
-        case twoDaysAgo:
-            return "2 Days Ago"
-        case threeDaysAgo:
-            return "3 Days Ago"
-        case fourDaysAgo:
-            return "4 Days Ago"
-        default:
-            return formatter.string(from: habitController.selectedDay)
         }
     }
 }
