@@ -7,9 +7,38 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+
+struct ArchivedHabitsView: View {
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        Text("Show archived habits")
+    }
+}
+
+
+struct ArchivedActivityDetailsView: View {
+    
+    var body: some View {
+        
+        Text("Show archived activity details")
+    }
+}
+
+
+struct SettingsView: View {
+    
+    var body: some View {
+        
+        List {
+            // Section for archived stuff
+            Section("The Archive") {
+                NavigationLink("Archived Habits", destination: ArchivedHabitsView())
+                NavigationLink("Archived Activity Details", destination: ArchivedActivityDetailsView())
+            }
+        }
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
