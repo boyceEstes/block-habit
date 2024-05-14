@@ -189,7 +189,7 @@ public class HabitController: ObservableObject {
 }
 
 
-// MARK: Create habit
+// MARK: Habit
 extension HabitController {
     
     public func createHabit(_ habit: Habit) {
@@ -272,7 +272,17 @@ extension HabitController {
 }
 
 
-// MARK: Create record
+// MARK: Archived Habits
+extension HabitController {
+    
+    public func archivedHabits() async -> [Habit] {
+        
+        return await (try? blockHabitRepository.readAllArchivedHabits()) ?? []
+    }
+}
+
+
+// MARK: Record
 extension HabitController {
     
     // I am moving away from using that fun protocol system that I made because this

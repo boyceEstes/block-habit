@@ -13,6 +13,7 @@ public protocol HabitStore {
     
     func createHabit(_ habit: Habit) async throws
     func readAllNonarchivedHabits() async throws -> [Habit]
+    func readAllArchivedHabits() async throws -> [Habit]
     func updateHabit(id: String, with habit: Habit) async throws
     func destroyHabit(_ habit: Habit) async throws
 }

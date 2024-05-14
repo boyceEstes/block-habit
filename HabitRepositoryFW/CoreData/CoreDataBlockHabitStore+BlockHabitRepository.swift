@@ -41,6 +41,18 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
     }
     
     
+    public func readAllArchivedHabits() async throws -> [Habit] {
+        
+        let context = context
+        return try await context.perform {
+            
+            let archivedHabitsRequest = ManagedHabit.allArchivedManagedHabitsRequest()
+            let managedArchivedHabits = try context.fetch(archivedHabitsRequest)
+            return try managedArchivedHabits.toModel()
+        }
+    }
+    
+    
     public func updateHabit(id: String, with habit: Habit) async throws {
 
         let context = context

@@ -38,6 +38,22 @@ public class ManagedHabit: NSManagedObject {
     }
     
     
+    public class func allArchivedManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
+        
+        let request = ManagedHabit.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        
+        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+        
+        let predicate = NSPredicate(format: "isArchived == YES")
+        request.predicate = predicate
+        
+        return request
+    }
+    
+    
+    
     static func findHabitRequest(with id: String) -> NSFetchRequest<ManagedHabit> {
         
         let request = ManagedHabit.fetchRequest()
