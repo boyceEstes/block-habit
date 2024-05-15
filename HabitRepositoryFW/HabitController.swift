@@ -279,6 +279,34 @@ extension HabitController {
         
         return await (try? blockHabitRepository.readAllArchivedHabits()) ?? []
     }
+    
+    
+    public func archiveHabit(_ habit: Habit) {
+        
+        // We want to update the habit's `isArchived` property to true
+        Task {
+            do {
+                let id = habit.id
+                var archivedHabit = habit
+                archivedHabit.isArchived = true
+                
+                try await blockHabitRepository.updateHabit(id: id, with: archivedHabit)
+                
+                // Remove from the underlying habits list - this might not be necessary since it is not primary driver of the habitsmenu, however there is logic with it when we are deciding what is or isn't complete, so I still want to keep it to date
+                latestNonArchivedHabits.removeAll {
+                    $0.id == habit.id
+                }
+                
+                guard let isCompletedHabit = isCompletedHabits.first(where: { $0.habit.id == habit.id }) else { return }
+                
+                isCompletedHabits.remove(isCompletedHabit)
+            } catch {
+                fatalError("AGHHHHHH IT WON'T GO AWAY! \(error)")
+            }
+        }
+        
+        
+    }
 }
 
 

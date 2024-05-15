@@ -141,7 +141,7 @@ struct HomeView: View {
                         print("record habit")
                     }, archiveHabit: { habit in
                         // FIXME: 2 - viewModel.archiveHabit(for: habit)
-                        print("ARCHIVE HABIT")
+                        habitController.archiveHabit(habit)
                     }, destroyHabit: { habit in
                         // FIXME: 2 - viewModel.destroyHabit(for: habit)
                         print("DESTROY HABIT")
