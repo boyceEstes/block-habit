@@ -145,6 +145,7 @@ struct HomeView: View {
                     }, destroyHabit: { habit in
                         // FIXME: 2 - viewModel.destroyHabit(for: habit)
                         print("DESTROY HABIT")
+                        habitController.deleteHabit(habit)
                     }
                 )
             }

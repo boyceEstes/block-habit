@@ -313,6 +313,46 @@ extension HabitController {
         
         self.habitRecordsForDays = updatedHabitRecordsForDays
     }
+    
+    
+    private func deleteHabitInHabitRecordsForDays(habitToRemove: Habit) {
+        
+        let updatedHabitRecordsForDays = habitRecordsForDays.mapValues { habitRecords in
+            
+            var newHabitRecords = habitRecords
+            newHabitRecords.removeAll {
+                $0.habit.id == habitToRemove.id
+            }
+            return newHabitRecords
+        }
+        
+        self.habitRecordsForDays = updatedHabitRecordsForDays
+    }
+    
+    
+    public func deleteHabit(_ habit: Habit) {
+        
+        Task {
+            do {
+                try await blockHabitRepository.destroyHabit(habit)
+                
+                guard let habitToRemoveIndex = latestHabits.firstIndex(where: { $0.id == habit.id }) else {
+                    throw NSError(domain: "", code: 1)
+                }
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.latestHabits.remove(at: habitToRemoveIndex)
+                    
+                    self?.updateHabitsIsCompletedForDay()
+                    self?.deleteHabitInHabitRecordsForDays(habitToRemove: habit)
+                }
+                
+            } catch {
+                
+                fatalError("We still have a loose end... cut it off. \(error)")
+            }
+        }
+    }
 }
 
 
