@@ -17,7 +17,7 @@ public class HabitController: ObservableObject {
     @Published public var selectedDay: Date
     @Published public var habitRecordsForDays = [Date: [HabitRecord]]() {
         didSet {
-            print("habitRecordsForDays")
+            print("BOYCE: habitRecordsForDays")
         }
     }
     
@@ -319,28 +319,6 @@ extension HabitController {
 // MARK: Archived Habits
 extension HabitController {
     
-//    public func archivedHabits() -> AnyPublisher<[Habit], Never> {
-//        
-//        /*
-//         I will just keep an in-memory list of archivedHabits. I just need something
-//         That I can update whenever there are changes that are made in the swiftui list
-//         and since I am not reading any changes to the database, I would need to just
-//         upkeep it separately like I am doing with everything else.
-//         
-//         It keeps things consistent. Is there are a way that I could
-//         prevent loading the list until the archivedHabits view is created, though?
-//         
-//         I probably wouldn't need this list in most situations. So I don't see a reason
-//         to fetch it on app initialization like it is. Eh, I don't think its a big enough
-//         overhead to warrant too much thought right now.
-//         
-//         TODO: Room for optimization
-//         */
-//        
-//        return $latestArchivedHabits.eraseToAnyPublisher()
-//    }
-    
-    
     public func archiveHabit(_ habit: Habit) {
         
         // We want to update the habit's `isArchived` property to true
@@ -452,10 +430,13 @@ extension HabitController {
                 try await blockHabitRepository.destroyHabitRecord(habitRecord)
                 
                 // Update habitRecordsForDays locally
-                habitRecordsForDays[day]?.removeAll(where: { $0.id == habitRecord.id })
+                guard let habitRecordIndex = habitRecordsForDays[day]?.firstIndex(where: { $0.id == habitRecord.id }) else {
+                    throw NSError(domain: "Could not find the habitRecord in the day", code: 1)
+                }
+                
+                habitRecordsForDays[day]?.remove(at: habitRecordIndex)
                 
                 // Ensure that habits are updated for isCompleted
-                // If we are deleting a record for a habit that is archived does this work?
                 updateHabitsIsCompletedForDay()
             } catch {
                 
