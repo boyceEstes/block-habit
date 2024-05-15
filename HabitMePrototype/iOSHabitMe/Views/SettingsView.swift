@@ -60,7 +60,7 @@ struct ArchivedHabitsView: View {
                         .swipeActions(edge: .trailing) {
                             // Delete
                             Button(role: .destructive) {
-                                print("delete.. for real - but first give a warning")
+                                habitController.deleteHabit(archivedHabit)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
