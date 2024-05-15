@@ -20,14 +20,33 @@ public class HabitController: ObservableObject {
             print("habitRecordsForDays")
         }
     }
+    
+    // Theese are created from data in latestNonArchivedHabits
     @Published public var isCompletedHabits = Set<IsCompletedHabit>() {
         didSet {
             print("BOYCE: did change isCompletedHabits")
         }
     }
     
+    
+    @Published var latestHabits = [Habit]()
+    
+    
+    public var latestArchivedHabits: [Habit] {
+        latestHabits.filter { $0.isArchived }
+    }
+    
+    
+    var latestNonArchivedHabits: [Habit] {
+        latestHabits.filter { !$0.isArchived }
+    }
+    
+    
     // These values don't need to be published, they are only here to reduce need to get them repeatedly from the database if there are no changes
-    var latestNonArchivedHabits = [Habit]()
+//    var latestNonArchivedHabits = [Habit]()
+    
+    // This is actually needed for populating the archived screen, so changes will need to seen.
+//    @Published var latestArchivedHabits = [Habit]()
     
     public var completeHabits: [Habit] {
         
@@ -37,6 +56,19 @@ public class HabitController: ObservableObject {
             .sorted(by: { $0.name < $1.name })
     }
     
+    /*
+     What if I have a publisher that will enact whenever there is a change in any habits
+     from there I can filter it into archived and nonarchived publishers and from
+     there I can filter it into incompleteNonArchived and completeNonarchived and
+     when I want to do anything to the list I can update the highest level and it will
+     trickle down - this should
+     
+     If I am listening to computed variables they should all change whenever I modify
+     this overall array.
+     
+     How will I update isCompleted?
+     */
+    
     
     public var incompleteHabits: [Habit] {
         
@@ -44,7 +76,6 @@ public class HabitController: ObservableObject {
             .filter { $0.isCompleted == false }
             .map { $0.habit }
             .sorted(by: { $0.name < $1.name })
-        
     }
     
     
@@ -66,10 +97,23 @@ public class HabitController: ObservableObject {
     }
     
     
-    public func latestHabitInformation(for habit: Habit) -> AnyPublisher<IsCompletedHabit, Error> {
+    /*
+     We don't just want to get the latestHabitInformation for the IsCompletedHabits
+     because we also want to be able to see this information for ArchivedHabits.
+     So we need some conglomerate of archived and nonarchived habits that we can pull from
+     
+     The problem here, I believe, is that when we go to the detail page for a habit
+     then we archive that habit from the home screen, it will crash because that other
+     view that's looking at it is still in memory but it has been removed from where it
+     is looking the habitInformation view.
+     
+     So how do we fix this? I think that we will need to actually, compile a list of all of our habits and work from there.
+     */
+    
+    public func latestHabitInformation(for habit: Habit) -> AnyPublisher<Habit, Error> {
         
-        $isCompletedHabits.tryMap { receivedIsCompletedHabits in
-            guard let latestForHabit: IsCompletedHabit = receivedIsCompletedHabits.first(where: { $0.habit.id == habit.id}) else {
+        $latestHabits.tryMap { receivedHabits in
+            guard let latestForHabit: Habit = receivedHabits.first(where: { $0.id == habit.id}) else {
                 throw NSError(domain: "We couldn't find the habit was sent up", code: 1)
             }
             return latestForHabit
@@ -109,7 +153,7 @@ public class HabitController: ObservableObject {
     private func populateHabits() async {
         
         do {
-            latestNonArchivedHabits = try await blockHabitRepository.readAllNonarchivedHabits()
+            latestHabits = try await blockHabitRepository.readAllHabits()
             updateHabitsIsCompletedForDay()
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
@@ -275,16 +319,32 @@ extension HabitController {
 // MARK: Archived Habits
 extension HabitController {
     
-    public func archivedHabits() async -> [Habit] {
-        
-        return await (try? blockHabitRepository.readAllArchivedHabits()) ?? []
-    }
+//    public func archivedHabits() -> AnyPublisher<[Habit], Never> {
+//        
+//        /*
+//         I will just keep an in-memory list of archivedHabits. I just need something
+//         That I can update whenever there are changes that are made in the swiftui list
+//         and since I am not reading any changes to the database, I would need to just
+//         upkeep it separately like I am doing with everything else.
+//         
+//         It keeps things consistent. Is there are a way that I could
+//         prevent loading the list until the archivedHabits view is created, though?
+//         
+//         I probably wouldn't need this list in most situations. So I don't see a reason
+//         to fetch it on app initialization like it is. Eh, I don't think its a big enough
+//         overhead to warrant too much thought right now.
+//         
+//         TODO: Room for optimization
+//         */
+//        
+//        return $latestArchivedHabits.eraseToAnyPublisher()
+//    }
     
     
     public func archiveHabit(_ habit: Habit) {
         
         // We want to update the habit's `isArchived` property to true
-        Task {
+        Task { @MainActor in
             do {
                 let id = habit.id
                 var archivedHabit = habit
@@ -292,16 +352,20 @@ extension HabitController {
                 
                 try await blockHabitRepository.updateHabit(id: id, with: archivedHabit)
                 
-                // Remove from the underlying habits list - this might not be necessary since it is not primary driver of the habitsmenu, however there is logic with it when we are deciding what is or isn't complete, so I still want to keep it to date
-                latestNonArchivedHabits.removeAll {
-                    $0.id == habit.id
+                
+                guard let archiveHabitIndex = self.latestHabits.firstIndex(where: {
+                    $0.id == id
+                }) else {
+                    throw NSError(domain: "Couldn't find habit to archive", code: 1)
                 }
                 
-                guard let isCompletedHabit = isCompletedHabits.first(where: { $0.habit.id == habit.id }) else { return }
+                self.latestHabits[archiveHabitIndex].isArchived = true
                 
-                isCompletedHabits.remove(isCompletedHabit)
+                updateHabitsIsCompletedForDay()
+                
             } catch {
-                fatalError("AGHHHHHH IT WON'T GO AWAY! \(error)")
+                
+                fatalError("SO BAD! \(error)")
             }
         }
     }
@@ -309,7 +373,7 @@ extension HabitController {
     
     public func restoreHabit(_ habit: Habit) {
         
-        Task {
+        Task { @MainActor in
             do {
                 let id = habit.id
                 var restoredHabit = habit
@@ -317,7 +381,13 @@ extension HabitController {
                 
                 try await blockHabitRepository.updateHabit(id: id, with: restoredHabit)
                 
-                latestNonArchivedHabits.append(restoredHabit)
+                guard let archiveHabitIndex = self.latestHabits.firstIndex(where: {
+                    $0.id == id
+                }) else {
+                    throw NSError(domain: "Couldn't find habit to restore", code: 1)
+                }
+                
+                self.latestHabits[archiveHabitIndex].isArchived = false
                 
                 // I actually don't know if we have already done this habit or not before - so I should recalculate its completion rather than just setting it to complete now that I have appended to the nonarchived habits
                 updateHabitsIsCompletedForDay()
@@ -385,6 +455,7 @@ extension HabitController {
                 habitRecordsForDays[day]?.removeAll(where: { $0.id == habitRecord.id })
                 
                 // Ensure that habits are updated for isCompleted
+                // If we are deleting a record for a habit that is archived does this work?
                 updateHabitsIsCompletedForDay()
             } catch {
                 

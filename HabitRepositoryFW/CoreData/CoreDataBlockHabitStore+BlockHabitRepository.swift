@@ -28,29 +28,42 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
     }
     
     
-    public func readAllNonarchivedHabits() async throws -> [Habit] {
-
-        let context = context
-        return try await context.perform {
-                
-            let unarchivedHabitsRequest = ManagedHabit.allUnarchivedManagedHabitsRequest()
-            let managedUnarchivedHabits = try context.fetch(unarchivedHabitsRequest)
-            print("BOYCE: managedHabitRecords for date count: \(managedUnarchivedHabits.count)")
-            return try managedUnarchivedHabits.toModel()
-        }
-    }
-    
-    
-    public func readAllArchivedHabits() async throws -> [Habit] {
+    public func readAllHabits() async throws -> [Habit] {
         
         let context = context
         return try await context.perform {
-            
-            let archivedHabitsRequest = ManagedHabit.allArchivedManagedHabitsRequest()
-            let managedArchivedHabits = try context.fetch(archivedHabitsRequest)
-            return try managedArchivedHabits.toModel()
+                
+            let habitsRequest = ManagedHabit.allManagedHabitsRequest()
+            let managedHabits = try context.fetch(habitsRequest)
+            print("BOYCE: managedHabitRecords for date count: \(managedHabits.count)")
+            return try managedHabits.toModel()
         }
     }
+    
+    
+//    public func readAllNonarchivedHabits() async throws -> [Habit] {
+//
+//        let context = context
+//        return try await context.perform {
+//                
+//            let unarchivedHabitsRequest = ManagedHabit.allUnarchivedManagedHabitsRequest()
+//            let managedUnarchivedHabits = try context.fetch(unarchivedHabitsRequest)
+//            print("BOYCE: managedHabitRecords for date count: \(managedUnarchivedHabits.count)")
+//            return try managedUnarchivedHabits.toModel()
+//        }
+//    }
+//    
+//    
+//    public func readAllArchivedHabits() async throws -> [Habit] {
+//        
+//        let context = context
+//        return try await context.perform {
+//            
+//            let archivedHabitsRequest = ManagedHabit.allArchivedManagedHabitsRequest()
+//            let managedArchivedHabits = try context.fetch(archivedHabitsRequest)
+//            return try managedArchivedHabits.toModel()
+//        }
+//    }
     
     
     public func updateHabit(id: String, with habit: Habit) async throws {

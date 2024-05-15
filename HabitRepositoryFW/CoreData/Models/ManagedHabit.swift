@@ -23,7 +23,7 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
 
     
-    public class func allUnarchivedManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
+    public class func allManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
         
         let request = ManagedHabit.fetchRequest()
         request.returnsObjectsAsFaults = false
@@ -31,27 +31,39 @@ public class ManagedHabit: NSManagedObject {
         let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
         request.sortDescriptors = [sortDescriptor]
         
-        let predicate = NSPredicate(format: "isArchived == NO")
-        request.predicate = predicate
-        
         return request
     }
     
-    
-    public class func allArchivedManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
-        
-        let request = ManagedHabit.fetchRequest()
-        request.returnsObjectsAsFaults = false
-        
-        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
-        request.sortDescriptors = [sortDescriptor]
-        
-        let predicate = NSPredicate(format: "isArchived == YES")
-        request.predicate = predicate
-        
-        return request
-    }
-    
+//    
+//    public class func allUnarchivedManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
+//        
+//        let request = ManagedHabit.fetchRequest()
+//        request.returnsObjectsAsFaults = false
+//        
+//        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
+//        request.sortDescriptors = [sortDescriptor]
+//        
+//        let predicate = NSPredicate(format: "isArchived == NO")
+//        request.predicate = predicate
+//        
+//        return request
+//    }
+//    
+//    
+//    public class func allArchivedManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
+//        
+//        let request = ManagedHabit.fetchRequest()
+//        request.returnsObjectsAsFaults = false
+//        
+//        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedHabit.name, ascending: true)
+//        request.sortDescriptors = [sortDescriptor]
+//        
+//        let predicate = NSPredicate(format: "isArchived == YES")
+//        request.predicate = predicate
+//        
+//        return request
+//    }
+//    
     
     
     static func findHabitRequest(with id: String) -> NSFetchRequest<ManagedHabit> {

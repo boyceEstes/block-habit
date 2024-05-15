@@ -10,30 +10,30 @@ import CoreData
 
 extension CoreDataBlockHabitStore {
     
-    public func habitDataSource(selectedDay: Date) -> HabitDataSource {
-        
-        
-        let frc = NSFetchedResultsController(
-            fetchRequest: ManagedHabit.allUnarchivedManagedHabitsRequest(),
-            managedObjectContext: context,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        
-        return ManagedHabitFRCDataSourceAdapter(
-            frc: frc,
-            selectedDay: selectedDay,
-            getHabitRecordsForDay: { [weak self] dataSourceSelectedDay in
-                
-                guard let self else {
-                    print("FAILED to get coredatablockhabitstore - out of memory")
-                    return []
-                }
-                
-                return try await self.readManagedHabitRecords(for: dataSourceSelectedDay)
-            }
-        )
-    }
+//    public func habitDataSource(selectedDay: Date) -> HabitDataSource {
+//        
+//        
+//        let frc = NSFetchedResultsController(
+//            fetchRequest: ManagedHabit.allUnarchivedManagedHabitsRequest(),
+//            managedObjectContext: context,
+//            sectionNameKeyPath: nil,
+//            cacheName: nil
+//        )
+//        
+//        return ManagedHabitFRCDataSourceAdapter(
+//            frc: frc,
+//            selectedDay: selectedDay,
+//            getHabitRecordsForDay: { [weak self] dataSourceSelectedDay in
+//                
+//                guard let self else {
+//                    print("FAILED to get coredatablockhabitstore - out of memory")
+//                    return []
+//                }
+//                
+//                return try await self.readManagedHabitRecords(for: dataSourceSelectedDay)
+//            }
+//        )
+//    }
     
     
     public func habitRecordsByDateDataSource() -> HabitRecordsByDateDataSource {

@@ -148,97 +148,6 @@ struct HabitDetailView: View {
     
     let numOfItemsToReachTop = 5
     
-//    var datesWithHabitRecords: [Date: [DataHabitRecord]] {
-//        
-//        var _datesWithHabitRecords = [Date: [DataHabitRecord]]()
-//        
-//        print("update habit records by loading them")
-//        
-//        var calendar = Calendar.current
-//        calendar.timeZone = .current
-//        calendar.locale = .current
-//        
-//        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-//              let today = Date().noon,
-//              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-//        else { return [:] }
-//        
-//        
-//        print("received from habitRepository fetch... \(filteredDatahabitRecordsForHabit.count)")
-//        //
-//        // Convert to a dictionary in order for us to an easier time in searching for dates
-//        var dict = [Date: [DataHabitRecord]]()
-//        // It is ordered from first date (jan. 1st) -> last date (today), the key is the last date in the streak
-//        var streakingCount = 0
-//        var lastStreakCount = 0
-//        var maxStreakCount = 0
-//        
-//        // average records / day
-//        /*
-//         * NOTE: This is being calculated for only the days that the record is done.
-//         * I think it would be demoralizing to see if you fell off and were trying to get back on
-//         */
-//        var daysRecordHasBeenDone = 0
-//        var recordsThatHaveBeenDone = 0
-//        
-//        
-//        for record in filteredDatahabitRecordsForHabit {
-//            
-//            guard let noonDate = record.completionDate.noon else { return [:] }
-//            if dict[noonDate] != nil {
-//                dict[noonDate]?.append(record)
-//            } else {
-//                dict[noonDate] = [record]
-//            }
-//        }
-//        
-//        
-//        // Maybe for now, lets just start at january 1, 2024 for the beginning.
-//        for day in 0...days {
-//            // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-//            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [:] }
-//            
-//            if let habitRecordsForDate = dict[noonDate] {
-//                // graph logic
-//                _datesWithHabitRecords[noonDate] = habitRecordsForDate
-//                
-//                daysRecordHasBeenDone += 1
-//                recordsThatHaveBeenDone += habitRecordsForDate.count
-//                
-//                // streak logic
-//                streakingCount += 1
-//                
-//            } else {
-//                
-//                _datesWithHabitRecords[noonDate] = []
-//                // streak logic
-//                if streakingCount >= maxStreakCount {
-//                    maxStreakCount = streakingCount
-//                }
-//                lastStreakCount = streakingCount
-//                streakingCount = 0
-//            }
-//        }
-//        
-//        // streak logic
-//        if streakingCount > 0 {
-//            // Streak has continued to today
-//            if streakingCount >= maxStreakCount {
-//                maxStreakCount = streakingCount
-//            }
-//            lastStreakCount = streakingCount
-//        }
-//        
-//        DispatchQueue.main.async {
-//            currentStreak = lastStreakCount
-//            avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
-//            bestStreak = maxStreakCount
-//        }
-//        
-//        
-//        return _datesWithHabitRecords
-//    }
-    
     
     var totalRecords: String {
         
@@ -407,14 +316,16 @@ struct HabitDetailView: View {
     }
     
     
+    // I made this a binding instead of an on-receive because I wanted to have the ability to
+    // show an alert if some error popped up - if that's not a problem, just go with onReceive
     private func bindToLatestHabitInformation() {
         
         habitController.latestHabitInformation(for: activity)
             .sink { error in
                 // FIXME: There really should never be an error here but handle it if there is!
                 fatalError("Where oh where did my habitttt go - oh where oh where did it go - its not longer in the available list and i'm no longer rhyming but man I'm still having a good timeeeee")
-            } receiveValue: { receivedIsCompletedHabit in
-                self.activity = receivedIsCompletedHabit.habit
+            } receiveValue: { receivedHabit in
+                self.activity = receivedHabit
             }
             .store(in: &cancellables)
     }

@@ -41,7 +41,7 @@ struct ArchivedHabitsView: View {
                 .padding()
             
             List {
-                ForEach(archivedHabitList, id: \.id) { archivedHabit in
+                ForEach(habitController.latestArchivedHabits, id: \.id) { archivedHabit in
                     
                     Text("\(archivedHabit.name)")
                         .swipeActions(edge: .leading) {
@@ -69,9 +69,9 @@ struct ArchivedHabitsView: View {
             }
         }
 
-        .task {
-            self.archivedHabitList = await habitController.archivedHabits()
-        }
+//        .task {
+//            self.archivedHabitList = await habitController.archivedHabits()
+//        }
         .navigationTitle("Archived Habits")
         .navigationBarTitleDisplayMode(.inline)
     }
