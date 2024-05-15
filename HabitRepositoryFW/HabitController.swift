@@ -304,8 +304,28 @@ extension HabitController {
                 fatalError("AGHHHHHH IT WON'T GO AWAY! \(error)")
             }
         }
+    }
+    
+    
+    public func restoreHabit(_ habit: Habit) {
         
-        
+        Task {
+            do {
+                let id = habit.id
+                var restoredHabit = habit
+                restoredHabit.isArchived = false
+                
+                try await blockHabitRepository.updateHabit(id: id, with: restoredHabit)
+                
+                latestNonArchivedHabits.append(restoredHabit)
+                
+                // I actually don't know if we have already done this habit or not before - so I should recalculate its completion rather than just setting it to complete now that I have appended to the nonarchived habits
+                updateHabitsIsCompletedForDay()
+                
+            } catch {
+                fatalError("GRRRRR IT WON'T COME BACK! PLEASE FORGIVE ME! \(error)")
+            }
+        }
     }
 }
 

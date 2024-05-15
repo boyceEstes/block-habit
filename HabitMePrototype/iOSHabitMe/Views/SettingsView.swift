@@ -47,7 +47,7 @@ struct ArchivedHabitsView: View {
                         .swipeActions(edge: .leading) {
                             // Restore
                             Button {
-                                print("restore!")
+                                habitController.restoreHabit(archivedHabit)
                             } label: {
                                 Label {
                                     Text("Restore")
