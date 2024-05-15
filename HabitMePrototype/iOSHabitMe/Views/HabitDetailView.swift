@@ -322,8 +322,10 @@ struct HabitDetailView: View {
         
         habitController.latestHabitInformation(for: activity)
             .sink { error in
-                // FIXME: There really should never be an error here but handle it if there is!
-                fatalError("Where oh where did my habitttt go - oh where oh where did it go - its not longer in the available list and i'm no longer rhyming but man I'm still having a good timeeeee")
+                
+                // FIXME: Log the error just to make sure that it is expected.
+                // Lost the habit that we were looking for, it was probably deleted in the detail screen
+                dismiss()
             } receiveValue: { receivedHabit in
                 self.activity = receivedHabit
             }
@@ -363,10 +365,7 @@ struct HabitDetailView: View {
     private func removeHabit() {
         
         DispatchQueue.main.async {
-            dismiss()
-            // FIXME: Delete/Archive accounting that we do not have a SwiftData model
-            print("'Delete' the habit from detail view")
-//            modelContext.delete(habit: activity)
+            habitController.deleteHabit(activity)
         }
     }
     

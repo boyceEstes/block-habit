@@ -333,6 +333,7 @@ extension HabitController {
     public func deleteHabit(_ habit: Habit) {
         
         Task {
+            
             do {
                 try await blockHabitRepository.destroyHabit(habit)
                 
@@ -346,10 +347,8 @@ extension HabitController {
                     self?.updateHabitsIsCompletedForDay()
                     self?.deleteHabitInHabitRecordsForDays(habitToRemove: habit)
                 }
-                
             } catch {
-                
-                fatalError("We still have a loose end... cut it off. \(error)")
+                fatalError("Fix it. The ... yard trimmings... need to be removed. \(error)")
             }
         }
     }
