@@ -20,7 +20,9 @@ enum AddDetailsAlert {
     func alertData() -> AlertDetail {
         
         switch self {
+            
         case let .deleteActivityRecordWarning(deleteAction, archiveAction):
+            
             return AlertDetail(
                 title: .deleteActivityDetail_alertTitle,
                 message: .deleteActivityDetail_alertMessage,
@@ -88,7 +90,6 @@ struct AddDetailsView: View {
             Section {
 //            VStack(spacing: .vItemSpacing) {
                 ForEach(habitController.nonArchivedActivityDetails) { activityDetail in
-                    
 //                    let activityDetail = dataActivityDetail.toModel()
                     
                     VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
@@ -113,20 +114,18 @@ struct AddDetailsView: View {
                     .swipeActions {
                         Button {
                             // FIXME: Make sure archival for activity detail works
-                            print("Archive the activity detail TBD")
                             archiveActivityDetails(activityDetail)
                         } label: {
                             Label(String.archive, systemImage: "archivebox.fill")
                         }
                         .tint(.indigo)
-                        
-                        Button(role: .destructive) {
-                            // FIXME: Make sure deletion for activity detail works
-                            print("Delete the activity detail TBD")
+//                        
+//                        Button(role: .destructive) {
+//                            // FIXME: Make sure deletion for activity detail works
 //                            warnBeforeDeletion(activityDetail)
-                        } label: {
-                            Label(String.delete, systemImage: "trash.fill")
-                        }
+//                        } label: {
+//                            Label(String.delete, systemImage: "trash.fill")
+//                        }
                     }
                     .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
                     .overlay(
@@ -167,21 +166,15 @@ struct AddDetailsView: View {
     }
     
     
-    private func warnBeforeDeletion(_ activityDetail: DataActivityDetail) {
-        
-        alertDetail = AddDetailsAlert.deleteActivityRecordWarning(
-            deleteAction: { deleteActivityDetails(activityDetail) },
-            archiveAction: { /*archiveActivityDetails(activityDetail)*/ }
-        ).alertData()
-        
-        showAlert = true
-    }
-    
-    
-    private func deleteActivityDetails(_ activityDetail: DataActivityDetail) {
-        
-        modelContext.delete(activityDetail)
-    }
+//    private func warnBeforeDeletion(_ activityDetail: ActivityDetail) {
+//        
+//        alertDetail = AddDetailsAlert.deleteActivityRecordWarning(
+//            deleteAction: { deleteActivityDetails(activityDetail) },
+//            archiveAction: { archiveActivityDetails(activityDetail) }
+//        ).alertData()
+//        
+//        showAlert = true
+//    }
     
     
     private func archiveActivityDetails(_ activityDetail: ActivityDetail) {
