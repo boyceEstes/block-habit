@@ -604,12 +604,25 @@ public extension HabitController {
     
     func archiveActivityDetail(_ activityDetail: ActivityDetail) {
         
-        Task {
+        updateIsArchived(for: activityDetail, to: true)
+    }
+    
+    
+    func restoreActivityDetail(_ activityDetail: ActivityDetail) {
+
+        updateIsArchived(for: activityDetail, to: false)
+    }
+    
+    
+    private func updateIsArchived(for activityDetail: ActivityDetail, to newIsArchivedValue: Bool) {
+        
+        Task { @MainActor in
+            
             do {
                 // Attempt to update in database first
                 var archivedActivityDetail = activityDetail
                 
-                archivedActivityDetail.isArchived = true
+                archivedActivityDetail.isArchived = newIsArchivedValue
                 let id = archivedActivityDetail.id
                 
                 try await blockHabitRepository.updateActivityDetail(id: id, with: archivedActivityDetail)
@@ -618,7 +631,7 @@ public extension HabitController {
                     return
                 }
                 
-                self.latestActivityDetails[archiveActivityDetailIndex].isArchived = true
+                self.latestActivityDetails[archiveActivityDetailIndex].isArchived = newIsArchivedValue
                 
             } catch {
                 fatalError("EVERYONE IS TO BLAME FOR THIS TRAVESTY! \(error)")

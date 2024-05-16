@@ -99,7 +99,9 @@ struct ArchivedActivityDetailsView: View {
     // MARK: Note This is a good place to put a TipKit for swiping to unarchive or delete
     @EnvironmentObject var habitController: HabitController
     
-    @State private var archivedActivityDetails = [ActivityDetail]()
+    private var archivedActivityDetails: [ActivityDetail] {
+        habitController.archivedActivityDetails
+    }
     
     private let archiveTip = ArchiveTip()
     
@@ -111,14 +113,14 @@ struct ArchivedActivityDetailsView: View {
             
             List {
                 Section {
-                    ForEach(habitController.archivedActivityDetails, id: \.id) { archivedActivityDetail in
+                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
                         
                         Text("\(archivedActivityDetail.name)")
                             .swipeActions(edge: .leading) {
                                 // Restore
                                 Button {
                                     print("restore activity detail")
-                                    //                                habitController.restoreHabit(archivedHabit)
+                                    habitController.restoreActivityDetail(archivedActivityDetail)
                                 } label: {
                                     Label {
                                         Text("Restore")
