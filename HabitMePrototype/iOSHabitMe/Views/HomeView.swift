@@ -141,10 +141,6 @@ struct HomeView: View {
                     }, archiveHabit: { habit in
                         
                         habitController.archiveHabit(habit)
-                    }, destroyHabit: { habit in
-                        
-                        print("DESTROY HABIT")
-                        habitController.deleteHabit(habit)
                     }
                 )
             }

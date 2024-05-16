@@ -153,7 +153,6 @@ struct HabitsMenu: View {
     let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (Habit) -> Void
     let archiveHabit: (Habit) -> Void
-    let destroyHabit: (Habit) -> Void
     
     
     let columns = [
@@ -242,14 +241,14 @@ struct HabitsMenu: View {
             }
             
             
-            Button("Delete Habit and All Data", role: .destructive) {
-//                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-                    // FIXME: Cannot get alerts to work - it will not get the new state for the next button press on delete
-                    print("DELETE HABIT")
-                destroyHabit(habit.habit)
-//                }).alertData()
-//                showAlert = true
-            }
+//            Button("Delete Habit and All Data", role: .destructive) {
+////                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
+//                    // FIXME: Cannot get alerts to work - it will not get the new state for the next button press on delete
+//                    print("DELETE HABIT")
+//                destroyHabit(habit.habit)
+////                }).alertData()
+////                showAlert = true
+//            }
         }
     }
 }
