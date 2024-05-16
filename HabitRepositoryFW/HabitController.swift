@@ -42,6 +42,9 @@ public class HabitController: ObservableObject {
     }
     
     
+    @Published var latestActivityDetails = [ActivityDetail]()
+    
+    
     // These values don't need to be published, they are only here to reduce need to get them repeatedly from the database if there are no changes
 //    var latestNonArchivedHabits = [Habit]()
     
@@ -132,6 +135,7 @@ public class HabitController: ObservableObject {
         Task {
             await populateHabitRecordsForDay()
             await populateHabits()
+            await populateActivityDetails()
         }
     }
     
@@ -559,3 +563,67 @@ extension HabitController {
         }
     }
 }
+
+
+
+// MARK: Activity Details
+
+/*
+ * Honestly this should be moved to its own thing. It could even be
+ * handled entirely within the ArchivedActivityDetailsView if there is
+ * nowhere else that needs it (which I don't think there is)
+ *
+ * Alas, I don't feel like passing around the BlockHabitRepository right now
+ */
+
+public extension HabitController {
+    
+    var archivedActivityDetails: [ActivityDetail] {
+        
+        latestActivityDetails.filter { $0.isArchived == true }
+    }
+    
+    
+    var nonArchivedActivityDetails: [ActivityDetail] {
+        
+        latestActivityDetails.filter { $0.isArchived == false }
+    }
+    
+    
+    func populateActivityDetails() async {
+        
+        Task {
+            do {
+                latestActivityDetails = try await blockHabitRepository.readActivityDetails()
+            } catch {
+                fatalError("POPULATE THESE ACTIVITY DETAILS")
+            }
+        }
+    }
+    
+    
+    func archiveActivityDetail(_ activityDetail: ActivityDetail) {
+        
+        Task {
+            do {
+                // Attempt to update in database first
+                var archivedActivityDetail = activityDetail
+                
+                archivedActivityDetail.isArchived = true
+                let id = archivedActivityDetail.id
+                
+                try await blockHabitRepository.updateActivityDetail(id: id, with: archivedActivityDetail)
+                
+                guard let archiveActivityDetailIndex = self.latestActivityDetails.firstIndex(of: activityDetail) else {
+                    return
+                }
+                
+                self.latestActivityDetails[archiveActivityDetailIndex].isArchived = true
+                
+            } catch {
+                fatalError("EVERYONE IS TO BLAME FOR THIS TRAVESTY! \(error)")
+            }
+        }
+    }
+}
+

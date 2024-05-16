@@ -29,9 +29,6 @@ struct ArchivedHabitsView: View {
     
     @EnvironmentObject var habitController: HabitController
     
-    // MARK: Note This is a good place to put a TipKit for swiping to unarchive or delete
-    @State private var archivedHabitList = [Habit]()
-    
     private let archiveTip = ArchiveTip()
     
     
@@ -41,37 +38,40 @@ struct ArchivedHabitsView: View {
                 .padding()
             
             List {
-                ForEach(habitController.latestArchivedHabits, id: \.id) { archivedHabit in
-                    
-                    Text("\(archivedHabit.name)")
-                        .swipeActions(edge: .leading) {
-                            // Restore
-                            Button {
-                                habitController.restoreHabit(archivedHabit)
-                            } label: {
-                                Label {
-                                    Text("Restore")
-                                } icon: {
-                                    BJAsset.restore.image()
+                Section {
+                    ForEach(habitController.latestArchivedHabits, id: \.id) { archivedHabit in
+                        
+                        Text("\(archivedHabit.name)")
+                            .swipeActions(edge: .leading) {
+                                // Restore
+                                Button {
+                                    habitController.restoreHabit(archivedHabit)
+                                } label: {
+                                    Label {
+                                        Text("Restore")
+                                    } icon: {
+                                        BJAsset.restore.image()
+                                    }
+                                }
+                                .tint(Color.restore)
+                            }
+                            .swipeActions(edge: .trailing) {
+                                // Delete
+                                Button(role: .destructive) {
+                                    habitController.deleteHabit(archivedHabit)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
                                 }
                             }
-                            .tint(Color.restore)
-                        }
-                        .swipeActions(edge: .trailing) {
-                            // Delete
-                            Button(role: .destructive) {
-                                habitController.deleteHabit(archivedHabit)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
+                    }
+                } footer: {
+                    if habitController.latestArchivedHabits.isEmpty {
+                        Text("There are no archived habits!")
+                    }
                 }
             }
         }
 
-//        .task {
-//            self.archivedHabitList = await habitController.archivedHabits()
-//        }
         .navigationTitle("Archived Habits")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -97,10 +97,56 @@ struct ArchivedHabitsView: View {
 struct ArchivedActivityDetailsView: View {
     
     // MARK: Note This is a good place to put a TipKit for swiping to unarchive or delete
+    @EnvironmentObject var habitController: HabitController
+    
+    @State private var archivedActivityDetails = [ActivityDetail]()
+    
+    private let archiveTip = ArchiveTip()
     
     var body: some View {
         
-        Text("Show archived activity details")
+        VStack {
+            TipView(archiveTip)
+                .padding()
+            
+            List {
+                Section {
+                    ForEach(habitController.archivedActivityDetails, id: \.id) { archivedActivityDetail in
+                        
+                        Text("\(archivedActivityDetail.name)")
+                            .swipeActions(edge: .leading) {
+                                // Restore
+                                Button {
+                                    print("restore activity detail")
+                                    //                                habitController.restoreHabit(archivedHabit)
+                                } label: {
+                                    Label {
+                                        Text("Restore")
+                                    } icon: {
+                                        BJAsset.restore.image()
+                                    }
+                                }
+                                .tint(Color.restore)
+                            }
+                            .swipeActions(edge: .trailing) {
+                                // Delete
+                                Button(role: .destructive) {
+                                    print("delete activity detail")
+                                    //                                habitController.deleteHabit(archivedHabit)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
+                    }
+                } footer: {
+                    if archivedActivityDetails.isEmpty {
+                        Text("There are no archived activity details!")
+                    }
+                }
+            }
+        }
+        .navigationTitle("Archived Habits")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

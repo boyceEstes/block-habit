@@ -183,4 +183,53 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
             // FIXME: Rollback if there is an error
         }
     }
+    
+    
+    // MARK: Activity Details
+    public func readNonArchivedActivityDetails() async throws -> [ActivityDetail] {
+        // BOO! doing later
+        return []
+    }
+    
+    
+    public func readActivityDetails() async throws -> [ActivityDetail] {
+        
+        let context = context
+        return try await context.perform {
+            
+            let archivedActivityDetailRequest = ManagedActivityDetail.allManagedActivityDetailsRequest()
+            let archivedManagedActivityDetails = try context.fetch(archivedActivityDetailRequest)
+            print("BOYCE: managedHabitRecords for date count: \(archivedManagedActivityDetails.count)")
+            return try archivedManagedActivityDetails.toModel()
+        }
+    }
+    
+    
+    public func updateActivityDetail(id: String, with activityDetail: ActivityDetail) async throws {
+
+        let context = context
+        
+        try await context.perform {
+            
+            let managedActivityDetail = try activityDetail.toManaged(context: context)
+            
+            managedActivityDetail.name = activityDetail.name
+            managedActivityDetail.availableUnits = activityDetail.availableUnits
+            managedActivityDetail.isArchived = activityDetail.isArchived
+            managedActivityDetail.creationDate = activityDetail.creationDate
+            managedActivityDetail.stringlyCalculationType = activityDetail.calculationType.rawValue
+            managedActivityDetail.stringlyValueType = activityDetail.valueType.rawValue
+            
+            // FIXME: Ensure that we are updating habits/activity detail records if that is necessary
+            
+            try context.save()
+            // FIXME: Rollback if there is an error
+        }
+    }
+    
+    
+    public func destroyActivityDetail(_ activityDetail: ActivityDetail) async throws {
+        // FILL ME!
+    }
+    
 }

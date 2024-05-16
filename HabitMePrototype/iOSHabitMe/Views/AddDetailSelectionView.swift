@@ -45,6 +45,7 @@ enum AddDetailsAlert {
 
 struct AddDetailsView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.editMode) var editMode
     @Environment(\.modelContext) var modelContext
     @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
@@ -86,9 +87,9 @@ struct AddDetailsView: View {
         List {
             Section {
 //            VStack(spacing: .vItemSpacing) {
-                ForEach(activityDetails) { dataActivityDetail in
+                ForEach(habitController.nonArchivedActivityDetails) { activityDetail in
                     
-                    let activityDetail = dataActivityDetail.toModel()
+//                    let activityDetail = dataActivityDetail.toModel()
                     
                     VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
                         
@@ -113,7 +114,7 @@ struct AddDetailsView: View {
                         Button {
                             // FIXME: Make sure archival for activity detail works
                             print("Archive the activity detail TBD")
-//                            archiveActivityDetails(dataActivityDetail)
+                            archiveActivityDetails(activityDetail)
                         } label: {
                             Label(String.archive, systemImage: "archivebox.fill")
                         }
@@ -170,7 +171,7 @@ struct AddDetailsView: View {
         
         alertDetail = AddDetailsAlert.deleteActivityRecordWarning(
             deleteAction: { deleteActivityDetails(activityDetail) },
-            archiveAction: { archiveActivityDetails(activityDetail) }
+            archiveAction: { /*archiveActivityDetails(activityDetail)*/ }
         ).alertData()
         
         showAlert = true
@@ -183,9 +184,10 @@ struct AddDetailsView: View {
     }
     
     
-    private func archiveActivityDetails(_ activityDetail: DataActivityDetail) {
+    private func archiveActivityDetails(_ activityDetail: ActivityDetail) {
             
-        activityDetail.isArchived = true
+        habitController.archiveActivityDetail(activityDetail)
+//        activityDetail.isArchived = true
     }
     
     

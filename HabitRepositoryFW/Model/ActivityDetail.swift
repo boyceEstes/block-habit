@@ -12,7 +12,7 @@ public struct ActivityDetail: ActivityDetailSortable, Identifiable, Hashable  {
     public let id: String
     public let name: String
     public let availableUnits: String?
-    public let isArchived: Bool
+    public var isArchived: Bool
     public let creationDate: Date
     public let calculationType: ActivityDetailCalculationType
     public let valueType: ActivityDetailType

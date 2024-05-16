@@ -72,6 +72,21 @@ extension ManagedActivityDetail {
         
         return request
     }
+//    
+//    
+//    public class func allArchivedManagedActivityDetailsRequest() -> NSFetchRequest<ManagedActivityDetail> {
+//
+//        let request = ManagedActivityDetail.fetchRequest()
+//        request.returnsObjectsAsFaults = false
+//
+//        let sortDescriptor = NSSortDescriptor(keyPath: \ManagedActivityDetail.name, ascending: true)
+//        request.sortDescriptors = [sortDescriptor]
+//
+//        let predicate = NSPredicate(format: "isArchived == YES")
+//        request.predicate = predicate
+//
+//        return request
+//    }
 }
 
 
@@ -142,6 +157,17 @@ extension Array where Element == ActivityDetail {
 
 
 extension Set where Element == ManagedActivityDetail {
+    
+    func toModel() throws -> [ActivityDetail] {
+        
+        try map {
+            try $0.toModel()
+        }
+    }
+}
+
+
+extension Array where Element == ManagedActivityDetail {
     
     func toModel() throws -> [ActivityDetail] {
         

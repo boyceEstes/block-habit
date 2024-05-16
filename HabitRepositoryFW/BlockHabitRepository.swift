@@ -29,4 +29,12 @@ public protocol HabitRecordStore {
 }
 
 
-public protocol BlockHabitRepository: HabitStore, HabitRecordStore { }
+public protocol ActivityDetailStore {
+    
+    func readActivityDetails() async throws -> [ActivityDetail]
+    func updateActivityDetail(id: String, with activityDetail: ActivityDetail) async throws
+    func destroyActivityDetail(_ activityDetail: ActivityDetail) async throws
+}
+
+
+public protocol BlockHabitRepository: HabitStore, HabitRecordStore, ActivityDetailStore { }
