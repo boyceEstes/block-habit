@@ -638,5 +638,47 @@ public extension HabitController {
             }
         }
     }
+    
+    
+    func deleteActivityDetail(_ activityDetail: ActivityDetail) {
+        Task {
+            do {
+                
+                try await blockHabitRepository.destroyActivityDetail(activityDetail)
+                
+                guard let activityDetailToRemoveIndex = latestActivityDetails.firstIndex(where: { $0.id == activityDetail.id }) else {
+                    throw NSError(domain: "BOYCE: Couldn't find index for (\(activityDetail.name), \(activityDetail.id)) in \(latestActivityDetails.map { ($0.name, $0.id) })", code: 1)
+                }
+                
+                DispatchQueue.main.async { [weak self] in
+                    
+                    guard let self else { return }
+                    
+                    self.latestActivityDetails.remove(at: activityDetailToRemoveIndex)
+                    
+                    // We need to update the underlying `latestHabits` array
+                    // then we need to update the isCompletedHabits (which
+                    // is where our menu gets its data from), but latestHabits
+                    // is first because that is where isCompletedHabits gets
+                    // its data from
+                    self.removeActivityDetails(withID: activityDetail.id, from: &self.latestHabits)
+                    
+                    // FIXME: Room for optimization - we don't need to actually calculate if everything is completed, we just need to remove the activity details for the habit. Which should be a shorter calculation.
+                    updateHabitsIsCompletedForDay()
+                }
+            } catch {
+                fatalError("Fix it. The ... yard trimmings... need to be removed. \(error)")
+            }
+        }
+    }
+    
+    
+    func removeActivityDetails(withID id: String, from habits: inout [Habit]) {
+        
+        for index in habits.indices {
+            habits[index].activityDetails.removeAll { $0.id == id }
+        }
+    }
+
 }
 

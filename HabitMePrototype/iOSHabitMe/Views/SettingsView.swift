@@ -11,6 +11,7 @@ import TipKit
 
 
 struct ArchiveTip: Tip {
+    
     var title: Text {
         Text("Restore or Delete Archived Items")
     }
@@ -134,7 +135,7 @@ struct ArchivedActivityDetailsView: View {
                                 // Delete
                                 Button(role: .destructive) {
                                     print("delete activity detail")
-                                    //                                habitController.deleteHabit(archivedHabit)
+                                    habitController.deleteActivityDetail(archivedActivityDetail)
                                 } label: {
                                     Label("Delete", systemImage: "trash")
                                 }

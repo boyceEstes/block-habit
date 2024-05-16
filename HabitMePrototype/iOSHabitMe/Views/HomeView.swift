@@ -138,12 +138,11 @@ struct HomeView: View {
                             for: habit,
                             goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                         )
-                        print("record habit")
                     }, archiveHabit: { habit in
-                        // FIXME: 2 - viewModel.archiveHabit(for: habit)
+                        
                         habitController.archiveHabit(habit)
                     }, destroyHabit: { habit in
-                        // FIXME: 2 - viewModel.destroyHabit(for: habit)
+                        
                         print("DESTROY HABIT")
                         habitController.deleteHabit(habit)
                     }

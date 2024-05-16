@@ -229,7 +229,18 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
     
     
     public func destroyActivityDetail(_ activityDetail: ActivityDetail) async throws {
-        // FILL ME!
+        
+        let context = context
+        try await context.perform {
+            
+            let managedHabitRecord = try activityDetail.toManaged(context: context)
+            
+            context.delete(managedHabitRecord)
+            
+            // save
+            try context.save()
+            // FIXME: Rollback if there is an error
+        }
     }
     
 }

@@ -23,7 +23,7 @@ public struct Habit: Hashable {
     // public var colorfulColor: Color { Color(decipherString: color) }
     
     // TODO: Fill in the data for habitRecords and activityDetails that should be known from this struct
-    public let activityDetails: [ActivityDetail]
+    public var activityDetails: [ActivityDetail]
     
     public init(
         id: String,
