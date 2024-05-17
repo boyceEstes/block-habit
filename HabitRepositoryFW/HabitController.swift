@@ -244,10 +244,17 @@ extension HabitController {
         
         Task {
             do {
+                // store:
                 try await blockHabitRepository.createHabit(habit)
                 
-                // It will always be false because it can't be done on creation
-                isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
+                DispatchQueue.main.async { [weak self] in
+                    // local:
+                    // Include it in all habits that will be used for later isCompletedHabit calculations
+                    self?.latestHabits.append(habit)
+                    // adding this here because I don't feel like recalculating all the IsCompletedHabits
+                    // when we know this is false
+                    self?.isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
+                }
                 
             } catch {
                 fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
