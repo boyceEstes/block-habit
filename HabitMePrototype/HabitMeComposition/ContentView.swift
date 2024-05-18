@@ -24,7 +24,26 @@ extension Date {
 }
 
 
+struct SplashView: View {
+    
+    var body: some View {
+        
+        ZStack {
+            Rectangle()
+                .background(.black)
+            Image("appIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+        }
+    }
+}
+
+
 struct ContentView: View {
+    
+    @EnvironmentObject var habitController: HabitController
     
     let blockHabitStore: CoreDataBlockHabitStore
     
@@ -42,10 +61,17 @@ struct ContentView: View {
     @State var addDetailsNavigationFlowDisplayedSheet: AddDetailsNavigationFlow.SheetyIdentifier?
     
     var body: some View {
-        let _ = print("Hello world content view")
-        makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
+        if habitController.isImportantInformationLoading {
+            SplashView()
+        } else {
+            makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
+        }
     }
 }
+
+/*
+ * I want to ensure that I am bringing only going to turning off the loading screen when all the information is not empty
+ */
 
 
 #Preview {

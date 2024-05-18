@@ -45,6 +45,12 @@ public class HabitController: ObservableObject {
     @Published var latestActivityDetails = [ActivityDetail]()
     
     
+    // This is the minimum amount of information that we need to show the users
+    // the app. I deally it shouldn't take long and it will prevent them not seeing the screen before its ready
+    
+    @Published public var isImportantInformationLoading: Bool = true
+    
+    
     // These values don't need to be published, they are only here to reduce need to get them repeatedly from the database if there are no changes
 //    var latestNonArchivedHabits = [Habit]()
     
@@ -135,6 +141,11 @@ public class HabitController: ObservableObject {
         Task {
             await populateHabitRecordsForDay()
             await populateHabits()
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.isImportantInformationLoading = false
+            }
+            
             await populateActivityDetails()
         }
     }
@@ -255,7 +266,6 @@ extension HabitController {
                     // when we know this is false
                     self?.isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
                 }
-                
             } catch {
                 fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
             }
