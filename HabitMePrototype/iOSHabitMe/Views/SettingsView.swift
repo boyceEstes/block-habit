@@ -35,8 +35,8 @@ struct ArchivedHabitsView: View {
     
     var body: some View {
         VStack {
-            TipView(archiveTip)
-                .padding()
+//            TipView(archiveTip)
+//                .padding()
             
             List {
                 Section {
@@ -109,8 +109,8 @@ struct ArchivedActivityDetailsView: View {
     var body: some View {
         
         VStack {
-            TipView(archiveTip)
-                .padding()
+//            TipView(archiveTip)
+//                .padding()
             
             List {
                 Section {
