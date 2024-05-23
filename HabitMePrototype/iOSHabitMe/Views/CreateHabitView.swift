@@ -303,10 +303,14 @@ struct CreateEditHabitContent: View {
     @Binding var nameTextFieldValue: String
     @Binding var selectedColor: Color?
     
-    let rows = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    
+    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 6)
+    
+    
+//    let rows = [
+//        GridItem(.flexible()),
+//        GridItem(.flexible())
+//    ]
     
     var body: some View {
         TextField("Name", text: $nameTextFieldValue)
@@ -316,7 +320,7 @@ struct CreateEditHabitContent: View {
         
         
         VStack {
-            LazyHGrid(rows: rows, spacing: 30) {
+            LazyVGrid(columns: columns, content: {
                 ForEach(allColors, id: \.self) { color in
                     Circle()
                         .fill(color)
@@ -330,8 +334,24 @@ struct CreateEditHabitContent: View {
                             }
                         }
                 }
-            }
-            .frame(height: 90)
+            })
+            .padding(.horizontal, 6)
+//            LazyHGrid(rows: rows, spacing: 30) {
+//                ForEach(allColors, id: \.self) { color in
+//                    Circle()
+//                        .fill(color)
+//                        .stroke(Color.white, lineWidth: isColorSelected(color) ? 2 : 0)
+//                        .frame(width: 30, height: 30)
+//                        .onTapGesture {
+//                            if isColorSelected(color) {
+//                                selectedColor = nil
+//                            } else {
+//                                selectedColor = color
+//                            }
+//                        }
+//                }
+//            }
+//            .frame(height: 90)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical)
@@ -350,19 +370,67 @@ struct CreateEditHabitContent: View {
     
     var allColors: [Color] {
         [
+//            Color.red,
+//            Color.orange,
+//            Color.yellow,
+//            Color.green,
+//            Color.mint,
+//            Color.teal,
+//            
+//            Color.cyan,
+//            Color.blue,
+//            Color.indigo,
+//            Color.purple,
+//            Color.pink,
+//            Color.brown,
+//            
+            Color(hex: "#666999") ?? .pink, // purple gray
+//            Color(hex: "#2eld74") ?? .pink, // black?
+//            Color(hex: "#0000ff") ?? .pink, // blue
+//            Color(hex: "#cldad6") ?? .pink, // black?
+            Color(hex: "#a6c3e3") ?? .pink, // light blue
+            Color(hex: "#9e444e") ?? .pink, // rust
+//            Color(hex: "#ff0000") ?? .pink, // red
             Color.red,
             Color.orange,
             Color.yellow,
             Color.green,
             Color.mint,
             Color.teal,
-            
             Color.cyan,
             Color.blue,
             Color.indigo,
             Color.purple,
             Color.pink,
-            Color.brown
+            Color.brown,
+
+
+
+            Color(hex: "#8clclc") ?? .pink, // navy blue
+            Color(hex: "#fdcfe5") ?? .pink, // light pink
+            Color(hex: "#ef5fbe") ?? .pink, // pink
+//            Color(hex: "#4c516d") ?? .pink, // gray
+            Color(hex: "#bdabc4") ?? .pink, // lavender gray?
+            Color(hex: "#a89cf0") ?? .pink, // lavender
+            Color(hex: "#d3e412") ?? .pink, // lime green
+//            Color(hex: "#ffff00") ?? .pink, // stupid bright yellow
+
+//            Color(hex: "#ffd700") ?? .pink, // golden
+            Color(hex: "#065535") ?? .pink, // forrest green
+            Color(hex: "#556b2f") ?? .pink, // swamp green
+//            Color(hex: "#0eff00") ?? .pink, // ninja turtle green
+            Color(hex: "#73d016") ?? .pink, // green
+//            Color(hex: "#cbebcb") ?? .pink, // pastel green gray
+            Color(hex: "#8bf8a7") ?? .pink, // pastel green
+            Color(hex: "#ffe6a8") ?? .pink, // cream
+            Color(hex: "#f07857") ?? .pink, // bright rust
+//            Color(hex: "#43a5be") ?? .pink, // tealish?
+//            Color(hex: "#53bdas") ?? .pink, // blue again
+            Color(hex: "#4fb06d") ?? .pink, // different green
+            Color(hex: "#be398d") ?? .pink, // deep pink/purple
+//            Color(hex: "#401e12") ?? .pink, // brown but really dark
+            Color(hex: "#800080") ?? .pink, // purple
+//            Color(hex: "#808080") ?? .pink // gray
         ]
     }
 }
