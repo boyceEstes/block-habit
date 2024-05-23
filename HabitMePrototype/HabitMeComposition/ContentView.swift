@@ -68,7 +68,9 @@ struct ContentView: View {
     var body: some View {
         
         Group {
-            if isTimeToShowContent {
+            // We use both to ensure that it is at least a tiny bit of time that we show the splash screen AND that we definitely have the information. Otherwise it will be stuck on splash screen.
+            // TODO: Is there a problem that could happen from the important information not ever being loaded.
+            if isTimeToShowContent && !habitController.isImportantInformationLoading {
                 makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
             } else {
                 SplashView()
