@@ -44,18 +44,43 @@ enum AddDetailsAlert {
     }
 }
 
+struct AddDetailsView2: View {
+    
+    @Binding var selectedDetails: [ActivityDetail]
+    let goToCreateActivityDetail: () -> Void
+    let detailSelectionColor: Color
+    
+    init(
+        selectedDetails: Binding<[ActivityDetail]>,
+        detailSelectionColor: Color?,
+        goToCreateActivityDetail: @escaping () -> Void
+    ) {
+        self._selectedDetails = selectedDetails
+        self.detailSelectionColor = detailSelectionColor ?? .blue
+        self.goToCreateActivityDetail = goToCreateActivityDetail
+    }
+    
+    var body: some View {
+        Text("Under construction")
+    }
+}
+
 
 struct AddDetailsView: View {
     
     @EnvironmentObject var habitController: HabitController
     @Environment(\.editMode) var editMode
-    @Environment(\.modelContext) var modelContext
-    @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
-        activityDetail.isArchived == false
-    }, sort: [
-        SortDescriptor(\DataActivityDetail.creationDate, order: .reverse),
-        SortDescriptor(\DataActivityDetail.name, order: .forward)
-    ], animation: .default) var activityDetails: [DataActivityDetail]
+//    @Environment(\.modelContext) var modelContext
+//    @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
+//        activityDetail.isArchived == false
+//    }, sort: [
+//        SortDescriptor(\DataActivityDetail.creationDate, order: .reverse),
+//        SortDescriptor(\DataActivityDetail.name, order: .forward)
+//    ], animation: .default) var activityDetails: [DataActivityDetail]
+    
+    private var activityDetails: [ActivityDetail] {
+        habitController.nonArchivedActivityDetails
+    }
     
     @State private var activityDetailsWithSelection: [ActivityDetail: Bool]
     @State private var alertDetail: AlertDetail?
@@ -89,7 +114,7 @@ struct AddDetailsView: View {
         List {
             Section {
 //            VStack(spacing: .vItemSpacing) {
-                ForEach(habitController.nonArchivedActivityDetails) { activityDetail in
+                ForEach(activityDetails) { activityDetail in
 //                    let activityDetail = dataActivityDetail.toModel()
                     
                     VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
@@ -203,33 +228,33 @@ struct AddDetailsView: View {
     }
 }
 
-#Preview {
-    
-    // FIXME: Remove the unnecessary preview logic since we might not need DataActivityDetail anymore
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    // Load and decode the json that we have inserted
-    let resourceName = "ActivityDetailSeedData"
-    let resourceExtension = "json"
-    guard let url = Bundle.main.url(forResource: "\(resourceName)", withExtension: "\(resourceExtension)") else {
-        fatalError("Failed to find '\(resourceName)' with '\(resourceExtension)' extension")
-    }
-    let data = try! Data(contentsOf: url)
-    let decodedActivityDetails = try! JSONDecoder().decode([DataActivityDetail].self, from: data)
-    
-    // Save to the model container
-    for activityDetail in decodedActivityDetails {
-        
-        container.mainContext.insert(activityDetail)
-    }
-    
-    return NavigationStack {
-        AddDetailsView(
-            selectedDetails: .constant([ActivityDetail.amount]),
-            detailSelectionColor: .yellow,
-            goToCreateActivityDetail: { }
-        )
-    }
-    .modelContainer(container)
-}
+//#Preview {
+//    
+//    // FIXME: Remove the unnecessary preview logic since we might not need DataActivityDetail anymore
+//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
+//    
+//    // Load and decode the json that we have inserted
+//    let resourceName = "ActivityDetailSeedData"
+//    let resourceExtension = "json"
+//    guard let url = Bundle.main.url(forResource: "\(resourceName)", withExtension: "\(resourceExtension)") else {
+//        fatalError("Failed to find '\(resourceName)' with '\(resourceExtension)' extension")
+//    }
+//    let data = try! Data(contentsOf: url)
+//    let decodedActivityDetails = try! JSONDecoder().decode([DataActivityDetail].self, from: data)
+//    
+//    // Save to the model container
+//    for activityDetail in decodedActivityDetails {
+//        
+//        container.mainContext.insert(activityDetail)
+//    }
+//    
+//    return NavigationStack {
+//        AddDetailsView(
+//            selectedDetails: .constant([ActivityDetail.amount]),
+//            detailSelectionColor: .yellow,
+//            goToCreateActivityDetail: { }
+//        )
+//    }
+//    .modelContainer(container)
+//}

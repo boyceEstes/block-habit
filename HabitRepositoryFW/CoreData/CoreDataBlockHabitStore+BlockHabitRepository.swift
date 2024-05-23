@@ -186,10 +186,37 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
     
     
     // MARK: Activity Details
-    public func readNonArchivedActivityDetails() async throws -> [ActivityDetail] {
-        // BOO! doing later
-        return []
+    public func createActivityDetail(_ activityDetail: ActivityDetail) async throws {
+        
+        let context = context
+        try await context.perform {
+            do {
+                
+                // FIXME: I should make sure that there is not already one of these in there, right? Am I doing that with anything else? I don't think so
+                let managedActivityDetail = ManagedActivityDetail(context: context)
+                managedActivityDetail.id = activityDetail.id
+                managedActivityDetail.name = activityDetail.name
+                managedActivityDetail.availableUnits = activityDetail.availableUnits
+                managedActivityDetail.isArchived = activityDetail.isArchived
+                managedActivityDetail.creationDate = activityDetail.creationDate
+                managedActivityDetail.stringlyCalculationType = activityDetail.calculationType.rawValue
+                managedActivityDetail.stringlyValueType = activityDetail.valueType.rawValue
+                
+                // save
+                try context.save()
+                
+            } catch {
+                // FIXME: Rollback if there is an error
+                throw error
+            }
+        }
     }
+    
+    
+//    public func readNonArchivedActivityDetails() async throws -> [ActivityDetail] {
+//        // BOO! doing later
+//        return []
+//    }
     
     
     public func readActivityDetails() async throws -> [ActivityDetail] {

@@ -83,6 +83,47 @@ import Combine
 //}
 
 
+class SomeCleanupForOldStore {
+
+    // This is what the file was named by default
+    static let datamodelName = "default"
+    static let storeType = "sqlite"
+
+    static let persistentContainer = NSPersistentContainer(name: datamodelName)
+    
+    private static let url: URL? = {
+        let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("\(datamodelName).\(storeType)")
+
+        guard FileManager.default.fileExists(atPath: url.path) else { return nil }
+
+        return url
+    }()
+    
+    
+
+    static func loadStores() {
+        persistentContainer.loadPersistentStores(completionHandler: { (nsPersistentStoreDescription, error) in
+            guard let error = error else {
+                return // We should get an error because there is no store left
+            }
+            
+            fatalError(error.localizedDescription)
+        })
+    }
+    
+
+    static func deleteAndRebuild() {
+        
+        guard let url = url else { return }
+        
+        try! persistentContainer.persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: storeType, options: nil)
+
+        loadStores()
+    }
+}
+
+
+
 @main
 struct HabitMePrototypeApp: App {
     
@@ -94,7 +135,7 @@ struct HabitMePrototypeApp: App {
     @State private var habitController: HabitController
     
     let blockHabitStore: CoreDataBlockHabitStore
-    var container: ModelContainer
+//    var container: ModelContainer
     
     
     init() {
@@ -102,30 +143,47 @@ struct HabitMePrototypeApp: App {
         try? Tips.configure()
         
         do {
-            let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("default.store")
             
-            let config = ModelConfiguration(url: localStoreURL)
+            let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             
-            container = try ModelContainer(
-                for: DataHabit.self,
-                DataHabitRecord.self,
-                DataActivityDetail.self,
-                DataActivityDetailRecord.self,
-                configurations: config
-            )
 
-            if let storeURL = container.mainContext.sqliteStore {
-                let bundle = Bundle(for: CoreDataBlockHabitStore.self)
-                blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
-                
-                self.habitController = HabitController(blockHabitRepository: blockHabitStore, selectedDay: Date().noon!)
-//                self.habitController = HabitController(
-//                    blockHabitRepository: blockHabitStore,
-//                    selectedDay: Date()
-//                )
-            } else {
-                throw NSError(domain: "Could not find sqliteStore", code: 0)
+            
+//            let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("default.store")
+            
+//            let config = ModelConfiguration(url: localStoreURL)
+            
+//            container = try ModelContainer(
+//                for: DataHabit.self,
+//                DataHabitRecord.self,
+//                DataActivityDetail.self,
+//                DataActivityDetailRecord.self,
+//                configurations: config
+//            )
+            
+            // this should only be for legacy device's that are still working off of the default.store persistent store
+            SomeCleanupForOldStore.deleteAndRebuild()
+            
+            // new store will be named "block-habit.store" to distinguish the shift
+            guard let localStoreURL = appSupportDir?.appendingPathComponent("block-habit.store") else {
+                throw(NSError(domain: "any", code: 1))
             }
+            
+            let bundle = Bundle(for: CoreDataBlockHabitStore.self)
+            blockHabitStore = try CoreDataBlockHabitStore(storeURL: localStoreURL, bundle: bundle)
+            self.habitController = HabitController(blockHabitRepository: blockHabitStore, selectedDay: Date().noon!)
+
+//            if let storeURL = container.mainContext.sqliteStore {
+//                let bundle = Bundle(for: CoreDataBlockHabitStore.self)
+//                blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
+//                
+//                self.habitController = HabitController(blockHabitRepository: blockHabitStore, selectedDay: Date().noon!)
+////                self.habitController = HabitController(
+////                    blockHabitRepository: blockHabitStore,
+////                    selectedDay: Date()
+////                )
+//            } else {
+//                throw NSError(domain: "Could not find sqliteStore", code: 0)
+//            }
         } catch {
             fatalError("Could not configure local store: '\(error)'")
         }
@@ -136,7 +194,7 @@ struct HabitMePrototypeApp: App {
         WindowGroup {
             ContentView(blockHabitStore: blockHabitStore)
         }
-        .modelContainer(container)
+//        .modelContainer(container)
         .environmentObject(habitController)
 //        .modelContainer(
 //            for: [

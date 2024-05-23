@@ -31,6 +31,7 @@ public protocol HabitRecordStore {
 
 public protocol ActivityDetailStore {
     
+    func createActivityDetail(_ activityDetail: ActivityDetail) async throws
     func readActivityDetails() async throws -> [ActivityDetail]
     func updateActivityDetail(id: String, with activityDetail: ActivityDetail) async throws
     func destroyActivityDetail(_ activityDetail: ActivityDetail) async throws

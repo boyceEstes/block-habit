@@ -657,6 +657,23 @@ public extension HabitController {
     }
     
     
+    func createActivityDetail(_ activityDetail: ActivityDetail) {
+        
+        Task {
+            do {
+                try await blockHabitRepository.createActivityDetail(activityDetail)
+                
+                DispatchQueue.main.async { [weak self] in
+                    
+                    guard let self else { return }
+                    // Just immediately put it in memory so the views can look and be joyous
+                    self.latestActivityDetails.append(activityDetail)
+                }
+            }
+        }
+    }
+    
+    
     func deleteActivityDetail(_ activityDetail: ActivityDetail) {
         Task {
             do {

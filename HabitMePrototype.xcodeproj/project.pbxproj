@@ -442,13 +442,6 @@
 			path = HabitMePrototypeTests;
 			sourceTree = "<group>";
 		};
-		B37074232B9E03C9006FCC4E /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		B37AC76F2BA085640052552B /* DataSources  */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,7 +581,6 @@
 		B3C97F142B5CE83600211B4C /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				B37074232B9E03C9006FCC4E /* CoreData */,
 				B3C9E5422B6BD9B500153158 /* SeedData */,
 				B3CC60AB2B5EA9380074ED41 /* SwiftData */,
 			);
