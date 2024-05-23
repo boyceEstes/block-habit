@@ -31,6 +31,8 @@ struct SplashView: View {
         ZStack {
             Rectangle()
                 .background(.black)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
             Image("appIcon")
                 .resizable()
                 .scaledToFit()
@@ -45,7 +47,10 @@ struct ContentView: View {
     
     @EnvironmentObject var habitController: HabitController
     
+    @State private var isTimeToShowContent = false
+    
     let blockHabitStore: CoreDataBlockHabitStore
+    
     
     // Home navigation
     @State var homeNavigationFlowPath = [HomeNavigationFlow.StackIdentifier]()
@@ -61,10 +66,21 @@ struct ContentView: View {
     @State var addDetailsNavigationFlowDisplayedSheet: AddDetailsNavigationFlow.SheetyIdentifier?
     
     var body: some View {
-        if habitController.isImportantInformationLoading {
-            SplashView()
-        } else {
-            makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
+        
+        Group {
+            if isTimeToShowContent {
+                makeHomeViewWithSheetyStackNavigation(blockHabitStore: blockHabitStore)
+            } else {
+                SplashView()
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                
+                withAnimation {
+                    self.isTimeToShowContent = true
+                }
+            }
         }
     }
 }
