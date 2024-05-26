@@ -44,27 +44,6 @@ enum AddDetailsAlert {
     }
 }
 
-struct AddDetailsView2: View {
-    
-    @Binding var selectedDetails: [ActivityDetail]
-    let goToCreateActivityDetail: () -> Void
-    let detailSelectionColor: Color
-    
-    init(
-        selectedDetails: Binding<[ActivityDetail]>,
-        detailSelectionColor: Color?,
-        goToCreateActivityDetail: @escaping () -> Void
-    ) {
-        self._selectedDetails = selectedDetails
-        self.detailSelectionColor = detailSelectionColor ?? .blue
-        self.goToCreateActivityDetail = goToCreateActivityDetail
-    }
-    
-    var body: some View {
-        Text("Under construction")
-    }
-}
-
 
 struct AddDetailsView: View {
     
@@ -181,7 +160,7 @@ struct AddDetailsView: View {
                             .font(.subheadline)
                     }
                 }
-                .padding(.horizontal)
+                .padding()
             }
         }
         .listStyle(.plain)
