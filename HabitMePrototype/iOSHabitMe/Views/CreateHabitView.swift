@@ -384,52 +384,70 @@ struct CreateEditHabitContent: View {
 //            Color.pink,
 //            Color.brown,
 //            
-            Color(hex: "#666999") ?? .pink, // purple gray
+
 //            Color(hex: "#2eld74") ?? .pink, // black?
 //            Color(hex: "#0000ff") ?? .pink, // blue
 //            Color(hex: "#cldad6") ?? .pink, // black?
-            Color(hex: "#a6c3e3") ?? .pink, // light blue
-            Color(hex: "#9e444e") ?? .pink, // rust
+ 
+
 //            Color(hex: "#ff0000") ?? .pink, // red
+            Color.pink,
             Color.red,
+            Color(hex: "#f07857") ?? .pink, // bright rust
+            Color(hex: "#9e444e") ?? .pink, // rust
             Color.orange,
             Color.yellow,
+            Color(hex: "#ffe6a8") ?? .pink, // cream
+            Color(hex: "#8bf8a7") ?? .pink, // pastel green
             Color.green,
+            Color(hex: "#73d016") ?? .pink, // green
+            Color(hex: "#4fb06d") ?? .pink, // different green
+            Color(hex: "#d3e412") ?? .pink, // lime green
+            Color(hex: "#556b2f") ?? .pink, // swamp green
+            Color(hex: "#065535") ?? .pink, // forrest green
             Color.mint,
             Color.teal,
             Color.cyan,
+            Color(hex: "#a6c3e3") ?? .pink, // light blue
             Color.blue,
+            Color(hex: "#8clclc") ?? .pink, // navy blue
+            Color(hex: "#666999") ?? .pink, // purple gray
             Color.indigo,
             Color.purple,
-            Color.pink,
+            Color(hex: "#a89cf0") ?? .pink, // lavender
+            Color(hex: "#bdabc4") ?? .pink, // lavender gray?
+            Color(hex: "#800080") ?? .pink, // purple
+            Color(hex: "#be398d") ?? .pink, // deep pink/purple
+            Color(hex: "#ef5fbe") ?? .pink, // pink
+            Color(hex: "#fdcfe5") ?? .pink, // light pink
             Color.brown,
 
 
 
-            Color(hex: "#8clclc") ?? .pink, // navy blue
-            Color(hex: "#fdcfe5") ?? .pink, // light pink
-            Color(hex: "#ef5fbe") ?? .pink, // pink
+     
+
+
 //            Color(hex: "#4c516d") ?? .pink, // gray
-            Color(hex: "#bdabc4") ?? .pink, // lavender gray?
-            Color(hex: "#a89cf0") ?? .pink, // lavender
-            Color(hex: "#d3e412") ?? .pink, // lime green
+
+
+
 //            Color(hex: "#ffff00") ?? .pink, // stupid bright yellow
 
 //            Color(hex: "#ffd700") ?? .pink, // golden
-            Color(hex: "#065535") ?? .pink, // forrest green
-            Color(hex: "#556b2f") ?? .pink, // swamp green
+
+
 //            Color(hex: "#0eff00") ?? .pink, // ninja turtle green
-            Color(hex: "#73d016") ?? .pink, // green
+
 //            Color(hex: "#cbebcb") ?? .pink, // pastel green gray
-            Color(hex: "#8bf8a7") ?? .pink, // pastel green
-            Color(hex: "#ffe6a8") ?? .pink, // cream
-            Color(hex: "#f07857") ?? .pink, // bright rust
+
+
+
 //            Color(hex: "#43a5be") ?? .pink, // tealish?
 //            Color(hex: "#53bdas") ?? .pink, // blue again
-            Color(hex: "#4fb06d") ?? .pink, // different green
-            Color(hex: "#be398d") ?? .pink, // deep pink/purple
+
+
 //            Color(hex: "#401e12") ?? .pink, // brown but really dark
-            Color(hex: "#800080") ?? .pink, // purple
+
 //            Color(hex: "#808080") ?? .pink // gray
         ]
     }
