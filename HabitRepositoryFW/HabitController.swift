@@ -482,27 +482,26 @@ extension HabitController {
     }
     
     
-    /// `day` is really just to make this more available for other - default is current selectedDay
+    /// It will use the completionDay on the habitRecord to determine where to remove the record in the local dictionary
     public func destroyRecord(
-        _ habitRecord: HabitRecord,
-        day: Date? = nil
+        _ habitRecord: HabitRecord
     ) {
         
         Task { @MainActor in
-            let day = day ?? selectedDay
             
             do {
                 try await blockHabitRepository.destroyHabitRecord(habitRecord)
                 
                 // Update habitRecordsForDays locally
-                guard let habitRecordIndex = habitRecordsForDays[day]?.firstIndex(where: { $0.id == habitRecord.id }) else {
-                    throw NSError(domain: "Could not find the habitRecord in the day", code: 1)
+                guard let day = habitRecord.completionDate.noon,
+                        let habitRecordIndex = habitRecordsForDays[day]?.firstIndex(where: { $0.id == habitRecord.id }) else {
+                    throw NSError(domain: "Could not find the habitRecord in the day (locally)", code: 1)
                 }
                 
                 habitRecordsForDays[day]?.remove(at: habitRecordIndex)
                 
                 // Ensure that habits are updated for isCompleted
-                updateHabitsIsCompletedForDay()
+                updateHabitsIsCompletedForDay() // FIXME: There should be some issue because this is using selectedDay instead of the deleted - but wait. That might be expected because we would not need to worry about isCompleted if it is not the selected Day - to optimize we can just check to see if we are deleting on the selectedDay
             } catch {
                 
                 fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
