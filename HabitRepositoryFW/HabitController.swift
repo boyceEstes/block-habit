@@ -168,8 +168,13 @@ public class HabitController: ObservableObject {
     private func populateHabits() async {
         
         do {
-            latestHabits = try await blockHabitRepository.readAllHabits()
-            updateHabitsIsCompletedForDay()
+            let habitsFromRepository = try await blockHabitRepository.readAllHabits()
+            
+            await MainActor.run {
+                latestHabits = habitsFromRepository
+                
+                updateHabitsIsCompletedForDay()
+            }
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
             fatalError("Problem getting habits")
@@ -611,7 +616,11 @@ public extension HabitController {
         
         Task {
             do {
-                latestActivityDetails = try await blockHabitRepository.readActivityDetails()
+                let activityDetailsFromRepository = try await blockHabitRepository.readActivityDetails()
+                
+                await MainActor.run {
+                    latestActivityDetails = activityDetailsFromRepository
+                }
             } catch {
                 fatalError("POPULATE THESE ACTIVITY DETAILS")
             }
