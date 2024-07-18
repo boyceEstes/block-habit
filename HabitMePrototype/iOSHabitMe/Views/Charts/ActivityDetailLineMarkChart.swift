@@ -8,7 +8,7 @@
 import SwiftUI
 import Charts
 
-
+/// Need to make completely sure that the content HAS data before this is called or it will give an error
 struct ActivityDetailLineMarkChart: View {
     
     let xVisibleDomainLength = 8

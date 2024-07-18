@@ -336,6 +336,7 @@ struct HabitDetailView: View {
     @ViewBuilder
     var activityDetailCharts: some View {
         
+        let _ = print("BOYCE: \(allDetailChartDataSorted)")
         // loops over activitydetails to display one chart at a time
         ForEach(allDetailChartDataSorted, id: \.0) { chartInformation in
             
@@ -350,12 +351,14 @@ struct HabitDetailView: View {
                         .foregroundStyle(Color.secondaryFont)
                 }
                 
-                ActivityDetailLineMarkChart(
-                    data: chartInfo,
-                    lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue),
-                    // Average should be more focused because there will probably be less variability
-                    isFocusedDomain: activityDetail.calculationType == ActivityDetailCalculationType.average
-                )
+                if !chartInfo.isEmpty {
+                    ActivityDetailLineMarkChart(
+                        data: chartInfo,
+                        lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue),
+                        // Average should be more focused because there will probably be less variability
+                        isFocusedDomain: activityDetail.calculationType == ActivityDetailCalculationType.average
+                    )
+                }
             }
             .sectionBackground()
         }
