@@ -113,43 +113,153 @@ struct ArchivedActivityDetailsView: View {
 //                .padding()
             
             List {
-                Section {
-                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
-                        
-                        Text("\(archivedActivityDetail.name)")
-                            .swipeActions(edge: .leading) {
-                                // Restore
-                                Button {
-                                    print("restore activity detail")
-                                    habitController.restoreActivityDetail(archivedActivityDetail)
-                                } label: {
-                                    Label {
-                                        Text("Restore")
-                                    } icon: {
-                                        BJAsset.restore.image()
+                SectionWithDisclaimerIfEmpty(
+                    isEmpty: archivedActivityDetails.isEmpty,
+                    
+                    sectionContent: {
+                        ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
+    
+                            Text("\(archivedActivityDetail.name)")
+                                .swipeActions(edge: .leading) {
+                                    // Restore
+                                    Button {
+                                        print("restore activity detail")
+                                        habitController.restoreActivityDetail(archivedActivityDetail)
+                                    } label: {
+                                        Label {
+                                            Text("Restore")
+                                        } icon: {
+                                            BJAsset.restore.image()
+                                        }
+                                    }
+                                    .tint(Color.restore)
+                                }
+                                .swipeActions(edge: .trailing) {
+                                    // Delete
+                                    Button(role: .destructive) {
+                                        print("delete activity detail")
+                                        habitController.deleteActivityDetail(archivedActivityDetail)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
                                     }
                                 }
-                                .tint(Color.restore)
-                            }
-                            .swipeActions(edge: .trailing) {
-                                // Delete
-                                Button(role: .destructive) {
-                                    print("delete activity detail")
-                                    habitController.deleteActivityDetail(archivedActivityDetail)
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
-                    }
-                } footer: {
-                    if archivedActivityDetails.isEmpty {
+                        }
+                    },
+                    sectionHeader: {
+                        EmptyView()
+                    },
+                    sectionEmpty: {
                         Text("There are no archived activity details!")
                     }
-                }
+                )
+//                SectionWithDisclaimerIfEmpty(isEmpty: archivedActivityDetails.isEmpty, sectionContent: {
+//                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
+//                        
+//                        Text("\(archivedActivityDetail.name)")
+//                            .swipeActions(edge: .leading) {
+//                                // Restore
+//                                Button {
+//                                    print("restore activity detail")
+//                                    habitController.restoreActivityDetail(archivedActivityDetail)
+//                                } label: {
+//                                    Label {
+//                                        Text("Restore")
+//                                    } icon: {
+//                                        BJAsset.restore.image()
+//                                    }
+//                                }
+//                                .tint(Color.restore)
+//                            }
+//                            .swipeActions(edge: .trailing) {
+//                                // Delete
+//                                Button(role: .destructive) {
+//                                    print("delete activity detail")
+//                                    habitController.deleteActivityDetail(archivedActivityDetail)
+//                                } label: {
+//                                    Label("Delete", systemImage: "trash")
+//                                }
+//                            }
+//                    }
+//                }, sectionHeader: {
+//                    Text("Header world")
+//                }, sectionEmpty: {
+//                    if archivedActivityDetails.isEmpty {
+//                        Text("There are no archived activity details!")
+//                    }
+//                })
+                
+//                Section {
+//                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
+//                        
+//                        Text("\(archivedActivityDetail.name)")
+//                            .swipeActions(edge: .leading) {
+//                                // Restore
+//                                Button {
+//                                    print("restore activity detail")
+//                                    habitController.restoreActivityDetail(archivedActivityDetail)
+//                                } label: {
+//                                    Label {
+//                                        Text("Restore")
+//                                    } icon: {
+//                                        BJAsset.restore.image()
+//                                    }
+//                                }
+//                                .tint(Color.restore)
+//                            }
+//                            .swipeActions(edge: .trailing) {
+//                                // Delete
+//                                Button(role: .destructive) {
+//                                    print("delete activity detail")
+//                                    habitController.deleteActivityDetail(archivedActivityDetail)
+//                                } label: {
+//                                    Label("Delete", systemImage: "trash")
+//                                }
+//                            }
+//                    }
+//                } footer: {
+//                    if archivedActivityDetails.isEmpty {
+//                        Text("There are no archived activity details!")
+//                    }
+//                }
             }
         }
         .navigationTitle("Archived Habits")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct SectionWithDisclaimerIfEmpty<SectionContent: View, SectionHeader: View, SectionEmpty: View>: View {
+    
+    let isEmpty: Bool
+    @ViewBuilder let sectionContent: () -> SectionContent
+    let sectionHeader: (() -> SectionHeader)?
+    @ViewBuilder let sectionEmpty: () -> SectionEmpty
+    
+    init(
+        isEmpty: Bool,
+        @ViewBuilder sectionContent: @escaping () -> SectionContent,
+        sectionHeader: (() -> SectionHeader)? = nil,
+        @ViewBuilder sectionEmpty: @escaping () -> SectionEmpty
+    ) {
+        self.isEmpty = isEmpty
+        self.sectionContent = sectionContent
+        self.sectionHeader = sectionHeader
+        self.sectionEmpty = sectionEmpty
+    }
+    
+    var body: some View {
+        
+        Section {
+            if !isEmpty {
+                sectionContent()
+            }
+        } header: {
+            sectionHeader?()
+        } footer: {
+            if isEmpty {
+                sectionEmpty()
+            }
+        }
     }
 }
 

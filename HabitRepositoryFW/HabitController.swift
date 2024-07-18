@@ -685,7 +685,6 @@ public extension HabitController {
     func deleteActivityDetail(_ activityDetail: ActivityDetail) {
         Task {
             do {
-                
                 try await blockHabitRepository.destroyActivityDetail(activityDetail)
                 
                 guard let activityDetailToRemoveIndex = latestActivityDetails.firstIndex(where: { $0.id == activityDetail.id }) else {
