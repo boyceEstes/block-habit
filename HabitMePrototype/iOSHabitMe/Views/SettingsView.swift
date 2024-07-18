@@ -223,7 +223,7 @@ struct ArchivedActivityDetailsView: View {
 //                }
             }
         }
-        .navigationTitle("Archived Habits")
+        .navigationTitle("Archived Details")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
