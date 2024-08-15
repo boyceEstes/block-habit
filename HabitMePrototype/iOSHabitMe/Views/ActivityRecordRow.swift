@@ -48,19 +48,28 @@ struct ActivityRecordRowDateWithInfo: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+        let detailRecords = habitRecord.activityDetailRecords
+        let displayDate = DisplayDatePolicy.date(for: habitRecord, on: habitRecord.completionDate)
+        
+        VStack {
+            VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
 
-            let detailRecords = habitRecord.activityDetailRecords
-            let displayDate = DisplayDatePolicy.date(for: habitRecord, on: habitRecord.completionDate)
-            if !detailRecords.isEmpty {
-                
-                ActivityDetailRecordRowContentInfo(
-                    recordDisplayDateTime: displayDate,
-                    detailRecords: detailRecords
-                )
+                if !detailRecords.isEmpty {
+                    
+                    ActivityDetailRecordRowContentInfo(
+                        detailRecords: detailRecords
+                    )
+                }
             }
+            
+            HStack {
+                Text("\(displayDate)")
+                Spacer()
+                ActivityDetailRecordIndicators(detailRecords: detailRecords)
+            }
+            .foregroundColor(.secondaryFont)
+            .font(.footnote)
         }
-        .sectionBackground()
     }
 }
 
@@ -124,7 +133,6 @@ struct ActivityDetailRecordIndicators: View {
 
 struct ActivityDetailRecordRowContentInfo: View {
     
-    let recordDisplayDateTime: String
     let detailRecords: [ActivityDetailRecord]
     
     var numberActivityDetailRecords: [ActivityDetailRecord] {
@@ -138,14 +146,6 @@ struct ActivityDetailRecordRowContentInfo: View {
     var body: some View {
         
         LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-            
-            HStack {
-                Text("\(recordDisplayDateTime)")
-                    .font(.rowDetail)
-                Spacer()
-                ActivityDetailRecordIndicators(detailRecords: detailRecords)
-            }
-            .foregroundColor(.secondaryFont)
             
             if !detailRecords.isEmpty {
                 VStack(spacing: .detailPadding) {
@@ -186,9 +186,6 @@ struct ActivityDetailRecordTextList: View {
     }
 }
 
-
-
-
 // FIXME: How do I ensure that this will only have `activityDetail` values where valueType == .number
 struct ActivityDetailRecordNumberGrid: View {
     
@@ -204,9 +201,11 @@ struct ActivityDetailRecordNumberGrid: View {
         
         self.numberActivityDetailRecords = numberActivityDetailRecords
         
-        let columnLimit = 3
-        let recordCount = numberActivityDetailRecords.count
-        self.columnCount = recordCount >= columnLimit ? columnLimit : recordCount
+        let columnLimit = 2
+//        let recordCount = numberActivityDetailRecords.count
+        // I like the simple 2 column grid more than having the whole row 
+        // filled with little content
+        self.columnCount = columnLimit //recordCount >= columnLimit ? columnLimit : recordCount
     }
     
     
