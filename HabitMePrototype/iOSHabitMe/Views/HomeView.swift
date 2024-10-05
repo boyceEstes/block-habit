@@ -127,7 +127,9 @@ struct HomeView: View {
                 }
                 
                 HabitsMenu(
-                    habits: habitController.isCompletedHabits.sorted(by: { $0.habit.name < $1.habit.name }),                     goToHabitDetail: goToHabitDetail,
+                    completedHabits: habitController.completeHabits,
+                    incompletedHabits: habitController.incompleteHabits,
+                    goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
                     didTapCreateHabitButton: {
                         goToCreateHabit()

@@ -139,7 +139,8 @@ struct HomeDetailTitle: ViewModifier {
 struct HabitsMenu: View {
     
     // MARK: Injected Logic
-    let habits: [IsCompletedHabit]
+    let completedHabits: [IsCompletedHabit]
+    let incompletedHabits: [IsCompletedHabit]
     // Navigation & Actions
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
@@ -155,6 +156,11 @@ struct HabitsMenu: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+    
+    
+    var isHabitsEmpty: Bool {
+        completedHabits.isEmpty && incompletedHabits.isEmpty
+    }
     
     
     var body: some View {
@@ -176,31 +182,31 @@ struct HabitsMenu: View {
             
             ScrollView {
                 
-                if !habits.isEmpty {
+                if !isHabitsEmpty {
                     
                     VStack {
                         
-                        // MARK: Section for completd habits
-                        
-                        
-                        
-                        LazyVGrid(columns: columns, spacing: 25) {
-                            ForEach(0..<habits.count, id: \.self) { i in
+                        // MARK: Incompleted Habits
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(0..<incompletedHabits.count, id: \.self) { i in
                                 
                                 habitButton(
-                                    habit: habits[i]
+                                    habit: incompletedHabits[i]
                                 )
-                                //                            HabitButton(
-                                //                                habit: habits[i],
-                                //                                goToHabitDetail: goToHabitDetail,
-                                //                                goToEditHabit: goToEditHabit,
-                                //                                destroyHabit: destroyHabit,
-                                //                                createHabitRecord: didTapHabitButton
-                                //                            )
+                            }
+                        }
+                        
+                        // MARK: Completed Habits
+                        Text("Completed Habits")
+                        LazyVGrid(columns: columns, spacing: 25) {
+                            ForEach(0..<completedHabits.count, id: \.self) { i in
+                                
+                                habitButton(
+                                    habit: completedHabits[i]
+                                )
                             }
                         }
                         .padding(.bottom)
-                        
                     }
                 } else {
                     
@@ -263,7 +269,8 @@ struct HabitsMenu: View {
 #Preview {
     
     HabitsMenu(
-        habits: IsCompletedHabit.previewIncompletedHabits,
+        completedHabits: IsCompletedHabit.previewCompletedHabits,
+        incompletedHabits: IsCompletedHabit.previewIncompletedHabits,
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         didTapCreateHabitButton: { },
