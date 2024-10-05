@@ -18,7 +18,7 @@ public class HabitController: ObservableObject {
     @Published public var selectedDay: Date
     @Published public var habitRecordsForDays = [Date: [HabitRecord]]()
     
-    var habitRecordsForSelectedDay: [HabitRecord] {
+    public var habitRecordsForSelectedDay: [HabitRecord] {
         habitRecordsForDays[selectedDay] ?? []
     }
     
