@@ -482,7 +482,7 @@ struct StatBox: View {
 
 #Preview {
     
-    let habit = Habit.preview
+    let habit = Habit.mopTheCarpet
     // FIXME: Remove unnecessary preview setup since moving to independent model methodology
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)

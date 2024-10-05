@@ -12,6 +12,7 @@ public struct Habit: Hashable {
     
     public let id: String
     public let name: String
+    public let creationDate: Date
     
     public var isArchived: Bool
     /// I don't think I actually want this to ever be nil. If there is no goal, make this 0
@@ -28,6 +29,7 @@ public struct Habit: Hashable {
     public init(
         id: String,
         name: String,
+        creationDate: Date,
         isArchived: Bool,
         goalCompletionsPerDay: Int?,
         color: String,
@@ -35,6 +37,7 @@ public struct Habit: Hashable {
     ) {
         self.id = id
         self.name = name
+        self.creationDate = creationDate
         self.isArchived = isArchived
         self.goalCompletionsPerDay = goalCompletionsPerDay
         self.color = color

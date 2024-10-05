@@ -186,7 +186,7 @@ struct CreateHabitRecordWithDetailsView: View {
 
 #Preview {
     
-    let habit = Habit.preview
+    let habit = Habit.mopTheCarpet
     // FIXME: Remove the unnecessary preview setup after moving to independent model methodology
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)

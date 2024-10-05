@@ -169,6 +169,7 @@ struct CreateHabitView: View {
         let habit = Habit(
             id: UUID().uuidString,
             name: nameTextFieldValue,
+            creationDate: Date(),
             isArchived: false,
             goalCompletionsPerDay: completionGoal,
             color: stringColorHex,

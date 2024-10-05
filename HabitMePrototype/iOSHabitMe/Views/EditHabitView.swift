@@ -122,6 +122,7 @@ struct EditHabitView: View {
         let habit = Habit(
             id: habit.id,
             name: nameTextFieldValue,
+            creationDate: habit.creationDate,
             isArchived: habit.isArchived,
             goalCompletionsPerDay: completionGoal,
             color: selectedColorString,
@@ -175,20 +176,7 @@ struct EditHabitView: View {
 
 #Preview {
     
-    // FIXME: Remove the below unnecessary preview code
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    let dataHabit = DataHabit(
-        name: "Chugging Dew",
-        isArchived: false,
-        color: Color.indigo.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
-    
-    
-    let habit = Habit.preview
+    let habit = Habit.mopTheCarpet
     
     return NavigationStack {
         EditHabitView(habit: habit, blockHabitStore: CoreDataBlockHabitStore.preview(), goToAddDetailsSelection: { _, _ in })

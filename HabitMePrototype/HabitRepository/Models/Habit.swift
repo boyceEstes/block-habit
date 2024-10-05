@@ -36,7 +36,7 @@ extension HabitRecord {
             activityDetailRecords: [
                 ActivityDetailRecord(value: "This is a lot of string, don'tcha know - Where is it I'm going to out\n", unit: nil, activityDetail: .preview)
             ],
-            habit: Habit.preview
+            habit: Habit.mopTheCarpet
         )
     }
 }

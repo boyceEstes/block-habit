@@ -16,6 +16,7 @@ public class ManagedHabit: NSManagedObject {
 
     @NSManaged public var id: String?
     @NSManaged public var name: String?
+    @NSManaged public var creationDate: Date
     @NSManaged public var color: String?
     @NSManaged public var isArchived: Bool
     @NSManaged public var goalCompletionsPerDay: Int64 // -1 = unset
@@ -113,6 +114,7 @@ extension ManagedHabit {
         return Habit(
             id: id,
             name: name,
+            creationDate: creationDate,
             isArchived: isArchived,
             goalCompletionsPerDay: goalCompletionsPerDay == -1 ? nil : Int(goalCompletionsPerDay),
             color: color,
