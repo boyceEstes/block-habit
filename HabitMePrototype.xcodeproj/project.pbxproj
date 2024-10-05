@@ -219,6 +219,7 @@
 		B37AC77E2BAF6B9A0052552B /* CoreDataBlockHabitStore+HabitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+HabitRecord.swift"; sourceTree = "<group>"; };
 		B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaloRepositoryError.swift; sourceTree = "<group>"; };
 		B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+Habit.swift"; sourceTree = "<group>"; };
+		B387B21C2CB1A4C800256C64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+HabitRecordsForDaysTests.swift"; sourceTree = "<group>"; };
 		B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsCompletedHabitsTests.swift"; sourceTree = "<group>"; };
 		B389D2F82BE59280004A8CF0 /* HabitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitController.swift; sourceTree = "<group>"; };
@@ -337,6 +338,7 @@
 		B313EEB12B5C4C93002AE8CE /* HabitMePrototype */ = {
 			isa = PBXGroup;
 			children = (
+				B387B21C2CB1A4C800256C64 /* Info.plist */,
 				B3C97F2E2B5CEA4B00211B4C /* Supporting Files */,
 				B3C97F1A2B5CE88600211B4C /* HabitRepository */,
 				B3C97F202B5CE8FA00211B4C /* iOSHabitMe */,
@@ -1165,11 +1167,11 @@
 				DEVELOPMENT_TEAM = RXL7292WR8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HabitMePrototype/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Block Journal";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -1198,11 +1200,11 @@
 				DEVELOPMENT_TEAM = RXL7292WR8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HabitMePrototype/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Block Journal";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

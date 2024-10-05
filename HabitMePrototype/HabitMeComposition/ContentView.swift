@@ -30,15 +30,11 @@ struct SplashView: View {
         
         ZStack {
             Rectangle()
-                .background(.black)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
+                .fill(.splashBackground)
+            
             Image("appIcon")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150, height: 150)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
         }
+        .ignoresSafeArea()
     }
 }
 
@@ -55,13 +51,10 @@ struct ContentView: View {
     // Home navigation
     @State var homeNavigationFlowPath = [HomeNavigationFlow.StackIdentifier]()
     @State var homeNavigationFlowDisplayedSheet: HomeNavigationFlow.SheetyIdentifier?
-    
     // Habit Detail navigation
     @State var habitDetailNavigationFlowDisplayedSheet: HabitDetailNavigationFlow.SheetyIdentifier?
-    
     // Create Habit navigation
     @State var createEditHabitNavigationFlowPath = [CreateEditHabitNavigationFlow.StackIdentifier]()
-    
     // Add Details navigation
     @State var addDetailsNavigationFlowDisplayedSheet: AddDetailsNavigationFlow.SheetyIdentifier?
     
@@ -78,7 +71,6 @@ struct ContentView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                
                 withAnimation {
                     self.isTimeToShowContent = true
                 }
