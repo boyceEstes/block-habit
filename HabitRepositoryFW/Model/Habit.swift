@@ -41,4 +41,3 @@ public struct Habit: Hashable {
         self.activityDetails = activityDetails
     }
 }
-

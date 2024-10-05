@@ -15,18 +15,10 @@ public class HabitController: ObservableObject {
     let blockHabitRepository: BlockHabitRepository
     
     @Published public var selectedDay: Date
-    @Published public var habitRecordsForDays = [Date: [HabitRecord]]() {
-        didSet {
-            print("BOYCE: habitRecordsForDays")
-        }
-    }
+    @Published public var habitRecordsForDays = [Date: [HabitRecord]]()
     
-    // Theese are created from data in latestNonArchivedHabits
-    @Published public var isCompletedHabits = Set<IsCompletedHabit>() {
-        didSet {
-            print("BOYCE: did change isCompletedHabits")
-        }
-    }
+    // These are created from data in latestNonArchivedHabits
+    @Published public var isCompletedHabits = Set<IsCompletedHabit>()
     
     
     @Published var latestHabits = [Habit]()
@@ -57,34 +49,21 @@ public class HabitController: ObservableObject {
     // This is actually needed for populating the archived screen, so changes will need to seen.
 //    @Published var latestArchivedHabits = [Habit]()
     
-    public var completeHabits: [Habit] {
+    
+    /// Habit Menu Data
+    public var completeHabits: [IsCompletedHabit] {
         
         isCompletedHabits
-            .filter { $0.isCompleted == true }
-            .map { $0.habit }
-            .sorted(by: { $0.name < $1.name })
+            .filter { $0.isCompleted }
+            .sorted(by: { $0.habit.name < $1.habit.name })
     }
     
-    /*
-     What if I have a publisher that will enact whenever there is a change in any habits
-     from there I can filter it into archived and nonarchived publishers and from
-     there I can filter it into incompleteNonArchived and completeNonarchived and
-     when I want to do anything to the list I can update the highest level and it will
-     trickle down - this should
-     
-     If I am listening to computed variables they should all change whenever I modify
-     this overall array.
-     
-     How will I update isCompleted?
-     */
-    
-    
-    public var incompleteHabits: [Habit] {
+    /// Habit Menu Data
+    public var incompleteHabits: [IsCompletedHabit] {
         
         isCompletedHabits
-            .filter { $0.isCompleted == false }
-            .map { $0.habit }
-            .sorted(by: { $0.name < $1.name })
+            .filter { !$0.isCompleted }
+            .sorted(by: { $0.habit.name < $1.habit.name })
     }
     
     
@@ -106,25 +85,14 @@ public class HabitController: ObservableObject {
     }
     
     
-    /*
-     We don't just want to get the latestHabitInformation for the IsCompletedHabits
-     because we also want to be able to see this information for ArchivedHabits.
-     So we need some conglomerate of archived and nonarchived habits that we can pull from
-     
-     The problem here, I believe, is that when we go to the detail page for a habit
-     then we archive that habit from the home screen, it will crash because that other
-     view that's looking at it is still in memory but it has been removed from where it
-     is looking the habitInformation view.
-     
-     So how do we fix this? I think that we will need to actually, compile a list of all of our habits and work from there.
-     */
-    
     public func latestHabitInformation(for habit: Habit) -> AnyPublisher<Habit, Error> {
         
         $latestHabits.tryMap { receivedHabits in
+            
             guard let latestForHabit: Habit = receivedHabits.first(where: { $0.id == habit.id}) else {
                 throw NSError(domain: "We couldn't find the habit was sent up", code: 1)
             }
+            
             return latestForHabit
         }.eraseToAnyPublisher()
     }

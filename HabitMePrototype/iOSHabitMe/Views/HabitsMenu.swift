@@ -104,6 +104,7 @@ extension View {
 enum HabitsMenuAlert {
     case deleteHabit(yesAction: () -> Void)
     
+    
     func alertData() -> AlertDetail {
         
         switch self {
@@ -137,22 +138,17 @@ struct HomeDetailTitle: ViewModifier {
 
 struct HabitsMenu: View {
     
-    @Environment(\.modelContext) var modelContext
-    
+    // MARK: Injected Logic
+    let habits: [IsCompletedHabit]
+    // Navigation & Actions
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
-    
-    
-    @State private var showAlert: Bool = false
-    @State private var alertDetail: AlertDetail? = nil
-    
-    // TODO: load habits from db
-    let habits: [IsCompletedHabit]
-    
-    //    let habitMenuHeight: CGFloat
     let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (Habit) -> Void
     let archiveHabit: (Habit) -> Void
+    // MARK: View Properties
+    @State private var showAlert: Bool = false
+    @State private var alertDetail: AlertDetail? = nil
     
     
     let columns = [
@@ -179,23 +175,33 @@ struct HabitsMenu: View {
             
             
             ScrollView {
+                
                 if !habits.isEmpty {
-                    LazyVGrid(columns: columns, spacing: 25) {
-                        ForEach(0..<habits.count, id: \.self) { i in
-                            
-                            habitButton(
-                                habit: habits[i]
-                            )
-//                            HabitButton(
-//                                habit: habits[i],
-//                                goToHabitDetail: goToHabitDetail,
-//                                goToEditHabit: goToEditHabit,
-//                                destroyHabit: destroyHabit,
-//                                createHabitRecord: didTapHabitButton
-//                            )
+                    
+                    VStack {
+                        
+                        // MARK: Section for completd habits
+                        
+                        
+                        
+                        LazyVGrid(columns: columns, spacing: 25) {
+                            ForEach(0..<habits.count, id: \.self) { i in
+                                
+                                habitButton(
+                                    habit: habits[i]
+                                )
+                                //                            HabitButton(
+                                //                                habit: habits[i],
+                                //                                goToHabitDetail: goToHabitDetail,
+                                //                                goToEditHabit: goToEditHabit,
+                                //                                destroyHabit: destroyHabit,
+                                //                                createHabitRecord: didTapHabitButton
+                                //                            )
+                            }
                         }
+                        .padding(.bottom)
+                        
                     }
-                    .padding(.bottom)
                 } else {
                     
                     VStack {
@@ -251,4 +257,17 @@ struct HabitsMenu: View {
 //            }
         }
     }
+}
+
+
+#Preview {
+    
+    HabitsMenu(
+        habits: IsCompletedHabit.previewIncompletedHabits,
+        goToHabitDetail: { _ in },
+        goToEditHabit: { _ in },
+        didTapCreateHabitButton: { },
+        didTapHabitButton: { _ in },
+        archiveHabit: { _ in }
+    )
 }
