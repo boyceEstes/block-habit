@@ -215,7 +215,7 @@ struct HabitsMenu: View {
                             }
                             .padding(.bottom)
                         } else {
-                            Text("So... you haven't even completed one habit, huh? 👀 No judgement")
+                            Text("So... you haven't completed any habits at all, huh? 👀 No judgement")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                                 .hAlign(.leading)

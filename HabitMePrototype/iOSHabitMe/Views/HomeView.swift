@@ -222,73 +222,7 @@ struct HomeView: View {
 
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    let dataHabit = DataHabit(
-        name: "Chugged Dew",
-        isArchived: false,
-        color: Color.blue.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    let dataHabit2 = DataHabit(
-        name: "Smashed Taco",
-        isArchived: false,
-        color: Color.orange.toHexString() ?? "#FFFFFF",
-//        goalCompletionsPerDay: 1,
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
-    container.mainContext.insert(dataHabit2)
-    
-    let dataHabitRecord = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit
-    )
-    let dataHabitRecord2 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    let dataHabitRecord3 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    
-    container.mainContext.insert(dataHabitRecord)
-    container.mainContext.insert(dataHabitRecord2)
-    container.mainContext.insert(dataHabitRecord3)
-    
-    
-    let dataHabitRecord21 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit2
-    )
-    let dataHabitRecord22 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit2
-    )
-    let dataHabitRecord23 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit2
-    )
-    let dataHabitRecord24 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit2
-    )
-    
-    container.mainContext.insert(dataHabitRecord21)
-    container.mainContext.insert(dataHabitRecord22)
-    container.mainContext.insert(dataHabitRecord23)
-    container.mainContext.insert(dataHabitRecord24)
-    
-    
+
     return NavigationStack {
         HomeView(
             blockHabitStore: CoreDataBlockHabitStore.preview(),
@@ -300,6 +234,5 @@ struct HomeView: View {
             goToCreateActivityRecordWithDetails: { _, _ in },
             goToSettings: { }
         )
-        .modelContainer(container)
     }
 }
