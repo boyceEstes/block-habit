@@ -140,36 +140,15 @@ struct HomeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                HStack {
-                    Button {
-                        habitController.goToPrevDay()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .fontWeight(.semibold)
-                    }
-                    // FIXME: 2 See more at the definition for that
-                    .disabled(habitController.isAllowedToGoToPrevDay() ? false : true)
-                    
-                    Text(habitController.selectedDay.displayDate)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    Button {
-                        habitController.goToNextDay()
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .fontWeight(.semibold)
-                    }
-                    .disabled(habitController.isAllowedToGoToNextDay() ? false : true)
-                }
-            }
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                
+
                 Button {
                     goToSettings()
                 } label : {
                     Image(systemName: "gear")
                 }
+            }
+            
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 
                 Button {
                     goToStatistics()

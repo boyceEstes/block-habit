@@ -25,7 +25,28 @@ struct HabitsSection: View {
         VStack(spacing: 0) {
             VStack(spacing: 8) {
                 HStack {
-                    Text("Habits")
+                    HStack {
+                        Button {
+                            habitController.goToPrevDay()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .fontWeight(.semibold)
+                        }
+                        // FIXME: 2 See more at the definition for that
+                        .disabled(habitController.isAllowedToGoToPrevDay() ? false : true)
+                        
+                        Text(habitController.selectedDay.displayDate)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        
+                        Button {
+                            habitController.goToNextDay()
+                        } label: {
+                            Image(systemName: "chevron.right")
+                                .fontWeight(.semibold)
+                        }
+                        .disabled(habitController.isAllowedToGoToNextDay() ? false : true)
+                    }
                     Spacer()
                     Button(action: goToCreateHabit) {
                         Image(systemName: "plus.circle")
