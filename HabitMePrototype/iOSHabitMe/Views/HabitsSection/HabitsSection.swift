@@ -114,8 +114,6 @@ struct HabitsSection: View {
                 
                 guard let habitCreationDateAtNoon = isCompletedHabit.habit.creationDate.noon,
                       habitController.selectedDay <= habitCreationDateAtNoon else {
-                    
-                    print("habitCreationDate: \(DateFormatter.shortDateShortTime.string(from: isCompletedHabit.habit.creationDate.noon ?? Date(timeIntervalSince1970: 0))) VS selectedDay: \(DateFormatter.shortDateShortTime.string(from: habitController.selectedDay))")
                     // Do not include any habits without a completion goal in the count
                     return partialResult
                 }
@@ -144,6 +142,14 @@ struct HabitsSection: View {
                 return partialResult + 1
             }
     }
+    
+    
+//    var currentStreak: Int {
+//        
+//        StatisticsCalculator.findCurrentUsageStreak(
+//            for: habitController.habitRecordsForDays
+//        )
+//    }
 }
 
 

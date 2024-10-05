@@ -149,7 +149,31 @@ public enum StatisticsCalculator {
         selectedDay: Date
     ) -> Int {
         
-        return 0
+        guard !recordsForDays.isEmpty else { return 0 }
+        
+        var currentDay = selectedDay
+        var streakCount = 0
+        
+        if let selectedDayRecords = recordsForDays[selectedDay],
+           selectedDayRecords.isEmpty {
+            
+            // Start with the previousDay
+        } else {
+            // We start with now!
+            streakCount += 1
+        }
+        
+        currentDay = currentDay.adding(days: -1)
+        
+        // Keep going until currentDay is nil or current Day has no records
+        while recordsForDays[currentDay] != nil && !(recordsForDays[currentDay] ?? []).isEmpty {
+            
+            streakCount += 1
+            currentDay = currentDay.adding(days: -1)
+        }
+        
+        
+        return streakCount
     }
 }
 
