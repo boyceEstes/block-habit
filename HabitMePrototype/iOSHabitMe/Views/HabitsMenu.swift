@@ -201,18 +201,26 @@ struct HabitsMenu: View {
                             .font(.headline)
                             .hAlign(.leading)
                             .padding(.top)
-                        LazyVGrid(columns: columns, spacing: 25) {
-                            ForEach(0..<completedHabits.count, id: \.self) { i in
-                                
-                                habitButton(
-                                    habit: completedHabits[i]
-                                )
-                                .onAppear {
-                                    print("completed Habit - \(completedHabits[i].habit.name)")
+                        if !completedHabits.isEmpty {
+                            LazyVGrid(columns: columns, spacing: 25) {
+                                ForEach(0..<completedHabits.count, id: \.self) { i in
+                                    
+                                    habitButton(
+                                        habit: completedHabits[i]
+                                    )
+                                    .onAppear {
+                                        print("completed Habit - \(completedHabits[i].habit.name)")
+                                    }
                                 }
                             }
+                            .padding(.bottom)
+                        } else {
+                            Text("So... you haven't even completed one habit, huh? 👀 No judgement")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .hAlign(.leading)
+                                .padding(.top, 4)
                         }
-                        .padding(.bottom)
                     }
                 } else {
                     
@@ -275,7 +283,7 @@ struct HabitsMenu: View {
 #Preview {
     
     HabitsMenu(
-        completedHabits: IsCompletedHabit.previewCompletedHabits,
+        completedHabits: [],//IsCompletedHabit.previewCompletedHabits,
         incompletedHabits: IsCompletedHabit.previewIncompletedHabits,
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
