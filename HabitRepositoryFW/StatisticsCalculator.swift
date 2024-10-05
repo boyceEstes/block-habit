@@ -81,7 +81,6 @@ public enum StatisticsCalculator {
     }
     
     
-    // Who knows
     public static func findHabitWithBestStreak(for recordsForDays: RecordsForDays, with habits: [Habit]) -> HabitWithCount? {
         
         // We want to have all habits that exist here so that we can easily test their streak values
@@ -142,6 +141,15 @@ public enum StatisticsCalculator {
         
 
         return (bestStreak.key, bestStreak.value)
+    }
+    
+    
+    public static func findCurrentUsageStreak(
+        for recordsForDays: RecordsForDays
+//        selectedDay: Date
+    ) -> Int {
+        
+        return 0
     }
 }
 

@@ -199,7 +199,7 @@ class HabitMenuDataSourceTests: XCTestCase {
     
     private func anyHabit(name: String = "Mood", goalCompletionsPerDay: Int = 0)-> Habit {
         let uuid = UUID().uuidString
-        return Habit(id: uuid, name: name, isArchived: false, goalCompletionsPerDay: goalCompletionsPerDay, color: "#ffffff", activityDetails: [])
+        return Habit(id: uuid, name: name, creationDate: Date(), isArchived: false, goalCompletionsPerDay: goalCompletionsPerDay, color: "#ffffff", activityDetails: [])
     }
     
     

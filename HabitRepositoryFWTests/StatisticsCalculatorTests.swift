@@ -652,6 +652,241 @@ class StatisticsCalculatorTests: XCTestCase {
         // then
         XCTAssertEqual(bestStreak, 5)
     }
+    
+    
+    // MARK: findCurrentUsageStreak
+    func test_findCurrentUsageStreak_withNoDays_deliversZero() {
+        
+        // given
+        let records: [Date: [HabitRecord]] = [:]
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records)
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
+    
+    
+    func test_findCurrentUsageStreak_withEmptyDays_deliversZero() {
+        
+        // given
+        let records: [Date: [HabitRecord]] = setupDaysForDictionary()
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records)//, selectedDay: Date())
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
+    
+    
+    
+//    func test_findCurrentUsageStreak_onlyConsecutiveRecordsAtBeginning_deliversZero() {
+//        
+//        // given
+//        
+//        /*
+//         *   o  -  -  -  -  -  -
+//         *   o  o  o  -  -  -  -
+//         * [-6 -5 -4 -3 -2 -1  0]
+//         */
+//        
+//        
+//        let sixDaysPrevious = someDay.adding(days: -6) // This should be beginning of the dictionary
+//        let fiveDaysPrevious = someDay.adding(days: -5)
+//        let fourDaysPrevious = someDay.adding(days: -4)
+//        
+//        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordSixDaysAgo2 = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordFiveDaysAgo = HabitRecord.habitRecord(date: fiveDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        
+//        var recordsForDays = setupDaysForDictionary()
+//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
+//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo2)
+//        recordsForDays[fiveDaysPrevious]?.append(recordFiveDaysAgo)
+//        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+//        
+//        // when
+//        let bestStreak = StatisticsCalculator.findBestStreakInRecordsForHabit(for: recordsForDays)
+//        
+//        // then
+//        XCTAssertEqual(bestStreak, 3)
+//    }
+//    
+//    func test_bestStreakInRecordsForHabit_twoConsecutiveRecordsLargerFirst_deliversLargestStreak() {
+//        
+//        // given
+//        
+//        /*
+//         *   -  -  -  o  -  -  -
+//         *   o  o  o  o  -  o  o
+//         * [-6 -5 -4 -3 -2 -1  0]
+//         */
+//        let sixDaysPrevious = someDay.adding(days: -6)
+//        let fiveDaysPrevious = someDay.adding(days: -5)
+//        let fourDaysPrevious = someDay.adding(days: -4)
+//        let threeDaysPrevious = someDay.adding(days: -3)
+//        let oneDaysPrevious = someDay.adding(days: -1)
+//        let today = someDay
+//        
+//        
+//        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordFiveDaysAgo = HabitRecord.habitRecord(date: fiveDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordOneDaysAgo = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordToday = HabitRecord.habitRecord(date: today, habit: nonArchivedOneGoalHabit)
+//        
+//        var recordsForDays = setupDaysForDictionary()
+//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
+//        recordsForDays[fiveDaysPrevious]?.append(recordFiveDaysAgo)
+//        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+//        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo)
+//        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo2)
+//        recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo)
+//        recordsForDays[today]?.append(recordToday)
+//        
+//        // when
+//        let bestStreak = StatisticsCalculator.findBestStreakInRecordsForHabit(for: recordsForDays)
+//        
+//        // then
+//        XCTAssertEqual(bestStreak, 4)
+//    }
+//    
+//    
+//    func test_bestStreakInRecordsForHabit_ThreeRecordIslandsLargerInMiddle_deliversLargestStreak() {
+//        
+//        // given
+//        
+//        /*
+//         *   -  -  -  o  -  -  -
+//         *   o  -  o  o  o  -  o
+//         * [-6 -5 -4 -3 -2 -1  0]
+//         */
+//        let sixDaysPrevious = someDay.adding(days: -6)
+//        let fourDaysPrevious = someDay.adding(days: -4)
+//        let threeDaysPrevious = someDay.adding(days: -3)
+//        let twoDaysPrevious = someDay.adding(days: -2)
+//        let today = someDay
+//        
+//        
+//        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        
+//        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordTwoDaysAgo = HabitRecord.habitRecord(date: twoDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        
+//        let recordToday = HabitRecord.habitRecord(date: today, habit: nonArchivedOneGoalHabit)
+//        
+//        var recordsForDays = setupDaysForDictionary()
+//        
+//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
+//        
+//        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+//        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo)
+//        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo2)
+//        recordsForDays[twoDaysPrevious]?.append(recordTwoDaysAgo)
+//        
+//        recordsForDays[today]?.append(recordToday)
+//        
+//        // when
+//        let bestStreak = StatisticsCalculator.findBestStreakInRecordsForHabit(for: recordsForDays)
+//        
+//        // then
+//        XCTAssertEqual(bestStreak, 3)
+//    }
+//
+//    
+//    func test_bestStreakInRecordsForHabit_twoStreaksLargerLast_deliversLargestStreak() {
+//        
+//        // given
+//        
+//        /*
+//         *   -  -  -  o  -  -  -
+//         *   o  o  -  o  o  o  o
+//         * [-6 -5 -4 -3 -2 -1  0]
+//         */
+//        
+//        let sixDaysPrevious = someDay.adding(days: -6)
+//        let fiveDaysPrevious = someDay.adding(days: -5)
+//        let threeDaysPrevious = someDay.adding(days: -3)
+//        let twoDaysPrevious = someDay.adding(days: -2)
+//        let oneDaysPrevious = someDay.adding(days: -1)
+//        let today = someDay
+//        
+//        
+//        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordFiveDaysAgo = HabitRecord.habitRecord(date: fiveDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordTwoDaysAgo = HabitRecord.habitRecord(date: twoDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordOneDaysAgo = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordToday = HabitRecord.habitRecord(date: today, habit: nonArchivedOneGoalHabit)
+//        
+//        var recordsForDays = setupDaysForDictionary()
+//        
+//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
+//        recordsForDays[fiveDaysPrevious]?.append(recordFiveDaysAgo)
+//        
+//        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo)
+//        recordsForDays[threeDaysPrevious]?.append(recordThreeDaysAgo2)
+//        recordsForDays[twoDaysPrevious]?.append(recordTwoDaysAgo)
+//        recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo)
+//        recordsForDays[today]?.append(recordToday)
+//        
+//        // when
+//        let bestStreak = StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: recordsForDays)
+//        
+//        // then
+//        XCTAssertEqual(bestStreak, 4)
+//    }
+//    
+//    
+//    func test_bestStreakInRecordsForHabit_missingADay_deliversStreakCountIncludingLastDay() {
+//        
+//        // given
+//        
+//        /*
+//         *   -  x  -  o  -  -  -
+//         *   o  x  o  o  o  o  o
+//         * [-6  x -4 -3 -2 -1  0]
+//         */
+//        
+//        let sixDaysPrevious = someDay.adding(days: -6)
+//        let fourDaysPrevious = someDay.adding(days: -4)
+//        let threeDaysPrevious = someDay.adding(days: -3)
+//        let twoDaysPrevious = someDay.adding(days: -2)
+//        let oneDaysPrevious = someDay.adding(days: -1)
+//        let today = someDay
+//        
+//        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordThreeDaysAgo2 = HabitRecord.habitRecord(date: threeDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordTwoDaysAgo = HabitRecord.habitRecord(date: twoDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordOneDayAgo = HabitRecord.habitRecord(date: oneDaysPrevious, habit: nonArchivedOneGoalHabit)
+//        let recordToday = HabitRecord.habitRecord(date: today, habit: nonArchivedOneGoalHabit)
+//        
+//        let recordsForDays = [
+//            sixDaysPrevious: [recordSixDaysAgo],
+//            // MISSING DAY 5!
+//            fourDaysPrevious: [recordFourDaysAgo],
+//            threeDaysPrevious: [recordThreeDaysAgo, recordThreeDaysAgo2],
+//            twoDaysPrevious: [recordTwoDaysAgo],
+//            oneDaysPrevious: [recordOneDayAgo],
+//            today: [recordToday]
+//        ]
+//        
+//        // when
+//        let bestStreak = StatisticsCalculator.findBestStreakInRecordsForHabit(for: recordsForDays)
+//        
+//        // then
+//        XCTAssertEqual(bestStreak, 5)
+//    }
 
     
     // MARK: Helpers

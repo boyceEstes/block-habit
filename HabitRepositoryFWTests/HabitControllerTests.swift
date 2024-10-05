@@ -17,6 +17,7 @@ extension Habit {
         Habit(
             id: id,
             name: "Mood",
+            creationDate: Date(),
             isArchived: true,
             goalCompletionsPerDay: 1,
             color: "#ffffff",
@@ -28,6 +29,7 @@ extension Habit {
         Habit(
             id: id,
             name: "Water",
+            creationDate: Date(),
             isArchived: false,
             goalCompletionsPerDay: 0,
             color: "#ffffff",
@@ -39,6 +41,7 @@ extension Habit {
         Habit(
             id: id,
             name: "Exercise",
+            creationDate: Date(),
             isArchived: false,
             goalCompletionsPerDay: 1,
             color: "#ffffff",
@@ -50,6 +53,7 @@ extension Habit {
         Habit(
             id: id,
             name: "Exercise",
+            creationDate: Date(),
             isArchived: false,
             goalCompletionsPerDay: 2,
             color: "#ffffff",
@@ -74,6 +78,25 @@ extension HabitRecord {
 
 
 class BlockHabitRepositoryMultipleHabitsAndRecordsStub: BlockHabitRepository {
+    
+    // TODO: Implement with unit testing later
+    func readAllHabits() async throws -> [HabitRepositoryFW.Habit] {
+        []
+    }
+    
+    func createActivityDetail(_ activityDetail: HabitRepositoryFW.ActivityDetail) async throws {
+    }
+    
+    func readActivityDetails() async throws -> [HabitRepositoryFW.ActivityDetail] {
+        []
+    }
+    
+    func updateActivityDetail(id: String, with activityDetail: HabitRepositoryFW.ActivityDetail) async throws {
+    }
+    
+    func destroyActivityDetail(_ activityDetail: HabitRepositoryFW.ActivityDetail) async throws {
+    }
+    
     
     enum ReceivedMessage: Equatable {
 //        case createHabit
