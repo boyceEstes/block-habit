@@ -107,9 +107,19 @@ struct HabitsSection: View {
             .reduce(0) { partialResult, isCompletedHabit in
                 
                 guard let completionGoal = isCompletedHabit.habit.goalCompletionsPerDay else {
+                    
                     // Do not include any habits without a completion goal in the count
                     return partialResult
                 }
+                
+                guard let habitCreationDateAtNoon = isCompletedHabit.habit.creationDate.noon,
+                      habitController.selectedDay <= habitCreationDateAtNoon else {
+                    
+                    print("habitCreationDate: \(DateFormatter.shortDateShortTime.string(from: isCompletedHabit.habit.creationDate.noon ?? Date(timeIntervalSince1970: 0))) VS selectedDay: \(DateFormatter.shortDateShortTime.string(from: habitController.selectedDay))")
+                    // Do not include any habits without a completion goal in the count
+                    return partialResult
+                }
+
                 
                 return partialResult + completionGoal
             }
