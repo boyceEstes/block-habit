@@ -42,7 +42,7 @@ struct HabitsSection: View {
                     Spacer()
                     HStack(spacing: 4) {
                         Text("Streak")
-                        Text("23 🔥")
+                        Text("\(currentStreak) 🔥")
                             .foregroundStyle(.primary)
                     }
                 }
@@ -144,12 +144,11 @@ struct HabitsSection: View {
     }
     
     
-//    var currentStreak: Int {
-//        
-//        StatisticsCalculator.findCurrentUsageStreak(
-//            for: habitController.habitRecordsForDays
-//        )
-//    }
+    /// Assuming today is the last day in habitsRecordsForDays
+    var currentStreak: Int {
+        
+        StatisticsCalculator.findCurrentUsageStreak(for: habitController.habitRecordsForDays)
+    }
 }
 
 

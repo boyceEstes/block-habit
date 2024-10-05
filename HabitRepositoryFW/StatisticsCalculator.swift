@@ -145,16 +145,18 @@ public enum StatisticsCalculator {
     
     
     public static func findCurrentUsageStreak(
-        for recordsForDays: RecordsForDays,
-        selectedDay: Date
+        for recordsForDays: RecordsForDays
     ) -> Int {
         
         guard !recordsForDays.isEmpty else { return 0 }
+        guard let highestDate = recordsForDays.keys.max() else {
+            return 0
+        }
         
-        var currentDay = selectedDay
+        var currentDay = highestDate
         var streakCount = 0
         
-        if let selectedDayRecords = recordsForDays[selectedDay],
+        if let selectedDayRecords = recordsForDays[currentDay],
            selectedDayRecords.isEmpty {
             
             // Start with the previousDay

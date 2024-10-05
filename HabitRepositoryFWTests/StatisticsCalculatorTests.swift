@@ -661,7 +661,7 @@ class StatisticsCalculatorTests: XCTestCase {
         let records: [Date: [HabitRecord]] = [:]
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records, selectedDay: someDay)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records)
         
         // then
         XCTAssertEqual(currentStreak, 0)
@@ -674,7 +674,7 @@ class StatisticsCalculatorTests: XCTestCase {
         let records: [Date: [HabitRecord]] = setupDaysForDictionary()
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records, selectedDay: someDay)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records)
         
         // then
         XCTAssertEqual(currentStreak, 0)
@@ -709,7 +709,7 @@ class StatisticsCalculatorTests: XCTestCase {
         recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays, selectedDay: someDay)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays)
         
         // then
         XCTAssertEqual(currentStreak, 0)
@@ -750,7 +750,7 @@ class StatisticsCalculatorTests: XCTestCase {
         recordsForDays[today]?.append(recordToday)
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays, selectedDay: someDay)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays)
         
         // then
         XCTAssertEqual(currentStreak, 2)
@@ -786,7 +786,7 @@ class StatisticsCalculatorTests: XCTestCase {
         recordsForDays[oneDaysPrevious]?.append(recordOneDaysAgo)
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays, selectedDay: someDay)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays)
         
         // then
         XCTAssertEqual(currentStreak, 2)
@@ -831,7 +831,7 @@ class StatisticsCalculatorTests: XCTestCase {
         recordsForDays[today]?.append(recordToday)
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays, selectedDay: someDay)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays)
         
         // then
         XCTAssertEqual(currentStreak, 7)
