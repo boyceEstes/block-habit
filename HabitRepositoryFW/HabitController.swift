@@ -18,6 +18,10 @@ public class HabitController: ObservableObject {
     @Published public var selectedDay: Date
     @Published public var habitRecordsForDays = [Date: [HabitRecord]]()
     
+    var habitRecordsForSelectedDay: [HabitRecord] {
+        habitRecordsForDays[selectedDay] ?? []
+    }
+    
     // These are created from data in latestNonArchivedHabits
     @Published public var isCompletedHabits = Set<IsCompletedHabit>()
     
@@ -33,6 +37,7 @@ public class HabitController: ObservableObject {
     var latestNonArchivedHabits: [Habit] {
         latestHabits.filter { !$0.isArchived }
     }
+    
     
     
     @Published var latestActivityDetails = [ActivityDetail]()
@@ -146,7 +151,7 @@ public class HabitController: ObservableObject {
     private func updateHabitsIsCompletedForDay() {
         
         Task { @MainActor in
-            let recordsForSelectedDay = habitRecordsForDays[selectedDay] ?? []
+            let recordsForSelectedDay = habitRecordsForSelectedDay
             isCompletedHabits = latestNonArchivedHabits.toIsCompleteHabits(recordsForSelectedDay: recordsForSelectedDay)
         }
     }
