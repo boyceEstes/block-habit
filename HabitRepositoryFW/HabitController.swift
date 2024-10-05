@@ -140,7 +140,7 @@ public class HabitController: ObservableObject {
             
             await MainActor.run {
                 latestHabits = habitsFromRepository
-                
+                    
                 updateHabitsIsCompletedForDay()
             }
         } catch {

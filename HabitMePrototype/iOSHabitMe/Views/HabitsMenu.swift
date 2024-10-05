@@ -198,12 +198,18 @@ struct HabitsMenu: View {
                         
                         // MARK: Completed Habits
                         Text("Completed Habits")
+                            .font(.headline)
+                            .hAlign(.leading)
+                            .padding(.top)
                         LazyVGrid(columns: columns, spacing: 25) {
                             ForEach(0..<completedHabits.count, id: \.self) { i in
                                 
                                 habitButton(
                                     habit: completedHabits[i]
                                 )
+                                .onAppear {
+                                    print("completed Habit - \(completedHabits[i].habit.name)")
+                                }
                             }
                         }
                         .padding(.bottom)

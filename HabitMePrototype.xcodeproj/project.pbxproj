@@ -46,6 +46,7 @@
 		B37AC7762BA086E50052552B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC7752BA086E50052552B /* HomeViewModel.swift */; };
 		B37AC77B2BAF53760052552B /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77A2BAF53760052552B /* Habit.swift */; };
 		B387B21F2CB1B19F00256C64 /* Habit+PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B387B21E2CB1B19F00256C64 /* Habit+PreviewData.swift */; };
+		B387B2222CB1BD7600256C64 /* View+GeneralUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B387B2212CB1BD7600256C64 /* View+GeneralUtilities.swift */; };
 		B389D2F52BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */; };
 		B389D2F72BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */; };
 		B389D2F92BE59280004A8CF0 /* HabitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F82BE59280004A8CF0 /* HabitController.swift */; };
@@ -222,6 +223,7 @@
 		B37AC7842BB1C2F20052552B /* CoreDataBlockHabitStore+Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataBlockHabitStore+Habit.swift"; sourceTree = "<group>"; };
 		B387B21C2CB1A4C800256C64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B387B21E2CB1B19F00256C64 /* Habit+PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+PreviewData.swift"; sourceTree = "<group>"; };
+		B387B2212CB1BD7600256C64 /* View+GeneralUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+GeneralUtilities.swift"; sourceTree = "<group>"; };
 		B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+HabitRecordsForDaysTests.swift"; sourceTree = "<group>"; };
 		B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsCompletedHabitsTests.swift"; sourceTree = "<group>"; };
 		B389D2F82BE59280004A8CF0 /* HabitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitController.swift; sourceTree = "<group>"; };
@@ -486,6 +488,14 @@
 			path = PreviewData;
 			sourceTree = "<group>";
 		};
+		B387B2202CB1BD4A00256C64 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B387B2212CB1BD7600256C64 /* View+GeneralUtilities.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		B389D2F32BE414DC004A8CF0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,6 +648,7 @@
 		B3C97F242B5CE94500211B4C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B387B2202CB1BD4A00256C64 /* Helpers */,
 				B3BFEA0D2B76767E00DE7617 /* TextFields */,
 				B3BFE9E32B75207C00DE7617 /* Charts */,
 				B3C97F272B5CE97500211B4C /* HabitsMenu.swift */,
@@ -897,6 +908,7 @@
 			files = (
 				B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */,
 				B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */,
+				B387B2222CB1BD7600256C64 /* View+GeneralUtilities.swift in Sources */,
 				B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */,
 				B3C9E51A2B698CAC00153158 /* ModelContext+Info.swift in Sources */,
 				B32947A82B61E0E1007C8C1E /* DayView.swift in Sources */,

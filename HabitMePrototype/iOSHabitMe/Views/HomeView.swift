@@ -146,6 +146,7 @@ struct HomeView: View {
                 )
             }
             .background(Color.primaryBackground)
+            .animation(.easeInOut(duration: 0.2), value: habitController.incompleteHabits)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
