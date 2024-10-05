@@ -23,15 +23,32 @@ struct HabitsSection: View {
     var body: some View {
         
         VStack(spacing: 0) {
-            
-            HStack {
-                Text("Habits")
-                Spacer()
-                Button(action: goToCreateHabit) {
-                    Image(systemName: "plus.circle")
+            VStack(spacing: 8) {
+                HStack {
+                    Text("Habits")
+                    Spacer()
+                    Button(action: goToCreateHabit) {
+                        Image(systemName: "plus.circle")
+                    }
                 }
+                .homeDetailTitle()
+                
+                HStack {
+                    HStack(spacing: 4) {
+                        Text("Daily Goal")
+                        Text("5/8 ⛳️")
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    HStack(spacing: 4) {
+                        Text("Streak")
+                        Text("23 🔥")
+                            .foregroundStyle(.primary)
+                    }
+                }
+                .font(.footnote)
+                .foregroundStyle(.secondary)
             }
-            .homeDetailTitle()
             .padding(.horizontal)
             .padding(.vertical)
             
