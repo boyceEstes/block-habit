@@ -55,7 +55,7 @@ public class HabitController: ObservableObject {
         
         isCompletedHabits
             .filter { $0.isCompleted }
-            .sorted(by: { $0.habit.name < $1.habit.name })
+            .sorted(by: { $0.habit.name.lowercased() < $1.habit.name.lowercased() })
     }
     
     /// Habit Menu Data
@@ -63,7 +63,7 @@ public class HabitController: ObservableObject {
         
         isCompletedHabits
             .filter { !$0.isCompleted }
-            .sorted(by: { $0.habit.name < $1.habit.name })
+            .sorted(by: { $0.habit.name.lowercased() < $1.habit.name.lowercased() })
     }
     
     
