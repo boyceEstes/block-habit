@@ -11,6 +11,7 @@ import Combine
 
 public class HabitController: ObservableObject {
     
+    /// This is the minimum number of days because it is approximately the amount of columns that could fit on the screen by default
     let minimumNumberOfDays = 7
     let blockHabitRepository: BlockHabitRepository
     
@@ -37,18 +38,10 @@ public class HabitController: ObservableObject {
     @Published var latestActivityDetails = [ActivityDetail]()
     
     
-    // This is the minimum amount of information that we need to show the users
-    // the app. I deally it shouldn't take long and it will prevent them not seeing the screen before its ready
-    
+    /// This is the minimum amount of information that we need to show the users
+    /// the app. I deally it shouldn't take long and it will prevent them not seeing the screen before its ready
     @Published public var isImportantInformationLoading: Bool = true
-    
-    
-    // These values don't need to be published, they are only here to reduce need to get them repeatedly from the database if there are no changes
-//    var latestNonArchivedHabits = [Habit]()
-    
-    // This is actually needed for populating the archived screen, so changes will need to seen.
-//    @Published var latestArchivedHabits = [Habit]()
-    
+
     
     /// Habit Menu Data
     public var completeHabits: [IsCompletedHabit] {
