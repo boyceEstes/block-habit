@@ -146,7 +146,6 @@ struct HabitsMenu: View {
     // Navigation & Actions
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
-    let didTapCreateHabitButton: () -> Void
     let didTapHabitButton: (Habit) -> Void
     let archiveHabit: (Habit) -> Void
     // MARK: View Properties
@@ -167,19 +166,7 @@ struct HabitsMenu: View {
     
     var body: some View {
         
-        VStack(spacing: 0) {
-            HStack {
-                Text("Habits")
-                Spacer()
-                Button {
-                    didTapCreateHabitButton()
-                } label: {
-                    Image(systemName: "plus.circle")
-                }
-            }
-            .homeDetailTitle()
-            .padding(.horizontal)
-            .padding(.vertical)
+
             
             
             ScrollView {
@@ -235,11 +222,6 @@ struct HabitsMenu: View {
                 }
             }
             .padding(.horizontal)
-        }
-        .background(Color.secondaryBackground)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20))
-        .padding()
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
     }
     
@@ -288,7 +270,6 @@ struct HabitsMenu: View {
         incompletedHabits: IsCompletedHabit.previewIncompletedHabits,
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
-        didTapCreateHabitButton: { },
         didTapHabitButton: { _ in },
         archiveHabit: { _ in }
     )

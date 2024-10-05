@@ -22,25 +22,41 @@ struct HabitsSection: View {
     
     var body: some View {
         
-        
-        HabitsMenu(
-            completedHabits: habitController.completeHabits,
-            incompletedHabits: habitController.incompleteHabits,
-            goToHabitDetail: goToHabitDetail,
-            goToEditHabit: goToEditHabit,
-            didTapCreateHabitButton: {
-                goToCreateHabit()
-            }, didTapHabitButton: { habit in
-                //                         FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                habitController.createRecordOrNavigateToRecordWithDetails(
-                    for: habit,
-                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-                )
-            }, archiveHabit: { habit in
-                
-                habitController.archiveHabit(habit)
+        VStack(spacing: 0) {
+            
+            HStack {
+                Text("Habits")
+                Spacer()
+                Button(action: goToCreateHabit) {
+                    Image(systemName: "plus.circle")
+                }
             }
-        )
+            .homeDetailTitle()
+            .padding(.horizontal)
+            .padding(.vertical)
+            
+            
+            HabitsMenu(
+                completedHabits: habitController.completeHabits,
+                incompletedHabits: habitController.incompleteHabits,
+                goToHabitDetail: goToHabitDetail,
+                goToEditHabit: goToEditHabit,
+                didTapHabitButton: { habit in
+                    //                         FIXME: 2 - viewModel.createHabitRecord(for: habit)
+                    habitController.createRecordOrNavigateToRecordWithDetails(
+                        for: habit,
+                        goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+                    )
+                }, archiveHabit: { habit in
+                    
+                    habitController.archiveHabit(habit)
+                }
+            )
+        }
+        .background(Color.secondaryBackground)
+        .clipShape(
+            RoundedRectangle(cornerRadius: 20))
+        .padding()
     }
 }
 
