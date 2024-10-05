@@ -661,7 +661,7 @@ class StatisticsCalculatorTests: XCTestCase {
         let records: [Date: [HabitRecord]] = [:]
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records)
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records, selectedDay: Date())
         
         // then
         XCTAssertEqual(currentStreak, 0)
@@ -674,7 +674,7 @@ class StatisticsCalculatorTests: XCTestCase {
         let records: [Date: [HabitRecord]] = setupDaysForDictionary()
         
         // when
-        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records)//, selectedDay: Date())
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: records, selectedDay: Date())
         
         // then
         XCTAssertEqual(currentStreak, 0)
@@ -682,38 +682,38 @@ class StatisticsCalculatorTests: XCTestCase {
     
     
     
-//    func test_findCurrentUsageStreak_onlyConsecutiveRecordsAtBeginning_deliversZero() {
-//        
-//        // given
-//        
-//        /*
-//         *   o  -  -  -  -  -  -
-//         *   o  o  o  -  -  -  -
-//         * [-6 -5 -4 -3 -2 -1  0]
-//         */
-//        
-//        
-//        let sixDaysPrevious = someDay.adding(days: -6) // This should be beginning of the dictionary
-//        let fiveDaysPrevious = someDay.adding(days: -5)
-//        let fourDaysPrevious = someDay.adding(days: -4)
-//        
-//        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
-//        let recordSixDaysAgo2 = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
-//        let recordFiveDaysAgo = HabitRecord.habitRecord(date: fiveDaysPrevious, habit: nonArchivedOneGoalHabit)
-//        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
-//        
-//        var recordsForDays = setupDaysForDictionary()
-//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
-//        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo2)
-//        recordsForDays[fiveDaysPrevious]?.append(recordFiveDaysAgo)
-//        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
-//        
-//        // when
-//        let bestStreak = StatisticsCalculator.findBestStreakInRecordsForHabit(for: recordsForDays)
-//        
-//        // then
-//        XCTAssertEqual(bestStreak, 3)
-//    }
+    func test_findCurrentUsageStreak_onlyConsecutiveRecordsNotAtSelectedDay_deliversZero() {
+        
+        // given
+        
+        /*
+         *   o  -  -  -  -  -  -
+         *   o  o  o  -  -  -  -
+         * [-6 -5 -4 -3 -2 -1  0]
+         */
+        
+        
+        let sixDaysPrevious = someDay.adding(days: -6) // This should be beginning of the dictionary
+        let fiveDaysPrevious = someDay.adding(days: -5)
+        let fourDaysPrevious = someDay.adding(days: -4)
+        
+        let recordSixDaysAgo = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordSixDaysAgo2 = HabitRecord.habitRecord(date: sixDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordFiveDaysAgo = HabitRecord.habitRecord(date: fiveDaysPrevious, habit: nonArchivedOneGoalHabit)
+        let recordFourDaysAgo = HabitRecord.habitRecord(date: fourDaysPrevious, habit: nonArchivedOneGoalHabit)
+        
+        var recordsForDays = setupDaysForDictionary()
+        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo)
+        recordsForDays[sixDaysPrevious]?.append(recordSixDaysAgo2)
+        recordsForDays[fiveDaysPrevious]?.append(recordFiveDaysAgo)
+        recordsForDays[fourDaysPrevious]?.append(recordFourDaysAgo)
+        
+        // when
+        let currentStreak = StatisticsCalculator.findCurrentUsageStreak(for: recordsForDays, selectedDay: Date())
+        
+        // then
+        XCTAssertEqual(currentStreak, 0)
+    }
 //    
 //    func test_bestStreakInRecordsForHabit_twoConsecutiveRecordsLargerFirst_deliversLargestStreak() {
 //        

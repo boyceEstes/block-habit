@@ -145,8 +145,8 @@ public enum StatisticsCalculator {
     
     
     public static func findCurrentUsageStreak(
-        for recordsForDays: RecordsForDays
-//        selectedDay: Date
+        for recordsForDays: RecordsForDays,
+        selectedDay: Date
     ) -> Int {
         
         return 0
