@@ -136,6 +136,8 @@ struct HomeDetailTitle: ViewModifier {
 }
 
 
+
+
 struct HabitsMenu: View {
     
     // MARK: Injected Logic
@@ -181,11 +183,8 @@ struct HabitsMenu: View {
             
             
             ScrollView {
-                
                 if !isHabitsEmpty {
-                    
                     VStack {
-                        
                         // MARK: Incompleted Habits
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(0..<incompletedHabits.count, id: \.self) { i in
@@ -201,6 +200,8 @@ struct HabitsMenu: View {
                             .font(.headline)
                             .hAlign(.leading)
                             .padding(.top)
+                        
+                        
                         if !completedHabits.isEmpty {
                             LazyVGrid(columns: columns, spacing: 25) {
                                 ForEach(0..<completedHabits.count, id: \.self) { i in
@@ -283,7 +284,7 @@ struct HabitsMenu: View {
 #Preview {
     
     HabitsMenu(
-        completedHabits: [],//IsCompletedHabit.previewCompletedHabits,
+        completedHabits: IsCompletedHabit.previewCompletedHabits,
         incompletedHabits: IsCompletedHabit.previewIncompletedHabits,
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },

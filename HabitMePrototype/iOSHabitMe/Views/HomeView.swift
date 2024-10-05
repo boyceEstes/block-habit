@@ -126,23 +126,12 @@ struct HomeView: View {
                     )
                 }
                 
-                HabitsMenu(
-                    completedHabits: habitController.completeHabits,
-                    incompletedHabits: habitController.incompleteHabits,
+                HabitsSection(
+                    habitController: habitController,
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
-                    didTapCreateHabitButton: {
-                        goToCreateHabit()
-                    }, didTapHabitButton: { habit in
-//                         FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                        habitController.createRecordOrNavigateToRecordWithDetails(
-                            for: habit,
-                            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-                        )
-                    }, archiveHabit: { habit in
-                        
-                        habitController.archiveHabit(habit)
-                    }
+                    goToCreateHabit: goToCreateHabit,
+                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                 )
             }
             .background(Color.primaryBackground)

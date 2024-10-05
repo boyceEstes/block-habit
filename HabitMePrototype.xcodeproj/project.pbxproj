@@ -47,6 +47,7 @@
 		B37AC77B2BAF53760052552B /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37AC77A2BAF53760052552B /* Habit.swift */; };
 		B387B21F2CB1B19F00256C64 /* Habit+PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B387B21E2CB1B19F00256C64 /* Habit+PreviewData.swift */; };
 		B387B2222CB1BD7600256C64 /* View+GeneralUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B387B2212CB1BD7600256C64 /* View+GeneralUtilities.swift */; };
+		B387B2262CB1E15E00256C64 /* HabitsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B387B2252CB1E15E00256C64 /* HabitsSection.swift */; };
 		B389D2F52BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */; };
 		B389D2F72BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */; };
 		B389D2F92BE59280004A8CF0 /* HabitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B389D2F82BE59280004A8CF0 /* HabitController.swift */; };
@@ -224,6 +225,7 @@
 		B387B21C2CB1A4C800256C64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B387B21E2CB1B19F00256C64 /* Habit+PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+PreviewData.swift"; sourceTree = "<group>"; };
 		B387B2212CB1BD7600256C64 /* View+GeneralUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+GeneralUtilities.swift"; sourceTree = "<group>"; };
+		B387B2252CB1E15E00256C64 /* HabitsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsSection.swift; sourceTree = "<group>"; };
 		B389D2F42BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+HabitRecordsForDaysTests.swift"; sourceTree = "<group>"; };
 		B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsCompletedHabitsTests.swift"; sourceTree = "<group>"; };
 		B389D2F82BE59280004A8CF0 /* HabitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitController.swift; sourceTree = "<group>"; };
@@ -496,6 +498,23 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		B387B2232CB1E10800256C64 /* HabitsSection */ = {
+			isa = PBXGroup;
+			children = (
+				B3C97F272B5CE97500211B4C /* HabitsMenu.swift */,
+				B387B2252CB1E15E00256C64 /* HabitsSection.swift */,
+			);
+			path = HabitsSection;
+			sourceTree = "<group>";
+		};
+		B387B2242CB1E11400256C64 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				B3BFEA0D2B76767E00DE7617 /* TextFields */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
 		B389D2F32BE414DC004A8CF0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -649,9 +668,9 @@
 			isa = PBXGroup;
 			children = (
 				B387B2202CB1BD4A00256C64 /* Helpers */,
-				B3BFEA0D2B76767E00DE7617 /* TextFields */,
+				B387B2242CB1E11400256C64 /* Reusable */,
+				B387B2232CB1E10800256C64 /* HabitsSection */,
 				B3BFE9E32B75207C00DE7617 /* Charts */,
-				B3C97F272B5CE97500211B4C /* HabitsMenu.swift */,
 				B3C97F292B5CE99200211B4C /* HomeView.swift */,
 				B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */,
 				B32947A32B601CD3007C8C1E /* HabitDetailView.swift */,
@@ -936,6 +955,7 @@
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
 				B387B21F2CB1B19F00256C64 /* Habit+PreviewData.swift in Sources */,
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
+				B387B2262CB1E15E00256C64 /* HabitsSection.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,
 				B39A27522BF3A3D0002A5A88 /* SettingsView.swift in Sources */,
