@@ -166,11 +166,11 @@ struct HabitsMenu: View {
     
     var body: some View {
             
-            ScrollView {
+        ScrollView(showsIndicators: false) {
                 if !isHabitsEmpty {
                     VStack {
                         // MARK: Incompleted Habits
-                        LazyVGrid(columns: columns, spacing: 20) {
+                        LazyVGrid(columns: columns, spacing: 8) {
                             ForEach(0..<incompletedHabits.count, id: \.self) { i in
                                 
                                 habitButton(
@@ -188,7 +188,7 @@ struct HabitsMenu: View {
                         
                         
                         if !completedHabits.isEmpty {
-                            LazyVGrid(columns: columns, spacing: 25) {
+                            LazyVGrid(columns: columns, spacing: 8) {
                                 ForEach(0..<completedHabits.count, id: \.self) { i in
                                     
                                     habitButton(
@@ -223,13 +223,18 @@ struct HabitsMenu: View {
     
     func habitButton(habit: IsCompletedHabit) -> some View {
         
-        HabitMePrimaryButton(
-            title: "\(habit.habit.name)",
-            looksDisabled: habit.isCompleted,
-            color: Color(hex: habit.habit.color),
-            buttonWidth: 150,
-            action: { didTapHabitButton(habit.habit) }
+        SelectableHabitView(
+            habit: habit,
+            completeHabit: didTapHabitButton,
+            goToHabitDetail: goToHabitDetail
         )
+//        HabitMePrimaryButton(
+//            title: "\(habit.habit.name)",
+//            looksDisabled: habit.isCompleted,
+//            color: Color(hex: habit.habit.color),
+//            buttonWidth: 150,
+//            action: { didTapHabitButton(habit.habit) }
+//        )
         .contextMenu {
             
             Button("Habit Details") {
@@ -239,7 +244,6 @@ struct HabitsMenu: View {
             Button("Edit Habit") {
                 goToEditHabit(habit.habit)
             }
-            
             
             Button("Archive Habit", role: .destructive) {
                 archiveHabit(habit.habit)

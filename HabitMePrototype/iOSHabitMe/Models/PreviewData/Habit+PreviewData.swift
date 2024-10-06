@@ -53,7 +53,7 @@ extension Habit {
     
     static var mirrorPepTalk = Habit(
         id: UUID().uuidString,
-        name: "Soul Search",
+        name: "Mirror Pep Talk",
         creationDate: Date(),
         isArchived: false,
         goalCompletionsPerDay: 1,

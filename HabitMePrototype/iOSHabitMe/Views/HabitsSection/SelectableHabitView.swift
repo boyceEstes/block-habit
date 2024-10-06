@@ -12,6 +12,9 @@ struct SelectableHabitView: View {
     
     // MARK: Injected Properties
     let habit: IsCompletedHabit
+    let completeHabit: (Habit) -> Void
+    let goToHabitDetail: (Habit) -> Void
+    
     // MARK: View Info
     @ScaledMetric(relativeTo: .body) var detailHeight = 12
     
@@ -19,24 +22,26 @@ struct SelectableHabitView: View {
         HStack {
             
             VStack(alignment: .leading, spacing: 0) {
-                    Text("\(habit.habit.name) longer name and stuff that 's even longer")
+                    Text("\(habit.habit.name)")
+                    .hAlign(.leading)
 
-                    .font(.caption)
+                    .font(.body)
                         .fontWeight(.semibold)
                         .lineLimit(2, reservesSpace: true)
                 
-                // injecting height to resize the icons according to the height
-                ActivityDetailIndicators(
-                    activityDetails: habit.habit.activityDetails,
-                    detailHeight: detailHeight
-                )
-                    .frame(maxHeight: detailHeight)
+                    // injecting height to resize the icons according to the height
+                    ActivityDetailIndicators(
+                        activityDetails: habit.habit.activityDetails,
+                        detailHeight: detailHeight
+                    )
+                    .frame(minHeight: detailHeight, maxHeight: detailHeight)
                 }
             .foregroundStyle(.white)
             
+            Spacer()
             
             Button {
-                
+                completeHabit(habit.habit)
             } label: {
                 // This depends on a lot.
                 Image(systemName: "checkmark")
@@ -46,16 +51,25 @@ struct SelectableHabitView: View {
                     .foregroundStyle(.white)
                     .fontWeight(.semibold)
                     .padding(10)
-                    .background(habit.isCompleted ? Color(hex: habit.habit.color) : Color.black.opacity(0.4))
+                    .background(habit.isCompleted ? Color(hex: habit.habit.color) : Color.black.opacity(0.5))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 3)
             }
             .padding(.leading)
         }
         .padding(8)
+        .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(hex:habit.habit.color)!)
+                .fill(
+                    .shadow(.inner(color: habit.isCompleted ? .black.opacity(0.1) : .clear, radius: 3, x: 3, y: 8))
+                )
+                .foregroundStyle(Color(hex:habit.habit.color)!)
+                .brightness(habit.isCompleted ? -0.1 : 0.0)
         )
+        .onTapGesture {
+            goToHabitDetail(habit.habit)
+        }
 //        .background(
 //            RoundedRectangle(cornerRadius: 10, style: .continuous)
 //                .fill(
@@ -92,23 +106,30 @@ struct SelectableHabitView: View {
                 habit: IsCompletedHabit(
                     habit: .mirrorPepTalk,
                     isCompleted: false
-                )
+                ),
+                completeHabit: { _ in },
+                goToHabitDetail: { _ in }
             )
             
             SelectableHabitView(
                 habit: IsCompletedHabit(
                     habit: .drinkTheKoolaid,
                     isCompleted: false
-                )
+                ),
+                completeHabit: { _ in },
+                goToHabitDetail: { _ in }
             )
         }
-        .padding(.horizontal, 8)
+
         
         SelectableHabitView(
             habit: IsCompletedHabit(
-                habit: .somethingComplicated,
+                habit: .mirrorPepTalk,
                 isCompleted: true
-            )
+            ),
+            completeHabit: { _ in },
+            goToHabitDetail: { _ in }
         )
     }
+    .padding(.horizontal, 8)
 }
