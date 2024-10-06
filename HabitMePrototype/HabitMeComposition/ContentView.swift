@@ -13,16 +13,6 @@ enum SpecialHabitError: Error {
     
 }
 
-extension Date {
-    var noon: Date? {
-        Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)
-    }
-    
-    func adding(days: Int, calendar: Calendar = Calendar(identifier: .gregorian)) -> Date {
-        return calendar.date(byAdding: .day, value: days, to: self)!
-    }
-}
-
 
 struct SplashView: View {
     

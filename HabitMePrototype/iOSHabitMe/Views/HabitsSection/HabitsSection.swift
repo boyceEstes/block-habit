@@ -19,12 +19,15 @@ struct HabitsSection: View {
     let goToEditHabit: (Habit) -> Void
     let goToCreateHabit: () -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
+    // MARK: View Properties
+    @ScaledMetric(relativeTo: .body) var scaledDayTitleWidth: CGFloat = 150
     
     var body: some View {
         
         VStack(spacing: 0) {
             VStack(spacing: 8) {
                 HStack {
+                    
                     HStack {
                         Button {
                             habitController.goToPrevDay()
@@ -35,9 +38,13 @@ struct HabitsSection: View {
                         // FIXME: 2 See more at the definition for that
                         .disabled(habitController.isAllowedToGoToPrevDay() ? false : true)
                         
+                        Spacer()
+                        
                         Text(habitController.selectedDay.displayDate)
                             .font(.title2)
                             .fontWeight(.semibold)
+                        
+                        Spacer()
                         
                         Button {
                             habitController.goToNextDay()
@@ -47,6 +54,11 @@ struct HabitsSection: View {
                         }
                         .disabled(habitController.isAllowedToGoToNextDay() ? false : true)
                     }
+                    .frame(maxWidth: scaledDayTitleWidth)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                    
+                    
+                    
                     Spacer()
                     Button(action: goToCreateHabit) {
                         Image(systemName: "plus.circle")
