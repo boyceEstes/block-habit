@@ -165,9 +165,6 @@ struct HabitsMenu: View {
     
     
     var body: some View {
-        
-
-            
             
             ScrollView {
                 if !isHabitsEmpty {
@@ -186,6 +183,7 @@ struct HabitsMenu: View {
                         Text("Completed Habits")
                             .font(.headline)
                             .hAlign(.leading)
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                             .padding(.top)
                         
                         
@@ -204,6 +202,7 @@ struct HabitsMenu: View {
                             .padding(.bottom)
                         } else {
                             Text("So... you haven't completed any habits at all, huh? 👀 No judgement")
+                                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                                 .hAlign(.leading)
@@ -212,13 +211,11 @@ struct HabitsMenu: View {
                     }
                 } else {
                     
-                    VStack {
-                        Spacer()
                         Text("Try adding a habit to start the Block Party! 🎉")
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                             .multilineTextAlignment(.center)
-                        Spacer()
-                    }
-                    .frame(width: 200, height: 250)
+                            .hAlign(.center)
+                            .padding(.top)
                 }
             }
             .padding(.horizontal)

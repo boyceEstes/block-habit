@@ -63,6 +63,7 @@ struct HabitsSection: View {
                     Button(action: goToCreateHabit) {
                         Image(systemName: "plus.circle")
                     }
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
                 .homeDetailTitle()
                 
@@ -72,15 +73,17 @@ struct HabitsSection: View {
                         Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay) ⛳️")
                             .foregroundStyle(.primary)
                     }
+                    .foregroundStyle(.secondary)
                     Spacer()
                     HStack(spacing: 4) {
                         Text("Streak")
                         Text("\(currentStreak) 🔥")
                             .foregroundStyle(.primary)
                     }
+                    .foregroundStyle(.secondary)
                 }
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .font(.footnote)
-                .foregroundStyle(.secondary)
             }
             .padding(.horizontal)
             .padding(.vertical)
