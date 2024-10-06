@@ -20,7 +20,6 @@ struct SelectableHabitView: View {
     
     var body: some View {
         HStack {
-            
             VStack(alignment: .leading, spacing: 0) {
                     Text("\(habit.habit.name)")
                     .hAlign(.leading)
@@ -64,37 +63,13 @@ struct SelectableHabitView: View {
                 .fill(
                     .shadow(.inner(color: habit.isCompleted ? .black.opacity(0.1) : .clear, radius: 3, x: 3, y: 8))
                 )
-                .foregroundStyle(Color(hex:habit.habit.color)!)
+                .foregroundStyle(Color(hex:habit.habit.color) ?? Color.blue)
                 .brightness(habit.isCompleted ? -0.1 : 0.0)
         )
+        .contentShape(Rectangle())
         .onTapGesture {
             goToHabitDetail(habit.habit)
         }
-//        .background(
-//            RoundedRectangle(cornerRadius: 10, style: .continuous)
-//                .fill(
-//                    .shadow(.inner(color: Color(red: 197/255, green: 197/255, blue: 197/255),radius: 3, x:3, y: 3))
-//                    .shadow(.inner(color: .white, radius: 3, x: -3, y: -3))
-//                )
-//                .foregroundColor(Color(red: 236/255, green: 234/255, blue: 235/255)
-//                                )
-//        )
-//                .shadow(color: habit.isCompleted ? .black.opacity(0.8) : .clear, radius: 7, x: 0, y: 8)
-//        .background(habit.isCompleted ? Color(hex: habit.habit.color).opacity(0.8) : Color(hex: habit.habit.color).opacity(1))
-//        .shadow(color: habit.isCompleted ? .black.opacity(0.8) : .clear, radius: 7, x: 0, y: 8)
-//        .clipShape(
-//            RoundedRectangle(cornerRadius: 10)
-//        )
-//        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-        
-//        .font(.headline)
-//        .frame(maxWidth: buttonWidth ?? .infinity)
-//        .frame(height: 50)
-//        .background(!looksDisabled ? color : color.opacity(0.5))
-//        .foregroundStyle(!looksDisabled ? Color.white : Color.white.opacity(0.5))
-//        .shadow(color: !looksDisabled ? .clear : .black.opacity(0.6), radius: 20)
-//        .clipShape(RoundedRectangle(cornerRadius: 10))
-//        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10))
     }
 }
 

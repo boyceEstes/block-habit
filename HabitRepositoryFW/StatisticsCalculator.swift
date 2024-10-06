@@ -249,7 +249,6 @@ extension StatisticsCalculator {
                     continue
                 }
                 
-                print("BOYCE: zero out count")
                 streakCount = 0
             }
         }
