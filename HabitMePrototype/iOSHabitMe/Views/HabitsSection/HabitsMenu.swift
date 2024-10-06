@@ -210,7 +210,6 @@ struct HabitsMenu: View {
                         }
                     }
                 } else {
-                    
                         Text("Try adding a habit to start the Block Party! 🎉")
                             .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                             .multilineTextAlignment(.center)

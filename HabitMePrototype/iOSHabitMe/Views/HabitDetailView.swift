@@ -483,85 +483,20 @@ struct StatBox: View {
 #Preview {
     
     let habit = Habit.mopTheCarpet
-    // FIXME: Remove unnecessary preview setup since moving to independent model methodology
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    let dataHabit = DataHabit(
-        name: "Chugging Dew",
-        isArchived: false,
-        color: Color.indigo.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
-    
 
-    let dataHabitRecord0 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit
-    )
-    let dataHabitRecord00 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit
-    )
-    let dataHabitRecord = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit
-    )
-    let dataHabitRecord2 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    let dataHabitRecord3 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-
-    container.mainContext.insert(dataHabitRecord0)
-    container.mainContext.insert(dataHabitRecord00)
-    container.mainContext.insert(dataHabitRecord)
-    container.mainContext.insert(dataHabitRecord2)
-    container.mainContext.insert(dataHabitRecord3)
-    
-    
-    let dataHabitRecord4 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -8),
-        habit: dataHabit
-    )
-    let dataHabitRecord5 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -9),
-        habit: dataHabit
-    )
-    let dataHabitRecord6 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -10),
-        habit: dataHabit
-    )
-    let dataHabitRecord7 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -11),
-        habit: dataHabit
-    )
-    
-    container.mainContext.insert(dataHabitRecord4)
-    container.mainContext.insert(dataHabitRecord5)
-    container.mainContext.insert(dataHabitRecord6)
-    container.mainContext.insert(dataHabitRecord7)
-    
     return NavigationStack {
+        
         HabitDetailView(
             activity: habit,
             blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToEditHabit: { },
             goToCreateActivityRecordWithDetails: { _, _ in }
         )
-        .modelContainer(container)
+        .environmentObject(
+            HabitController(
+                blockHabitRepository: CoreDataBlockHabitStore.preview(),
+                selectedDay: Date()
+            )
+        )
     }
 }

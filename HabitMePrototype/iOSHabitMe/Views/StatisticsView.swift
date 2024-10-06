@@ -131,32 +131,34 @@ struct StatisticsView: View {
                         
                         GridRow {
                             StatBox(title: "Total Records", value: "\(totalRecords)")
+                                .gridCellColumns(3)
                             StatBox(title: "Total Days", value: "\(totalDays)")
-                            StatBox(title: "Avg Records / Day", value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
                                 .gridCellColumns(2)
+                            StatBox(title: "Average per Day", value: String(format: "%.2f", avgRecordsPerDay))
+                                .gridCellColumns(3)
                         }
+                        
                         GridRow {
                             if let mostCompletions {
                                 StatBox(title: "Most Completions", value: "\(mostCompletions.recordCount)", units: "records", subValue: "\(mostCompletions.habit.name)", subValueColor: Color(hex: mostCompletions.habit.color))
-                                    .gridCellColumns(2)
+                                    .gridCellColumns(4)
                             } else {
                                 StatBox(title: "Most Completions", value: "N/A")
-                                    .gridCellColumns(2)
+                                    .gridCellColumns(4)
                             }
                             
                             
                             if let bestStreak {
                                 StatBox(title: "Best Streak", value: "\(bestStreak.count)", units: "days", subValue: "\(bestStreak.habit.name)", subValueColor: Color(hex: bestStreak.habit.color))
-                                    .gridCellColumns(2)
+                                    .gridCellColumns(4)
                             } else {
                                 StatBox(title: "Best Streak", value: "N/A")
-                                    .gridCellColumns(2)
+                                    .gridCellColumns(4)
                             }
                         }
                     }
-                    .padding()
-                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
                     .padding([.horizontal, .bottom])
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility2)
                 }
             }
         }
@@ -189,104 +191,6 @@ struct StatisticsView: View {
         }
     }
     
-    
-    /// Populate` datesWithHabitRecords`
-//    private func calculateDatesWithHabitRecords() {
-//        
-//        let calendar = Calendar.current
-//        
-//        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-//              let today = Date().noon,
-//              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-//        else { return }
-//        
-//        var dict = [Date: [DataHabitRecord]]()
-//        
-//        // average records / day
-//        /*
-//         * NOTE: This is being calculated for only the days that the record is done.
-//         * I think it would be demoralizing to see if you fell off and were trying to get back on
-//         */
-//        var daysRecordHasBeenDone = 0
-//        var recordsThatHaveBeenDone = 0
-//        
-//        // We want to have all habits that exist here so that we can easily test their streak values
-//        var habitStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: selectedHabits.map {($0, 0)} )
-//        var habitBestStreaks: [DataHabit: Int] = Dictionary(uniqueKeysWithValues: selectedHabits.map {($0, 0)} )
-//        
-//        // Only track the selected habit records
-//        for record in selectedHabitRecords {
-//            
-//            guard let noonDate = record.completionDate.noon else { return }
-//            if dict[noonDate] != nil {
-//                dict[noonDate]?.append(record)
-//            } else {
-//                dict[noonDate] = [record]
-//            }
-//        }
-//        
-//        totalDays = dict.keys.count
-//        
-//        // Maybe for now, lets just start at january 1, 2024 for the beginning.
-//        for day in 0...days {
-//            // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-//            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return }
-//            
-//            if let habitRecordsForDate = dict[noonDate] {
-//                
-//                datesWithHabitRecords[noonDate] = habitRecordsForDate
-//                
-//                daysRecordHasBeenDone += 1
-//                recordsThatHaveBeenDone += habitRecordsForDate.count
-//                
-//                // Best Streak logic
-//                let uniqueHabitsForTheDay = Set(habitRecordsForDate.map { $0.habit })
-//               
-//                for habit in selectedHabits {
-//                    if uniqueHabitsForTheDay.contains(habit) {
-//                        // The bang operator should be fine because of my initialization of this dictionary
-//                        habitStreaks[habit]! += 1
-//                    } else {
-//                        let bestStreakForHabit = habitBestStreaks[habit] ?? 0
-//                        let endedStreakForHabit = habitStreaks[habit] ?? 0
-//                        if bestStreakForHabit < endedStreakForHabit {
-//                            habitBestStreaks[habit] = endedStreakForHabit
-//                        }
-//                        habitStreaks[habit] = 0
-//                    }
-//                }
-//            } else {
-//                datesWithHabitRecords[noonDate] = []
-//                
-//                // If there is nothing for this day, all streaks should be zeroed out
-//                for habit in selectedHabits {
-//                    
-//                    let bestStreakForHabit = habitBestStreaks[habit] ?? 0
-//                    let endedStreakForHabit = habitStreaks[habit] ?? 0
-//                    
-//                    if bestStreakForHabit < endedStreakForHabit {
-//                        habitBestStreaks[habit] = endedStreakForHabit
-//                    }
-//                    
-//                    habitStreaks[habit] = 0
-//                }
-//            }
-//        }
-//        
-//        // We do this again because we want to ensure that the last day is counted in the current max,
-//        // We don't need to zero out the streak in this case, but it doesn't matter either way
-//        for habit in selectedHabits {
-//            
-//            let bestStreakForHabit = habitBestStreaks[habit] ?? 0
-//            let endedStreakForHabit = habitStreaks[habit] ?? 0
-//            
-//            if bestStreakForHabit < endedStreakForHabit {
-//                habitBestStreaks[habit] = endedStreakForHabit
-//            }
-//        }
-//        
-//        bestStreaks = habitBestStreaks
-//    }
 
 
 
@@ -319,7 +223,6 @@ extension SelectableListItem {
 struct HorizontalScrollySelectableList<T: SelectableListItem>: View {
     
     @Binding var items: [T]
-    
     
     var body: some View {
         
@@ -359,76 +262,13 @@ struct HorizontalScrollySelectableList<T: SelectableListItem>: View {
 
 #Preview {
     
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    let dataHabit = DataHabit(
-        name: "Chugged Dew",
-        isArchived: false,
-        color: Color.indigo.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    let dataHabit2 = DataHabit(
-        name: "Smashed Taco",
-        isArchived: false,
-        color: Color.orange.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
-    container.mainContext.insert(dataHabit2)
-    
-    let dataHabitRecord = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit
-    )
-    let dataHabitRecord2 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    let dataHabitRecord3 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    
-    container.mainContext.insert(dataHabitRecord)
-    container.mainContext.insert(dataHabitRecord2)
-    container.mainContext.insert(dataHabitRecord3)
-    
-    
-    let dataHabitRecord21 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit2
-    )
-    let dataHabitRecord22 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit2
-    )
-    let dataHabitRecord23 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit2
-    )
-    let dataHabitRecord24 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit2
-    )
-    
-    container.mainContext.insert(dataHabitRecord21)
-    container.mainContext.insert(dataHabitRecord22)
-    container.mainContext.insert(dataHabitRecord23)
-    container.mainContext.insert(dataHabitRecord24)
-    
-    
-    
-    
     return NavigationStack {
         StatisticsView()
+            .environmentObject(
+                HabitController(
+                    blockHabitRepository: CoreDataBlockHabitStore.preview(),
+                    selectedDay: Date().noon!
+                )
+            )
     }
-    .modelContainer(container)
 }

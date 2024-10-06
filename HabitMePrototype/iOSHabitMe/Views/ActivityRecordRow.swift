@@ -74,27 +74,23 @@ struct ActivityRecordRowDateWithInfo: View {
 }
 
 
-/// Intended to prevent duplicate logic and points of failure between different rows displaying activity record date
-//fileprivate struct ActivityRecordRow<TitleContent: View, DetailRecordContent: View>: View {
-//    
-//    let titleContent: TitleContent
-//    let detailRecordContent: DetailRecordContent
-//    
-//    init(@ViewBuilder titleContent: () -> TitleContent, @ViewBuilder detailRecordContent: () -> DetailRecordContent) {
-//        
-//        self.titleContent = titleContent()
-//        self.detailRecordContent = detailRecordContent()
-//    }
-//    
-//    
-//    var body: some View {
-//        
-//        VStack(alignment: .center, spacing: .rowVDetailSpacing) {
-//            titleContent
-//            detailRecordContent
-//        }
-//    }
-//}
+struct ActivityDetailIndicators: View {
+    
+    let activityDetails: [ActivityDetail]
+    let detailHeight: CGFloat
+    
+    var body: some View {
+        
+        HStack {
+            ForEach(activityDetails, id: \.id) { activityDetail in
+                activityDetail.valueType.asset.image()
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: detailHeight)
+            }
+        }
+    }
+}
 
 
 struct ActivityDetailRecordIndicators: View {

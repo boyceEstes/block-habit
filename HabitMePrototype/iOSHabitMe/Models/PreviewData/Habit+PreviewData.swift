@@ -58,6 +58,15 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#556b2f",
+        activityDetails: [.mood])
+    
+    static var somethingComplicated = Habit(
+        id: UUID().uuidString,
+        name: "Stretching into a triple backflip IMMEDIATELY after waking up",
+        creationDate: Date(),
+        isArchived: false,
+        goalCompletionsPerDay: 1,
+        color: "#fdcfe5",
         activityDetails: [])
     
     static var previewHabits = [walkTheCat, drinkTheKoolaid, mopTheCarpet, soulSearch]
