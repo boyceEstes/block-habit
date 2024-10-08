@@ -1,4 +1,4 @@
-# Block Journal 
+# Block Habit 
 
 This is a project meant to help with tracking activities over time in a fun, easily visible way. 
 Each log represents some activity and has a corresponding colorful block added to your day. Over the course of your day
