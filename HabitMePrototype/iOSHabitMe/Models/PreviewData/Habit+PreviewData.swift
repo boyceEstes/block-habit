@@ -42,9 +42,9 @@ extension Habit {
         color: "#0000ff",
         activityDetails: [])
     
-    static var soulSearch =  Habit(
+    static var seoulSearch =  Habit(
         id: UUID().uuidString,
-        name: "Soul Search",
+        name: "Seoul Search",
         creationDate: Date(),
         isArchived: false,
         goalCompletionsPerDay: 1,
@@ -69,7 +69,7 @@ extension Habit {
         color: "#fdcfe5",
         activityDetails: [])
     
-    static var previewHabits = [walkTheCat, drinkTheKoolaid, mopTheCarpet, soulSearch]
+    static var previewHabits = [walkTheCat, drinkTheKoolaid, mopTheCarpet, seoulSearch]
 }
 
 
@@ -89,7 +89,7 @@ extension IsCompletedHabit {
     
     static var previewCompletedHabits: [IsCompletedHabit] {
         [
-            Habit.soulSearch,
+            Habit.seoulSearch,
             Habit.mirrorPepTalk
         ].map {
             IsCompletedHabit(habit: $0, isCompleted: true)
@@ -97,5 +97,110 @@ extension IsCompletedHabit {
     }
 }
 
+
+// MARK: HabitRecords
+
+extension HabitRecord {
+    
+    static var previewRecords: [HabitRecord] = [
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: .drinkTheKoolaid
+        ),
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: .seoulSearch
+        ),
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: .mopTheCarpet
+        ),
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: .mirrorPepTalk
+        )
+    ]
+}
+
+
+
+// MARK: [Date: [HabitRecord]]
+
+extension HabitRecord {
+    
+    static func recordsForDaysPreview(date: Date) -> [Date: [HabitRecord]] {
+        
+        let today = date
+        let oneDayAgo = date.adding(days: -1)
+        let twoDaysAgo = date.adding(days: -2)
+        let threeDaysAgo = date.adding(days: -3)
+        let fourDaysAgo = date.adding(days: -4)
+        let fiveDaysAgo = date.adding(days: -5)
+        let sixDaysAgo = date.adding(days: -6)
+        let sevenDaysAgo = date.adding(days: -7)
+        let eightDaysAgo = date.adding(days: -8)
+        
+        let recordwalkTheCatToday = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today,
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        let recordwalkTheCatOneDayAgo = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: oneDayAgo,
+            completionDate: oneDayAgo,
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        let recordwalkTheCatThreeDaysAgo = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: threeDaysAgo,
+            completionDate: threeDaysAgo,
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        let recordMirrorPepTalkToday = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today,
+            activityDetailRecords: [],
+            habit: .mirrorPepTalk
+        )
+        let recordMirrorPepTalkTwoDaysAgo = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: twoDaysAgo,
+            completionDate: twoDaysAgo,
+            activityDetailRecords: [],
+            habit: .mirrorPepTalk
+        )
+        
+        return [
+            date: [recordwalkTheCatToday, recordMirrorPepTalkToday],
+            oneDayAgo: [recordwalkTheCatOneDayAgo],
+            twoDaysAgo: [recordMirrorPepTalkTwoDaysAgo],
+            threeDaysAgo: [recordwalkTheCatThreeDaysAgo],
+            fourDaysAgo: [],
+            fiveDaysAgo: [],
+            sixDaysAgo: [],
+            sevenDaysAgo: [],
+            eightDaysAgo: []
+        ]
+    }
+}
 
 #endif

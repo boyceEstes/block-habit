@@ -8,7 +8,8 @@
 import SwiftUI
 import HabitRepositoryFW
 
-struct DayView: View {
+struct DayDetailView: View {
+    
     
     let destroyHabitRecord: (HabitRecord) -> Void
     let goToHabitRecordDetail: (HabitRecord) -> Void
@@ -24,6 +25,7 @@ struct DayView: View {
     
     var habitRecords: [HabitRecord]
     let selectedDay: Date
+    let animation: Namespace.ID
     
     
     
@@ -34,7 +36,8 @@ struct DayView: View {
         graphHeight: CGFloat,
         numOfItemsToReachTop: Int,
         habitRecords: [HabitRecord],
-        selectedDay: Date
+        selectedDay: Date,
+        animation: Namespace.ID
     ) {
         self.destroyHabitRecord = destroyHabitRecord
         self.goToHabitRecordDetail = goToHabitRecordDetail
@@ -42,6 +45,7 @@ struct DayView: View {
         self.numOfItemsToReachTop = numOfItemsToReachTop
         self.habitRecords = habitRecords
         self.selectedDay = selectedDay
+        self.animation = animation
     }
     
     
@@ -49,23 +53,28 @@ struct DayView: View {
         
         List {
             ForEach(habitRecords, id: \.self) { habitRecord in
+                
                 HStack(spacing: 16) {
                     
                     ActivityBlock(
-                        colorHex: habitRecord.habit.color,
+                        color: Color(hex: habitRecord.habit.color) ?? Color.black,
                         itemWidth: itemWidth,
                         itemHeight: itemHeight
                     )
                     
-//                    VStack(alignment: .leading) {
-//                        Text("\(habitRecord.habit?.name ?? "Could Not Find Habit")")
-//                        Text("\(DisplayDatePolicy.date(for: habitRecord.toModel(), on: selectedDay))")
-//                            .font(.footnote)
-//                            .foregroundStyle(Color.secondary)
-//                    }
-                    ActivityRecordRowTitleDate(selectedDay: selectedDay, activityRecord: habitRecord)
-                        .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
+                    ActivityRecordRowTitleDate(
+                        selectedDay: selectedDay,
+                        activityRecord: habitRecord
+                    )
+                        .sectionBackground(
+                            padding: .detailPadding,
+                            color: .secondaryBackground
+                        )
                 }
+                .matchedGeometryEffect(
+                    id: habitRecord.id,
+                    in: animation
+                )
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         destroyHabitRecord(habitRecord)
@@ -82,7 +91,6 @@ struct DayView: View {
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.primaryBackground)
-
         }
         .frame(height: graphHeight)
 //        .background(Color(uiColor: .systemGroupedBackground))
@@ -92,11 +100,24 @@ struct DayView: View {
 }
 
 
-//#Preview {
-//    DayView(
+#Preview {
+    @Namespace var namespace
+    
+    return DayDetailView(
+        destroyHabitRecord: { _ in },
+        goToHabitRecordDetail: { _ in },
+        graphHeight: 300,
+        numOfItemsToReachTop: 10,
+        habitRecords: HabitRecord.previewRecords,
+        selectedDay: Date(),
+        animation: namespace
+    )
+    
+    
+//    DayDetailView(
 //        graphHeight: 300,
 //        habitRecords: [
 //            DataHabitRecord(creationDate: Date(), completionDate: Date(), habit: DataHabit(name: "Any", color: "#FFFFFF", habitRecords: []))
 //        ]
 //    )
-//}
+}

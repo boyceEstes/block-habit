@@ -55,6 +55,8 @@ struct HomeView: View {
     
     @EnvironmentObject var habitController: HabitController
     
+    // MARK: Injected Properties
+    // Navigation & Actions
     let goToHabitDetail: (Habit) -> Void
     let goToCreateHabit: () -> Void
     let goToHabitRecordDetail: (HabitRecord) -> Void
@@ -62,8 +64,10 @@ struct HomeView: View {
     let goToStatistics: () -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     let goToSettings: () -> Void
-    
+    // MARK: View Properties
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
+    @Namespace private var animation
+
     
     init(
         blockHabitStore: CoreDataBlockHabitStore,
@@ -100,31 +104,50 @@ struct HomeView: View {
             let graphHeight = screenHeight * 0.4
             
             VStack {
-                
-                switch habitRecordVisualMode {
-                case .bar:
-                    BarView(
-                        graphWidth: screenWidth,
-                        graphHeight: graphHeight,
-                        numOfItemsToReachTop: 8,
-                        habitRecordsForDays: habitRecordsForDays,
-                        selectedDay: $habitController.selectedDay,
-                        destroyHabitRecord: { habitRecord in
-                            habitController.destroyRecord(habitRecord)
-                        }
-                    )
-                case .daily:
-                    DayView(
-                        destroyHabitRecord: { habitRecord in
-                            habitController.destroyRecord(habitRecord)
-                        },
-                        goToHabitRecordDetail: goToHabitRecordDetail,
-                        graphHeight: graphHeight,
-                        numOfItemsToReachTop: 8,
-                        habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [],
-                        selectedDay: habitController.selectedDay
-                    )
-                }
+                    if habitRecordVisualMode == .bar {
+                        HScrollBarView(
+                            graphWidth: screenWidth,
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: 8,
+                            habitRecordsForDays: habitRecordsForDays,
+                            selectedDay: $habitController.selectedDay,
+                            animation: animation,
+                            destroyHabitRecord: { habitRecord in
+                                habitController.destroyRecord(habitRecord)
+                            }
+                        )
+                    } else {
+                        DayDetailView(
+                            destroyHabitRecord: { habitRecord in
+                                habitController.destroyRecord(habitRecord)
+                            },
+                            goToHabitRecordDetail: goToHabitRecordDetail,
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: 8,
+                            habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [HabitRecord.preview],
+                            selectedDay: habitController.selectedDay,
+                            animation: animation
+                        )
+                    }
+//                EmptyView()
+//                .overlay(
+//                    habitRecordVisualMode == .daily ?
+//                        ZStack {
+//                            DayDetailView(
+//                                destroyHabitRecord: { habitRecord in
+//                                    habitController.destroyRecord(habitRecord)
+//                                },
+//                                goToHabitRecordDetail: goToHabitRecordDetail,
+//                                graphHeight: proxy.size.height,
+//                                numOfItemsToReachTop: 8,
+//                                habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [],
+//                                selectedDay: habitController.selectedDay,
+//                                animation: animation
+//                            )
+//                        }
+//                        .frame(height: graphHeight)
+//                    : nil
+//                )
                 
                 HabitsSection(
                     habitController: habitController,
@@ -137,17 +160,19 @@ struct HomeView: View {
             .background(Color.primaryBackground)
             .animation(.easeInOut(duration: 0.2), value: habitController.incompleteHabits)
         }
+        .animation(.easeInOut(duration: 0.2), value: habitRecordVisualMode)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
-                    Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay) ⭐️")
-                        .foregroundStyle(.primary)
-                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-                    
                     Text("\(currentStreak) 🔥")
                         .foregroundStyle(.primary)
                     .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                    
+                    
+                    Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay) ⭐️")
+                        .foregroundStyle(.primary)
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
             }
             
@@ -233,7 +258,8 @@ struct HomeView: View {
                 }
                 
                 guard let habitCreationDateAtNoon = isCompletedHabit.habit.creationDate.noon,
-                      habitController.selectedDay <= habitCreationDateAtNoon else {
+                      habitController.selectedDay >= habitCreationDateAtNoon else {
+                    print("\(DateFormatter.shortDateShortTime.string(from: habitController.selectedDay)) <= habitCreateDateAtNoon: \(DateFormatter.shortDateShortTime.string(from: isCompletedHabit.habit.creationDate.noon!))")
                     // Do not include any habits without a completion goal in the count
                     return partialResult
                 }

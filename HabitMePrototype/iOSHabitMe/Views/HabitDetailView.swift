@@ -41,6 +41,7 @@ struct HabitDetailView: View {
     // this is dismissed
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
+    @Namespace private var animation
     
     @State var selectedDay: Date = Date().noon ?? Date()
     @State private var showAlert: Bool = false
@@ -194,12 +195,13 @@ struct HabitDetailView: View {
             ScrollView {
                 LazyVStack(spacing: .vSectionSpacing) {
                     // FIXME: BarView is broken until we can figure out a good way to get the statistics
-                    BarView(
+                    HScrollBarView(
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
                         habitRecordsForDays: habitRecordsForDays,
                         selectedDay: $habitController.selectedDay,
+                        animation: animation, 
                         destroyHabitRecord: { habitRecord in
                             print("destroy last record logic")
                             habitController.destroyRecord(habitRecord)
