@@ -36,6 +36,10 @@
 		B33385482CB6DB3C0087C9D7 /* FilterButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385472CB6DB3C0087C9D7 /* FilterButtonStyle.swift */; };
 		B333854A2CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385492CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift */; };
 		B333854D2CB6DCC10087C9D7 /* SelectableHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333854C2CB6DCC10087C9D7 /* SelectableHabit.swift */; };
+		B33385502CB6E2470087C9D7 /* AlertDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333854F2CB6E2470087C9D7 /* AlertDetail.swift */; };
+		B33385522CB6E2620087C9D7 /* ActionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385512CB6E2620087C9D7 /* ActionDetail.swift */; };
+		B33385542CB6E35E0087C9D7 /* View+ShowAlertDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385532CB6E35E0087C9D7 /* View+ShowAlertDetail.swift */; };
+		B33385562CB6E43C0087C9D7 /* HabitsMenuAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -204,6 +208,10 @@
 		B33385472CB6DB3C0087C9D7 /* FilterButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonStyle.swift; sourceTree = "<group>"; };
 		B33385492CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScrollySelectableFilterList.swift; sourceTree = "<group>"; };
 		B333854C2CB6DCC10087C9D7 /* SelectableHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableHabit.swift; sourceTree = "<group>"; };
+		B333854F2CB6E2470087C9D7 /* AlertDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDetail.swift; sourceTree = "<group>"; };
+		B33385512CB6E2620087C9D7 /* ActionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionDetail.swift; sourceTree = "<group>"; };
+		B33385532CB6E35E0087C9D7 /* View+ShowAlertDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ShowAlertDetail.swift"; sourceTree = "<group>"; };
+		B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenuAlert.swift; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -440,6 +448,16 @@
 			path = FilteringList;
 			sourceTree = "<group>";
 		};
+		B333854E2CB6E2110087C9D7 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				B333854F2CB6E2470087C9D7 /* AlertDetail.swift */,
+				B33385512CB6E2620087C9D7 /* ActionDetail.swift */,
+				B33385532CB6E35E0087C9D7 /* View+ShowAlertDetail.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
 		B347DE372B7DA55A00F2FA74 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
@@ -553,6 +571,7 @@
 		B387B2242CB1E11400256C64 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				B333854E2CB6E2110087C9D7 /* Alerts */,
 				B3BFEA0D2B76767E00DE7617 /* TextFields */,
 			);
 			path = Reusable;
@@ -701,6 +720,7 @@
 		B3C97F212B5CE91500211B4C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */,
 				B333854B2CB6DCA40087C9D7 /* FilteringList */,
 				B387B21D2CB1B17B00256C64 /* PreviewData */,
 				B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */,
@@ -1004,6 +1024,7 @@
 				B333853F2CB5C9D80087C9D7 /* ActivityBlock.swift in Sources */,
 				B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */,
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
+				B33385562CB6E43C0087C9D7 /* HabitsMenuAlert.swift in Sources */,
 				B387B21F2CB1B19F00256C64 /* Habit+PreviewData.swift in Sources */,
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
 				B387B2262CB1E15E00256C64 /* HabitsSection.swift in Sources */,
@@ -1030,7 +1051,9 @@
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
 				B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */,
 				B3BFEA1C2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift in Sources */,
+				B33385542CB6E35E0087C9D7 /* View+ShowAlertDetail.swift in Sources */,
 				B3B2F3052BDFCB7F00240EB0 /* ActivityDetailCalculationType+UI.swift in Sources */,
+				B33385502CB6E2470087C9D7 /* AlertDetail.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
@@ -1039,6 +1062,7 @@
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
 				B32947B02B633DEB007C8C1E /* View+FlowNavigationDestination.swift in Sources */,
+				B33385522CB6E2620087C9D7 /* ActionDetail.swift in Sources */,
 				B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */,
 				B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */,
 				B3BFEA182B7838B400DE7617 /* ActivityDetailSummaryRow.swift in Sources */,
