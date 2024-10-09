@@ -220,14 +220,66 @@ extension SelectableListItem {
 }
 
 
+extension View {
+    
+    func filterButtonStyle(color: Color, isSelected: Bool) -> some View {
+        
+        modifier(FilterButtonStyle(color: color, isSelected: isSelected))
+    }
+}
+
+
+struct FilterButtonStyle: ViewModifier {
+    
+    let color: Color
+    let isSelected: Bool
+    
+    func body(content: Content) -> some View {
+        
+        content
+            .padding(8)
+            .contentShape(RoundedRectangle(cornerRadius: 10))
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? color : .clear)
+                    .stroke(isSelected ? Color.clear : color, lineWidth: 3)
+            )
+    }
+}
+
+
+
+
+
 struct HorizontalScrollySelectableList<T: SelectableListItem>: View {
     
     @Binding var items: [T]
+    @State private var isAllSelected = true
     
     var body: some View {
-        
         ScrollView(.horizontal) {
             LazyHStack {
+                Button {
+                    withAnimation {
+                        if isAllSelected {
+                            // Set none to be selected
+                            isAllSelected = false
+                            items.indices.forEach { items[$0].isSelected = false }
+                            
+                        } else {
+                            // Set all to be selected
+                            isAllSelected = true
+                            items.indices.forEach { items[$0].isSelected = true }
+                        }
+                    }
+                } label: {
+                    Text("All")
+                        .foregroundStyle(.white)
+                }
+                .filterButtonStyle(color: .blue, isSelected: isAllSelected)
+                
+                Divider()
+                
                 ForEach(0..<items.count, id: \.self) { i in
                     
                     let item = items[i]
@@ -239,22 +291,22 @@ struct HorizontalScrollySelectableList<T: SelectableListItem>: View {
                         print("tapped selectableHabit")
                         withAnimation {
                             items[i].isSelected.toggle()
+                            // We want to make sure that the "All" button is going to be unselected if even one is false
+                            if !items[i].isSelected && isAllSelected {
+                                isAllSelected = false
+                            } else if items[i].isSelected && isAllSelected == false && items.allSatisfy({ $0.isSelected }) {
+                                isAllSelected = true
+                            }
                         }
                     } label: {
                         Text("\(name)")
                             .foregroundStyle(Color.primary)
                     }
-                    .padding(8)
-                    .contentShape(RoundedRectangle(cornerRadius: 10))
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(isSelected ? color : .clear)
-                            .stroke(isSelected ? Color.clear : color, lineWidth: 3)
-                    )
-                    .padding(.vertical)
+                    .filterButtonStyle(color: color, isSelected: isSelected)
                 }
             }
             .padding(.leading)
+            .padding(.vertical)
         }
     }
 }
