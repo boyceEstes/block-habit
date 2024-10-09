@@ -26,6 +26,7 @@ struct HScrollBarView: View {
     let habitRecordsForDays: [Date: [HabitRecord]]
     @Binding var selectedDay: Date
     let animation: Namespace.ID
+    @Binding var showDayDetail: Bool
     let destroyHabitRecord: (HabitRecord) -> Void
     
     
@@ -93,7 +94,11 @@ struct HScrollBarView: View {
                 animation: animation,
                 didTapBlock: {
                     print("tapped dat ish")
-                    habitController.setSelectedDay(to: date)
+                    if Calendar.current.isDate(date, inSameDayAs: selectedDay) {
+                        showDayDetail = true
+                    } else {
+                        habitController.setSelectedDay(to: date)
+                    }
                 }
             )
             
@@ -163,6 +168,7 @@ struct HScrollBarView: View {
     let maxNumOfItemsBeforeCrushing = 10.0
     @State var day = Date()
     @Namespace var namespace
+    @State var showDayDetail = false
 
     
     return HScrollBarView(
@@ -172,6 +178,7 @@ struct HScrollBarView: View {
         habitRecordsForDays: HabitRecord.recordsForDaysPreview(date: day),
         selectedDay: $day,
         animation: namespace,
+        showDayDetail: $showDayDetail,
         destroyHabitRecord: { _ in }
     )
 }

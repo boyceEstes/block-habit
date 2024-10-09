@@ -22,7 +22,7 @@ struct BlockStack: View {
         VStack(spacing: 0) {
             ForEach(habitRecords, id: \.self) { habitRecord in
                 
-                //            let isLastRecord = habitRecords.first == habitRecord
+                let isLastRecord = habitRecords.first == habitRecord
                 
                 ActivityBlock(
                     color: Color(hex: habitRecord.habit.color) ?? Color.white,
@@ -30,19 +30,19 @@ struct BlockStack: View {
                     itemHeight: itemHeight,
                     tapAction: didTapBlock
                 )
-                .matchedGeometryEffect(
-                    id: habitRecord.id,
-                    in: animation,
-                    isSource: true
+//                .matchedGeometryEffect(
+//                    id: habitRecord.id,
+//                    in: animation,
+//                    isSource: true
+//                )
+                .clipShape(
+                    UnevenRoundedRectangle(
+                        cornerRadii: .init(
+                            topLeading: isLastRecord ? .bigBlockCornerRadius : 0,
+                            topTrailing: isLastRecord ? .bigBlockCornerRadius : 0
+                        )
+                    )
                 )
-                //            .clipShape(
-                //                UnevenRoundedRectangle(
-                //                    cornerRadii: .init(
-                //                        topLeading: isLastRecord ? .bigBlockCornerRadius : 0,
-                //                        topTrailing: isLastRecord ? .bigBlockCornerRadius : 0
-                //                    )
-                //                )
-                //            )
             }
         }
     }

@@ -47,7 +47,7 @@ struct HabitDetailView: View {
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
 
-    
+    @State private var showDayDetail: Bool = false
     @State private var activity: Habit
     @State private var habitRecordsForDays = [Date: [HabitRecord]]()
     @State private var cancellables = Set<AnyCancellable>()
@@ -194,7 +194,7 @@ struct HabitDetailView: View {
             let graphHeight = screenHeight * 0.3
             ScrollView {
                 LazyVStack(spacing: .vSectionSpacing) {
-                    // FIXME: BarView is broken until we can figure out a good way to get the statistics
+                    // FIXME: Extract into a view where the user can tap to always go to day details view
                     HScrollBarView(
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
@@ -202,6 +202,7 @@ struct HabitDetailView: View {
                         habitRecordsForDays: habitRecordsForDays,
                         selectedDay: $habitController.selectedDay,
                         animation: animation, 
+                        showDayDetail: $showDayDetail,
                         destroyHabitRecord: { habitRecord in
                             print("destroy last record logic")
                             habitController.destroyRecord(habitRecord)

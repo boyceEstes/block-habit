@@ -66,6 +66,7 @@ struct HomeView: View {
     let goToSettings: () -> Void
     // MARK: View Properties
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
+    @State private var showDayDetail = false
     @Namespace private var animation
 
     
@@ -104,7 +105,7 @@ struct HomeView: View {
             let graphHeight = screenHeight * 0.4
             
             VStack {
-                    if habitRecordVisualMode == .bar {
+                    if !showDayDetail {
                         HScrollBarView(
                             graphWidth: screenWidth,
                             graphHeight: graphHeight,
@@ -112,6 +113,7 @@ struct HomeView: View {
                             habitRecordsForDays: habitRecordsForDays,
                             selectedDay: $habitController.selectedDay,
                             animation: animation,
+                            showDayDetail: $showDayDetail,
                             destroyHabitRecord: { habitRecord in
                                 habitController.destroyRecord(habitRecord)
                             }
@@ -126,7 +128,8 @@ struct HomeView: View {
                             numOfItemsToReachTop: 8,
                             habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [HabitRecord.preview],
                             selectedDay: habitController.selectedDay,
-                            animation: animation
+                            animation: animation,
+                            showDayDetail: $showDayDetail
                         )
                     }
 //                EmptyView()
@@ -160,7 +163,7 @@ struct HomeView: View {
             .background(Color.primaryBackground)
             .animation(.easeInOut(duration: 0.2), value: habitController.incompleteHabits)
         }
-        .animation(.easeInOut(duration: 0.2), value: habitRecordVisualMode)
+        .animation(.easeInOut(duration: 0.2), value: showDayDetail)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -190,34 +193,26 @@ struct HomeView: View {
                     Image(systemName: "chart.xyaxis.line")
                 }
                 
-                // TODO: Some logic to dictate whether it is a bar button or a daily log button
-                switch habitRecordVisualMode {
-                case .bar:
-                    // Daily button
-                    Button {
-                        setHabitRecordViewMode(to: .daily)
-                    } label: {
-                        Image(systemName: "chart.bar.doc.horizontal")
-                            .fontWeight(.semibold)
-                    }
-                case .daily:
-                    // Chart button
-                    Button {
-                        setHabitRecordViewMode(to: .bar)
-                    } label: {
-                        Image(systemName: "chart.bar.xaxis")
-                            .fontWeight(.semibold)
-                    }
-                }
+//                 TODO: Some logic to dictate whether it is a bar button or a daily log button
+//                switch habitRecordVisualMode {
+//                case .bar:
+//                    // Daily button
+//                    Button {
+//                        setHabitRecordViewMode(to: .daily)
+//                    } label: {
+//                        Image(systemName: "chart.bar.doc.horizontal")
+//                            .fontWeight(.semibold)
+//                    }
+//                case .daily:
+//                    // Chart button
+//                    Button {
+//                        setHabitRecordViewMode(to: .bar)
+//                    } label: {
+//                        Image(systemName: "chart.bar.xaxis")
+//                            .fontWeight(.semibold)
+//                    }
+//                }
             }
-        }
-    }
-    
-    
-    private func setHabitRecordViewMode(to visualMode: HabitRecordVisualMode) {
-        
-        withAnimation(.easeOut) {
-            habitRecordVisualMode = visualMode
         }
     }
     

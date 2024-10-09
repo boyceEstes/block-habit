@@ -26,7 +26,7 @@ struct DayDetailView: View {
     var habitRecords: [HabitRecord]
     let selectedDay: Date
     let animation: Namespace.ID
-    
+    @Binding var showDayDetail: Bool
     
     
     
@@ -37,7 +37,8 @@ struct DayDetailView: View {
         numOfItemsToReachTop: Int,
         habitRecords: [HabitRecord],
         selectedDay: Date,
-        animation: Namespace.ID
+        animation: Namespace.ID,
+        showDayDetail: Binding<Bool>
     ) {
         self.destroyHabitRecord = destroyHabitRecord
         self.goToHabitRecordDetail = goToHabitRecordDetail
@@ -46,53 +47,68 @@ struct DayDetailView: View {
         self.habitRecords = habitRecords
         self.selectedDay = selectedDay
         self.animation = animation
+        self._showDayDetail = showDayDetail
     }
     
     
     var body: some View {
         
         List {
-            ForEach(habitRecords, id: \.self) { habitRecord in
-                
-                HStack(spacing: 16) {
+            Section {
+                ForEach(habitRecords, id: \.self) { habitRecord in
                     
-                    ActivityBlock(
-                        color: Color(hex: habitRecord.habit.color) ?? Color.black,
-                        itemWidth: itemWidth,
-                        itemHeight: itemHeight
-                    )
-                    .matchedGeometryEffect(
-                        id: habitRecord.id,
-                        in: animation,
-                        anchor: .center,
-                        isSource: true
-                    )
-                    
-                    ActivityRecordRowTitleDate(
-                        selectedDay: selectedDay,
-                        activityRecord: habitRecord
-                    )
-                    .sectionBackground(
-                        padding: .detailPadding,
-                        color: .secondaryBackground
-                    )
-                }
-                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button(role: .destructive) {
-                        destroyHabitRecord(habitRecord)
-                        print("Deleting!")
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                          .foregroundStyle(Color.blue)
+                    HStack(spacing: 16) {
+                        
+                        ActivityBlock(
+                            color: Color(hex: habitRecord.habit.color) ?? Color.black,
+                            itemWidth: itemWidth,
+                            itemHeight: itemHeight
+                        )
+                        .matchedGeometryEffect(
+                            id: habitRecord.id,
+                            in: animation,
+                            anchor: .center,
+                            isSource: true
+                        )
+                        
+                        ActivityRecordRowTitleDate(
+                            selectedDay: selectedDay,
+                            activityRecord: habitRecord
+                        )
+                        .sectionBackground(
+                            padding: .detailPadding,
+                            color: .secondaryBackground
+                        )
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            destroyHabitRecord(habitRecord)
+                            print("Deleting!")
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                                .foregroundStyle(Color.blue)
+                        }
+                    }
+                    .onTapGesture {
+                        // FIXME: This is broken Cannot navigate to habit record detail without a DataHabitRecord right now
+                        goToHabitRecordDetail(habitRecord)
                     }
                 }
-                .onTapGesture {
-                    // FIXME: This is broken Cannot navigate to habit record detail without a DataHabitRecord right now
-                    goToHabitRecordDetail(habitRecord)
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.primaryBackground)
+            } header: {
+                HStack {
+                    Text("Day Records")
+                    Spacer()
+                    Button {
+                        withAnimation {
+                            showDayDetail = false
+                        }
+                    } label: {
+                        Image(systemName: "x.circle.fill")
+                    }
                 }
             }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.primaryBackground)
         }
         .frame(height: graphHeight)
 //        .background(Color(uiColor: .systemGroupedBackground))
@@ -104,6 +120,7 @@ struct DayDetailView: View {
 
 #Preview {
     @Namespace var namespace
+    @State var showDayDetail = false
     
     return DayDetailView(
         destroyHabitRecord: { _ in },
@@ -112,7 +129,8 @@ struct DayDetailView: View {
         numOfItemsToReachTop: 10,
         habitRecords: HabitRecord.previewRecords,
         selectedDay: Date(),
-        animation: namespace
+        animation: namespace,
+        showDayDetail: $showDayDetail
     )
     
     
