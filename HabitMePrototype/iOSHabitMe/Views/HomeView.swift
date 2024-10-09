@@ -32,25 +32,6 @@ enum HabitRecordVisualMode {
 //}
 
 
-//extension DataHabit {
-//    
-//    func isActivityComplete(activityRecords: [DataHabitRecord]) -> Bool {
-//        
-//        if let completionGoal = goalCompletionsPerDay {
-//            let recordCountForHabit = activityRecords.reduce(0) { partialResult, activityRecord in
-//                if activityRecord.habit == self { return partialResult + 1 }
-//                else { return partialResult }
-//            }
-//            
-//            return recordCountForHabit >= completionGoal
-//        } else {
-//            // It can never be complete
-//            return false
-//        }
-//    }
-//}
-
-
 struct HomeView: View {
     
     @EnvironmentObject var habitController: HabitController
@@ -132,25 +113,6 @@ struct HomeView: View {
                             showDayDetail: $showDayDetail
                         )
                     }
-//                EmptyView()
-//                .overlay(
-//                    habitRecordVisualMode == .daily ?
-//                        ZStack {
-//                            DayDetailView(
-//                                destroyHabitRecord: { habitRecord in
-//                                    habitController.destroyRecord(habitRecord)
-//                                },
-//                                goToHabitRecordDetail: goToHabitRecordDetail,
-//                                graphHeight: proxy.size.height,
-//                                numOfItemsToReachTop: 8,
-//                                habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [],
-//                                selectedDay: habitController.selectedDay,
-//                                animation: animation
-//                            )
-//                        }
-//                        .frame(height: graphHeight)
-//                    : nil
-//                )
                 
                 HabitsSection(
                     habitController: habitController,
@@ -192,26 +154,6 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: "chart.xyaxis.line")
                 }
-                
-//                 TODO: Some logic to dictate whether it is a bar button or a daily log button
-//                switch habitRecordVisualMode {
-//                case .bar:
-//                    // Daily button
-//                    Button {
-//                        setHabitRecordViewMode(to: .daily)
-//                    } label: {
-//                        Image(systemName: "chart.bar.doc.horizontal")
-//                            .fontWeight(.semibold)
-//                    }
-//                case .daily:
-//                    // Chart button
-//                    Button {
-//                        setHabitRecordViewMode(to: .bar)
-//                    } label: {
-//                        Image(systemName: "chart.bar.xaxis")
-//                            .fontWeight(.semibold)
-//                    }
-//                }
             }
         }
     }

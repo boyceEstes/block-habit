@@ -228,13 +228,6 @@ struct HabitsMenu: View {
             completeHabit: didTapHabitButton,
             goToHabitDetail: goToHabitDetail
         )
-//        HabitMePrimaryButton(
-//            title: "\(habit.habit.name)",
-//            looksDisabled: habit.isCompleted,
-//            color: Color(hex: habit.habit.color),
-//            buttonWidth: 150,
-//            action: { didTapHabitButton(habit.habit) }
-//        )
         .contextMenu {
             
             Button("Habit Details") {
