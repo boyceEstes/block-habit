@@ -61,20 +61,22 @@ struct DayDetailView: View {
                         itemWidth: itemWidth,
                         itemHeight: itemHeight
                     )
+                    .matchedGeometryEffect(
+                        id: habitRecord.id,
+                        in: animation,
+                        anchor: .center,
+                        isSource: true
+                    )
                     
                     ActivityRecordRowTitleDate(
                         selectedDay: selectedDay,
                         activityRecord: habitRecord
                     )
-                        .sectionBackground(
-                            padding: .detailPadding,
-                            color: .secondaryBackground
-                        )
+                    .sectionBackground(
+                        padding: .detailPadding,
+                        color: .secondaryBackground
+                    )
                 }
-                .matchedGeometryEffect(
-                    id: habitRecord.id,
-                    in: animation
-                )
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         destroyHabitRecord(habitRecord)

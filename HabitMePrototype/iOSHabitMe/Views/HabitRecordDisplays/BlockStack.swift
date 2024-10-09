@@ -32,7 +32,8 @@ struct BlockStack: View {
                 )
                 .matchedGeometryEffect(
                     id: habitRecord.id,
-                    in: animation
+                    in: animation,
+                    isSource: true
                 )
                 //            .clipShape(
                 //                UnevenRoundedRectangle(
