@@ -32,6 +32,10 @@
 		B333853F2CB5C9D80087C9D7 /* ActivityBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333853E2CB5C9D80087C9D7 /* ActivityBlock.swift */; };
 		B33385412CB5CB770087C9D7 /* BlockStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385402CB5CB770087C9D7 /* BlockStack.swift */; };
 		B33385432CB5CD9B0087C9D7 /* HScrollBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385422CB5CD9B0087C9D7 /* HScrollBarView.swift */; };
+		B33385462CB6DB020087C9D7 /* SelectableFilterListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385452CB6DB020087C9D7 /* SelectableFilterListItem.swift */; };
+		B33385482CB6DB3C0087C9D7 /* FilterButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385472CB6DB3C0087C9D7 /* FilterButtonStyle.swift */; };
+		B333854A2CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385492CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift */; };
+		B333854D2CB6DCC10087C9D7 /* SelectableHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333854C2CB6DCC10087C9D7 /* SelectableHabit.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -196,6 +200,10 @@
 		B333853E2CB5C9D80087C9D7 /* ActivityBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityBlock.swift; sourceTree = "<group>"; };
 		B33385402CB5CB770087C9D7 /* BlockStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStack.swift; sourceTree = "<group>"; };
 		B33385422CB5CD9B0087C9D7 /* HScrollBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HScrollBarView.swift; sourceTree = "<group>"; };
+		B33385452CB6DB020087C9D7 /* SelectableFilterListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFilterListItem.swift; sourceTree = "<group>"; };
+		B33385472CB6DB3C0087C9D7 /* FilterButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonStyle.swift; sourceTree = "<group>"; };
+		B33385492CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScrollySelectableFilterList.swift; sourceTree = "<group>"; };
+		B333854C2CB6DCC10087C9D7 /* SelectableHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableHabit.swift; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -412,6 +420,24 @@
 				B33385422CB5CD9B0087C9D7 /* HScrollBarView.swift */,
 			);
 			path = HabitRecordDisplays;
+			sourceTree = "<group>";
+		};
+		B33385442CB6DAC70087C9D7 /* FilteringList */ = {
+			isa = PBXGroup;
+			children = (
+				B33385472CB6DB3C0087C9D7 /* FilterButtonStyle.swift */,
+				B33385492CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift */,
+				B33385452CB6DB020087C9D7 /* SelectableFilterListItem.swift */,
+			);
+			path = FilteringList;
+			sourceTree = "<group>";
+		};
+		B333854B2CB6DCA40087C9D7 /* FilteringList */ = {
+			isa = PBXGroup;
+			children = (
+				B333854C2CB6DCC10087C9D7 /* SelectableHabit.swift */,
+			);
+			path = FilteringList;
 			sourceTree = "<group>";
 		};
 		B347DE372B7DA55A00F2FA74 /* Enums */ = {
@@ -675,6 +701,7 @@
 		B3C97F212B5CE91500211B4C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B333854B2CB6DCA40087C9D7 /* FilteringList */,
 				B387B21D2CB1B17B00256C64 /* PreviewData */,
 				B3BFE9E62B75268B00DE7617 /* LineChartActivityDetailData.swift */,
 			);
@@ -684,10 +711,11 @@
 		B3C97F242B5CE94500211B4C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B333853D2CB5C9910087C9D7 /* HabitRecordDisplays */,
+				B33385442CB6DAC70087C9D7 /* FilteringList */,
 				B387B2202CB1BD4A00256C64 /* Helpers */,
 				B387B2242CB1E11400256C64 /* Reusable */,
 				B387B2232CB1E10800256C64 /* HabitsSection */,
+				B333853D2CB5C9910087C9D7 /* HabitRecordDisplays */,
 				B3BFE9E32B75207C00DE7617 /* Charts */,
 				B3C97F292B5CE99200211B4C /* HomeView.swift */,
 				B3C97F2B2B5CE9CB00211B4C /* CreateHabitView.swift */,
@@ -963,11 +991,14 @@
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */,
 				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
+				B33385482CB6DB3C0087C9D7 /* FilterButtonStyle.swift in Sources */,
 				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */,
+				B333854D2CB6DCC10087C9D7 /* SelectableHabit.swift in Sources */,
 				B37AC77B2BAF53760052552B /* Habit.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B33385412CB5CB770087C9D7 /* BlockStack.swift in Sources */,
+				B333854A2CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,
 				B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */,
 				B333853F2CB5C9D80087C9D7 /* ActivityBlock.swift in Sources */,
@@ -978,6 +1009,7 @@
 				B387B2262CB1E15E00256C64 /* HabitsSection.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B387B2282CB22ADA00256C64 /* SelectableHabitView.swift in Sources */,
+				B33385462CB6DB020087C9D7 /* SelectableFilterListItem.swift in Sources */,
 				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,
 				B39A27522BF3A3D0002A5A88 /* SettingsView.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,

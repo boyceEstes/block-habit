@@ -9,29 +9,7 @@ import SwiftUI
 import SwiftData
 import HabitRepositoryFW
 
-/*
- * To keep things as simple as I can think, I would want to keep this on the Home Screen and use
- * the existing Bar view on that screen. Interact with that bar view by tapping on filters which
- * would update the stats that will be displayed in this view.
- */
 
-struct SelectableHabit: Hashable, SelectableListItem {
-
-    let id: String
-    let name: String
-    var isSelected: Bool = true
-    var colorString: String?
-    
-    // This is kept for easily keeping data that will be needed later
-    var habit: Habit
-    
-    init(habit: Habit) {
-        self.id = habit.id
-        self.name = habit.name
-        self.colorString = habit.color 
-        self.habit = habit
-    }
-}
 
 struct StatisticsView: View {
     
@@ -122,7 +100,7 @@ struct StatisticsView: View {
                             .padding(.horizontal)
                             
                             
-                            HorizontalScrollySelectableList(items: $selectableHabits)
+                            HorizontalScrollySelectableFilterList(items: $selectableHabits)
                         }
                     }
                     
@@ -194,122 +172,10 @@ struct StatisticsView: View {
 
 
 
-// Needs to be Identifiable for the foreach conformance, just makes it easier
-protocol SelectableListItem: Identifiable {
-    
-    var id: String { get } // Id stays the same
-    var name: String { get } // Name stays the same
-    var isSelected: Bool { get set } // Gets toggled
-    
-    var colorString: String? { get }
-}
-
-
-extension SelectableListItem {
-    
-    var color: Color {
-        
-        let defaultColor = Color.blue
-        
-        guard let colorString, let unwrappedColor = Color(hex: colorString) else {
-            return defaultColor
-        }
-        
-        return unwrappedColor
-    }
-}
-
-
-extension View {
-    
-    func filterButtonStyle(color: Color, isSelected: Bool) -> some View {
-        
-        modifier(FilterButtonStyle(color: color, isSelected: isSelected))
-    }
-}
-
-
-struct FilterButtonStyle: ViewModifier {
-    
-    let color: Color
-    let isSelected: Bool
-    
-    func body(content: Content) -> some View {
-        
-        content
-            .padding(8)
-            .contentShape(RoundedRectangle(cornerRadius: 10))
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(isSelected ? color : .clear)
-                    .stroke(isSelected ? Color.clear : color, lineWidth: 3)
-            )
-    }
-}
 
 
 
 
-
-struct HorizontalScrollySelectableList<T: SelectableListItem>: View {
-    
-    @Binding var items: [T]
-    @State private var isAllSelected = true
-    
-    var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack {
-                Button {
-                    withAnimation {
-                        if isAllSelected {
-                            // Set none to be selected
-                            isAllSelected = false
-                            items.indices.forEach { items[$0].isSelected = false }
-                            
-                        } else {
-                            // Set all to be selected
-                            isAllSelected = true
-                            items.indices.forEach { items[$0].isSelected = true }
-                        }
-                    }
-                } label: {
-                    Text("All")
-                        .foregroundStyle(.white)
-                }
-                .filterButtonStyle(color: .blue, isSelected: isAllSelected)
-                
-                Divider()
-                
-                ForEach(0..<items.count, id: \.self) { i in
-                    
-                    let item = items[i]
-                    let isSelected = item.isSelected
-                    let name = item.name
-                    let color = item.color
-                    
-                    Button {
-                        print("tapped selectableHabit")
-                        withAnimation {
-                            items[i].isSelected.toggle()
-                            // We want to make sure that the "All" button is going to be unselected if even one is false
-                            if !items[i].isSelected && isAllSelected {
-                                isAllSelected = false
-                            } else if items[i].isSelected && isAllSelected == false && items.allSatisfy({ $0.isSelected }) {
-                                isAllSelected = true
-                            }
-                        }
-                    } label: {
-                        Text("\(name)")
-                            .foregroundStyle(Color.primary)
-                    }
-                    .filterButtonStyle(color: color, isSelected: isSelected)
-                }
-            }
-            .padding(.leading)
-            .padding(.vertical)
-        }
-    }
-}
 
 
 #Preview {
