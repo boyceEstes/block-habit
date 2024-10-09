@@ -148,6 +148,7 @@ struct HabitsMenu: View {
     let goToEditHabit: (Habit) -> Void
     let didTapHabitButton: (Habit) -> Void
     let archiveHabit: (Habit) -> Void
+    let destroyHabit: (Habit) -> Void
     // MARK: View Properties
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
@@ -243,14 +244,19 @@ struct HabitsMenu: View {
             }
             
             
-//            Button("Delete Habit and All Data", role: .destructive) {
-////                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-//                    // FIXME: Cannot get alerts to work - it will not get the new state for the next button press on delete
-//                    print("DELETE HABIT")
+            Button("Delete Habit and All Data", role: .destructive) {
+                
+                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
+                    destroyHabit(habit.habit)
+                }).alertData()
+                showAlert = true
+                
+//                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
+                    // FIXME: Cannot get alerts to work - it will not get the new state for the next button press on delete
 //                destroyHabit(habit.habit)
-////                }).alertData()
-////                showAlert = true
-//            }
+//                }).alertData()
+//                showAlert = true
+            }
         }
     }
 }
@@ -264,6 +270,7 @@ struct HabitsMenu: View {
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         didTapHabitButton: { _ in },
-        archiveHabit: { _ in }
+        archiveHabit: { _ in },
+        destroyHabit: { _ in }
     )
 }

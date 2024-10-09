@@ -82,6 +82,9 @@ struct HabitsSection: View {
                 }, archiveHabit: { habit in
                     
                     habitController.archiveHabit(habit)
+                }, destroyHabit: { habit in
+                    
+                    habitController.deleteHabit(habit)
                 }
             )
         }
