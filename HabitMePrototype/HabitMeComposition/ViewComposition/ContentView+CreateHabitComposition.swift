@@ -18,12 +18,19 @@ class CreateEditHabitNavigationFlow: NewStackNavigationFlow {
     enum StackIdentifier: Hashable {
         
         case detailSelection(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?)
+        case scheduleSelection(schedulingUnits: Binding<ScheduleTimeUnit>, rate: Binding<Int>, scheduledWeekDays: Binding<Set<ScheduleDay>>, reminderTime: Binding<Date?>)
         
         func hash(into hasher: inout Hasher) {
             switch self {
             case let .detailSelection(value, color):
                 hasher.combine(value.wrappedValue)
                 hasher.combine(color)
+                
+            case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
+                hasher.combine(schedulingUnits.wrappedValue)
+                hasher.combine(rate.wrappedValue)
+                hasher.combine(scheduledWeekDays.wrappedValue)
+                hasher.combine(reminderTime.wrappedValue)
             }
         }
         
@@ -46,8 +53,12 @@ extension ContentView {
         makeCreateHabitView()
         .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
             switch identifier {
+                
             case let .detailSelection(selectedDetails, selectedColor):
                 makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
+                
+            case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
+                makeScheduleView(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
             }
         }
     }
@@ -58,7 +69,8 @@ extension ContentView {
         
         CreateHabitView(
             blockHabitStore: blockHabitStore,
-            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
+            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit,
+            goToScheduleSelection: goToSchedulingSelectionFromCreateEditHabit
         )
     }
     
@@ -66,6 +78,11 @@ extension ContentView {
     func goToAddDetailsSelectionFromCreateEditHabit(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?) {
         
         createEditHabitNavigationFlowPath.append(.detailSelection(selectedDetails: selectedDetails, selectedColor: selectedColor))
+    }
+    
+    
+    func goToSchedulingSelectionFromCreateEditHabit(schedulingUnits: Binding<ScheduleTimeUnit>, rate: Binding<Int>, scheduledWeekDays: Binding<Set<ScheduleDay>>, reminderTime: Binding<Date?>) {
+        createEditHabitNavigationFlowPath.append(.scheduleSelection(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime))
     }
 }
 

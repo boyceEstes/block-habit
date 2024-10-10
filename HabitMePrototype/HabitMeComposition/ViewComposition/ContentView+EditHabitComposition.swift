@@ -23,6 +23,8 @@ extension ContentView {
             switch identifier {
             case let .detailSelection(selectedDetails, selectedColor):
                 makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
+            case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
+                makeScheduleView(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
             }
         }
     }

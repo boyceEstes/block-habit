@@ -30,7 +30,6 @@ struct HScrollBarView: View {
     let destroyHabitRecord: (HabitRecord) -> Void
     
     
-    
     var body: some View {
         
         // TODO: If the device is horizontal, do not use this calculation

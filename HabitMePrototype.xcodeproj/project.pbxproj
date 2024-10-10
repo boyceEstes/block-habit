@@ -40,6 +40,12 @@
 		B33385522CB6E2620087C9D7 /* ActionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385512CB6E2620087C9D7 /* ActionDetail.swift */; };
 		B33385542CB6E35E0087C9D7 /* View+ShowAlertDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385532CB6E35E0087C9D7 /* View+ShowAlertDetail.swift */; };
 		B33385562CB6E43C0087C9D7 /* HabitsMenuAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */; };
+		B33385582CB845FA0087C9D7 /* CustomDisclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385572CB845FA0087C9D7 /* CustomDisclosure.swift */; };
+		B333855B2CB84EB00087C9D7 /* SchedulingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855A2CB84EB00087C9D7 /* SchedulingContent.swift */; };
+		B333855E2CB84F640087C9D7 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855D2CB84F640087C9D7 /* ScheduleDay.swift */; };
+		B33385602CB84F7A0087C9D7 /* ScheduleTimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */; };
+		B33385622CB854670087C9D7 /* ScheduleHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385612CB854670087C9D7 /* ScheduleHabitView.swift */; };
+		B33385642CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -212,6 +218,12 @@
 		B33385512CB6E2620087C9D7 /* ActionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionDetail.swift; sourceTree = "<group>"; };
 		B33385532CB6E35E0087C9D7 /* View+ShowAlertDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ShowAlertDetail.swift"; sourceTree = "<group>"; };
 		B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsMenuAlert.swift; sourceTree = "<group>"; };
+		B33385572CB845FA0087C9D7 /* CustomDisclosure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosure.swift; sourceTree = "<group>"; };
+		B333855A2CB84EB00087C9D7 /* SchedulingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingContent.swift; sourceTree = "<group>"; };
+		B333855D2CB84F640087C9D7 /* ScheduleDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDay.swift; sourceTree = "<group>"; };
+		B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTimeUnit.swift; sourceTree = "<group>"; };
+		B33385612CB854670087C9D7 /* ScheduleHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleHabitView.swift; sourceTree = "<group>"; };
+		B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+ScheduleComposition.swift"; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -415,6 +427,7 @@
 				B3BFEA1B2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift */,
 				B347DE702B81305700F2FA74 /* View+RecordSheetPresentation.swift */,
 				B39A27532BF3A614002A5A88 /* ContentView+SettingsComposition.swift */,
+				B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */,
 			);
 			path = ViewComposition;
 			sourceTree = "<group>";
@@ -456,6 +469,24 @@
 				B33385532CB6E35E0087C9D7 /* View+ShowAlertDetail.swift */,
 			);
 			path = Alerts;
+			sourceTree = "<group>";
+		};
+		B33385592CB84EA10087C9D7 /* CreateEditHabit */ = {
+			isa = PBXGroup;
+			children = (
+				B333855A2CB84EB00087C9D7 /* SchedulingContent.swift */,
+				B33385612CB854670087C9D7 /* ScheduleHabitView.swift */,
+			);
+			path = CreateEditHabit;
+			sourceTree = "<group>";
+		};
+		B333855C2CB84F550087C9D7 /* CreateEditHabit */ = {
+			isa = PBXGroup;
+			children = (
+				B333855D2CB84F640087C9D7 /* ScheduleDay.swift */,
+				B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */,
+			);
+			path = CreateEditHabit;
 			sourceTree = "<group>";
 		};
 		B347DE372B7DA55A00F2FA74 /* Enums */ = {
@@ -573,6 +604,7 @@
 			children = (
 				B333854E2CB6E2110087C9D7 /* Alerts */,
 				B3BFEA0D2B76767E00DE7617 /* TextFields */,
+				B33385572CB845FA0087C9D7 /* CustomDisclosure.swift */,
 			);
 			path = Reusable;
 			sourceTree = "<group>";
@@ -720,6 +752,7 @@
 		B3C97F212B5CE91500211B4C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B333855C2CB84F550087C9D7 /* CreateEditHabit */,
 				B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */,
 				B333854B2CB6DCA40087C9D7 /* FilteringList */,
 				B387B21D2CB1B17B00256C64 /* PreviewData */,
@@ -731,6 +764,7 @@
 		B3C97F242B5CE94500211B4C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B33385592CB84EA10087C9D7 /* CreateEditHabit */,
 				B33385442CB6DAC70087C9D7 /* FilteringList */,
 				B387B2202CB1BD4A00256C64 /* Helpers */,
 				B387B2242CB1E11400256C64 /* Reusable */,
@@ -1007,10 +1041,12 @@
 				B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */,
 				B31996A62C499AC300398BBD /* SectionWithDisclaimerIfEmpty.swift in Sources */,
 				B32947BF2B634B11007C8C1E /* ContentView+HabitRecordDetailComposition.swift in Sources */,
+				B33385622CB854670087C9D7 /* ScheduleHabitView.swift in Sources */,
 				B3B2F3092BDFCC9000240EB0 /* ActivityDetailType+UI.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */,
 				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
+				B33385582CB845FA0087C9D7 /* CustomDisclosure.swift in Sources */,
 				B33385482CB6DB3C0087C9D7 /* FilterButtonStyle.swift in Sources */,
 				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */,
@@ -1024,6 +1060,7 @@
 				B333853F2CB5C9D80087C9D7 /* ActivityBlock.swift in Sources */,
 				B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */,
 				B32947BD2B63473D007C8C1E /* ContentView+HabitDetailComposition.swift in Sources */,
+				B333855B2CB84EB00087C9D7 /* SchedulingContent.swift in Sources */,
 				B33385562CB6E43C0087C9D7 /* HabitsMenuAlert.swift in Sources */,
 				B387B21F2CB1B19F00256C64 /* Habit+PreviewData.swift in Sources */,
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
@@ -1049,6 +1086,7 @@
 				B32947C82B65950D007C8C1E /* StatisticsView.swift in Sources */,
 				B32947AA2B61E848007C8C1E /* DateFormatter+Reusable.swift in Sources */,
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
+				B33385642CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift in Sources */,
 				B32947C42B64040B007C8C1E /* EditHabitView.swift in Sources */,
 				B3BFEA1C2B7A632000DE7617 /* ContentView+CreateActivityDetailComposition.swift in Sources */,
 				B33385542CB6E35E0087C9D7 /* View+ShowAlertDetail.swift in Sources */,
@@ -1058,6 +1096,8 @@
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
 				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
+				B333855E2CB84F640087C9D7 /* ScheduleDay.swift in Sources */,
+				B33385602CB84F7A0087C9D7 /* ScheduleTimeUnit.swift in Sources */,
 				B37AC76E2BA082E00052552B /* Date+GraphDisplayDate.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,

@@ -112,16 +112,27 @@ struct CreateHabitView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
+    // MARK: Injected Properties
     let blockHabitStore: CoreDataBlockHabitStore
+    // Navigation
     let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
+    let goToScheduleSelection: (Binding<ScheduleTimeUnit>, Binding<Int>, Binding<Set<ScheduleDay>>, Binding<Date?>) -> Void
     
+    // MARK: View Properties
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
     @State private var selectedDetails = [ActivityDetail]()
     @State private var completionGoal: Int? = 1
+    // Scheduling
+    @State private var schedulingUnits: ScheduleTimeUnit = .weekly // "Frequency" in Reminders app
+    @State private var rate: Int = 1 // "Every" in Reminders App
+    @State private var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
+    @State private var reminderTime: Date? = nil // If it is not nil then a reminder has been set, else no reminder for
     
     var body: some View {
+        
         ScrollView {
+            
             VStack(spacing: 20) {
 
                 CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
@@ -130,6 +141,14 @@ struct CreateHabitView: View {
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
+                )
+                
+                SchedulingContent(
+                    schedulingUnits: $schedulingUnits,
+                    rate: $rate,
+                    scheduledWeekDays: $scheduledWeekDays,
+                    reminderTime: $reminderTime,
+                    goToScheduleSelection: goToScheduleSelection
                 )
                 
                 CreateEditActivityCompletionGoalContent(
@@ -151,7 +170,6 @@ struct CreateHabitView: View {
             return false
         }
     }
-
     
     
     /**
@@ -199,9 +217,7 @@ struct CreateEditHabitDetailContent: View {
                 HStack {
                     Text("Details")
                     Spacer()
-                    Image(systemName: "chevron.right")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.blue)
+                    CustomDisclosure()
                 }
                 
                 Text("Extra Information to track with this habit")
@@ -226,42 +242,6 @@ struct CreateEditHabitDetailContent: View {
             goToAddDetailsSelection($selectedDetails, selectedColor)
         }
     }
-    
-//    var body: some View {
-//        List {
-//            
-//            Section {
-//                
-//                ForEach($details) { $detail in
-//                    
-//                    createHabitDetailView(detail: $detail)
-//                }
-//                .onDelete(perform: removeRows)
-//            } header: {
-//                HStack {
-//                    Text("Details")
-//                    Spacer()
-//                    Button {
-//                        print("Add")
-////                        let newHabitDetail = HabitDetail(name: "", valueType: .number, unit: DetailUnit.none)
-////                        details.append(newHabitDetail)
-////                        focusedDetail = .row(id: newHabitDetail.id)
-//                        goToAddDetailsSelection()
-//                    } label: {
-//                        Image(systemName: "plus.circle")
-//                            .foregroundStyle(.blue)
-//                    }
-//                    .font(.title3)
-//                }
-//            } footer: {
-//                Text("Extra information to track when this habit is completed.\n\nExample: 'Duration: 20 min' ")
-//                    .font(.footnote)
-//                    .foregroundStyle(.secondary)
-//            }
-//        }
-//        .scrollDisabled(true)
-//        .scrollContentBackground(.hidden)
-//    }
     
     
     func createHabitDetailView(detail: Binding<HabitDetail>) -> some View{
@@ -307,12 +287,6 @@ struct CreateEditHabitContent: View {
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 6)
     
-    
-//    let rows = [
-//        GridItem(.flexible()),
-//        GridItem(.flexible())
-//    ]
-    
     var body: some View {
         TextField("Name", text: $nameTextFieldValue)
             .textFieldBackground()
@@ -337,22 +311,6 @@ struct CreateEditHabitContent: View {
                 }
             })
             .padding(.horizontal, 6)
-//            LazyHGrid(rows: rows, spacing: 30) {
-//                ForEach(allColors, id: \.self) { color in
-//                    Circle()
-//                        .fill(color)
-//                        .stroke(Color.white, lineWidth: isColorSelected(color) ? 2 : 0)
-//                        .frame(width: 30, height: 30)
-//                        .onTapGesture {
-//                            if isColorSelected(color) {
-//                                selectedColor = nil
-//                            } else {
-//                                selectedColor = color
-//                            }
-//                        }
-//                }
-//            }
-//            .frame(height: 90)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical)
@@ -384,13 +342,10 @@ struct CreateEditHabitContent: View {
 //            Color.purple,
 //            Color.pink,
 //            Color.brown,
-//            
-
+            
 //            Color(hex: "#2eld74") ?? .pink, // black?
 //            Color(hex: "#0000ff") ?? .pink, // blue
 //            Color(hex: "#cldad6") ?? .pink, // black?
- 
-
 //            Color(hex: "#ff0000") ?? .pink, // red
             Color.pink,
             Color.red,
@@ -422,33 +377,14 @@ struct CreateEditHabitContent: View {
             Color(hex: "#ef5fbe") ?? .pink, // pink
             Color(hex: "#fdcfe5") ?? .pink, // light pink
             Color.brown,
-
-
-
-     
-
-
 //            Color(hex: "#4c516d") ?? .pink, // gray
-
-
-
 //            Color(hex: "#ffff00") ?? .pink, // stupid bright yellow
-
 //            Color(hex: "#ffd700") ?? .pink, // golden
-
-
 //            Color(hex: "#0eff00") ?? .pink, // ninja turtle green
-
 //            Color(hex: "#cbebcb") ?? .pink, // pastel green gray
-
-
-
 //            Color(hex: "#43a5be") ?? .pink, // tealish?
 //            Color(hex: "#53bdas") ?? .pink, // blue again
-
-
 //            Color(hex: "#401e12") ?? .pink, // brown but really dark
-
 //            Color(hex: "#808080") ?? .pink // gray
         ]
     }
@@ -534,7 +470,8 @@ struct HabitMePrimaryButton: View {
     NavigationStack {
         CreateHabitView(
             blockHabitStore: CoreDataBlockHabitStore.preview(),
-            goToAddDetailsSelection: { _, _ in }
+            goToAddDetailsSelection: { _, _ in }, 
+            goToScheduleSelection: { _, _, _, _ in }
         )
     }
 }
