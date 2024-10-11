@@ -200,7 +200,11 @@ struct CreateHabitView: View {
             isArchived: false,
             goalCompletionsPerDay: completionGoal,
             color: stringColorHex,
-            activityDetails: selectedDetails
+            activityDetails: selectedDetails,
+            schedulingUnits: schedulingUnits,
+            rate: rate,
+            scheduledWeekDays: scheduledWeekDays,
+            reminderTime: reminderTime
         )
         
         habitController.createHabit(habit)

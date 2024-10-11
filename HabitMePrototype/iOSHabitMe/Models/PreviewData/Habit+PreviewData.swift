@@ -22,7 +22,12 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#a89cf0",
-        activityDetails: [])
+        activityDetails: [],
+        schedulingUnits: .weekly,
+        rate: 1,
+        scheduledWeekDays: ScheduleDay.allDays,
+        reminderTime: Date()
+    )
     
     static var drinkTheKoolaid = Habit(
         id: UUID().uuidString,
@@ -31,7 +36,12 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 2,
         color: "#ff0000",
-        activityDetails: [])
+        activityDetails: [],
+        schedulingUnits: .weekly,
+        rate: 1,
+        scheduledWeekDays: ScheduleDay.allDays,
+        reminderTime: Date()
+    )
     
     static var mopTheCarpet = Habit(
         id: UUID().uuidString,
@@ -40,7 +50,12 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#0000ff",
-        activityDetails: [])
+        activityDetails: [],
+        schedulingUnits: .weekly,
+        rate: 1,
+        scheduledWeekDays: ScheduleDay.allDays,
+        reminderTime: Date()
+    )
     
     static var seoulSearch =  Habit(
         id: UUID().uuidString,
@@ -49,7 +64,12 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#a6c3e3",
-        activityDetails: [])
+        activityDetails: [],
+        schedulingUnits: .weekly,
+        rate: 1,
+        scheduledWeekDays: ScheduleDay.allDays,
+        reminderTime: Date()
+    )
     
     static var mirrorPepTalk = Habit(
         id: UUID().uuidString,
@@ -58,7 +78,12 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#556b2f",
-        activityDetails: [.mood])
+        activityDetails: [.mood],
+        schedulingUnits: .weekly,
+        rate: 1,
+        scheduledWeekDays: ScheduleDay.allDays,
+        reminderTime: Date()
+    )
     
     static var somethingComplicated = Habit(
         id: UUID().uuidString,
@@ -67,7 +92,12 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#fdcfe5",
-        activityDetails: [])
+        activityDetails: [],
+        schedulingUnits: .weekly,
+        rate: 1,
+        scheduledWeekDays: ScheduleDay.allDays,
+        reminderTime: Date()
+    )
     
     static var previewHabits = [walkTheCat, drinkTheKoolaid, mopTheCarpet, seoulSearch]
 }

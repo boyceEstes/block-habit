@@ -40,10 +40,10 @@ public struct Habit: Hashable {
         goalCompletionsPerDay: Int?,
         color: String,
         activityDetails: [ActivityDetail],
-        schedulingUnits: ScheduleTimeUnit = .weekly,
-        rate: Int = 1,
-        scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays,
-        reminderTime: Date? = nil
+        schedulingUnits: ScheduleTimeUnit,
+        rate: Int,
+        scheduledWeekDays: Set<ScheduleDay>,
+        reminderTime: Date?
     ) {
         self.id = id
         self.name = name

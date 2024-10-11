@@ -17,7 +17,8 @@ extension ContentView {
         EditHabitView(
             habit: habit,
             blockHabitStore: blockHabitStore,
-            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
+            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit,
+            goToScheduleSelection: goToSchedulingSelectionFromCreateEditHabit
         )
         .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
             switch identifier {

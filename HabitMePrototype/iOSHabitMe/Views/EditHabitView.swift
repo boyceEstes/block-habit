@@ -33,32 +33,45 @@ struct EditHabitView: View {
     @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
     
-    @State private var alertDetail: AlertDetail?
-    @State private var showAlert: Bool = false
-    @State private var nameTextFieldValue: String = ""
-    @State private var selectedColor: Color? = nil
-    @State private var completionGoal: Int? = nil
-    
-    @State private var selectedDetails: [ActivityDetail]
-    
-    
+    // MARK: Injected Properties
     let habit: Habit
     let blockHabitStore: CoreDataBlockHabitStore
     let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
+    let goToScheduleSelection: (Binding<ScheduleTimeUnit>, Binding<Int>, Binding<Set<ScheduleDay>>, Binding<Date?>) -> Void
+    // MARK: View Properties
+    @State private var selectedDetails: [ActivityDetail]
+    @State private var nameTextFieldValue: String = ""
+    @State private var selectedColor: Color? = nil
+    @State private var completionGoal: Int? = nil
+    // Scheduling
+    @State private var schedulingUnits: ScheduleTimeUnit = .weekly // "Frequency" in Reminders app
+    @State private var rate: Int = 1 // "Every" in Reminders App
+    @State private var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
+    @State private var reminderTime: Date? = nil // If it is not nil then a reminder has been set, else no reminder for
+    // Alerts
+    @State private var alertDetail: AlertDetail?
+    @State private var showAlert: Bool = false
     
     
     init(
         habit: Habit,
         blockHabitStore: CoreDataBlockHabitStore,
-        goToAddDetailsSelection: @escaping (Binding<[ActivityDetail]>, Color?) -> Void
+        goToAddDetailsSelection: @escaping (Binding<[ActivityDetail]>, Color?) -> Void,
+        goToScheduleSelection: @escaping (Binding<ScheduleTimeUnit>, Binding<Int>, Binding<Set<ScheduleDay>>, Binding<Date?>) -> Void
     ) {
         self.habit = habit
         self.blockHabitStore = blockHabitStore
         self.goToAddDetailsSelection = goToAddDetailsSelection
+        self.goToScheduleSelection = goToScheduleSelection
         
         // FIXME: When `Habit` has `activityDetails` initialize this like expected
         self._selectedDetails = State(initialValue: habit.activityDetails)
         self._completionGoal = State(initialValue: habit.goalCompletionsPerDay)
+        
+        self._schedulingUnits = State(initialValue: habit.schedulingUnits)
+        self._rate = State(initialValue: habit.rate)
+        self._scheduledWeekDays = State(initialValue: habit.scheduledWeekDays)
+        self._reminderTime = State(initialValue: habit.reminderTime)
     }
     
     
@@ -77,6 +90,14 @@ struct EditHabitView: View {
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
+                )
+                
+                SchedulingContent(
+                    schedulingUnits: $schedulingUnits,
+                    rate: $rate,
+                    scheduledWeekDays: $scheduledWeekDays,
+                    reminderTime: $reminderTime,
+                    goToScheduleSelection: goToScheduleSelection
                 )
                 
                 CreateEditActivityCompletionGoalContent(
@@ -134,7 +155,11 @@ struct EditHabitView: View {
             isArchived: habit.isArchived,
             goalCompletionsPerDay: completionGoal,
             color: selectedColorString,
-            activityDetails: selectedDetails
+            activityDetails: selectedDetails,
+            schedulingUnits: schedulingUnits,
+            rate: rate,
+            scheduledWeekDays: scheduledWeekDays,
+            reminderTime: reminderTime
         )
         
         habitController.updateHabit(habit)
@@ -187,6 +212,6 @@ struct EditHabitView: View {
     let habit = Habit.mopTheCarpet
     
     return NavigationStack {
-        EditHabitView(habit: habit, blockHabitStore: CoreDataBlockHabitStore.preview(), goToAddDetailsSelection: { _, _ in })
+        EditHabitView(habit: habit, blockHabitStore: CoreDataBlockHabitStore.preview(), goToAddDetailsSelection: { _, _ in }, goToScheduleSelection: { _, _, _, _ in })
     }
 }
