@@ -122,7 +122,9 @@ public class HabitController: ObservableObject {
         
         do {
             let allHabitRecords = try await blockHabitRepository.readAllHabitRecords()
-            habitRecordsForDays = allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay, delimiter: minimumNumberOfDays)
+            await MainActor.run {
+                habitRecordsForDays = allHabitRecords.toHabitRecordsForDays(onCurrentDate: selectedDay, delimiter: minimumNumberOfDays)
+            }
             
         } catch {
             // TODO: send an error to a publisher say to subscribers that there has been a problem reading the habit records.
