@@ -231,14 +231,21 @@ extension HabitController {
                 // store:
                 try await blockHabitRepository.createHabit(habit)
                 
-                DispatchQueue.main.async { [weak self] in
+                await MainActor.run {
                     // local:
                     // Include it in all habits that will be used for later isCompletedHabit calculations
-                    self?.latestHabits.append(habit)
+                    latestHabits.append(habit)
                     // adding this here because I don't feel like recalculating all the IsCompletedHabits
                     // when we know this is false
-                    self?.isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
+                    isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
                 }
+                    
+                if habit.reminderTime != nil {
+                    
+                    let manager = NotificationPermissionManager.shared
+                    manager.scheduleNotification(for: habit)
+                }
+
             } catch {
                 fatalError("FAILED MISERABLY TO CREATE HABIT - \(error)")
             }
@@ -276,6 +283,17 @@ extension HabitController {
                 if outdatedHabit.habit.color != updatedHabit.color {
                     
                     updateHabitInHabitRecordsForDays(from: outdatedHabit.habit, to: updatedHabit)
+                }
+                
+                if outdatedHabit.habit.reminderTime != updatedHabit.reminderTime {
+                    
+                    let manager = NotificationPermissionManager.shared
+                    
+                    if updatedHabit.reminderTime != nil {
+                        manager.scheduleNotification(for: updatedHabit)
+                    } else {
+                        manager.cancelNotifications(for: updatedHabit)
+                    }
                 }
             } catch {
                 // FIXME: Handle error updating!

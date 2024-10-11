@@ -47,7 +47,7 @@
 		B333857F2CB8AA860087C9D7 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855D2CB84F640087C9D7 /* ScheduleDay.swift */; };
 		B33385802CB8AA890087C9D7 /* ScheduleTimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */; };
 		B33385822CB8C2760087C9D7 /* NotificationsNotEnabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */; };
-		B33385852CB8C69E0087C9D7 /* NotificationPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */; };
+		B33385862CB8E59B0087C9D7 /* NotificationPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -492,12 +492,12 @@
 			path = CreateEditHabit;
 			sourceTree = "<group>";
 		};
-		B33385832CB8C6820087C9D7 /* Singletons */ = {
+		B33385832CB8C6820087C9D7 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */,
 			);
-			path = Singletons;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		B347DE372B7DA55A00F2FA74 /* Enums */ = {
@@ -511,6 +511,7 @@
 		B3621E502BDDE0F900BE88C2 /* HabitRepositoryFW */ = {
 			isa = PBXGroup;
 			children = (
+				B33385832CB8C6820087C9D7 /* Managers */,
 				B3B4038A2B71331E00D1967E /* Protocols */,
 				B3B2F30B2BE0036800240EB0 /* CoreData */,
 				B3B2F2F62BDFC9C800240EB0 /* Model */,
@@ -743,7 +744,6 @@
 		B3C97F202B5CE8FA00211B4C /* iOSHabitMe */ = {
 			isa = PBXGroup;
 			children = (
-				B33385832CB8C6820087C9D7 /* Singletons */,
 				B37AC7742BA086D90052552B /* ViewModels */,
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
@@ -1075,7 +1075,6 @@
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B387B2282CB22ADA00256C64 /* SelectableHabitView.swift in Sources */,
 				B33385462CB6DB020087C9D7 /* SelectableFilterListItem.swift in Sources */,
-				B33385852CB8C69E0087C9D7 /* NotificationPermissionManager.swift in Sources */,
 				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,
 				B39A27522BF3A3D0002A5A88 /* SettingsView.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,
@@ -1152,6 +1151,7 @@
 				B3B2F3112BE005F300240EB0 /* CoreDataBlockHabitStore+habitDataSource.swift in Sources */,
 				B389D2F92BE59280004A8CF0 /* HabitController.swift in Sources */,
 				B3B2F3012BDFCA9700240EB0 /* ActivityDetailRecord.swift in Sources */,
+				B33385862CB8E59B0087C9D7 /* NotificationPermissionManager.swift in Sources */,
 				B3B2F3142BE005F300240EB0 /* HabitRecordsForDateFRCDataSourceAdapter.swift in Sources */,
 				B3B2F3022BDFCAE500240EB0 /* ActivityDetailCalculationType.swift in Sources */,
 			);
