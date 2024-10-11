@@ -10,14 +10,21 @@ import HabitRepositoryFW
 
 struct ScheduleHabitView: View {
     
+    // MARK: Injected Properties
     @Binding var schedulingUnits: ScheduleTimeUnit // "Frequency" - Ex: "Daily", "Weekly"
     @Binding var rate: Int // "Every" in Reminders App - "Every Day", "Every 2 Days", "Every Week
     @Binding var scheduledWeekDays: Set<ScheduleDay>
     @Binding var reminderTime: Date? // If it is not nil then a reminder has been set, else no reminder for
-    
-    
+    // MARK: View Properties
+    // These make it easier to transition values
     @State private var isReminderTimeAvailableToSet: Bool
     @State private var nonOptionalReminderTime: Date
+    // Notification Permission
+    @State private var isPermittedToNotification = true
+    // Alerts
+    @State private var showAlert = false
+    @State private var alertMessage: String = ""
+    
     
     init(
         schedulingUnits: Binding<ScheduleTimeUnit>,
@@ -36,7 +43,19 @@ struct ScheduleHabitView: View {
     }
     
     var body: some View {
+        
         Form {
+            if !isPermittedToNotification {
+                Section {
+                    NotificationsNotEnabled()
+                }
+                .listRowBackground(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.blue, lineWidth: 2)
+                        .background(Color(uiColor: .secondarySystemBackground))
+                )
+            }
+            
             Section {
                 HStack {
                     Text("Frequency")
@@ -74,6 +93,61 @@ struct ScheduleHabitView: View {
             }
         }
         .navigationTitle("Scheduling")
+        .alert(alertMessage, isPresented: $showAlert, actions: {})
+        .task {
+            await setUIForNotificationPermission()
+        }
+        // When app comes back after (potentially) toggling permission
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            
+            Task {
+                await setUIForNotificationPermission()
+            }
+        }
+    }
+    
+    
+    private func setUIForNotificationPermission() async {
+        
+        let manager = NotificationPermissionManager.shared
+        
+        let authStatus = await manager.checkNotificationPermission()
+        
+        switch authStatus {
+        case .notDetermined:
+            do {
+                let isGranted = try await manager.requestNotificationPermission()
+                await setIsPermittedToNotification(isGranted)
+            } catch {
+                await setError(error)
+            }
+            
+        case .authorized, .provisional, .ephemeral:
+            print("Granted! ...Mostly")
+            await setIsPermittedToNotification(true)
+            
+        default:
+            print("Denied (or something)...Foiled again!")
+            await setIsPermittedToNotification(false)
+        }
+    }
+    
+    
+    private func setIsPermittedToNotification(_ isPermitted: Bool) async {
+        
+        await MainActor.run {
+            isPermittedToNotification = isPermitted
+        }
+    }
+    
+    
+    private func setError(_ error: Error) async {
+        
+        await MainActor.run {
+            
+            showAlert = true
+            alertMessage = error.localizedDescription
+        }
     }
 }
 

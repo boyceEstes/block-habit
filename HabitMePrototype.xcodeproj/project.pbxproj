@@ -47,6 +47,7 @@
 		B333857F2CB8AA860087C9D7 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855D2CB84F640087C9D7 /* ScheduleDay.swift */; };
 		B33385802CB8AA890087C9D7 /* ScheduleTimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */; };
 		B33385822CB8C2760087C9D7 /* NotificationsNotEnabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */; };
+		B33385852CB8C69E0087C9D7 /* NotificationPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -226,6 +227,7 @@
 		B33385612CB854670087C9D7 /* ScheduleHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleHabitView.swift; sourceTree = "<group>"; };
 		B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+ScheduleComposition.swift"; sourceTree = "<group>"; };
 		B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsNotEnabledView.swift; sourceTree = "<group>"; };
+		B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionManager.swift; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -490,6 +492,14 @@
 			path = CreateEditHabit;
 			sourceTree = "<group>";
 		};
+		B33385832CB8C6820087C9D7 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */,
+			);
+			path = Singletons;
+			sourceTree = "<group>";
+		};
 		B347DE372B7DA55A00F2FA74 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
@@ -733,6 +743,7 @@
 		B3C97F202B5CE8FA00211B4C /* iOSHabitMe */ = {
 			isa = PBXGroup;
 			children = (
+				B33385832CB8C6820087C9D7 /* Singletons */,
 				B37AC7742BA086D90052552B /* ViewModels */,
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
@@ -1064,6 +1075,7 @@
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,
 				B387B2282CB22ADA00256C64 /* SelectableHabitView.swift in Sources */,
 				B33385462CB6DB020087C9D7 /* SelectableFilterListItem.swift in Sources */,
+				B33385852CB8C69E0087C9D7 /* NotificationPermissionManager.swift in Sources */,
 				B347DE6D2B7FF50800F2FA74 /* View+HeightChangePreference.swift in Sources */,
 				B39A27522BF3A3D0002A5A88 /* SettingsView.swift in Sources */,
 				B32947B62B633FA6007C8C1E /* ContentView+HomeComposition.swift in Sources */,

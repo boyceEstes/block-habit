@@ -24,7 +24,6 @@ struct NotificationsNotEnabled: View {
             .buttonStyle(.borderedProminent)
             .hAlign(.center)
         }
-        .sectionBackground()
     }
     
     
