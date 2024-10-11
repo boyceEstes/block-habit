@@ -46,6 +46,7 @@
 		B33385642CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */; };
 		B333857F2CB8AA860087C9D7 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855D2CB84F640087C9D7 /* ScheduleDay.swift */; };
 		B33385802CB8AA890087C9D7 /* ScheduleTimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */; };
+		B33385822CB8C2760087C9D7 /* NotificationsNotEnabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -224,6 +225,7 @@
 		B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTimeUnit.swift; sourceTree = "<group>"; };
 		B33385612CB854670087C9D7 /* ScheduleHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleHabitView.swift; sourceTree = "<group>"; };
 		B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+ScheduleComposition.swift"; sourceTree = "<group>"; };
+		B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsNotEnabledView.swift; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -476,6 +478,7 @@
 			children = (
 				B333855A2CB84EB00087C9D7 /* SchedulingContent.swift */,
 				B33385612CB854670087C9D7 /* ScheduleHabitView.swift */,
+				B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */,
 			);
 			path = CreateEditHabit;
 			sourceTree = "<group>";
@@ -493,16 +496,6 @@
 				B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */,
 			);
 			path = Enums;
-			sourceTree = "<group>";
-		};
-		B347DE692B7FF4D900F2FA74 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				B3BFEA122B77F9D100DE7617 /* BJStyle */,
-				B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */,
-				B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		B3621E502BDDE0F900BE88C2 /* HabitRepositoryFW */ = {
@@ -582,6 +575,9 @@
 		B387B2202CB1BD4A00256C64 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B3BFEA122B77F9D100DE7617 /* BHStyle */,
+				B347DE6A2B7FF4EE00F2FA74 /* SizeKey.swift */,
+				B347DE6C2B7FF50800F2FA74 /* View+HeightChangePreference.swift */,
 				B387B2212CB1BD7600256C64 /* View+GeneralUtilities.swift */,
 			);
 			path = Helpers;
@@ -704,7 +700,7 @@
 			path = TextFields;
 			sourceTree = "<group>";
 		};
-		B3BFEA122B77F9D100DE7617 /* BJStyle */ = {
+		B3BFEA122B77F9D100DE7617 /* BHStyle */ = {
 			isa = PBXGroup;
 			children = (
 				B3C9E54A2B6EC06F00153158 /* Modifiers */,
@@ -712,7 +708,7 @@
 				B3BFEA102B76806100DE7617 /* Color+Constants.swift */,
 				B3BFEA152B781A1A00DE7617 /* String+Constants.swift */,
 			);
-			path = BJStyle;
+			path = BHStyle;
 			sourceTree = "<group>";
 		};
 		B3C97F142B5CE83600211B4C /* Cache */ = {
@@ -738,7 +734,6 @@
 			isa = PBXGroup;
 			children = (
 				B37AC7742BA086D90052552B /* ViewModels */,
-				B347DE692B7FF4D900F2FA74 /* Helpers */,
 				B3C97F242B5CE94500211B4C /* Views */,
 				B3C97F212B5CE91500211B4C /* Models */,
 				B32947A12B5FFD36007C8C1E /* UIColor+Hex.swift */,
@@ -1037,6 +1032,7 @@
 				B33385432CB5CD9B0087C9D7 /* HScrollBarView.swift in Sources */,
 				B3BFEA1A2B791F8800DE7617 /* CreateActivityDetailView.swift in Sources */,
 				B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */,
+				B33385822CB8C2760087C9D7 /* NotificationsNotEnabledView.swift in Sources */,
 				B347DE7D2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift in Sources */,
 				B3BFEA112B76806100DE7617 /* Color+Constants.swift in Sources */,
 				B31996A62C499AC300398BBD /* SectionWithDisclaimerIfEmpty.swift in Sources */,

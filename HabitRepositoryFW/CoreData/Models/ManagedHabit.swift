@@ -24,8 +24,10 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
     @NSManaged public var schedulingUnits: Int16 // Deciphered from ScheduleTimeUnit
     @NSManaged public var rate: Int16 // Every 'x' Days or Every 'x' weeks
-    @NSManaged public var scheduledWeekDaysRaw: NSSet? // Set<Int> // Deciphered from ScheduleDay
     @NSManaged public var reminderTime: Date? // Nil can absolutely happen, means none was set
+    
+    
+    @NSManaged public var scheduledWeekDaysRaw: NSSet? // Set<Int>
     
     var scheduledWeekDays: Set<Int> {
         get {
