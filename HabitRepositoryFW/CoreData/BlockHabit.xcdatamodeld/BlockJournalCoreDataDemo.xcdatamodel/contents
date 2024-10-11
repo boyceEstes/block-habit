@@ -35,6 +35,10 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isArchived" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="rate" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="reminderTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="scheduledWeekDaysRaw" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName"/>
+        <attribute name="schedulingUnits" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="activityDetails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DataActivityDetail" inverseName="habits" inverseEntity="DataActivityDetail"/>
         <relationship name="habitRecords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DataHabitRecord" inverseName="habit" inverseEntity="DataHabitRecord"/>
         <uniquenessConstraints>

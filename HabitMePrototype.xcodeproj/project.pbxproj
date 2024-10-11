@@ -42,10 +42,10 @@
 		B33385562CB6E43C0087C9D7 /* HabitsMenuAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385552CB6E43C0087C9D7 /* HabitsMenuAlert.swift */; };
 		B33385582CB845FA0087C9D7 /* CustomDisclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385572CB845FA0087C9D7 /* CustomDisclosure.swift */; };
 		B333855B2CB84EB00087C9D7 /* SchedulingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855A2CB84EB00087C9D7 /* SchedulingContent.swift */; };
-		B333855E2CB84F640087C9D7 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855D2CB84F640087C9D7 /* ScheduleDay.swift */; };
-		B33385602CB84F7A0087C9D7 /* ScheduleTimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */; };
 		B33385622CB854670087C9D7 /* ScheduleHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385612CB854670087C9D7 /* ScheduleHabitView.swift */; };
 		B33385642CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385632CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift */; };
+		B333857F2CB8AA860087C9D7 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855D2CB84F640087C9D7 /* ScheduleDay.swift */; };
+		B33385802CB8AA890087C9D7 /* ScheduleTimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -483,8 +483,6 @@
 		B333855C2CB84F550087C9D7 /* CreateEditHabit */ = {
 			isa = PBXGroup;
 			children = (
-				B333855D2CB84F640087C9D7 /* ScheduleDay.swift */,
-				B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */,
 			);
 			path = CreateEditHabit;
 			sourceTree = "<group>";
@@ -623,6 +621,8 @@
 			children = (
 				B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */,
 				B3B2F2F72BDFC9D800240EB0 /* Habit.swift */,
+				B333855D2CB84F640087C9D7 /* ScheduleDay.swift */,
+				B333855F2CB84F7A0087C9D7 /* ScheduleTimeUnit.swift */,
 				B3B2F2FE2BDFCA4E00240EB0 /* HabitRecord.swift */,
 				B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */,
 				B37AC77C2BAF67310052552B /* ActivityDetailSortable.swift */,
@@ -1096,8 +1096,6 @@
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
 				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
-				B333855E2CB84F640087C9D7 /* ScheduleDay.swift in Sources */,
-				B33385602CB84F7A0087C9D7 /* ScheduleTimeUnit.swift in Sources */,
 				B37AC76E2BA082E00052552B /* Date+GraphDisplayDate.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
@@ -1138,8 +1136,10 @@
 				B3B2F30E2BE005F300240EB0 /* HabitFRCDataSourceAdapter.swift in Sources */,
 				B389D2FF2BE59343004A8CF0 /* Array+IsCompletedHabits.swift in Sources */,
 				B3B2F3172BE02AD500240EB0 /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */,
+				B333857F2CB8AA860087C9D7 /* ScheduleDay.swift in Sources */,
 				B39A274B2BE9B119002A5A88 /* ActivityRecordCreator.swift in Sources */,
 				B3B2F2FB2BDFCA0700240EB0 /* ActivityDetailSortable.swift in Sources */,
+				B33385802CB8AA890087C9D7 /* ScheduleTimeUnit.swift in Sources */,
 				B3B2F30C2BE005DA00240EB0 /* ManagedHabit.swift in Sources */,
 				B3B2F3112BE005F300240EB0 /* CoreDataBlockHabitStore+habitDataSource.swift in Sources */,
 				B389D2F92BE59280004A8CF0 /* HabitController.swift in Sources */,

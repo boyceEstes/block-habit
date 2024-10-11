@@ -22,7 +22,21 @@ public class ManagedHabit: NSManagedObject {
     @NSManaged public var goalCompletionsPerDay: Int64 // -1 = unset
     @NSManaged public var habitRecords: NSSet? // DataActivityDetails
     @NSManaged public var activityDetails: Set<ManagedActivityDetail>? // DataHabitRecords
-
+    @NSManaged public var schedulingUnits: Int16 // Deciphered from ScheduleTimeUnit
+    @NSManaged public var rate: Int16 // Every 'x' Days or Every 'x' weeks
+    @NSManaged public var scheduledWeekDaysRaw: NSSet? // Set<Int> // Deciphered from ScheduleDay
+    @NSManaged public var reminderTime: Date? // Nil can absolutely happen, means none was set
+    
+    var scheduledWeekDays: Set<Int> {
+        get {
+            guard let rawDays = scheduledWeekDaysRaw as? Set<Int> else { return [] }
+            return rawDays
+        }
+        set {
+            scheduledWeekDaysRaw = newValue as NSSet
+        }
+    }
+    
     
     public class func allManagedHabitsRequest() -> NSFetchRequest<ManagedHabit> {
         
@@ -118,7 +132,11 @@ extension ManagedHabit {
             isArchived: isArchived,
             goalCompletionsPerDay: goalCompletionsPerDay == -1 ? nil : Int(goalCompletionsPerDay),
             color: color,
-            activityDetails: activityDetails
+            activityDetails: activityDetails,
+            schedulingUnits: ScheduleTimeUnit(rawValue: Int(schedulingUnits)) ?? .weekly,
+            rate: Int(rate),
+            scheduledWeekDays: Set(scheduledWeekDays.compactMap { ScheduleDay(rawValue: $0) }),
+            reminderTime: reminderTime
         )
     }
 }
@@ -153,7 +171,14 @@ extension ManagedHabit : Identifiable {
         isArchived = habit.isArchived
         // It is not optional because I am storing as a scalable value
         goalCompletionsPerDay = Int64(habit.goalCompletionsPerDay ?? -1)
+
         color = habit.color
         activityDetails = try habit.activityDetails.toManaged(context: context)
+        
+        schedulingUnits = Int16(habit.schedulingUnits.rawValue)
+        rate = Int16(habit.rate)
+        scheduledWeekDays = Set(habit.scheduledWeekDays.map { $0.rawValue })
+        reminderTime = habit.reminderTime
+        
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum ScheduleTimeUnit: Int {
+public enum ScheduleTimeUnit: Int {
     
     case daily
     case weekly
