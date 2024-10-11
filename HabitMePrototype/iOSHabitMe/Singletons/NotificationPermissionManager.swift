@@ -20,7 +20,6 @@ class NotificationPermissionManager {
     
     // Check current notification permission status
     func checkNotificationPermission() async -> UNAuthorizationStatus {
-        let center = UNUserNotificationCenter.current()
         let settings = await withCheckedContinuation { continuation in
             center.getNotificationSettings { settings in
                 continuation.resume(returning: settings)
@@ -34,7 +33,6 @@ class NotificationPermissionManager {
     /// Delivers `true` if notification request was granted
     func requestNotificationPermission() async throws -> Bool {
         
-        let center = UNUserNotificationCenter.current()
         return try await withCheckedThrowingContinuation() { continuation in
             center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
                 
