@@ -19,9 +19,8 @@ struct SchedulingContent: View {
     
     var body: some View {
         
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
-                
                 Text("Scheduling")
                 
                 Spacer()
@@ -35,9 +34,14 @@ struct SchedulingContent: View {
                 }
             }
             
+            Text("Set Schedule and Reminders with this habit")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            
+            
             if let reminderTime {
                 HStack {
-                    Text("Reminders")
+                    Label("Reminders", systemImage: "bell")
                     Spacer()
                     Text("\(DateFormatter.shortTime.string(from: reminderTime))")
                 }
