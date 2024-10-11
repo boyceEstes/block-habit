@@ -82,6 +82,15 @@ struct EditHabitView: View {
                 CreateEditActivityCompletionGoalContent(
                     completionGoal: $completionGoal
                 )
+                
+                Spacer()
+                
+                HabitMePrimaryButton(
+                    title: "Save",
+                    isAbleToTap: isAbleToCreate,
+                    action: didTapSaveAndExit
+                )
+                .padding(.horizontal)
             }
         }
         .createEditHabitSheetPresentation()
@@ -91,7 +100,6 @@ struct EditHabitView: View {
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
-        .sheetyBottomBarButton(title: "Save", isAbleToTap: isAbleToCreate, action: didTapSaveAndExit)
     }
     
     
