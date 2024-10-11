@@ -21,17 +21,17 @@ enum ScheduleDay: Int {
     var abbreviation: String {
         
         switch self {
-        case .sunday: return "S"
+        case .sunday: return "Su"
         case .monday: return "M"
-        case .tuesday: return "T"
+        case .tuesday: return "Tu"
         case .wednesday: return "W"
-        case .thursday: return "T"
+        case .thursday: return "Th"
         case .friday: return "F"
-        case .saturday: return "S"
+        case .saturday: return "Sa"
         }
     }
     
     static var allDays: Set<ScheduleDay> {
-        [.sunday, .tuesday, .wednesday, .thursday, .friday, .saturday]
+        [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     }
 }

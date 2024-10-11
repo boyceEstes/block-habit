@@ -12,6 +12,6 @@ extension ContentView {
     
     func makeScheduleView(schedulingUnits: Binding<ScheduleTimeUnit>, rate: Binding<Int>, scheduledWeekDays: Binding<Set<ScheduleDay>>, reminderTime: Binding<Date?>) -> ScheduleHabitView {
         
-        return ScheduleHabitView()
+        return ScheduleHabitView(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
     }
 }

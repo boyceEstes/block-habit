@@ -280,7 +280,6 @@ struct CreateEditHabitDetailContent: View {
 
 struct CreateEditHabitContent: View {
     
-    
     @Binding var nameTextFieldValue: String
     @Binding var selectedColor: Color?
     
