@@ -22,31 +22,28 @@ struct SchedulingContent: View {
         
         VStack(alignment: .leading) {
             HStack {
-                Text("Scheduling")
+                Text("Reminders")
                 
                 Spacer()
                 
-                HStack(spacing: 4) {
-                    
-                    Text("\(scheduleSummary())")
-                        .foregroundStyle(.secondary)
-                    
-                    CustomDisclosure()
-                }
+                CustomDisclosure()
             }
-            
-            Text("Set Schedule and Reminders with this habit")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
             
             
             if let reminderTime {
+                
                 HStack {
-                    Label("Reminders", systemImage: "bell")
+                    Label("\(scheduleSummary())", systemImage: "bell")
                     Spacer()
                     Text("\(DateFormatter.shortTime.string(from: reminderTime))")
                 }
                 .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
+                
+            } else {
+                
+                Text("Set Reminders for this habit")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding()

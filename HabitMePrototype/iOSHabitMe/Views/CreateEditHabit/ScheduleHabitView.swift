@@ -55,28 +55,28 @@ struct ScheduleHabitView: View {
                         .background(Color(uiColor: .secondarySystemBackground))
                 )
             }
-            
+
             Section {
-                HStack {
-                    Text("Frequency")
-                    Spacer()
-                    Text("Daily")
-                        .foregroundStyle(.secondary)
+                Toggle("Reminders", isOn: $isReminderTimeAvailableToSet)
+            } footer: {
+                if !isReminderTimeAvailableToSet {
+                    Text("There will be no notification reminders for this habit")
                 }
             }
             
-            Section {
-                HStack {
-                    Toggle("Reminders", isOn: $isReminderTimeAvailableToSet)
+            if isReminderTimeAvailableToSet {
+                Section {
+//                    HStack {
+//                        ForEach(ScheduleDay.allCases, id: \.self) { scheduleDay in
+//                            Text("\(scheduleDay.abbreviation)")
+//                        }
+//                    }
+                    DatePicker("Time", selection: $nonOptionalReminderTime, displayedComponents: .hourAndMinute)
                 }
-                if isReminderTimeAvailableToSet {
-                        DatePicker("Time", selection: $nonOptionalReminderTime, displayedComponents: .hourAndMinute)
-                }
-            } footer: {
-                if isReminderTimeAvailableToSet, let reminderTime = reminderTime {
-                    Text("Notifications will be delivered daily at \(DateFormatter.shortTime.string(from: reminderTime))")
-                } else {
-                    Text("There will be no notification reminders for this habit")
+                footer: {
+                    if isReminderTimeAvailableToSet, let reminderTime = reminderTime {
+                        Text("Notifications will be delivered daily at \(DateFormatter.shortTime.string(from: reminderTime))")
+                    }
                 }
             }
         }
@@ -92,7 +92,8 @@ struct ScheduleHabitView: View {
                 reminderTime = nil
             }
         }
-        .navigationTitle("Scheduling")
+        .navigationTitle("Reminders")
+        .navigationBarTitleDisplayMode(.inline)
         .alert(alertMessage, isPresented: $showAlert, actions: {})
         .task {
             await setUIForNotificationPermission()
@@ -160,11 +161,13 @@ struct ScheduleHabitView: View {
     @State var reminderTime: Date? = Date()
     
     
-    return ScheduleHabitView(
-        
-        schedulingUnits: $schedulingUnits,
-        rate: $rate,
-        scheduledWeekDays: $scheduledWeekDays,
-        reminderTime: $reminderTime
-    )
+    return NavigationStack {
+        ScheduleHabitView(
+            
+            schedulingUnits: $schedulingUnits,
+            rate: $rate,
+            scheduledWeekDays: $scheduledWeekDays,
+            reminderTime: $reminderTime
+        )
+    }
 }

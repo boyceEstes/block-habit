@@ -8,7 +8,7 @@
 import Foundation
 
 
-public enum ScheduleDay: Int {
+public enum ScheduleDay: Int, CaseIterable {
     
     case sunday
     case monday
