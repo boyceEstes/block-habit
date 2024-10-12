@@ -58,10 +58,22 @@ struct HabitsSection: View {
                     
                     Spacer()
                     
-                    Button(action: goToCreateHabit) {
-                        Image(systemName: "plus.circle")
+                    
+                    HStack(spacing: 24) {
+                        Button {
+//                            habitController.removeLastHabitRecordForDay()
+                            habitController.destroyLastRecordOnSelectedDay()
+                        } label: {
+                            Image(systemName: "arrow.uturn.backward")
+                        }
+                        //                        .disabled(habitController.isNoHabitRecordsForSelectedDay)
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                        
+                        Button(action: goToCreateHabit) {
+                            Image(systemName: "plus.circle")
+                        }
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     }
-                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
                 .homeDetailTitle()
             .padding(.horizontal)

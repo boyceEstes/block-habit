@@ -96,7 +96,7 @@ struct HomeView: View {
                             animation: animation,
                             showDayDetail: $showDayDetail,
                             destroyHabitRecord: { habitRecord in
-                                habitController.destroyRecord(habitRecord)
+//                                habitController.destroyRecord(habitRecord)
                             }
                         )
                     } else {
