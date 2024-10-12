@@ -51,7 +51,7 @@ struct BlockStack: View {
 
 #Preview {
     
-    @Namespace var namespace
+    @Previewable @Namespace var namespace
     
     return BlockStack(
         habitRecords: HabitRecord.previewRecords,

@@ -73,7 +73,7 @@ import HabitRepositoryFW
 
 #Preview {
     
-    @State var items: [SelectableHabit] = Habit.previewHabits.map { SelectableHabit(habit: $0) }
+    @Previewable @State var items: [SelectableHabit] = Habit.previewHabits.map { SelectableHabit(habit: $0) }
     return HorizontalScrollySelectableFilterList(items: $items)
 }
 

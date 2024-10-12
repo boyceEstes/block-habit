@@ -82,10 +82,10 @@ struct SchedulingContent: View {
 
 #Preview {
     
-    @State var schedulingUnits: ScheduleTimeUnit = .weekly
-    @State var rate = 1
-    @State var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
-    @State var reminderTime: Date? = Date()
+    @Previewable @State var schedulingUnits: ScheduleTimeUnit = .weekly
+    @Previewable @State var rate = 1
+    @Previewable @State var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
+    @Previewable @State var reminderTime: Date? = Date()
     
     return SchedulingContent(
         

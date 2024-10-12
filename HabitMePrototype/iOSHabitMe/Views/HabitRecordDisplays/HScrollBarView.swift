@@ -163,12 +163,12 @@ struct HScrollBarView: View {
 
 
 #Preview {
-    
-    let maxNumOfItemsBeforeCrushing = 10.0
-    @State var day = Date()
-    @Namespace var namespace
-    @State var showDayDetail = false
 
+    @Previewable @State var day = Date()
+    @Previewable @Namespace var namespace
+    @Previewable @State var showDayDetail = false
+
+    let maxNumOfItemsBeforeCrushing = 10.0
     
     return HScrollBarView(
         graphWidth: 300,

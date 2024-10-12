@@ -95,7 +95,7 @@ struct CreateEditActivityCompletionGoalContent: View {
 
 #Preview {
     
-    @State var completionGoal: Int? = 1
+    @Previewable @State var completionGoal: Int? = 1
     
     return CreateEditActivityCompletionGoalContent(completionGoal: $completionGoal)
 }

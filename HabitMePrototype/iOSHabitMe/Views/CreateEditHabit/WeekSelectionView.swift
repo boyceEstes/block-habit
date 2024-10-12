@@ -61,6 +61,6 @@ struct WeekSelectionView: View {
 import HabitRepositoryFW
 
 #Preview {
-    @State var items: [SelectableScheduleDay] = ScheduleDay.allCases.map { SelectableScheduleDay(scheduleDay: $0, isSelected: true) }
+    @Previewable @State var items: [SelectableScheduleDay] = ScheduleDay.allCases.map { SelectableScheduleDay(scheduleDay: $0, isSelected: true) }
     return WeekSelectionView(items: $items)
 }

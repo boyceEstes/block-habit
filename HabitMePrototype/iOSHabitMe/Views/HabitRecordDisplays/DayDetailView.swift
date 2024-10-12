@@ -119,8 +119,8 @@ struct DayDetailView: View {
 
 
 #Preview {
-    @Namespace var namespace
-    @State var showDayDetail = false
+    @Previewable @Namespace var namespace
+    @Previewable @State var showDayDetail = false
     
     return DayDetailView(
         destroyHabitRecord: { _ in },

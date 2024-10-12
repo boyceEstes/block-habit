@@ -106,7 +106,7 @@ struct NumberTextField: View {
 
 #Preview {
     
-    @State var someTextFieldValue = ""
+    @Previewable @State var someTextFieldValue = ""
     @FocusState var previewFocused: Focusable?
     return VStack {
         

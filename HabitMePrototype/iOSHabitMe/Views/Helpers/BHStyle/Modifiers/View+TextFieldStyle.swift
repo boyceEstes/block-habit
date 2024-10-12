@@ -32,7 +32,7 @@ struct TextFieldBackground: ViewModifier {
 
 #Preview {
     
-    @State var someTextFieldValue = ""
+    @Previewable @State var someTextFieldValue = ""
     return VStack {
         VStack {
             Text("Basic")

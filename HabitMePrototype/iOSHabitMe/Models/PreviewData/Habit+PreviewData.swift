@@ -7,7 +7,7 @@
 
 
 
-#if DEBUG
+
 
 
 import HabitRepositoryFW
@@ -232,5 +232,3 @@ extension HabitRecord {
         ]
     }
 }
-
-#endif

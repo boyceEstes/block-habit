@@ -24,7 +24,7 @@ extension Font {
 }
 
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
 //    NavigationStack {
         VStack {
             Text("Section title font")
@@ -40,7 +40,6 @@ extension Font {
                 .font(.rowTitle)
         }
         .preferredColorScheme(.light)
-        .previewLayout(.sizeThatFits)
 //    }
     
 }
