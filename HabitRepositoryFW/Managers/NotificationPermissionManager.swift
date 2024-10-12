@@ -63,7 +63,7 @@ extension NotificationPermissionManager {
             
             guard let previousDays, !previousDays.isEmpty else {
                 
-                // Create whatever is in the current Days, no need to remove anything
+                // This happens on first creation of a habit with reminders. Schedule without worrying about removing anything
                 scheduleNotifications(habitID: habit.id, days: habit.scheduledWeekDays, time: reminderTime, habitName: habit.name)
                 return
             }
@@ -75,20 +75,9 @@ extension NotificationPermissionManager {
                 return
             }
             
-            // All of the previous days that are not in the current days
-            let daysToRemove = habit.scheduledWeekDays.subtracting(previousDays)
-            removeNotifications(habitID: habit.id, days: daysToRemove)
-            // All of the current days that are not in the previous days
-            let daysToAdd = previousDays.subtracting(habit.scheduledWeekDays)
-            scheduleNotifications(habitID: habit.id, days: daysToAdd, time: reminderTime, habitName: habit.name)
-        
-
-            let notificationCenter = UNUserNotificationCenter.current()
-            let pendingRequests = await notificationCenter.pendingNotificationRequests()
-            
-            pendingRequests.forEach { request in
-                print("Pending notification: \(request.identifier), trigger: \(String(describing: request.trigger))")
-            }
+            // Now, last case: We have a previous days and a current days. Get rid of all the previous day's notifications. Renew with Current days
+            removeNotifications(habitID: habit.id, days: previousDays)
+            scheduleNotifications(habitID: habit.id, days: habit.scheduledWeekDays, time: reminderTime, habitName: habit.name)
         }
     }
     
@@ -113,7 +102,6 @@ extension NotificationPermissionManager {
         let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: time)
         
         for day in days {
-            
             var dateComponents = DateComponents()
             dateComponents.weekday = day.dateComponentID
             dateComponents.hour = timeComponents.hour
@@ -142,7 +130,7 @@ extension NotificationPermissionManager {
 
             } catch {
                 // Handle errors that may occur during add.
-                fatalError("HEHEHEHEHEHEHE")
+                fatalError("N: HEHEHEHEHEHEHE")
             }
         }
     }
