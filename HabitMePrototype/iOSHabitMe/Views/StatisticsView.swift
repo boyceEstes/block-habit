@@ -23,7 +23,12 @@ struct StatisticsView: View {
     
     private var selectedHabitRecordsForDays: [Date: [HabitRecord]] {
         
-        habitController.habitRecordsForDays.mapValues { $0.filter { selectedHabits.contains($0.habit) } }
+        habitController.habitRecordsForDays.mapValues {
+            $0.filter {
+                
+                selectedHabits.map { $0.id }.contains($0.habit.id)
+            }
+        }
     }
     
     @State private var selectableHabits = [SelectableHabit]()
