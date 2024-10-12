@@ -93,7 +93,7 @@ extension NotificationPermissionManager {
     }
     
     
-    private func removeNotifications(habitID: String, days: Set<ScheduleDay>) {
+    func removeNotifications(habitID: String, days: Set<ScheduleDay>) {
         
         var idsToRemove = [String]()
         

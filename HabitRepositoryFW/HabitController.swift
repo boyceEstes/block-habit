@@ -216,8 +216,6 @@ public class HabitController: ObservableObject {
         
         return habitRecordsForPrevDay != nil
     }
-    
-    
 }
 
 
@@ -348,11 +346,16 @@ extension HabitController {
                     throw NSError(domain: "", code: 1)
                 }
                 
-                DispatchQueue.main.async { [weak self] in
-                    self?.latestHabits.remove(at: habitToRemoveIndex)
+                await MainActor.run {
+                    self.latestHabits.remove(at: habitToRemoveIndex)
                     
-                    self?.updateHabitsIsCompletedForDay()
-                    self?.deleteHabitInHabitRecordsForDays(habitToRemove: habit)
+                    self.updateHabitsIsCompletedForDay()
+                    self.deleteHabitInHabitRecordsForDays(habitToRemove: habit)
+                }
+                
+                
+                if habit.reminderTime != nil {
+                    NotificationPermissionManager.shared.removeNotifications(habitID: habit.id, days: habit.scheduledWeekDays)
                 }
             } catch {
                 fatalError("Fix it. The ... yard trimmings... need to be removed. \(error)")
@@ -387,6 +390,11 @@ extension HabitController {
                 
                 updateHabitsIsCompletedForDay()
                 
+                
+                if habit.reminderTime != nil {
+                    NotificationPermissionManager.shared.removeNotifications(habitID: habit.id, days: habit.scheduledWeekDays)
+                }
+                
             } catch {
                 
                 fatalError("SO BAD! \(error)")
@@ -415,6 +423,12 @@ extension HabitController {
                 
                 // I actually don't know if we have already done this habit or not before - so I should recalculate its completion rather than just setting it to complete now that I have appended to the nonarchived habits
                 updateHabitsIsCompletedForDay()
+                
+                
+                if habit.reminderTime != nil {
+                    // If it is being restored from archive, there should be no notification active - simply create notification schedules
+                    NotificationPermissionManager.shared.scheduleNotification(for: habit)
+                }
                 
             } catch {
                 fatalError("GRRRRR IT WON'T COME BACK! PLEASE FORGIVE ME! \(error)")

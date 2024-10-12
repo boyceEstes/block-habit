@@ -196,6 +196,7 @@ struct HomeView: View {
                 
                 guard let habitCreationDateAtNoon = isCompletedHabit.habit.creationDate.noon,
                       habitController.selectedDay >= habitCreationDateAtNoon else {
+                    
                     print("\(DateFormatter.shortDateShortTime.string(from: habitController.selectedDay)) <= habitCreateDateAtNoon: \(DateFormatter.shortDateShortTime.string(from: isCompletedHabit.habit.creationDate.noon!))")
                     // Do not include any habits without a completion goal in the count
                     return partialResult

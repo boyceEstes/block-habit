@@ -49,7 +49,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "363269C6-F392-4C8E-9854-DA830AD512DC"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             condition = "$0.habit.name == &quot;Turtle&quot;"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -60,22 +60,6 @@
             endingLineNumber = "28"
             landmarkName = "selectedHabitRecordsForDays"
             landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6DD4F758-4FE4-4FA1-B555-D1CE4B0AEEC9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
-            landmarkName = "setupSelectableHabits()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
