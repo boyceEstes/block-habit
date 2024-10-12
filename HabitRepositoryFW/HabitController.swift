@@ -288,12 +288,7 @@ extension HabitController {
                 if outdatedHabit.habit.reminderTime != updatedHabit.reminderTime {
                     
                     let manager = NotificationPermissionManager.shared
-                    
-                    if updatedHabit.reminderTime != nil {
-                        manager.scheduleNotification(for: updatedHabit)
-                    } else {
-                        manager.cancelNotifications(for: updatedHabit)
-                    }
+                    manager.scheduleNotification(for: updatedHabit, previousDays: outdatedHabit.habit.scheduledWeekDays)
                 }
             } catch {
                 // FIXME: Handle error updating!

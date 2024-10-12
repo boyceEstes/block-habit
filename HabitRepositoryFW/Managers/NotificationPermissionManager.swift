@@ -50,46 +50,96 @@ public class NotificationPermissionManager {
 
 extension NotificationPermissionManager {
     
-    func cancelNotifications(for habit: Habit) {
+    func scheduleNotification(for habit: Habit, previousDays: Set<ScheduleDay>? = nil) {
         
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [habit.id])
-    }
-    
-    
-    func scheduleNotification(for habit: Habit) {
+        Task {
         
-        guard let reminderTime = habit.reminderTime else { return }
+            guard let reminderTime = habit.reminderTime else {
+                
+                // If we have turned off all notifications (nil reminderTime) then we will just keep this off
+                removeNotifications(habitID: habit.id, days: previousDays ?? [])
+                return
+            }
+            
+            guard let previousDays, !previousDays.isEmpty else {
+                
+                // Create whatever is in the current Days, no need to remove anything
+                scheduleNotifications(habitID: habit.id, days: habit.scheduledWeekDays, time: reminderTime, habitName: habit.name)
+                return
+            }
+            
+            guard !habit.scheduledWeekDays.isEmpty else {
+                
+                // Destroy whatever was in the previous days, no need to create anything
+                removeNotifications(habitID: habit.id, days: previousDays)
+                return
+            }
+            
+            // All of the previous days that are not in the current days
+            let daysToRemove = habit.scheduledWeekDays.subtracting(previousDays)
+            removeNotifications(habitID: habit.id, days: daysToRemove)
+            // All of the current days that are not in the previous days
+            let daysToAdd = previousDays.subtracting(habit.scheduledWeekDays)
+            scheduleNotifications(habitID: habit.id, days: daysToAdd, time: reminderTime, habitName: habit.name)
         
-        let habitDateComponents = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: habitDateComponents, repeats: true)
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        let content = habitNotificationContent(habit)
-        
-        // I am going to be setting the notification requests with the Habit ID - these should all be guaranteed to be unique
-        // this allows me to easily habits from the request queue if this is ever changed
-        let request = UNNotificationRequest(identifier: habit.id, content: content, trigger: trigger)
-        
-        registerNotificationRequest(request)
-    }
 
+            let notificationCenter = UNUserNotificationCenter.current()
+            let pendingRequests = await notificationCenter.pendingNotificationRequests()
+            
+            pendingRequests.forEach { request in
+                print("Pending notification: \(request.identifier), trigger: \(String(describing: request.trigger))")
+            }
+        }
+    }
+    
+    
+    private func removeNotifications(habitID: String, days: Set<ScheduleDay>) {
+        
+        var idsToRemove = [String]()
+        
+        for day in days {
+            
+            let notificationID = "\(habitID)_\(day.rawValue)"
+            idsToRemove.append(notificationID)
+        }
+        
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: idsToRemove)
+    }
+    
+    
+    private func scheduleNotifications(habitID: String, days: Set<ScheduleDay>, time: Date, habitName: String) {
+        
+        let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: time)
+        
+        for day in days {
+            
+            var dateComponents = DateComponents()
+            dateComponents.weekday = day.dateComponentID
+            dateComponents.hour = timeComponents.hour
+            dateComponents.minute = timeComponents.minute
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            
+            let notificationID = "\(habitID)_\(day.rawValue)"
+            
+            let content = habitNotificationContent(habitName)
+            
+            let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
+            registerNotificationRequest(request)
+        }
+    }
+    
     
     private func registerNotificationRequest(_ request: UNNotificationRequest) {
         
         Task {
             // Schedule the request with the system.
             let notificationCenter = UNUserNotificationCenter.current()
+            
             do {
-                
                 try await notificationCenter.add(request)
-                let pendingRequests = await notificationCenter.pendingNotificationRequests()
-                
-                pendingRequests.forEach { request in
-                    print("Pending notification: \(request.identifier), trigger: \(String(describing: request.trigger))")
-                }
-                
+
             } catch {
                 // Handle errors that may occur during add.
                 fatalError("HEHEHEHEHEHEHE")
@@ -98,13 +148,12 @@ extension NotificationPermissionManager {
     }
     
     
-    private func habitNotificationContent(_ habit: Habit) -> UNMutableNotificationContent {
+    private func habitNotificationContent(_ habitName: String) -> UNMutableNotificationContent {
         
         let content = UNMutableNotificationContent()
         content.title = "Habit Reminder"
-        content.body = "It's time to do your \(habit.name)"
+        content.body = "It's time to do your \(habitName)"
         content.sound = .default
         return content
     }
-
 }

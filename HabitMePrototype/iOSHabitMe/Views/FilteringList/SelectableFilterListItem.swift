@@ -9,26 +9,25 @@ import SwiftUI
 
 
 // Needs to be Identifiable for the foreach conformance, just makes it easier
-protocol SelectableListItem: Identifiable {
+protocol SelectableListItem: Identifiable, Equatable {
     
     var id: String { get } // Id stays the same
     var name: String { get } // Name stays the same
     var isSelected: Bool { get set } // Gets toggled
-    
-    var colorString: String? { get }
+    var color: Color { get }
 }
 
 
-extension SelectableListItem {
-    
-    var color: Color {
-        
-        let defaultColor = Color.blue
-        
-        guard let colorString, let unwrappedColor = Color(hex: colorString) else {
-            return defaultColor
-        }
-        
-        return unwrappedColor
-    }
-}
+//extension SelectableListItem {
+//    
+//    var color: Color {
+//        
+//        let defaultColor = Color.blue
+//        
+//        guard let colorString, let unwrappedColor = Color(hex: colorString) else {
+//            return defaultColor
+//        }
+//        
+//        return unwrappedColor
+//    }
+//}

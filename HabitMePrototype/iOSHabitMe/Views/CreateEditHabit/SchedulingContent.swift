@@ -33,7 +33,7 @@ struct SchedulingContent: View {
             if let reminderTime {
                 
                 HStack {
-                    Label("\(scheduleSummary())", systemImage: "bell")
+                    Label("\(scheduleSummary)", systemImage: "bell")
                     Spacer()
                     Text("\(DateFormatter.shortTime.string(from: reminderTime))")
                 }
@@ -60,22 +60,22 @@ struct SchedulingContent: View {
     }
     
     
-    private func scheduleSummary() -> String {
+    private var scheduleSummary: String {
         
-        switch schedulingUnits {
-        case .daily:
-            if rate == 1 {
-                return "Daily"
-            } else {
-                return "Every \(rate) days"
-            }
-        case .weekly:
+//        switch schedulingUnits {
+//        case .daily:
+//            if rate == 1 {
+//                return "Daily"
+//            } else {
+//                return "Every \(rate) days"
+//            }
+//        case .weekly:
             if scheduledWeekDays.count == 7 {
                 return "Daily"
             } else {
                 return scheduledWeekDays.sorted { $0.rawValue < $1.rawValue }.map { $0.abbreviation }.joined(separator: ", ")
             }
-        }
+//        }
     }
 }
 

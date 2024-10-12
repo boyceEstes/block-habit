@@ -19,15 +19,16 @@ struct SelectableHabit: Hashable, SelectableListItem {
     let id: String
     let name: String
     var isSelected: Bool = true
-    var colorString: String?
+    var color: Color
     
     // This is kept for easily keeping data that will be needed later
     var habit: Habit
     
     init(habit: Habit) {
+        
         self.id = habit.id
         self.name = habit.name
-        self.colorString = habit.color
+        self.color = Color(hex: habit.color) ?? Color.blue
         self.habit = habit
     }
 }

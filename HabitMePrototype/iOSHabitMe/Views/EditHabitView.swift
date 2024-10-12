@@ -143,6 +143,9 @@ struct EditHabitView: View {
     
     private func updateHabit() {
         
+        print("HEY! ScheduledweekDay count: \(scheduledWeekDays.count)")
+        
+        
         guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
             // FIXME: Handle color not being set correctly error
             return

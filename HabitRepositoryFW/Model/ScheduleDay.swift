@@ -8,7 +8,7 @@
 import Foundation
 
 
-public enum ScheduleDay: Int, CaseIterable {
+public enum ScheduleDay: Int, Identifiable, CaseIterable {
     
     case sunday
     case monday
@@ -18,6 +18,9 @@ public enum ScheduleDay: Int, CaseIterable {
     case friday
     case saturday
     
+    public var id: Int {
+        self.rawValue
+    }
     
     public var abbreviation: String {
         
@@ -32,6 +35,19 @@ public enum ScheduleDay: Int, CaseIterable {
         }
     }
     
+    
+    public var dateComponentID: Int {
+        
+        switch self {
+        case .sunday: return 1
+        case .monday: return 2
+        case .tuesday: return 3
+        case .wednesday: return 4
+        case .thursday: return 5
+        case .friday: return 6
+        case .saturday: return 7
+        }
+    }
     
     public static var allDays: Set<ScheduleDay> {
         [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
