@@ -508,25 +508,30 @@ extension HabitController {
     public func destroyLastRecordOnSelectedDay() {
         
         Task {
-            do {
-                // 1. get day, this is mostly just ensuring that the day can be found in recordsfordays
-                guard let (day, _) = habitRecordsForDays.first(where: { day, value in
-                    Calendar.current.isDate(day, inSameDayAs: selectedDay)
-                }) else {
-                    return
-                }
-                
+            // 1. get day, this is mostly just ensuring that the day can be found in recordsfordays
+            guard let (day, _) = habitRecordsForDays.first(where: { day, value in
+                Calendar.current.isDate(day, inSameDayAs: selectedDay)
+            }) else {
+                return
+            }
+            
+            await MainActor.run {
                 // 2. destroy last record in-memory
                 // We know for sure that day is in there because we just got it above, so we can forcibly unwrap
                 let lastRecord = habitRecordsForDays[day]!.removeLast()
                 
-                // 3. destroy last record in blockHabitRepository
-                try await blockHabitRepository.destroyHabitRecord(lastRecord)
+                Task {
+                    do {
+                        // 3. destroy last record in blockHabitRepository
+                        try await blockHabitRepository.destroyHabitRecord(lastRecord)
+                        
+                    } catch {
+                        fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
+                    }
+                }
                 
                 // Ensure that habits are updated for isCompleted
                 updateHabitsIsCompletedForDay()
-            } catch {
-                fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
             }
         }
     }

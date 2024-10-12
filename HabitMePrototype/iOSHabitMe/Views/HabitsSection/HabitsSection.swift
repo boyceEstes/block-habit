@@ -58,7 +58,6 @@ struct HabitsSection: View {
                     
                     Spacer()
                     
-                    
                     HStack(spacing: 24) {
                         Button {
 //                            habitController.removeLastHabitRecordForDay()
