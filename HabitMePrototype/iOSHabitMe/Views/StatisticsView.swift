@@ -21,27 +21,32 @@ struct StatisticsView: View {
         return allSelectedHabits
     }
     
+    
     private var selectedHabitRecordsForDays: [Date: [HabitRecord]] {
         
         habitController.habitRecordsForDays.mapValues {
+            
             $0.filter {
-                
-                selectedHabits.map { $0.id }.contains($0.habit.id)
+                selectedHabits.contains($0.habit)
             }
         }
     }
     
+    
     @State private var selectableHabits = [SelectableHabit]()
+    
     
     // Basic stats
     private var totalRecords: Int {
         return StatisticsCalculator.findTotalRecords(for: selectedHabitRecordsForDays)
     }
     
+    
     private var avgRecordsPerDay: Double {
         
         return StatisticsCalculator.findAverageRecordsPerDay(for: selectedHabitRecordsForDays)
     }
+    
     
     private var mostCompletions: (recordCount: Int, habit: Habit)? {
         

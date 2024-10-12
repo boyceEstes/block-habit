@@ -169,6 +169,7 @@ extension ManagedHabit : Identifiable {
     func populate(from habit: Habit, in context: NSManagedObjectContext) throws {
         
         name = habit.name
+        creationDate = habit.creationDate
         // Do not put the isArchived because it will be false by default, which is good
         isArchived = habit.isArchived
         // It is not optional because I am storing as a scalable value
