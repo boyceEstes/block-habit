@@ -202,11 +202,7 @@ struct HabitDetailView: View {
                         habitRecordsForDays: habitRecordsForDays,
                         selectedDay: $habitController.selectedDay,
                         animation: animation, 
-                        showDayDetail: $showDayDetail,
-                        destroyHabitRecord: { habitRecord in
-                            print("destroy last record logic")
-                            habitController.destroyRecord(habitRecord)
-                        }
+                        showDayDetail: $showDayDetail
                     )
                     
                     HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {

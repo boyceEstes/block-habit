@@ -27,7 +27,6 @@ struct HScrollBarView: View {
     @Binding var selectedDay: Date
     let animation: Namespace.ID
     @Binding var showDayDetail: Bool
-    let destroyHabitRecord: (HabitRecord) -> Void
     
     
     var body: some View {
@@ -115,25 +114,6 @@ struct HScrollBarView: View {
                     habitController.setSelectedDay(to: date)
                 }
         }
-        .contextMenu {
-            if habitCount > 0 {
-                Button("Delete Last Habit Record") {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
-                        deleteLastHabitRecord(in: habitRecords)
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    private func deleteLastHabitRecord(in habitRecords: [HabitRecord]) {
-        
-        // They are in reverse order so they will need to have the first (not the last) to fetch the
-        // most recent habit record
-        guard let lastHabitRecord = habitRecords.first else { return }
-        
-        destroyHabitRecord(lastHabitRecord)
     }
     
     
@@ -177,7 +157,6 @@ struct HScrollBarView: View {
         habitRecordsForDays: HabitRecord.recordsForDaysPreview(date: day),
         selectedDay: $day,
         animation: namespace,
-        showDayDetail: $showDayDetail,
-        destroyHabitRecord: { _ in }
+        showDayDetail: $showDayDetail
     )
 }
