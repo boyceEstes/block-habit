@@ -7,12 +7,30 @@
 
 import UserNotifications
 
+public extension UserDefaults {
+    
+    enum CustomKey: String {
+        case isNotificationsAllowed
+    }
+    
+    
+   static var isNotificationsAllowed: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: CustomKey.isNotificationsAllowed.rawValue)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: CustomKey.isNotificationsAllowed.rawValue)
+        }
+    }
+}
+
+
 public class NotificationPermissionManager {
     
     // MARK: Accessor
     public static let shared = NotificationPermissionManager()
     // MARK: Constants
     let center = UNUserNotificationCenter.current()
+
     
     private init() {}
 

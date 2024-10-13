@@ -139,6 +139,7 @@
 		B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54F2B6F16F100153158 /* View+Font.swift */; };
 		B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5622B6F25EB00153158 /* View+toolbar.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
+		B3E610E62CBB7769009EE331 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -322,6 +323,7 @@
 		B3C9E5622B6F25EB00153158 /* View+toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+toolbar.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 		B3E34F6C2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRecordsForDateByHabitFRCDataSourceAdapter.swift; sourceTree = "<group>"; };
+		B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -773,6 +775,7 @@
 		B3C97F242B5CE94500211B4C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B3E610E42CBB7753009EE331 /* Settings */,
 				B33385592CB84EA10087C9D7 /* CreateEditHabit */,
 				B33385442CB6DAC70087C9D7 /* FilteringList */,
 				B387B2202CB1BD4A00256C64 /* Helpers */,
@@ -792,7 +795,6 @@
 				B3BFEA172B7838B400DE7617 /* ActivityDetailSummaryRow.swift */,
 				B3BFEA192B791F8800DE7617 /* CreateActivityDetailView.swift */,
 				B347DE7C2B83DFC100F2FA74 /* CreateEditActivityCompletionGoalContent.swift */,
-				B39A27512BF3A3D0002A5A88 /* SettingsView.swift */,
 				B31996A52C499AC300398BBD /* SectionWithDisclaimerIfEmpty.swift */,
 			);
 			path = Views;
@@ -857,6 +859,15 @@
 				B3BFEA1D2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift */,
 			);
 			path = SwiftData;
+			sourceTree = "<group>";
+		};
+		B3E610E42CBB7753009EE331 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B39A27512BF3A3D0002A5A88 /* SettingsView.swift */,
+				B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1102,6 +1113,7 @@
 				B33385542CB6E35E0087C9D7 /* View+ShowAlertDetail.swift in Sources */,
 				B3B2F3052BDFCB7F00240EB0 /* ActivityDetailCalculationType+UI.swift in Sources */,
 				B33385502CB6E2470087C9D7 /* AlertDetail.swift in Sources */,
+				B3E610E62CBB7769009EE331 /* NotificationSettingsView.swift in Sources */,
 				B32947A62B606713007C8C1E /* SwiftDataHabitRepository.swift in Sources */,
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
@@ -1345,6 +1357,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1377,6 +1390,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

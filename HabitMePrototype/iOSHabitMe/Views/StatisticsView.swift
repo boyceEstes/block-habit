@@ -98,13 +98,13 @@ struct StatisticsView: View {
                                 Text("Habits")
                                     .font(.title3)
                                 
-                                Spacer()
-                                
-                                Button("Reset") {
-                                    for i in 0..<selectableHabits.count {
-                                        selectableHabits[i].isSelected = true
-                                    }
-                                }
+//                                Spacer()
+//                                
+//                                Button("Reset") {
+//                                    for i in 0..<selectableHabits.count {
+//                                        selectableHabits[i].isSelected = true
+//                                    }
+//                                }
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)

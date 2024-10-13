@@ -42,32 +42,37 @@ struct ArchivedHabitsView: View {
                 Section {
                     ForEach(habitController.latestArchivedHabits, id: \.id) { archivedHabit in
                         
-                        Text("\(archivedHabit.name)")
-                            .swipeActions(edge: .leading) {
-                                // Restore
-                                Button {
-                                    habitController.restoreHabit(archivedHabit)
-                                } label: {
-                                    Label {
-                                        Text("Restore")
-                                    } icon: {
-                                        BJAsset.restore.image()
-                                    }
-                                }
-                                .tint(Color.restore)
-                            }
-                            .swipeActions(edge: .trailing) {
-                                // Delete
-                                Button(role: .destructive) {
-                                    habitController.deleteHabit(archivedHabit)
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
+                    Text("\(archivedHabit.name)")
+                        .swipeActions(edge: .leading) {
+                            // Restore
+                            Button {
+                                habitController.restoreHabit(archivedHabit)
+                            } label: {
+                                Label {
+                                    Text("Restore")
+                                } icon: {
+                                    BJAsset.restore.image()
                                 }
                             }
+                            .tint(Color.restore)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            // Delete
+                            Button(role: .destructive) {
+                                habitController.deleteHabit(archivedHabit)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 } footer: {
                     if habitController.latestArchivedHabits.isEmpty {
                         Text("There are no archived habits!")
+                    } else {
+                        VStack {
+                            Text("Swipe Left to Right to restore Habits")
+                            Text("Swipe Right to Left to destroy Habits and all their data... forever")
+                        }
                     }
                 }
             }
@@ -238,21 +243,48 @@ struct SettingsView: View {
     var body: some View {
         
         List {
+            Section("🚧 Under Construction 🚧") {
+                NavigationLink("Notifications", destination: NotificationSettingsView())
+            }
             // Section for archived stuff
             Section {
                 NavigationLink("Archived Habits", destination: ArchivedHabitsView())
                 NavigationLink("Archived Activity Details", destination: ArchivedActivityDetailsView())
             }
             
-            Section {
+            Section("🚧 Under Construction 🚧") {
                 Button {
                     if let link = reviewLink {
                         openURL(link)
                     }
                 } label: {
-                    Text("Love this app? Share your Review!")
+                    HStack {
+                        Image(systemName: "star.fill")
+                        Text("Love this app? Share your Review!")
+                        
+                    }
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button {
+                    
+                } label: {
+                    HStack {
+                        Image(systemName: "cloud.drizzle.fill")
+                        Text("Hate this app? Let's talk about it")
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button {
+                    
+                } label: {
+                    HStack {
+                        Image(systemName: "cup.and.saucer.fill")
+                        Text("Buy me a cup of coffee")
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .navigationTitle("Settings")
@@ -261,5 +293,7 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
+    NavigationStack {
+        SettingsView()
+    }
 }

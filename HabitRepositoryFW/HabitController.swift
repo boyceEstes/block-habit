@@ -367,6 +367,15 @@ extension HabitController {
             }
         }
     }
+    
+//    var 
+    
+    /// Meant to be used whenever we are toggling back and forth on the NotificationSettings menu
+    public func scheduleNotificationsForHabits() {
+        
+        let habitsToSchedule = latestNonArchivedHabits.filter { $0.reminderTime != nil }
+        
+    }
 }
 
 
