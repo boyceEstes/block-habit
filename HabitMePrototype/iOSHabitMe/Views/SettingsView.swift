@@ -72,7 +72,6 @@ struct ArchivedHabitsView: View {
                 }
             }
         }
-
         .navigationTitle("Archived Habits")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -233,13 +232,27 @@ struct ArchivedActivityDetailsView: View {
 
 struct SettingsView: View {
     
+    let reviewLink = URL(string: "https://apps.apple.com/app/6476879214?action=write-review")
+    @Environment(\.openURL) var openURL
+    
     var body: some View {
         
         List {
             // Section for archived stuff
-            Section("The Archive") {
+            Section {
                 NavigationLink("Archived Habits", destination: ArchivedHabitsView())
                 NavigationLink("Archived Activity Details", destination: ArchivedActivityDetailsView())
+            }
+            
+            Section {
+                Button {
+                    if let link = reviewLink {
+                        openURL(link)
+                    }
+                } label: {
+                    Text("Love this app? Share your Review!")
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         .navigationTitle("Settings")
