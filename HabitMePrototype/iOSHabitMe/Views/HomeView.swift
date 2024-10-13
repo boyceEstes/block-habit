@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum HabitRecordVisualMode {
@@ -15,346 +16,242 @@ enum HabitRecordVisualMode {
 }
 
 
-struct HomeView: View, ActivityRecordCreatorOrNavigator {
-    
-    @Environment(\.modelContext) var modelContext
-    @Query var dataHabits: [DataHabit]
-    @Query(sort: [
-        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-    ], animation: .default) var dataHabitRecords: [DataHabitRecord]
-    
-    
-    let goToHabitDetail: (DataHabit) -> Void
-    let goToCreateHabit: () -> Void
-    let goToHabitRecordDetail: (DataHabitRecord) -> Void
-    let goToEditHabit: (DataHabit) -> Void
-    let goToStatistics: () -> Void
-    let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
-    
-    /*
-     * So now the goal is to setup all of the data record stuff here from SwiftData.
-     * The big problem is habitsOnDates is a little bit hairy. I wonder if it is better
-     * for me to be able to query all of the datahabits and then deliver them to the
-     * bar graphs... or maybe I should just decipher it here. This will be everything I should
-     * have so I think it should be fine.
-     */
-    
-    @State private var habitRecordVisualMode: HabitRecordVisualMode = .daily
-    @State var selectedDay: Date = Date().noon!
-    
-    
-    var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
-        
-        var _dataHabitRecordsOnDate = [DataHabitRecordsOnDate]()
-        
-        print("update habit records by loading them")
-        
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = .current
-        
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-              let today = Date().noon,
-              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return [] }
-        
-        
-            print("received from habitRepository fetch... \(dataHabitRecords.count)")
+//struct ActivityMenuFilter: SelectableListItem {
+//    
+//    let activityMenuFilterType: ActivityMenuFilterType
+//    var isSelected: Bool
+//    
+//    
+//    var id: String {
+//        name
+//    }
 //
-            // Convert to a dictionary in order for us to an easier time in searching for dates
-            var dict = [Date: [DataHabitRecord]]()
-            
-            for record in dataHabitRecords {
-                
-                guard let noonDate = record.completionDate.noon else { return [] }
-                if dict[noonDate] != nil {
-                    dict[noonDate]?.append(record)
-                } else {
-                    dict[noonDate] = [record]
-                }
-            }
-            
-            
-            // Maybe for now, lets just start at january 1, 2024 for the beginning.
-            for day in 0...days {
-                // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-                guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
-                
-                
-                if let habitRecordsForDate = dict[noonDate] {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: habitRecordsForDate))
-                } else {
-                    _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: []))
-                }
-            }
-            
-            return _dataHabitRecordsOnDate
+//    var name: String {
+//        activityMenuFilterType.name
+//    }
+//}
+
+
+struct HomeView: View {
+    
+    @EnvironmentObject var habitController: HabitController
+    
+    // MARK: Injected Properties
+    // Navigation & Actions
+    let goToHabitDetail: (Habit) -> Void
+    let goToCreateHabit: () -> Void
+    let goToHabitRecordDetail: (HabitRecord) -> Void
+    let goToEditHabit: (Habit) -> Void
+    let goToStatistics: () -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
+    let goToSettings: () -> Void
+    // MARK: View Properties
+    @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
+    @State private var showDayDetail = false
+    @Namespace private var animation
+
+    
+    init(
+        blockHabitStore: CoreDataBlockHabitStore,
+        goToHabitDetail: @escaping (Habit) -> Void,
+        goToCreateHabit: @escaping () -> Void,
+        goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
+        goToEditHabit: @escaping (Habit) -> Void,
+        goToStatistics: @escaping () -> Void,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void,
+        goToSettings: @escaping () -> Void
+    ) {
+        self.goToHabitDetail = goToHabitDetail
+        self.goToCreateHabit = goToCreateHabit
+        self.goToHabitRecordDetail = goToHabitRecordDetail
+        self.goToEditHabit = goToEditHabit
+        self.goToStatistics = goToStatistics
+        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
+        self.goToSettings = goToSettings
     }
-
-
-    var body: some View {
+    
+    
+    var habitRecordsForDays: [Date: [HabitRecord]] {
         
-        let _ = print("issa sqlite: \(modelContext.sqliteCommand)")
+        return habitController.habitRecordsForDays
+    }
+    
+    
+    var body: some View {
         
         GeometryReader { proxy in
             
             let screenWidth = proxy.size.width
             let screenHeight = proxy.size.height
-//            let safeAreaInsetTop = proxy.safeAreaInsets.top
             let graphHeight = screenHeight * 0.4
-//            let habitMenuHeight = screenHeight * 0.3
-//            let itemHeight = graphHeight / 8
             
             VStack {
-                switch habitRecordVisualMode {
-                case .bar:
-                    BarView(graphWidth: screenWidth, graphHeight: graphHeight, numOfItemsToReachTop: 8, dataHabitRecordsOnDate: dataHabitRecordsOnDate, selectedDay: $selectedDay)
-                case .daily:
-                    DayView(
-                        goToHabitRecordDetail: goToHabitRecordDetail,
-                        graphHeight: graphHeight,
-                        numOfItemsToReachTop: 8,
-                        habitRecords: dataHabitRecordsForSelectedDay,
-                        selectedDay: selectedDay
-                    )
-                }
+                    if !showDayDetail {
+                        HScrollBarView(
+                            graphWidth: screenWidth,
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: 8,
+                            habitRecordsForDays: habitRecordsForDays,
+                            selectedDay: $habitController.selectedDay,
+                            animation: animation,
+                            showDayDetail: $showDayDetail
+                        )
+                    } else {
+                        DayDetailView(
+                            destroyHabitRecord: { habitRecord in
+                                habitController.destroyRecord(habitRecord)
+                            },
+                            goToHabitRecordDetail: goToHabitRecordDetail,
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: 8,
+                            habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [HabitRecord.preview],
+                            selectedDay: habitController.selectedDay,
+                            animation: animation,
+                            showDayDetail: $showDayDetail
+                        )
+                    }
                 
-                HabitsMenu(
+                HabitsSection(
+                    habitController: habitController,
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
-                    habits: dataHabits,
-                    didTapCreateHabitButton: {
-                        goToCreateHabit()
-                    }, didTapHabitButton: { habit in
-                        createRecord(for: habit, in: modelContext)
-                    }
+                    goToCreateHabit: goToCreateHabit,
+                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                 )
             }
             .background(Color.primaryBackground)
+            .animation(.easeInOut(duration: 0.2), value: habitController.incompleteHabits)
         }
+        .animation(.easeInOut(duration: 0.2), value: showDayDetail)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
-                    Button {
-                        goToPreviousDay()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .fontWeight(.semibold)
-                    }
-                    .disabled(isAllowedToGoToPreviousDay ? false : true)
+                    Text("\(currentStreak) 🔥")
+                        .foregroundStyle(.primary)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     
-                    Text(displaySelectedDate)
-                        .font(.title2)
-                        .fontWeight(.semibold)
                     
-                    Button {
-                        goToNextDay()
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .fontWeight(.semibold)
-                    }
-                    .disabled(isAllowedToGoToNextDay ? false : true)
+                    Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay) ⭐️")
+                        .foregroundStyle(.primary)
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
             }
+            
             ToolbarItemGroup(placement: .topBarTrailing) {
                 
+                Button {
+                    goToSettings()
+                } label : {
+                    Image(systemName: "gear")
+                }
+            
                 Button {
                     goToStatistics()
                 } label: {
                     Image(systemName: "chart.xyaxis.line")
                 }
-                
-                // TODO: Some logic to dictate whether it is a bar button or a daily log button
-                switch habitRecordVisualMode {
-                case .bar:
-                    // Daily button
-                    Button {
-                        setHabitRecordViewMode(to: .daily)
-                    } label: {
-                        Image(systemName: "chart.bar.doc.horizontal")
-                            .fontWeight(.semibold)
-                    }
-                case .daily:
-                    // Chart button
-                    Button {
-                        setHabitRecordViewMode(to: .bar)
-                    } label: {
-                        Image(systemName: "chart.bar.xaxis")
-                            .fontWeight(.semibold)
-                    }
-                }
             }
         }
     }
     
-//    
-//    private func logRecord(for habit: DataHabit) {
-//        
-//        if !habit.activityDetails.isEmpty {
-//            
-//            goToCreateActivityRecordWithDetails(habit, selectedDay)
-//            
-//        } else {
-//            
-//            let (creationDate, completionDate) = ActivityRecordCreationPolicy.calculateDatesForRecord(on: selectedDay)
-//            
-//            modelContext.createHabitRecordOnDate(activity: habit, creationDate: creationDate, completionDate: completionDate)
-//        }
-//    }
+    
+    // MARK: Helper Logic
+    
+    
+    // FIXME: Reevaluate when it is ready to consider scheduling habits for...
+    // ...specific days
+    //
+    // Not considering specific days is also a problem, because we not get an accurate
+    // goal whenever you are going back in time to a different day
+    //
+    // A good way to fix this would be to make a new property called `createdDate` on
+    // the Habit. And we could detect whether or not the habit was made on that same day
+    // and only then would we include it?
+    //
+    // Then also have the days that we want to display this habit for... This one will be
+    // more complicated
+    
+    
+    /**
+     * The Daily Goal will be based on the number of habit records that you
+     * need to create for a given day. This means that you will need to
+     * account for the completionGoal of each habit.
+     *
+     * **NOTE**: This does not include tasks with no completion goal
+     */
+    var goalNumberOfHabitCompletionsOnSelectedDay: Int {
+        
+        habitController.isCompletedHabits
+            .reduce(0) { partialResult, isCompletedHabit in
+                
+                guard let completionGoal = isCompletedHabit.habit.goalCompletionsPerDay else {
+                    
+                    // Do not include any habits without a completion goal in the count
+                    return partialResult
+                }
+                
+                guard let habitCreationDateAtNoon = isCompletedHabit.habit.creationDate.noon,
+                      habitController.selectedDay >= habitCreationDateAtNoon else {
+                    
+                    print("\(DateFormatter.shortDateShortTime.string(from: habitController.selectedDay)) <= habitCreateDateAtNoon: \(DateFormatter.shortDateShortTime.string(from: isCompletedHabit.habit.creationDate.noon!))")
+                    // Do not include any habits without a completion goal in the count
+                    return partialResult
+                }
 
-    
-    private func setHabitRecordViewMode(to visualMode: HabitRecordVisualMode) {
-        
-        withAnimation(.easeOut) {
-            habitRecordVisualMode = visualMode
-        }
+                
+                return partialResult + completionGoal
+            }
     }
     
     
-    private var dataHabitRecordsForSelectedDay: [DataHabitRecord] {
-        
-        guard let dataHabitRecordsSelectedForDay = dataHabitRecordsOnDate.filter({ $0.funDate == selectedDay }).first?.habitsRecords else {
-            return []
-        }
-        
-        return dataHabitRecordsSelectedForDay
+    // FIXME: There is bit of an edge-case here if the user were to change their completion goals later it will show an inaccurate number
+    /**
+     * This number is calculated based on the number of records for the day.. Its occurring to me now that
+     * this number could change if we were to change the completionGoal number later....
+     *
+     */
+    var completedNumberOfHabitsOnSelectedDay: Int {
+        habitController.habitRecordsForSelectedDay
+            .reduce(0) { partialResult, habitRecord in
+                guard habitRecord.habit.goalCompletionsPerDay != nil else {
+                    // Do not include any habit records of habits with no completion goal in the count
+                    return partialResult
+                }
+                
+                // For each record, add 1
+                return partialResult + 1
+            }
     }
     
     
-    private var displaySelectedDate: String {
-        let formatter: DateFormatter = .shortDate
+    /// Assuming today is the last day in habitsRecordsForDays
+    var currentStreak: Int {
         
-        let today = Date().noon!
-        let yesterday = Date().noon!.adding(days: -1)
-        let twoDaysAgo = Date().noon!.adding(days: -2)
-        let threeDaysAgo = Date().noon!.adding(days: -3)
-        let fourDaysAgo = Date().noon!.adding(days: -4)
-        
-        switch selectedDay {
-        case today:
-            return "Today"
-        case yesterday:
-            return "Yesterday"
-        case twoDaysAgo:
-            return "2 Days Ago"
-        case threeDaysAgo:
-            return "3 Days Ago"
-        case fourDaysAgo:
-            return "4 Days Ago"
-        default:
-            return formatter.string(from: selectedDay)
-        }
+        StatisticsCalculator.findCurrentUsageStreak(for: habitController.habitRecordsForDays)
     }
-    
-    
-    private func goToNextDay() {
-        
-        if isAllowedToGoToNextDay {
-            selectedDay = selectedDay.adding(days: 1)
-        }
-    }
-    
-    
-    private var isAllowedToGoToNextDay: Bool {
 
-        guard let today = Date().noon else { return false }
-        return selectedDay != today ? true : false
-    }
-    
-    
-    private func goToPreviousDay() {
-        
-        if isAllowedToGoToPreviousDay {
-            selectedDay = selectedDay.adding(days: -1)
-        }
-    }
-    
-    
-    private var isAllowedToGoToPreviousDay: Bool {
-        
-        let calendar = Calendar.current
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon else { return false }
-        
-        return selectedDay != startOf2024 ? true : false
-    }
 }
 
+
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    let dataHabit = DataHabit(
-        name: "Chugged Dew",
-        color: Color.blue.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    let dataHabit2 = DataHabit(
-        name: "Smashed Taco",
-        color: Color.orange.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
-    container.mainContext.insert(dataHabit2)
-    
-    let dataHabitRecord = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit
-    )
-    let dataHabitRecord2 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    let dataHabitRecord3 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    
-    container.mainContext.insert(dataHabitRecord)
-    container.mainContext.insert(dataHabitRecord2)
-    container.mainContext.insert(dataHabitRecord3)
-    
-    
-    let dataHabitRecord21 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit2
-    )
-    let dataHabitRecord22 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit2
-    )
-    let dataHabitRecord23 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit2
-    )
-    let dataHabitRecord24 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit2
-    )
-    
-    container.mainContext.insert(dataHabitRecord21)
-    container.mainContext.insert(dataHabitRecord22)
-    container.mainContext.insert(dataHabitRecord23)
-    container.mainContext.insert(dataHabitRecord24)
-    
-    
+
     return NavigationStack {
         HomeView(
+            blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToHabitDetail: { _ in },
             goToCreateHabit: { },
             goToHabitRecordDetail: { _ in },
             goToEditHabit: { _ in },
             goToStatistics: { },
-            goToCreateActivityRecordWithDetails: { _, _ in }
+            goToCreateActivityRecordWithDetails: { _, _ in },
+            goToSettings: { }
         )
-        .modelContainer(container)
+        .environmentObject(
+            HabitController(
+                blockHabitRepository: CoreDataBlockHabitStore.preview(),
+                selectedDay: Date()
+            )
+        )
     }
 }

@@ -13,7 +13,12 @@ final class DataHabit: Hashable {
     
     @Attribute(.unique) var id: String = UUID().uuidString
     var name: String
+    var isArchived: Bool
     var color: String
+    
+    // if nil, then there is no set of times to log this to make it "completed", they will always appear
+    var goalCompletionsPerDay: Int? = nil
+    
     // Initializing to empty should cause a lightweight migration, if coming from an earlier version
     @Relationship(deleteRule: .nullify, inverse: \DataActivityDetail.habits) var activityDetails: [DataActivityDetail] = []
     @Relationship(deleteRule: .cascade, inverse: \DataHabitRecord.habit) var habitRecords: [DataHabitRecord]
@@ -21,16 +26,21 @@ final class DataHabit: Hashable {
     
     init(
         name: String,
+        isArchived: Bool,
         color: String,
+        goalCompletionsPerDay: Int? = nil,
         activityDetails: [DataActivityDetail] = [],
         habitRecords: [DataHabitRecord] = []
     ) {
         self.name = name
+        self.isArchived = isArchived
         self.color = color
+        self.goalCompletionsPerDay = goalCompletionsPerDay
         self.activityDetails = activityDetails
         self.habitRecords = habitRecords
     }
 }
+
 
 
 @Model
@@ -66,14 +76,14 @@ final class DataHabitRecord {
 
 extension DataHabitRecord {
     
-    func toModel() -> ActivityRecord {
-        
-        ActivityRecord(
-            id: self.id,
-            title: self.habit?.name ?? "Unknown Title",
-            creationDate: self.creationDate,
-            completionDate: self.completionDate,
-            detailRecords: self.activityDetailRecords.toModel()
-        )
-    }
+//    func toModel() -> ActivityRecord {
+//        
+//        ActivityRecord(
+//            id: self.id,
+//            title: self.habit?.name ?? "Unknown Title",
+//            creationDate: self.creationDate,
+//            completionDate: self.completionDate,
+//            detailRecords: self.activityDetailRecords.toModel()
+//        )
+//    }
 }

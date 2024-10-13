@@ -6,21 +6,26 @@
 //
 
 import SwiftUI
+import HabitRepositoryFW
 
 
 extension ContentView {
     
     @ViewBuilder
-    func makeEditHabitView(habit: DataHabit) -> some View {
+    func makeEditHabitView(habit: Habit) -> some View {
         
         EditHabitView(
             habit: habit,
-            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit
+            blockHabitStore: blockHabitStore,
+            goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit,
+            goToScheduleSelection: goToSchedulingSelectionFromCreateEditHabit
         )
         .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
             switch identifier {
             case let .detailSelection(selectedDetails, selectedColor):
                 makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
+            case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
+                makeScheduleView(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
             }
         }
     }

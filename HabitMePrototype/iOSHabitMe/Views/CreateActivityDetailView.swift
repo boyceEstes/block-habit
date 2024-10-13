@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import HabitRepositoryFW
 
 
 struct CreateActivityDetailView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) var modelContext
     
     @State private var detailName: String = ""
     @State private var typeSelection: ActivityDetailType = .text
@@ -109,22 +110,30 @@ struct CreateActivityDetailView: View {
         
         guard isAbleToTapCreate else { return }
 
-        do {
-            try modelContext.createActivityDetail(
+//            try modelContext.createActivityDetail(
+//                name: detailName,
+//                valueType: typeSelection,
+//                units: units,
+//                calculationType: calculationTypeSelection,
+//                overrideDuplicateNameError: true
+//            )
+//            
+            let activityDetail = ActivityDetail(
+                id: UUID().uuidString,
                 name: detailName,
-                valueType: typeSelection,
-                units: units,
+                availableUnits: units,
+                isArchived: false,
+                creationDate: Date(),
                 calculationType: calculationTypeSelection,
-                overrideDuplicateNameError: true
+                valueType: typeSelection
             )
             
-            dismiss()
+            habitController.createActivityDetail(activityDetail)
             
-        } catch {
-            print("ERROR: \(error.localizedDescription)")
-        }
+            dismiss()
     }
 }
+
 
 #Preview {
     

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum HabitDetailAlert {
@@ -26,49 +27,50 @@ enum HabitDetailAlert {
     }
 }
 
+import Combine
 
-struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
-    
-    let activity: DataHabit
+
+struct HabitDetailView: View {
+
+    @EnvironmentObject var habitController: HabitController
+//    @State private var viewModel: HabitDetailViewModel
     let goToEditHabit: () -> Void
-    let goToCreateActivityRecordWithDetails: (DataHabit, Date) -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
+    @Namespace private var animation
     
     @State var selectedDay: Date = Date().noon ?? Date()
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
-//     Query to fetch all of the habit records for the habit
-    @Query(sort: [
-        SortDescriptor(\DataHabitRecord.completionDate, order: .reverse),
-        SortDescriptor(\DataHabitRecord.creationDate, order: .reverse)
-    ],
-        animation: .default
-    ) var dataHabitRecordsForHabit: [DataHabitRecord]
+
+    @State private var showDayDetail: Bool = false
+    @State private var activity: Habit
+    @State private var habitRecordsForDays = [Date: [HabitRecord]]()
+    @State private var cancellables = Set<AnyCancellable>()
     
-    
-    var filteredDatahabitRecordsForHabit: [DataHabitRecord] {
-        
-        dataHabitRecordsForHabit.filter {
-            
-            guard let habitForHabitRecord = $0.habit else { return false }
-            
-            let habitID = activity.id
-            return habitForHabitRecord.id == habitID
+    /// Does not show all of empty day logs
+    var habitRecordsForDaysLogged: [Date: [HabitRecord]] {
+        habitRecordsForDays.filter {
+            !$0.value.isEmpty
         }
     }
+    
     
     // TODO: Unit test this
     // We are returning specific detail records associated with the detail because if we just looked at the detail's records,
     // we would get back the results for ALL activities that it has been associated with, instead of just this one.
     /// Translate activity records into usable activity detail data that can be iterated over to display chart information (Used as a piece of later computation)
-    var chartActivityDetailRecordsForActivityRecords: [DataActivityDetail: [DataActivityDetailRecord]] {
+    var chartActivityDetailRecordsForActivityRecords: [ActivityDetail: [ActivityDetailRecord]] {
         
-        // Translate to dictionary of all of the activitydetails and all of the activity detail records for each
-        filteredDatahabitRecordsForHabit.reduce(into: [DataActivityDetail: [DataActivityDetailRecord]]()) { dict, activityRecord in
+        // Translate to dictionary of all of the activitydetails and all of the activity
+        let habitRecords = habitRecordsForDays.values.flatMap { $0 }
+        let uniqueHabitRecords = Set(habitRecords)
+        
+        return uniqueHabitRecords.reduce(into: [ActivityDetail: [ActivityDetailRecord]]()) { dict, activityRecord in
             
             for activityDetailRecord in activityRecord.activityDetailRecords {
                 
@@ -84,22 +86,26 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
         }
     }
     
+    /*
+     * We need to get a date and value for each record and either combine or sum depending on the activity detail stat
+     */
+
     
     /// Convert data to only dates and values for charts to consume, keyed by activity detail in order to set up each separate chart
-    var allDetailChartData: [DataActivityDetail: [LineChartActivityDetailData]] {
+    var allDetailChartData: [ActivityDetail: [LineChartActivityDetailData]] {
         
         // FIXME: Handle some details by averaging and some details by summing
 
-        return chartActivityDetailRecordsForActivityRecords.reduce(into: [DataActivityDetail: [LineChartActivityDetailData]]()) { allDetailDataDict, chartActivityDetailRecordsForActivityRecord in
+        return chartActivityDetailRecordsForActivityRecords.reduce(into: [ActivityDetail: [LineChartActivityDetailData]]()) { allDetailDataDict, chartActivityDetailRecordsForActivityRecord in
             
             let (activityDetail, activityDetailRecords) = chartActivityDetailRecordsForActivityRecord
             
             var dateCountDictionary = [Date: (count: Int, amount: Double)]()
+            
             for activityDetailRecord in activityDetailRecords {
-
                 
                 guard let activityDetailRecordValue = Double(activityDetailRecord.value),
-                      let completionDate = activityDetailRecord.activityRecord?.completionDate.noon
+                      let completionDate = activityDetailRecord.habitRecord?.completionDate.noon
                 else {
                     // FIXME: Log if this happens, it really should never occur but shouldn't hurt anything if it skips
                     continue // If there is inconsistent data transforming a value, then continue on to the next row
@@ -135,125 +141,48 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     
     // Alphabetical order -> transforms into single tuple array
     /// Final iteration of transforming data to be used to display in chart
-    var allDetailChartDataSorted: [(DataActivityDetail, [LineChartActivityDetailData])] {
+    var allDetailChartDataSorted: [(ActivityDetail, [LineChartActivityDetailData])] {
         
         allDetailChartData.sorted { $0.key.name < $1.key.name }
     }
     
     
-    @State private var currentStreak = 0
-    @State private var avgRecordsPerDay: Double = 0
-    @State private var bestStreak = 0
-    
     let numOfItemsToReachTop = 5
-    
-    var dataHabitRecordsOnDate: [DataHabitRecordsOnDate] {
-        
-        var _dataHabitRecordsOnDate = [DataHabitRecordsOnDate]()
-        
-        print("update habit records by loading them")
-        
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = .current
-        
-        guard let startOf2024 = DateComponents(calendar: calendar, year: 2024, month: 1, day: 1).date?.noon,
-              let today = Date().noon,
-              let days = calendar.dateComponents([.day], from: startOf2024, to: today).day
-        else { return [] }
-        
-        
-        print("received from habitRepository fetch... \(filteredDatahabitRecordsForHabit.count)")
-        //
-        // Convert to a dictionary in order for us to an easier time in searching for dates
-        var dict = [Date: [DataHabitRecord]]()
-        // It is ordered from first date (jan. 1st) -> last date (today), the key is the last date in the streak
-        var streakingCount = 0
-        var lastStreakCount = 0
-        var maxStreakCount = 0
-        
-        // average records / day
-        /*
-         * NOTE: This is being calculated for only the days that the record is done.
-         * I think it would be demoralizing to see if you fell off and were trying to get back on
-         */
-        var daysRecordHasBeenDone = 0
-        var recordsThatHaveBeenDone = 0
-        
-        
-        for record in filteredDatahabitRecordsForHabit {
-            
-            guard let noonDate = record.completionDate.noon else { return [] }
-            if dict[noonDate] != nil {
-                dict[noonDate]?.append(record)
-            } else {
-                dict[noonDate] = [record]
-            }
-        }
-        
-        
-        // Maybe for now, lets just start at january 1, 2024 for the beginning.
-        for day in 0...days {
-            // We want to get noon so that everything is definitely the exact same date (and we inserted the record dictinoary keys by noon)
-            guard let noonDate = calendar.date(byAdding: .day, value: day, to: startOf2024)?.noon else { return [] }
-            
-            if let habitRecordsForDate = dict[noonDate] {
-                // graph logic
-                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: habitRecordsForDate))
-                
-                daysRecordHasBeenDone += 1
-                recordsThatHaveBeenDone += habitRecordsForDate.count
-                
-                // streak logic
-                streakingCount += 1
-                
-            } else {
-                _dataHabitRecordsOnDate.append(DataHabitRecordsOnDate(funDate: noonDate, habitsRecords: []))
-                
-                // streak logic
-                if streakingCount >= maxStreakCount {
-                    maxStreakCount = streakingCount
-                }
-                lastStreakCount = streakingCount
-                streakingCount = 0
-            }
-        }
-        
-        // streak logic
-        if streakingCount > 0 {
-            // Streak has continued to today
-            if streakingCount >= maxStreakCount {
-                maxStreakCount = streakingCount
-            }
-            lastStreakCount = streakingCount
-        }
-        
-        DispatchQueue.main.async {
-            currentStreak = lastStreakCount
-            avgRecordsPerDay = Double(recordsThatHaveBeenDone) / Double(daysRecordHasBeenDone)
-            bestStreak = maxStreakCount
-        }
-        
-        
-        return _dataHabitRecordsOnDate
-    }
     
     
     var totalRecords: String {
-        return "\(filteredDatahabitRecordsForHabit.count)"
+        
+        "\(StatisticsCalculator.findTotalRecords(for: habitRecordsForDays))"
+    }
+    
+    
+    var avgRecordsPerDay: Double {
+        StatisticsCalculator.findAverageRecordsPerDay(for: habitRecordsForDaysLogged)
+    }
+    
+    
+    var currentStreak: Int {
+        StatisticsCalculator.findCurrentStreakInRecordsForHabit(for: habitRecordsForDays)
+    }
+    
+    var bestStreak: Int {
+        StatisticsCalculator.findBestStreakInRecordsForHabit(for: habitRecordsForDays)
     }
     
     
     init(
-        activity: DataHabit,
+        activity: Habit,
+        blockHabitStore: CoreDataBlockHabitStore,
         goToEditHabit: @escaping () -> Void,
-        goToCreateActivityRecordWithDetails: @escaping (DataHabit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         
-        self.activity = activity
+        self._activity = State(initialValue: activity)
+        
         self.goToEditHabit = goToEditHabit
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
     }
+    
     
     
     var body: some View {
@@ -265,18 +194,23 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             let graphHeight = screenHeight * 0.3
             ScrollView {
                 LazyVStack(spacing: .vSectionSpacing) {
-                    BarView(
+                    // FIXME: Extract into a view where the user can tap to always go to day details view
+                    HScrollBarView(
                         graphWidth: screenWidth,
                         graphHeight: graphHeight,
                         numOfItemsToReachTop: Double(numOfItemsToReachTop),
-                        dataHabitRecordsOnDate:
-                            dataHabitRecordsOnDate,
-                        selectedDay: $selectedDay
+                        habitRecordsForDays: habitRecordsForDays,
+                        selectedDay: $habitController.selectedDay,
+                        animation: animation, 
+                        showDayDetail: $showDayDetail
                     )
                     
                     HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {
-                        
-                        createRecord(for: activity, in: modelContext)
+                        // FIXME: Update to have the CoreDataHabitBlockStore in this class before we can save
+                        habitController.createRecordOrNavigateToRecordWithDetails(
+                            for: activity,
+                            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+                        )
                     }
                     .padding(.horizontal)
                     
@@ -300,12 +234,48 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         .padding(.horizontal)
                     
                     LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-                        Text("Activity Records")
-                            .font(.sectionTitle)
-                        if !filteredDatahabitRecordsForHabit.isEmpty {
-                            allActivtyRecords
+//                        Text("Habit Records")
+//                            .font(.sectionTitle)
+//                        
+//                        ForEach(habitRecordsForDaysLogged.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
+//                            
+//                            Text("\(DateFormatter.shortDate.string(from: day))")
+//                            
+//                            ForEach(records, id: \.id) { record in
+//                                
+//                                VStack {
+//                                    ForEach(record.activityDetailRecords, id: \.id) { activityDetailRecord in
+//                                        
+//                                        HStack {
+//                                            Text("\(activityDetailRecord.activityDetail.name)")
+//                                            Spacer()
+//                                            Text("\(activityDetailRecord.value) \(activityDetailRecord.unit ?? "")")
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+                        // FIXME: 2 Orient this so that all the information is given
+                        Text("Records")
+                            .font(.title3)
+                        if !habitRecordsForDaysLogged.isEmpty {
+                            ForEach(habitRecordsForDaysLogged.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
+                                
+                                HStack {
+                                    Text("\(day.displayDate)")
+                                        .font(.rowTitle)
+                                        .layoutPriority(1)
+                                    Spacer()
+                                }
+                                
+                                ForEach(records, id: \.self) { record in
+                                    ActivityRecordRowDateWithInfo(habitRecord: record)
+                                }
+                            }
                         } else {
-                            Text("No records found for this activity yet")
+                            Text("You've never done this before. You should try it. Come on, do it. You won't... wimp.")
+                                .foregroundColor(.secondaryFont)
+                                .font(.rowDetail)
                         }
                     }
                     .padding(.horizontal)
@@ -335,12 +305,37 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
             }
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
+        .onAppear {
+            bindToLatestHabitInformation()
+        }
+        .onReceive(habitController.habitRecordsForDays(for: activity)) { receivedHabitRecordsForDays in
+            print("BOYCE: Setting habitRecordsForDays in HabitDetail to \(receivedHabitRecordsForDays.count)")
+            self.habitRecordsForDays = receivedHabitRecordsForDays
+        }
+    }
+    
+    
+    // I made this a binding instead of an on-receive because I wanted to have the ability to
+    // show an alert if some error popped up - if that's not a problem, just go with onReceive
+    private func bindToLatestHabitInformation() {
+        
+        habitController.latestHabitInformation(for: activity)
+            .sink { error in
+                
+                // FIXME: Log the error just to make sure that it is expected.
+                // Lost the habit that we were looking for, it was probably deleted in the detail screen
+                dismiss()
+            } receiveValue: { receivedHabit in
+                self.activity = receivedHabit
+            }
+            .store(in: &cancellables)
     }
     
     
     @ViewBuilder
     var activityDetailCharts: some View {
         
+        let _ = print("BOYCE: \(allDetailChartDataSorted)")
         // loops over activitydetails to display one chart at a time
         ForEach(allDetailChartDataSorted, id: \.0) { chartInformation in
             
@@ -355,24 +350,16 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
                         .foregroundStyle(Color.secondaryFont)
                 }
                 
-                ActivityDetailLineMarkChart(
-                    data: chartInfo,
-                    lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue),
-                    // Average should be more focused because there will probably be less variability
-                    isFocusedDomain: activityDetail.calculationType == .average
-                )
+                if !chartInfo.isEmpty {
+                    ActivityDetailLineMarkChart(
+                        data: chartInfo,
+                        lineColor: Color(uiColor: UIColor(hex: activity.color) ?? .blue),
+                        // Average should be more focused because there will probably be less variability
+                        isFocusedDomain: activityDetail.calculationType == ActivityDetailCalculationType.average
+                    )
+                }
             }
             .sectionBackground()
-        }
-    }
-    
-    
-    var allActivtyRecords: some View {
-        
-        ForEach(filteredDatahabitRecordsForHabit) { activityRecord in
-            
-            ActivityRecordRowDateWithInfo(activityRecord: activityRecord.toModel())
-                .sectionBackground(padding: .detailPadding)
         }
     }
     
@@ -380,8 +367,7 @@ struct HabitDetailView: View, ActivityRecordCreatorOrNavigator {
     private func removeHabit() {
         
         DispatchQueue.main.async {
-            dismiss()
-            modelContext.delete(habit: activity)
+            habitController.deleteHabit(activity)
         }
     }
     
@@ -494,82 +480,22 @@ struct StatBox: View {
 
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
-    let dataHabit = DataHabit(
-        name: "Chugging Dew",
-        color: Color.indigo.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
-    
+    let habit = Habit.mopTheCarpet
 
-    let dataHabitRecord0 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit
-    )
-    let dataHabitRecord00 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: 0),
-        habit: dataHabit
-    )
-    let dataHabitRecord = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -1),
-        habit: dataHabit
-    )
-    let dataHabitRecord2 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-    let dataHabitRecord3 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -2),
-        habit: dataHabit
-    )
-
-    container.mainContext.insert(dataHabitRecord0)
-    container.mainContext.insert(dataHabitRecord00)
-    container.mainContext.insert(dataHabitRecord)
-    container.mainContext.insert(dataHabitRecord2)
-    container.mainContext.insert(dataHabitRecord3)
-    
-    
-    let dataHabitRecord4 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -8),
-        habit: dataHabit
-    )
-    let dataHabitRecord5 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -9),
-        habit: dataHabit
-    )
-    let dataHabitRecord6 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -10),
-        habit: dataHabit
-    )
-    let dataHabitRecord7 = DataHabitRecord(
-        creationDate: Date(),
-        completionDate: Date().adding(days: -11),
-        habit: dataHabit
-    )
-    
-    container.mainContext.insert(dataHabitRecord4)
-    container.mainContext.insert(dataHabitRecord5)
-    container.mainContext.insert(dataHabitRecord6)
-    container.mainContext.insert(dataHabitRecord7)
-    
     return NavigationStack {
+        
         HabitDetailView(
-            activity: dataHabit,
+            activity: habit,
+            blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToEditHabit: { },
             goToCreateActivityRecordWithDetails: { _, _ in }
         )
-        .modelContainer(container)
+        .environmentObject(
+            HabitController(
+                blockHabitRepository: CoreDataBlockHabitStore.preview(),
+                selectedDay: Date()
+            )
+        )
     }
 }

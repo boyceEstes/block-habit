@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum Focusable: Hashable {
@@ -16,39 +17,55 @@ enum Focusable: Hashable {
 }
 
 
-struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails {
+struct CreateHabitRecordWithDetailsView: View {
+    
+    @EnvironmentObject var habitController: HabitController
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
     // We pass this in and use its information along with the current
     // datetime to autopopulate some details
-    let activity: DataHabit
+    let activity: Habit
     let selectedDay: Date
+    let blockHabitStore: CoreDataBlockHabitStore
+    
     let creationDate = Date()
 //    @State private var activityRecord: DataHabitRecord
     // Keeping this separate from the above property just because SwiftData is a little finicky
     // and I want things in smaller pieces for making the relationship connections
-    @State var activityDetailRecords: [ActivityDetailRecord]
+    @State var activityDetailRecords: [ActivityDetailRecord] {
+        didSet {
+            print("BOYCE: DidSet activityDetailRecords in CreateHabitRecordWithDetailsView: \(activityDetailRecords.count)")
+        }
+    }
     @FocusState var focusedActivityDetail: Focusable?
     
-    init(activity: DataHabit, selectedDay: Date) {
+    init(
+        activity: Habit,
+        selectedDay: Date,
+        blockHabitStore: CoreDataBlockHabitStore
+    ) {
         
         self.activity = activity
         self.selectedDay = selectedDay
+        self.blockHabitStore = blockHabitStore
 
         self._activityDetailRecords = State(
             initialValue: activity.activityDetails.bjSort()
                 .map { activityDetail in
-                
-                print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
-                
-                return ActivityDetailRecord(
-                    activityDetail: activityDetail, 
-                    value: ""
-                )
-            }
+                    
+                    print("Looping through activitydetails to create DataActivityDetailRecords \(activityDetail.name)")
+                    
+                    return ActivityDetailRecord(
+                        value: "",
+                        unit: activityDetail.availableUnits,
+                        activityDetail: activityDetail
+                    )
+                }
         )
+        
+        print("BOYCE: activityDetailRecords after initializing the state - '\(activityDetailRecords.count)'")
         
         // Maybe I should wait until after we enter the information to do this part?
         // I'm not sure how this will work, inserting this information into activityRecord now
@@ -72,7 +89,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
                             
                         let activityDetail =
                         activityDetailRecords[i].activityDetail
-                        let units = activityDetail.availableUnits.first?.lowercased()
+                        let units = activityDetail.availableUnits?.lowercased()
 
                         if activityDetail.valueType == .number {
                             
@@ -158,7 +175,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
         // We already have the DataHabit so we just need to create the DataHabitRecord
         // and make the DataActivityDetailRecord objects to insert into that DataHabitRecord
-        createRecord(for: activity, in: modelContext)
+        habitController.createRecord(for: activity, activityDetailRecords: activityDetailRecords)// createRecord(for: activity, in: blockHabitStore)
         
         DispatchQueue.main.async {
             dismiss()
@@ -168,6 +185,9 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
 
 #Preview {
+    
+    let habit = Habit.mopTheCarpet
+    // FIXME: Remove the unnecessary preview setup after moving to independent model methodology
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
@@ -189,6 +209,7 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
     // MARK: Create Activity
     let activity = DataHabit(
         name: "Chugged Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         activityDetails: [],
         habitRecords: []
@@ -205,7 +226,11 @@ struct CreateHabitRecordWithDetailsView: View, ActivityRecordCreatorWithDetails 
 
     
     return NavigationStack {
-        CreateHabitRecordWithDetailsView(activity: activity, selectedDay: Date())
+        CreateHabitRecordWithDetailsView(
+            activity: habit,
+            selectedDay: Date(),
+            blockHabitStore: CoreDataBlockHabitStore.preview()
+        )
     }
     .modelContainer(container)
 }

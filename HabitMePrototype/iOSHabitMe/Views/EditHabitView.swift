@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum EditHabitAlert {
@@ -29,28 +30,48 @@ enum EditHabitAlert {
 
 struct EditHabitView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
-
-    @State private var alertDetail: AlertDetail?
-    @State private var showAlert: Bool = false
+    
+    // MARK: Injected Properties
+    let habit: Habit
+    let blockHabitStore: CoreDataBlockHabitStore
+    let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
+    let goToScheduleSelection: (Binding<ScheduleTimeUnit>, Binding<Int>, Binding<Set<ScheduleDay>>, Binding<Date?>) -> Void
+    // MARK: View Properties
+    @State private var selectedDetails: [ActivityDetail]
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
-    
-    @State private var selectedDetails: [DataActivityDetail]
-    
-    
-    let habit: DataHabit
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
+    @State private var completionGoal: Int? = nil
+    // Scheduling
+    @State private var schedulingUnits: ScheduleTimeUnit = .weekly // "Frequency" in Reminders app
+    @State private var rate: Int = 1 // "Every" in Reminders App
+    @State private var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
+    @State private var reminderTime: Date? = nil // If it is not nil then a reminder has been set, else no reminder for
+    // Alerts
+    @State private var alertDetail: AlertDetail?
+    @State private var showAlert: Bool = false
     
     
     init(
-        habit: DataHabit,
-        goToAddDetailsSelection: @escaping (Binding<[DataActivityDetail]>, Color?) -> Void
+        habit: Habit,
+        blockHabitStore: CoreDataBlockHabitStore,
+        goToAddDetailsSelection: @escaping (Binding<[ActivityDetail]>, Color?) -> Void,
+        goToScheduleSelection: @escaping (Binding<ScheduleTimeUnit>, Binding<Int>, Binding<Set<ScheduleDay>>, Binding<Date?>) -> Void
     ) {
         self.habit = habit
+        self.blockHabitStore = blockHabitStore
         self.goToAddDetailsSelection = goToAddDetailsSelection
+        self.goToScheduleSelection = goToScheduleSelection
         
+        // FIXME: When `Habit` has `activityDetails` initialize this like expected
         self._selectedDetails = State(initialValue: habit.activityDetails)
+        self._completionGoal = State(initialValue: habit.goalCompletionsPerDay)
+        
+        self._schedulingUnits = State(initialValue: habit.schedulingUnits)
+        self._rate = State(initialValue: habit.rate)
+        self._scheduledWeekDays = State(initialValue: habit.scheduledWeekDays)
+        self._reminderTime = State(initialValue: habit.reminderTime)
     }
     
     
@@ -60,16 +81,37 @@ struct EditHabitView: View {
             
             VStack(spacing: 20) {
                 
-                CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
+                CreateEditHabitContent(
+                    nameTextFieldValue: $nameTextFieldValue,
+                    selectedColor: $selectedColor
+                )
                 
-                CreateHabitDetailContent(
+                CreateEditHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
                 )
                 
-//                HabitMePrimaryButton(title: "Save", action: didTapSaveAndExit)
-//                    .padding()
+                SchedulingContent(
+                    schedulingUnits: $schedulingUnits,
+                    rate: $rate,
+                    scheduledWeekDays: $scheduledWeekDays,
+                    reminderTime: $reminderTime,
+                    goToScheduleSelection: goToScheduleSelection
+                )
+                
+                CreateEditActivityCompletionGoalContent(
+                    completionGoal: $completionGoal
+                )
+                
+                Spacer()
+                
+                HabitMePrimaryButton(
+                    title: "Save",
+                    isAbleToTap: isAbleToCreate,
+                    action: didTapSaveAndExit
+                )
+                .padding(.horizontal)
             }
         }
         .createEditHabitSheetPresentation()
@@ -78,9 +120,7 @@ struct EditHabitView: View {
             self.selectedColor = Color(hex: habit.color) ?? .gray
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        
         .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
-        .sheetyBottomBarButton(title: "Save", isAbleToTap: isAbleToCreate, action: didTapSaveAndExit)
     }
     
     
@@ -96,33 +136,60 @@ struct EditHabitView: View {
     
     private func didTapSaveAndExit() {
         
-        updateHabitName()
-        updateHabitColor()
-        updateHabitDetails()
+        updateHabit()
         dismiss()
     }
     
     
-    private func updateHabitName() {
+    private func updateHabit() {
         
-        print("update habit name")
-        habit.name = nameTextFieldValue
-    }
-    
-    
-    private func updateHabitColor() {
+        print("HEY! ScheduledweekDay count: \(scheduledWeekDays.count)")
         
-        guard let selectedColor, let selectedColorString = selectedColor.toHexString() else { return }
         
-        print("update habit color")
-        habit.color = selectedColorString
-    }
-    
-    
-    private func updateHabitDetails() {
+        guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
+            // FIXME: Handle color not being set correctly error
+            return
+        }
+
+        let habit = Habit(
+            id: habit.id,
+            name: nameTextFieldValue,
+            creationDate: habit.creationDate,
+            isArchived: habit.isArchived,
+            goalCompletionsPerDay: completionGoal,
+            color: selectedColorString,
+            activityDetails: selectedDetails,
+            schedulingUnits: schedulingUnits,
+            rate: rate,
+            scheduledWeekDays: scheduledWeekDays,
+            reminderTime: reminderTime
+        )
         
-        print("update habit details")
-        habit.activityDetails = selectedDetails
+        habitController.updateHabit(habit)
+//        Task {
+//            do {
+//                let habitID = habit.id
+//                
+//                guard let selectedColor, let selectedColorString = selectedColor.toHexString() else {
+//                    // FIXME: Handle color not being set correctly error
+//                    return
+//                }
+//                
+//                let habit = Habit(
+//                    id: habitID,
+//                    name: nameTextFieldValue,
+//                    isArchived: habit.isArchived,
+//                    goalCompletionsPerDay: completionGoal,
+//                    color: selectedColorString,
+//                    activityDetails: selectedDetails
+//                )
+//                
+//                try await blockHabitStore.update(habitID: habitID, with: habit)
+//            } catch {
+//                // FIXME: Handle error updating!
+//                fatalError("I GOT 99 PROBLEMS AND THIS IS 1 - \(error)")
+//            }
+//        }
     }
     
     
@@ -142,19 +209,12 @@ struct EditHabitView: View {
     }
 }
 
+
 #Preview {
     
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-    
-    let dataHabit = DataHabit(
-        name: "Chugging Dew",
-        color: Color.indigo.toHexString() ?? "#FFFFFF",
-        habitRecords: []
-    )
-    container.mainContext.insert(dataHabit)
+    let habit = Habit.mopTheCarpet
     
     return NavigationStack {
-        EditHabitView(habit: dataHabit, goToAddDetailsSelection: { _, _ in })
+        EditHabitView(habit: habit, blockHabitStore: CoreDataBlockHabitStore.preview(), goToAddDetailsSelection: { _, _ in }, goToScheduleSelection: { _, _, _, _ in })
     }
 }

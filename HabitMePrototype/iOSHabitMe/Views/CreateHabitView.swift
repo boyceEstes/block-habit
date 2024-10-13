@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HabitRepositoryFW
 
 
 
@@ -107,31 +108,66 @@ struct HabitDetail: Hashable, Identifiable {
 
 struct CreateHabitView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
+    // MARK: Injected Properties
+    let blockHabitStore: CoreDataBlockHabitStore
+    // Navigation
+    let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
+    let goToScheduleSelection: (Binding<ScheduleTimeUnit>, Binding<Int>, Binding<Set<ScheduleDay>>, Binding<Date?>) -> Void
     
+    // MARK: View Properties
     @State private var nameTextFieldValue: String = ""
     @State private var selectedColor: Color? = nil
-    @State private var selectedDetails = [DataActivityDetail]()
+    @State private var selectedDetails = [ActivityDetail]()
+    @State private var completionGoal: Int? = 1
+    // Scheduling
+    @State private var schedulingUnits: ScheduleTimeUnit = .weekly // "Frequency" in Reminders app
+    @State private var rate: Int = 1 // "Every" in Reminders App
+    @State private var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
+    @State private var reminderTime: Date? = nil // If it is not nil then a reminder has been set, else no reminder for
     
     var body: some View {
+        
         ScrollView {
+            
             VStack(spacing: 20) {
 
                 CreateEditHabitContent(nameTextFieldValue: $nameTextFieldValue, selectedColor: $selectedColor)
                 
-                CreateHabitDetailContent(
+                CreateEditHabitDetailContent(
                     goToAddDetailsSelection: goToAddDetailsSelection,
                     selectedDetails: $selectedDetails,
                     selectedColor: selectedColor
                 )
+                
+                SchedulingContent(
+                    schedulingUnits: $schedulingUnits,
+                    rate: $rate,
+                    scheduledWeekDays: $scheduledWeekDays,
+                    reminderTime: $reminderTime,
+                    goToScheduleSelection: goToScheduleSelection
+                )
+                
+                CreateEditActivityCompletionGoalContent(
+                    completionGoal: $completionGoal
+                )
+                
+                Spacer()
+                
+                HabitMePrimaryButton(
+                    title: "Create",
+                    isAbleToTap: isAbleToCreate,
+                    action: didTapButtonToCreateHabit
+                )
+                .padding(.horizontal)
             }
         }
         .createEditHabitSheetPresentation()
         .sheetyTopBarNav(title: "New Habit", dismissAction: { dismiss() })
-        .sheetyBottomBarButton(title: "Create", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
+//        .sheetyBottomBarButton(title: "Create", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
     }
     
 
@@ -145,28 +181,33 @@ struct CreateHabitView: View {
     }
     
     
+    /**
+     * NOTE: I am inserting into the CoreDataStore because if I enter in SwiftData it will not propogate the change
+     * to the NSFetchedResultsController that I am using on the HomeViewModel.
+     * I do not need everything to be CoreData for now (like the selectedActivityDetails which are SwiftData entities)
+     * so to speed things up I will leave that for now and just do a conversion here at the save point.
+     */
     func didTapButtonToCreateHabit() {
-        
+
         guard let selectedColor, let stringColorHex = selectedColor.toHexString() else {
             return
         }
-
-        let newDataHabit = DataHabit(
+        
+        let habit = Habit(
+            id: UUID().uuidString,
             name: nameTextFieldValue,
+            creationDate: Date(),
+            isArchived: false,
+            goalCompletionsPerDay: completionGoal,
             color: stringColorHex,
-            activityDetails: [],
-            habitRecords: []
+            activityDetails: selectedDetails,
+            schedulingUnits: schedulingUnits,
+            rate: rate,
+            scheduledWeekDays: scheduledWeekDays,
+            reminderTime: reminderTime
         )
         
-        modelContext.insert(newDataHabit)
-        
-        
-        for selectedDetail in selectedDetails {
-            selectedDetail.habits.append(newDataHabit)
-            modelContext.insert(selectedDetail)
-        }
-        
-//        newDataHabit.activityDetails = selectedDetails
+        habitController.createHabit(habit)
         
         DispatchQueue.main.async {
             dismiss()
@@ -175,12 +216,11 @@ struct CreateHabitView: View {
 }
 
 
-struct CreateHabitDetailContent: View {
+struct CreateEditHabitDetailContent: View {
     
-    let goToAddDetailsSelection: (Binding<[DataActivityDetail]>, Color?) -> Void
-    @Binding var selectedDetails: [DataActivityDetail]
+    let goToAddDetailsSelection: (Binding<[ActivityDetail]>, Color?) -> Void
+    @Binding var selectedDetails: [ActivityDetail]
     let selectedColor: Color?
-    @FocusState private var focusedDetail: Focusable?
     
     var body: some View {
         
@@ -190,9 +230,7 @@ struct CreateHabitDetailContent: View {
                 HStack {
                     Text("Details")
                     Spacer()
-                    Image(systemName: "chevron.right")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.blue)
+                    CustomDisclosure()
                 }
                 
                 Text("Extra Information to track with this habit")
@@ -205,7 +243,7 @@ struct CreateHabitDetailContent: View {
                 LazyVStack(spacing: .vItemSpacing) {
                     ForEach($selectedDetails) { $detail in
                         let detail = $detail.wrappedValue
-                        ActivityDetailSummaryRow(activityDetail: detail.toModel())
+                        ActivityDetailSummaryRow(activityDetail: detail)
                     }
                 }
             }
@@ -217,42 +255,6 @@ struct CreateHabitDetailContent: View {
             goToAddDetailsSelection($selectedDetails, selectedColor)
         }
     }
-    
-//    var body: some View {
-//        List {
-//            
-//            Section {
-//                
-//                ForEach($details) { $detail in
-//                    
-//                    createHabitDetailView(detail: $detail)
-//                }
-//                .onDelete(perform: removeRows)
-//            } header: {
-//                HStack {
-//                    Text("Details")
-//                    Spacer()
-//                    Button {
-//                        print("Add")
-////                        let newHabitDetail = HabitDetail(name: "", valueType: .number, unit: DetailUnit.none)
-////                        details.append(newHabitDetail)
-////                        focusedDetail = .row(id: newHabitDetail.id)
-//                        goToAddDetailsSelection()
-//                    } label: {
-//                        Image(systemName: "plus.circle")
-//                            .foregroundStyle(.blue)
-//                    }
-//                    .font(.title3)
-//                }
-//            } footer: {
-//                Text("Extra information to track when this habit is completed.\n\nExample: 'Duration: 20 min' ")
-//                    .font(.footnote)
-//                    .foregroundStyle(.secondary)
-//            }
-//        }
-//        .scrollDisabled(true)
-//        .scrollContentBackground(.hidden)
-//    }
     
     
     func createHabitDetailView(detail: Binding<HabitDetail>) -> some View{
@@ -291,14 +293,11 @@ struct CreateHabitDetailContent: View {
 
 struct CreateEditHabitContent: View {
     
-    
     @Binding var nameTextFieldValue: String
     @Binding var selectedColor: Color?
     
-    let rows = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    
+    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 6)
     
     var body: some View {
         TextField("Name", text: $nameTextFieldValue)
@@ -308,7 +307,7 @@ struct CreateEditHabitContent: View {
         
         
         VStack {
-            LazyHGrid(rows: rows, spacing: 30) {
+            LazyVGrid(columns: columns, content: {
                 ForEach(allColors, id: \.self) { color in
                     Circle()
                         .fill(color)
@@ -322,8 +321,8 @@ struct CreateEditHabitContent: View {
                             }
                         }
                 }
-            }
-            .frame(height: 90)
+            })
+            .padding(.horizontal, 6)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical)
@@ -342,19 +341,63 @@ struct CreateEditHabitContent: View {
     
     var allColors: [Color] {
         [
+//            Color.red,
+//            Color.orange,
+//            Color.yellow,
+//            Color.green,
+//            Color.mint,
+//            Color.teal,
+//            
+//            Color.cyan,
+//            Color.blue,
+//            Color.indigo,
+//            Color.purple,
+//            Color.pink,
+//            Color.brown,
+            
+//            Color(hex: "#2eld74") ?? .pink, // black?
+//            Color(hex: "#0000ff") ?? .pink, // blue
+//            Color(hex: "#cldad6") ?? .pink, // black?
+//            Color(hex: "#ff0000") ?? .pink, // red
+            Color.pink,
             Color.red,
+            Color(hex: "#f07857") ?? .pink, // bright rust
+            Color(hex: "#9e444e") ?? .pink, // rust
             Color.orange,
             Color.yellow,
+            Color(hex: "#ffe6a8") ?? .pink, // cream
+            Color(hex: "#8bf8a7") ?? .pink, // pastel green
             Color.green,
+            Color(hex: "#73d016") ?? .pink, // green
+            Color(hex: "#4fb06d") ?? .pink, // different green
+            Color(hex: "#d3e412") ?? .pink, // lime green
+            Color(hex: "#556b2f") ?? .pink, // swamp green
+            Color(hex: "#065535") ?? .pink, // forrest green
             Color.mint,
             Color.teal,
-            
             Color.cyan,
+            Color(hex: "#a6c3e3") ?? .pink, // light blue
             Color.blue,
+            Color(hex: "#8clclc") ?? .pink, // navy blue
+            Color(hex: "#666999") ?? .pink, // purple gray
             Color.indigo,
             Color.purple,
-            Color.pink,
-            Color.brown
+            Color(hex: "#a89cf0") ?? .pink, // lavender
+            Color(hex: "#bdabc4") ?? .pink, // lavender gray?
+            Color(hex: "#800080") ?? .pink, // purple
+            Color(hex: "#be398d") ?? .pink, // deep pink/purple
+            Color(hex: "#ef5fbe") ?? .pink, // pink
+            Color(hex: "#fdcfe5") ?? .pink, // light pink
+            Color.brown,
+//            Color(hex: "#4c516d") ?? .pink, // gray
+//            Color(hex: "#ffff00") ?? .pink, // stupid bright yellow
+//            Color(hex: "#ffd700") ?? .pink, // golden
+//            Color(hex: "#0eff00") ?? .pink, // ninja turtle green
+//            Color(hex: "#cbebcb") ?? .pink, // pastel green gray
+//            Color(hex: "#43a5be") ?? .pink, // tealish?
+//            Color(hex: "#53bdas") ?? .pink, // blue again
+//            Color(hex: "#401e12") ?? .pink, // brown but really dark
+//            Color(hex: "#808080") ?? .pink // gray
         ]
     }
 }
@@ -393,17 +436,25 @@ struct HabitMePrimaryButton: View {
     
     let title: String
     let isAbleToTap: Bool
+    let looksDisabled: Bool
     let color: Color
     let buttonWidth: CGFloat?
     let action: () -> Void
     
-    init(title: String, isAbleToTap: Bool = true, color: Color? = nil, buttonWidth: CGFloat? = nil, action: @escaping () -> Void) {
+    init(title: String, isAbleToTap: Bool = true, looksDisabled: Bool = false, color: Color? = nil, buttonWidth: CGFloat? = nil, action: @escaping () -> Void) {
         
         self.title = title
         self.action = action
         self.color = color ?? .blue
         self.isAbleToTap = isAbleToTap
         self.buttonWidth = buttonWidth
+        
+        // Make sure this is true if actually disabled
+        if !isAbleToTap {
+            self.looksDisabled = true
+        } else {
+            self.looksDisabled = looksDisabled
+        }
     }
     
     var body: some View {
@@ -415,8 +466,9 @@ struct HabitMePrimaryButton: View {
                 .font(.headline)
                 .frame(maxWidth: buttonWidth ?? .infinity)
                 .frame(height: 50)
-                .background(isAbleToTap ? color : color.opacity(0.5))
-                .foregroundStyle(isAbleToTap ? Color.white : Color.white.opacity(0.5))
+                .background(!looksDisabled ? color : color.opacity(0.5))
+                .foregroundStyle(!looksDisabled ? Color.white : Color.white.opacity(0.5))
+                .shadow(color: !looksDisabled ? .clear : .black.opacity(0.6), radius: 20)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10))
         }
@@ -428,6 +480,10 @@ struct HabitMePrimaryButton: View {
 
 #Preview {
     NavigationStack {
-        CreateHabitView(goToAddDetailsSelection: { _, _ in })
+        CreateHabitView(
+            blockHabitStore: CoreDataBlockHabitStore.preview(),
+            goToAddDetailsSelection: { _, _ in }, 
+            goToScheduleSelection: { _, _, _, _ in }
+        )
     }
 }

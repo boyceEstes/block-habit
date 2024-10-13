@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import HabitRepositoryFW
 
 
 enum HabitRecordDetailAlert {
@@ -26,49 +27,73 @@ enum HabitRecordDetailAlert {
     }
 }
 
+
 struct HabitRecordDetailView: View {
     
+    @EnvironmentObject var habitController: HabitController
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) var modelContext
     
     // We only want to be able to edit their time, always maintain the date.
-    let activityRecord: DataHabitRecord
+    let blockHabitStore: CoreDataBlockHabitStore
+    let ogHabitRecord: HabitRecord
     
-    @State private var editableCompletionTime: Date = Date()
+    @State private var activityRecord: HabitRecord
+    
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
     @FocusState private var focused: Focusable?
     
-    var sortedActivityRecordDetails: [DataActivityDetailRecord] {
-
-        activityRecord.activityDetailRecords.bjSort()
+    var isHabitRecordDirty: Bool {
+        activityRecord != ogHabitRecord
     }
+    
+    
+    // FIXME: Ensure that Sorting the ActivityDetailRecords is working correctly
+//    var sortedActivityRecordDetails: [ActivityDetailRecord] {
+//
+//        activityRecord.activityDetailRecords.bjSort()
+//    }
 
     
     var navSubtitleDateString: String {
         DateFormatter.shortDate.string(from: activityRecord.completionDate)
     }
     
+    
+    init(blockHabitStore: CoreDataBlockHabitStore, activityRecord: HabitRecord) {
+        
+        self.blockHabitStore = blockHabitStore
+        self.ogHabitRecord = activityRecord
+        self._activityRecord = State(initialValue: activityRecord)
+    }
+    
+    /**
+     * Basically what I need to happen is for the activity record to have all of its detail records displayed
+     * When the activity detail record is modified it should update the original activity record
+     * When we see that this has happened we should make a save button appear
+     * Then we will save and update the activityRecord - we probably what to debounce this so we wait until the person has stopped typing for a set amount of time
+     */
+    
     var body: some View {
+        
         ScrollView {
             let _ = print("---- This is an activity record on tapping to edit\(activityRecord)")
             LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
                 
-                let sortedActivityRecordDetailsCount = sortedActivityRecordDetails.count
+                let activityDetailRecordCount = activityRecord.activityDetailRecords.count
                 
-                if sortedActivityRecordDetailsCount > 0 {
-                    ForEach(0..<sortedActivityRecordDetailsCount, id: \.self) { i in
+                if activityDetailRecordCount > 0 {
+                    ForEach(0..<activityDetailRecordCount, id: \.self) { i in
                         
-                        let activityDetail =
-                        sortedActivityRecordDetails[i].activityDetail
-                        let valueBinding = valueBinding(for: sortedActivityRecordDetails[i])
-                        
+                        let activityDetail = activityRecord.activityDetailRecords[i].activityDetail
+                        let valueBinding = $activityRecord.activityDetailRecords[i].value
+//
                         switch activityDetail.valueType {
                         case .number:
                             NumberTextFieldRow(
                                 title: activityDetail.name,
                                 text: valueBinding,
-                                units: activityDetail.availableUnits.first?.lowercased(),
+                                units: activityDetail.availableUnits?.lowercased(),
                                 focused: $focused,
                                 focusID: i
                             )
@@ -88,30 +113,26 @@ struct HabitRecordDetailView: View {
                     Text("Completion Time")
                         .font(.rowDetail)
                     Spacer()
-                    DatePicker("Completion Time", selection: $editableCompletionTime, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
+                    DatePicker("Completion Time", selection: Binding(get: {
+                        activityRecord.completionDate
+                    }, set: { updatedCompletionDate in
+                        activityRecord.completionDate = updatedCompletionDate
+                    }), displayedComponents: .hourAndMinute)
+                    .labelsHidden()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .sectionBackground(padding: .detailPadding)
                 
                 Spacer()
+                
+                
             }
             .padding(.horizontal)
             .padding(.top)
         }
         .scrollDismissesKeyboard(.interactively)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        .onAppear {
-            editableCompletionTime = activityRecord.completionDate
-        }
-        .onChange(of: editableCompletionTime) {
-            // Adding this check to prevent from doing update logic when we first tap on the row
-            if editableCompletionTime != activityRecord.completionDate {
-                let new = DateFormatter.shortDateShortTime.string(from: editableCompletionTime)
-                print("changed to \(new)")
-                updateHabitRecord(activityRecord, withNewCompletionTime: editableCompletionTime)
-            }
-        }
+        .sheetyBottomBarButton(title: "Update Record", isAbleToTap: isHabitRecordDirty, action: didTapButtonToUpdateHabitRecord)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -131,7 +152,11 @@ struct HabitRecordDetailView: View {
                 }
             }
         }
-        .sheetyTopBarNav(title: activityRecord.habit?.name ?? "Unknown Activity", subtitle: navSubtitleDateString, dismissAction: { dismiss() })
+        .sheetyTopBarNav(
+            title: activityRecord.habit.name,
+            subtitle: navSubtitleDateString,
+            dismissAction: { dismiss() }
+        )
     }
     
     
@@ -152,7 +177,7 @@ struct HabitRecordDetailView: View {
     var nextTextFieldIndex: Int? {
         
         if case .row(let id) = focused {
-            if id < sortedActivityRecordDetails.count - 1 {
+            if id < activityRecord.activityDetailRecords.count - 1 {
                 return id + 1
             }
         }
@@ -161,37 +186,11 @@ struct HabitRecordDetailView: View {
     }
     
     
-    private func valueBinding(for activityDetailRecord: DataActivityDetailRecord) -> Binding<String> {
+    
+    private func didTapButtonToUpdateHabitRecord() {
         
-        return Binding {
-            activityDetailRecord.value
-        } set: { newValue in
-            activityDetailRecord.value = newValue
-        }
-    }
-    
-//    
-//    // MARK: Logic
-//    private func didTapButtonToUpdateActivityRecord() {
-//        print("did tap button to update activity record)")
-//    }
-    
-    
-    
-    private func removeHabitRecord(_ habitRecord: DataHabitRecord) {
-        
-        DispatchQueue.main.async {
-            
-            modelContext.delete(habitRecord)
-            
-            dismiss()
-        }
-    }
-    
-    
-    private func updateHabitRecord(_ habitRecord: DataHabitRecord, withNewCompletionTime newCompletionTime: Date) {
-        
-        habitRecord.completionDate = newCompletionTime
+        habitController.updateHabitRecord(activityRecord)
+        dismiss()
     }
 }
 
@@ -214,6 +213,7 @@ struct HabitMeDeleteButton: View {
 
 
 #Preview {
+    // FIXME: Remove unnecessary SwiftData preview logic
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
     
@@ -236,6 +236,7 @@ struct HabitMeDeleteButton: View {
     // MARK: Create Activity
     let activity = DataHabit(
         name: "Chugged Dew",
+        isArchived: false,
         color: Color.indigo.toHexString() ?? "#FFFFFF",
         activityDetails: [],
         habitRecords: []
@@ -268,8 +269,9 @@ struct HabitMeDeleteButton: View {
     }
     
 
+    let habitRecord = HabitRecord.preview
     
     return NavigationStack {
-        HabitRecordDetailView(activityRecord: activityRecord)
+        HabitRecordDetailView(blockHabitStore: CoreDataBlockHabitStore.preview(), activityRecord: habitRecord)
     }
 }

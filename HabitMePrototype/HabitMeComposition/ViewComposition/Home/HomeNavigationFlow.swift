@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HabitRepositoryFW
 
 
 // We can display many sheets on this one flow, as long as they are somewhere in this stack hierarchy -
@@ -21,8 +22,9 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
     // MARK: - Stack Destinations
     enum StackIdentifier: Hashable {
 
-        case habitDetail(habit: DataHabit)
+        case habitDetail(habit: Habit)
         case statistics
+        case settings
     }
     
     
@@ -32,8 +34,8 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         var id: Int { self.hashValue }
         
         case createHabit
-        case createActivityRecordWithDetails(activity: DataHabit, selectedDay: Date)
-        case habitRecordDetail(habitRecord: DataHabitRecord)
-        case editHabit(habit: DataHabit)
+        case createActivityRecordWithDetails(activity: Habit, selectedDay: Date)
+        case habitRecordDetail(habitRecord: HabitRecord)
+        case editHabit(habit: Habit)
     }
 }

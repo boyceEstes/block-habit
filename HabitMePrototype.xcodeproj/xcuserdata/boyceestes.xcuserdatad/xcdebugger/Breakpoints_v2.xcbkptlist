@@ -3,4 +3,159 @@
    uuid = "489062BD-3786-427B-95AE-D2F9D13EB059"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D24B0E60-2770-49F6-B78E-A0F6D6068BE5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HabitRepositoryFWTests/Model/Array+HabitRecordsForDaysTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "test_arrayOneRecordOnCurrentDay_delivers6PriorDaysThatAreEmpty()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            uuid = "D9B32AE7-32F7-4ACD-BC05-27579B719FC9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = ""
+            moduleName = "">
+            <Locations>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.RuntimeIssueBreakpoint">
+         <BreakpointContent
+            uuid = "09FF8EA6-ADA7-419B-958A-005CCD122311"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            breakpointStackSelectionBehavior = "1"
+            type = "8"
+            categories = "SwiftUI">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "363269C6-F392-4C8E-9854-DA830AD512DC"
+            shouldBeEnabled = "Yes"
+            condition = "$0.habit.name == &quot;Turtle&quot; &amp;&amp; !selectedHabits.isEmpty"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "selectedHabitRecordsForDays"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "363269C6-F392-4C8E-9854-DA830AD512DC - 79c9c81ece106680"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (HabitRepositoryFW.HabitRecord) -&gt; Swift.Bool in closure #1 (Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt;) -&gt; Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt; in HabitMePrototype.StatisticsView.selectedHabitRecordsForDays.getter : Swift.Dictionary&lt;Foundation.Date, Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt;&gt;"
+                  moduleName = "HabitMePrototype"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/projects/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "176">
+               </Location>
+               <Location
+                  uuid = "363269C6-F392-4C8E-9854-DA830AD512DC - 79c9c81ece1066c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (HabitRepositoryFW.HabitRecord) -&gt; Swift.Bool in closure #1 (Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt;) -&gt; Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt; in HabitMePrototype.StatisticsView.selectedHabitRecordsForDays.getter : Swift.Dictionary&lt;Foundation.Date, Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt;&gt;"
+                  moduleName = "HabitMePrototype"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/projects/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "490">
+               </Location>
+               <Location
+                  uuid = "363269C6-F392-4C8E-9854-DA830AD512DC - 79c9c81ece1066c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (HabitRepositoryFW.HabitRecord) -&gt; Swift.Bool in closure #1 (Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt;) -&gt; Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt; in HabitMePrototype.StatisticsView.selectedHabitRecordsForDays.getter : Swift.Dictionary&lt;Foundation.Date, Swift.Array&lt;HabitRepositoryFW.HabitRecord&gt;&gt;"
+                  moduleName = "HabitMePrototype"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/projects/HabitMePrototype/HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "176">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A6DD5D17-B459-49FD-87E1-04726808BEF8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HabitRepositoryFW/HabitController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "createHabit(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A6DD5D17-B459-49FD-87E1-04726808BEF8 - 7d68a6c3997c0132"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in closure #1 @Sendable () async -&gt; () in HabitRepositoryFW.HabitController.createHabit(HabitRepositoryFW.Habit) -&gt; ()"
+                  moduleName = "HabitRepositoryFW"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/projects/HabitMePrototype/HabitRepositoryFW/HabitController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "393">
+               </Location>
+               <Location
+                  uuid = "A6DD5D17-B459-49FD-87E1-04726808BEF8 - 7d68a6c3997c0151"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in closure #1 @Sendable () async -&gt; () in HabitRepositoryFW.HabitController.createHabit(HabitRepositoryFW.Habit) -&gt; ()"
+                  moduleName = "HabitRepositoryFW"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/boyceestes/Development/ios/personal/projects/HabitMePrototype/HabitRepositoryFW/HabitController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "240"
+                  endingLineNumber = "240"
+                  offsetFromSymbolStart = "393">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

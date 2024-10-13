@@ -6,30 +6,33 @@
 //
 
 import SwiftUI
+import HabitRepositoryFW
 
 
 extension ContentView {
     
     
     @ViewBuilder
-    func makeHomeViewWithSheetyStackNavigation() -> some View {
+    func makeHomeViewWithSheetyStackNavigation(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
-        makeHomeViewWithSheetyNavigation()
+        makeHomeViewWithSheetyNavigation(blockHabitStore: blockHabitStore)
             .flowNavigationDestination(flowPath: $homeNavigationFlowPath) { identifier in
                 switch identifier {
                 case let .habitDetail(activity):
                     makeHabitDetailViewWithSheetyNavigation(activity: activity)
                 case .statistics:
                     makeStatisticsView()
+                case .settings:
+                    makeSettingsView()
                 }
             }
     }
     
     
     @ViewBuilder
-    private func makeHomeViewWithSheetyNavigation() -> some View {
+    private func makeHomeViewWithSheetyNavigation(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
-        makeHomeView()
+        makeHomeView(blockHabitStore: blockHabitStore)
             .sheet(item: $homeNavigationFlowDisplayedSheet) { identifier in
                 
                 switch identifier {
@@ -50,21 +53,23 @@ extension ContentView {
     
     
     @ViewBuilder
-    private func makeHomeView() -> some View {
+    private func makeHomeView(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
         HomeView(
+            blockHabitStore: blockHabitStore,
             goToHabitDetail: goToHabitDetailFromHome,
             goToCreateHabit: goToCreateHabitFromHome,
             goToHabitRecordDetail: goToHabitRecordDetailFromHome,
             goToEditHabit: goToEditHabitFromHome,
             goToStatistics: goToStatisticsFromHome,
-            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHome
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHome,
+            goToSettings: goToSettingsFromHome
         )
     }
     
     
     // MARK: Push To Stack
-    private func goToHabitDetailFromHome(habit: DataHabit) {
+    private func goToHabitDetailFromHome(habit: Habit) {
         
         homeNavigationFlowPath.append(.habitDetail(habit: habit))
     }
@@ -77,13 +82,13 @@ extension ContentView {
     }
     
     
-    private func goToHabitRecordDetailFromHome(habitRecord: DataHabitRecord) {
+    private func goToHabitRecordDetailFromHome(habitRecord: HabitRecord) {
         
         homeNavigationFlowDisplayedSheet = .habitRecordDetail(habitRecord: habitRecord)
     }
     
     
-    private func goToEditHabitFromHome(habit: DataHabit) {
+    private func goToEditHabitFromHome(habit: Habit) {
         
         homeNavigationFlowDisplayedSheet = .editHabit(habit: habit)
     }
@@ -95,8 +100,14 @@ extension ContentView {
     }
     
     
-    private func goToCreateActivityRecordWithDetailsFromHome(activity: DataHabit, selectedDay: Date) {
+    private func goToCreateActivityRecordWithDetailsFromHome(activity: Habit, selectedDay: Date) {
         
         homeNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
+    }
+    
+    
+    private func goToSettingsFromHome() {
+        
+        homeNavigationFlowPath.append(.settings)
     }
 }

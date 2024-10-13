@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import HabitRepositoryFW
 
 
 /// Intended for use when displaying activity records that will have some sort of Title and Date in the title
@@ -15,7 +15,7 @@ struct ActivityRecordRowTitleDate: View {
     
     // This is for knowing the date to display
     let selectedDay: Date
-    let activityRecord: ActivityRecord
+    let activityRecord: HabitRecord
     
     
     
@@ -23,14 +23,14 @@ struct ActivityRecordRowTitleDate: View {
         
         VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
             HStack(alignment: .center) {
-                Text("\(activityRecord.title)")
+                Text("\(activityRecord.habit.name)")
                     .font(.rowTitle)
                 Spacer()
                 Text("\(DisplayDatePolicy.date(for: activityRecord, on: selectedDay))")
                     .font(.callout)
             }
             
-            let detailRecords = activityRecord.detailRecords
+            let detailRecords = activityRecord.activityDetailRecords
             
             if !detailRecords.isEmpty {
                 ActivityDetailRecordIndicators(detailRecords: detailRecords)
@@ -44,114 +44,115 @@ struct ActivityRecordRowTitleDate: View {
 /// For example, the `HabitDetailView` would show logs with only the date
 struct ActivityRecordRowDateWithInfo: View {
     
-    let activityRecord: ActivityRecord
+    let habitRecord: HabitRecord
     
     var body: some View {
         
-        let completionDate = activityRecord.completionDate
-        let titleDate = completionDate.displayDate
+        let detailRecords = habitRecord.activityDetailRecords
+        let displayDate = DisplayDatePolicy.date(for: habitRecord, on: habitRecord.completionDate)
         
-        VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
-            
-            HStack {
-                Text("\(titleDate)")
-                    .font(.rowTitle)
-                    .layoutPriority(1)
-                Spacer()
-                Text("\(DisplayDatePolicy.date(for: activityRecord, on: completionDate))")
-                    .font(.rowDetail)
+        VStack {
+            VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+
+                if !detailRecords.isEmpty {
+                    
+                    ActivityDetailRecordRowContentInfo(
+                        detailRecords: detailRecords
+                    )
+                }
             }
             
-            let detailRecords = activityRecord.detailRecords
-            
-            if !detailRecords.isEmpty {
-                ActivityRecordRowContent(detailRecords: detailRecords)
+            HStack {
+                Text("\(displayDate)")
+                Spacer()
+                ActivityDetailRecordIndicators(detailRecords: detailRecords)
+            }
+            .foregroundColor(.secondaryFont)
+            .font(.footnote)
+        }
+    }
+}
+
+
+struct ActivityDetailIndicators: View {
+    
+    let activityDetails: [ActivityDetail]
+    let detailHeight: CGFloat
+    
+    var body: some View {
+        
+        HStack {
+            ForEach(activityDetails, id: \.id) { activityDetail in
+                activityDetail.valueType.asset.image()
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: detailHeight)
             }
         }
     }
 }
 
 
-/// Intended to prevent duplicate logic and points of failure between different rows displaying activity record date
-//fileprivate struct ActivityRecordRow<TitleContent: View, DetailRecordContent: View>: View {
-//    
-//    let titleContent: TitleContent
-//    let detailRecordContent: DetailRecordContent
-//    
-//    init(@ViewBuilder titleContent: () -> TitleContent, @ViewBuilder detailRecordContent: () -> DetailRecordContent) {
-//        
-//        self.titleContent = titleContent()
-//        self.detailRecordContent = detailRecordContent()
-//    }
-//    
-//    
-//    var body: some View {
-//        
-//        VStack(alignment: .center, spacing: .rowVDetailSpacing) {
-//            titleContent
-//            detailRecordContent
-//        }
-//    }
-//}
-
-
 struct ActivityDetailRecordIndicators: View {
     
-    let detailRecords: [ActivityDetailRecord2]
+    let detailRecords: [ActivityDetailRecord]
     
     var body: some View {
         
         HStack {
             ForEach(detailRecords, id: \.id) { detailRecord in
                 
-                let detail = detailRecord.detail
+                let detail = detailRecord.activityDetail
                 
                 detail.valueType.asset.image()
-                    .foregroundColor(.secondaryFont)
             }
         }
     }
 }
 
 
-struct ActivityRecordRowContent: View {
-    
-    let detailRecords: [ActivityDetailRecord2]
-    
-    var body: some View {
-        
-        // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
-        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-
-            ActivityDetailRecordIndicators(detailRecords: detailRecords)
-            ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
-        }
-    }
-}
+//struct ActivityRecordRowContent: View {
+//    
+//    let habitRecord: HabitRecord
+//    let detailRecords: [ActivityDetailRecord]
+//    
+//    var body: some View {
+//        
+//        // FIXME: Ensure that there is never too many details to where this goes out of bounds - the view will be ruined - for lower numbers it should be okay though.
+//        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
+//            ActivityDetailRecordIndicators(detailRecords: detailRecords)
+//            ActivityDetailRecordRowContentInfo(detailRecords: detailRecords)
+//        }
+//    }
+//}
 
 
 struct ActivityDetailRecordRowContentInfo: View {
     
-    let detailRecords: [ActivityDetailRecord2]
+    let detailRecords: [ActivityDetailRecord]
     
-    
-    var numberActivityDetailRecords: [ActivityDetailRecord2] {
+    var numberActivityDetailRecords: [ActivityDetailRecord] {
         detailRecords.valueType(.number)
     }
     
-    var textActivityDetailRecords: [ActivityDetailRecord2] {
+    var textActivityDetailRecords: [ActivityDetailRecord] {
         detailRecords.valueType(.text)
     }
     
     var body: some View {
         
-        VStack(spacing: .detailPadding) {
-            if !numberActivityDetailRecords.isEmpty {
-                ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
-            }
+        LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
             
-            if !textActivityDetailRecords.isEmpty {
-                ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
+            if !detailRecords.isEmpty {
+                VStack(spacing: .detailPadding) {
+                    if !numberActivityDetailRecords.isEmpty {
+                        ActivityDetailRecordNumberGrid(numberActivityDetailRecords: numberActivityDetailRecords)
+                    }
+                    
+                    if !textActivityDetailRecords.isEmpty {
+                        ActivityDetailRecordTextList(textActivityDetailRecords: textActivityDetailRecords)
+                    }
+                }
             }
         }
     }
@@ -162,14 +163,14 @@ struct ActivityDetailRecordRowContentInfo: View {
 // FIXME: How do I ensure that this will only have `activityDetail` values where valueType == .text
 struct ActivityDetailRecordTextList: View {
     
-    let textActivityDetailRecords: [ActivityDetailRecord2]
+    let textActivityDetailRecords: [ActivityDetailRecord]
     
     var body: some View {
         
         ForEach(textActivityDetailRecords) { textActivityDetailRecord in
             
             VStack(alignment: .leading) {
-                Text("\(textActivityDetailRecord.detail.name)")
+                Text("\(textActivityDetailRecord.activityDetail.name)")
                     .font(.callout)
                     .foregroundStyle(Color.secondaryFont)
                 
@@ -181,13 +182,10 @@ struct ActivityDetailRecordTextList: View {
     }
 }
 
-
-
-
 // FIXME: How do I ensure that this will only have `activityDetail` values where valueType == .number
 struct ActivityDetailRecordNumberGrid: View {
     
-    let numberActivityDetailRecords: [ActivityDetailRecord2]
+    let numberActivityDetailRecords: [ActivityDetailRecord]
     
     let columnCount: Int
     
@@ -195,13 +193,15 @@ struct ActivityDetailRecordNumberGrid: View {
         Array(repeatElement(GridItem(.flexible(), alignment: .top), count: columnCount))
     }
     
-    init(numberActivityDetailRecords: [ActivityDetailRecord2]) {
+    init(numberActivityDetailRecords: [ActivityDetailRecord]) {
         
         self.numberActivityDetailRecords = numberActivityDetailRecords
         
-        let columnLimit = 3
-        let recordCount = numberActivityDetailRecords.count
-        self.columnCount = recordCount >= columnLimit ? columnLimit : recordCount
+        let columnLimit = 2
+//        let recordCount = numberActivityDetailRecords.count
+        // I like the simple 2 column grid more than having the whole row 
+        // filled with little content
+        self.columnCount = columnLimit //recordCount >= columnLimit ? columnLimit : recordCount
     }
     
     
@@ -212,7 +212,7 @@ struct ActivityDetailRecordNumberGrid: View {
             ForEach(numberActivityDetailRecords) { numberActivityDetailRecord in
                 
                 VStack(alignment: .leading) {
-                    Text("\(numberActivityDetailRecord.detail.name)")
+                    Text("\(numberActivityDetailRecord.activityDetail.name)")
                         .font(.callout)
                         .foregroundStyle(Color.secondaryFont)
                     
@@ -230,7 +230,7 @@ struct ActivityDetailRecordNumberGrid: View {
     
     
     @ViewBuilder
-    func hStackFit(for numberActivityDetailRecord: ActivityDetailRecord2) -> some View {
+    func hStackFit(for numberActivityDetailRecord: ActivityDetailRecord) -> some View {
         
         HStack {
             UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
@@ -239,7 +239,7 @@ struct ActivityDetailRecordNumberGrid: View {
     }
     
     @ViewBuilder
-    func vStackFit(for numberActivityDetailRecord: ActivityDetailRecord2) -> some View {
+    func vStackFit(for numberActivityDetailRecord: ActivityDetailRecord) -> some View {
         
         VStack(alignment: .leading) {
             UnwrappedValueText(activityDetailRecord: numberActivityDetailRecord)
@@ -255,14 +255,14 @@ struct ActivityDetailRecordNumberGrid: View {
 /// Also this is meant to be placed in a VStack or HStack, assuming that you want the units to be shown corrrectly
 struct UnwrappedValueText: View {
     
-    let activityDetailRecord: ActivityDetailRecord2
+    let activityDetailRecord: ActivityDetailRecord
     
     var body: some View {
         
         let value = activityDetailRecord.value
         
         if !value.isEmpty {
-            let units = activityDetailRecord.detail.units
+            let units = activityDetailRecord.activityDetail.availableUnits
             
             Text("\(activityDetailRecord.value)")
             
@@ -280,76 +280,16 @@ struct UnwrappedValueText: View {
 
 #Preview {
     
-    let activityDetailRecordTimeRecord = ActivityDetailRecord2(
-        value: "1000",
-        detail: ActivityDetail.time
-    )
-    
-    
-    let activityDetailRecordAmountRecord = ActivityDetailRecord2(
-        value: "28",
-        detail: ActivityDetail.amount
-    )
-    
-    
-    let activityDetailLengthRecord = ActivityDetailRecord2(
-        value: "203",
-        detail: ActivityDetail.length
-    )
-    
-    
-    let activityDetailTouchdownsRecord = ActivityDetailRecord2(
-        value: "",
-        detail: ActivityDetail.touchdowns
-    )
-    
-    let activityDetailRecordNoteRecord = ActivityDetailRecord2(
-        value: "It was tough. I understood the meaning behind Code Red today. It is the code of blood. The code of pushing through the pain. It is the code of war.",
-        detail: ActivityDetail.note
-    )
-    
-    
-    let activityDetailMoodRecord = ActivityDetailRecord2(
-        value: "",
-        detail: ActivityDetail.mood
-    )
-    
-    
     let creationDate = DateComponents(calendar: .current, year: 2024, month: 2, day: 10, hour: 16, minute: 30, second: 01).date!
-    let completionDateMadeFromAnotherDay = DateComponents(calendar: .current, year: 2024, month: 2, day: 9, hour: 23, minute: 59, second: 59).date!
-    let completionDateMadeFromSameDay = creationDate
-    
-    
-    let activityRecordMunchingTacos = ActivityRecord(
-        title: "Munching Tacos",
-        creationDate: creationDate,
-        completionDate: completionDateMadeFromSameDay,
-        detailRecords: []
-    )
-    // I want an activity record for this date and a creationDate that is different than the completionDate
-    
-    let activityRecordChuggingDew = ActivityRecord(
-        title: "Chugging Dew",
-        creationDate: creationDate,
-        completionDate: completionDateMadeFromAnotherDay,
-        detailRecords: [
-            activityDetailRecordTimeRecord,
-            activityDetailRecordAmountRecord,
-            activityDetailLengthRecord,
-            activityDetailRecordNoteRecord,
-            activityDetailTouchdownsRecord,
-            activityDetailMoodRecord
-        ]
-    )
     
     return VStack {
-        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordMunchingTacos)
+        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: activityRecordChuggingDew)
+        ActivityRecordRowTitleDate(selectedDay: creationDate, activityRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowDateWithInfo(activityRecord: activityRecordMunchingTacos)
+        ActivityRecordRowDateWithInfo(habitRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
-        ActivityRecordRowDateWithInfo(activityRecord: activityRecordChuggingDew)
+        ActivityRecordRowDateWithInfo(habitRecord: HabitRecord.preview)
             .sectionBackground(padding: .detailPadding)
     }
 }

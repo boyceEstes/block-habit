@@ -6,6 +6,7 @@
 //
 import Foundation
 import SwiftData
+import HabitRepositoryFW
 
 
 extension ModelContext {
@@ -19,7 +20,7 @@ extension ModelContext {
     ) throws {
         
         let creationDate = Date()
-        let unitsArray = units != nil && valueType == .number ? [units!] : []
+        let unitsArray = units != nil && valueType == .number ? units : nil
         var newName = name
         
         // Check all the current ones - and update the name if there are duplicates
@@ -42,11 +43,11 @@ extension ModelContext {
             
             let activityDetail = DataActivityDetail(
                 name: newName,
-                valueType: valueType,
+                stringlyValueType: valueType.rawValue,
                 availableUnits: unitsArray,
                 isArchived: false,
                 creationDate: creationDate,
-                calculationType: calculationType,
+                stringlyCalculationType: calculationType.rawValue,
                 detailRecords: [],
                 habits: []
             )
