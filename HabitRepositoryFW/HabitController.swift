@@ -65,6 +65,11 @@ public class HabitController: ObservableObject {
     }
     
     
+    public var isRecordsEmptyForSelectedDay: Bool {
+        habitRecordsForSelectedDay.isEmpty
+    }
+    
+    
     public func habitRecordsForDays(for habit: Habit) -> AnyPublisher<[Date: [HabitRecord]], Never> {
         
         $habitRecordsForDays
@@ -509,9 +514,9 @@ extension HabitController {
         
         Task {
             // 1. get day, this is mostly just ensuring that the day can be found in recordsfordays
-            guard let (day, _) = habitRecordsForDays.first(where: { day, value in
+            guard let (day, records) = habitRecordsForDays.first(where: { day, value in
                 Calendar.current.isDate(day, inSameDayAs: selectedDay)
-            }) else {
+            }), !records.isEmpty else {
                 return
             }
             

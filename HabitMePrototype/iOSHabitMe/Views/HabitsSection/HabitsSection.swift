@@ -60,12 +60,11 @@ struct HabitsSection: View {
                     
                     HStack(spacing: 24) {
                         Button {
-//                            habitController.removeLastHabitRecordForDay()
                             habitController.destroyLastRecordOnSelectedDay()
                         } label: {
                             Image(systemName: "arrow.uturn.backward")
                         }
-                        //                        .disabled(habitController.isNoHabitRecordsForSelectedDay)
+                        .disabled(habitController.isRecordsEmptyForSelectedDay)
                         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                         
                         Button(action: goToCreateHabit) {
