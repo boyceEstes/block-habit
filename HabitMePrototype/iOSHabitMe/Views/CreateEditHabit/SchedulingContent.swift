@@ -24,13 +24,12 @@ struct SchedulingNotificationSettingsContent: View {
             
             HStack {
                 Label("\(scheduleSummary)", systemImage: "bell")
+                    .foregroundStyle(.primary)
                 Spacer()
                 Text("\(DateFormatter.shortTime.string(from: reminderTime))")
             }
-            .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
+            .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
         }
-        .padding()
-        .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
     }
     
     
@@ -142,10 +141,12 @@ struct SchedulingContent: View {
             goToScheduleSelection: { _, _, _, _ in }
         )
         
-        SchedulingNotificationSettingsContent(
-            reminderName: "Shave Carrot",
-            scheduledWeekDays: ScheduleDay.allDays,
-            reminderTime: Date()
-        )
+        Form {
+            SchedulingNotificationSettingsContent(
+                reminderName: "Shave Carrot",
+                scheduledWeekDays: ScheduleDay.allDays,
+                reminderTime: Date()
+            )
+        }
     }
 }

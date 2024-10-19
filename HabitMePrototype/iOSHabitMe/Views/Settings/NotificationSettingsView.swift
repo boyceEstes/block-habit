@@ -29,29 +29,20 @@ struct NotificationSettingsView: View {
     
     var body: some View {
         
-        ScrollView {
-            LazyVStack {
-                VStack(alignment: .leading) {
-                    Toggle("Allow Notifications", isOn: $isAllNotificationsAllowed)
-                    if !isAllNotificationsAllowed {
-                        Text("\(isNotAllowedSummary)")
-                            .font(.caption)
-                    }
+        Form {
+            Section {
+                Toggle("Allow Notifications", isOn: $isAllNotificationsAllowed)
+            } footer: {
+                if !isAllNotificationsAllowed {
+                    Text("\(isNotAllowedSummary)")
+                        .font(.caption)
                 }
-                    .padding()
-                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
-                    .padding(.bottom, 20)
-
-                
-                if !habitsWithReminders.isEmpty {
-                    
-                    Text("Habits With Reminders")
-                        .font(.headline)
-                        .hAlign(.leading)
-                        .padding(.horizontal)
-                    
+            }
+            
+            if !habitsWithReminders.isEmpty {
+                Section("Habits with Reminders") {
                     ForEach(habitsWithReminders, id: \.self) { habit in
-                        
+
                         SchedulingNotificationSettingsContent(
                             reminderName: habit.name,
                             scheduledWeekDays: habit.scheduledWeekDays,
@@ -61,7 +52,6 @@ struct NotificationSettingsView: View {
                 }
             }
         }
-            .padding(.horizontal)
             .navigationTitle("Notifications")
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: isAllNotificationsAllowed) { _, isAllNotificationsAllowed in
