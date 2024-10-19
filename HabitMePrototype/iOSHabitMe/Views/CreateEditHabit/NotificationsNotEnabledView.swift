@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NotificationsNotEnabled: View {
+struct NotificationsNotEnabledView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
             HStack {
@@ -41,5 +41,5 @@ struct NotificationsNotEnabled: View {
 }
 
 #Preview {
-    NotificationsNotEnabled()
+    NotificationsNotEnabledView()
 }

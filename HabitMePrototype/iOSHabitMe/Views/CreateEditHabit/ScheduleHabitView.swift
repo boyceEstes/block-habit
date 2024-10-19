@@ -75,6 +75,8 @@ struct SelectableScheduleDay: SelectableListItem {
 
 struct ScheduleHabitView: View {
     
+    // MARK: Environment
+    @EnvironmentObject var habitController: HabitController
     // MARK: Injected Properties
     @Binding var schedulingUnits: ScheduleTimeUnit // "Frequency" - Ex: "Daily", "Weekly"
     @Binding var rate: Int // "Every" in Reminders App - "Every Day", "Every 2 Days", "Every Week
@@ -96,7 +98,8 @@ struct ScheduleHabitView: View {
     // Alerts
     @State private var showAlert = false
     @State private var alertMessage: String = ""
-    
+    // MARK: User Defaults
+    @AppStorage("\(UserDefaults.CustomKey.isNotificationsAllowed.rawValue)") var isInAppNotificationAllowed = true
     
     init(
         schedulingUnits: Binding<ScheduleTimeUnit>,
@@ -119,7 +122,21 @@ struct ScheduleHabitView: View {
         Form {
             if !isPermittedToNotification {
                 Section {
-                    NotificationsNotEnabled()
+                    NotificationsNotEnabledView()
+                }
+                .listRowBackground(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.blue, lineWidth: 2)
+                        .background(Color(uiColor: .secondarySystemBackground))
+                )
+            }
+            
+            if !isInAppNotificationAllowed {
+                
+                Section {
+                    InAppNotificationsNotEnabledView {
+                        habitController.notificationSettingsChanged(isOn: true)
+                    }
                 }
                 .listRowBackground(
                     RoundedRectangle(cornerRadius: 10)

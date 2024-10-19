@@ -56,9 +56,9 @@ struct NotificationSettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: isAllNotificationsAllowed) { _, isAllNotificationsAllowed in
                 
-                UserDefaults.isNotificationsAllowed = isAllNotificationsAllowed
                 
-                habitController.scheduleAllNotifications(isOn: isAllNotificationsAllowed)
+     
+                habitController.notificationSettingsChanged(isOn: isAllNotificationsAllowed)
             }
 //            .onChange(of: isAllNotificationsAllowed) { _, newValue in
 //                // Save this value

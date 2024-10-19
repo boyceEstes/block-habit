@@ -385,7 +385,9 @@ extension HabitController {
     }
     
     
-    public func scheduleAllNotifications(isOn: Bool) {
+    public func notificationSettingsChanged(isOn: Bool) {
+        
+        UserDefaults.isNotificationsAllowed = isOn
         
         if isOn {
             for habit in habitsWithReminders {

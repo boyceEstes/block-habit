@@ -42,7 +42,7 @@ struct WeekSelectionView: View {
                         }
                     } label: {
                         Text("\(name)")
-                            .foregroundStyle(Color.primary)
+                            .foregroundStyle(isSelected ? Color.white : .primary)
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.plain)

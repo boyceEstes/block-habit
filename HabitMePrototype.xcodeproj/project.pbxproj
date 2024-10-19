@@ -53,6 +53,7 @@
 		B335801F2CC3742000704D3B /* ArchivedHabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335801E2CC3742000704D3B /* ArchivedHabitsView.swift */; };
 		B33580212CC3783700704D3B /* ArchivedItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33580202CC3783700704D3B /* ArchivedItemRow.swift */; };
 		B33580232CC378CB00704D3B /* LittleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33580222CC378CB00704D3B /* LittleImage.swift */; };
+		B33580252CC37DD900704D3B /* InAppNotificationsNotEnabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33580242CC37DD900704D3B /* InAppNotificationsNotEnabledView.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -239,6 +240,7 @@
 		B335801E2CC3742000704D3B /* ArchivedHabitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedHabitsView.swift; sourceTree = "<group>"; };
 		B33580202CC3783700704D3B /* ArchivedItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedItemRow.swift; sourceTree = "<group>"; };
 		B33580222CC378CB00704D3B /* LittleImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittleImage.swift; sourceTree = "<group>"; };
+		B33580242CC37DD900704D3B /* InAppNotificationsNotEnabledView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationsNotEnabledView.swift; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 				B33385612CB854670087C9D7 /* ScheduleHabitView.swift */,
 				B33385812CB8C2760087C9D7 /* NotificationsNotEnabledView.swift */,
 				B33385872CB99B660087C9D7 /* WeekSelectionView.swift */,
+				B33580242CC37DD900704D3B /* InAppNotificationsNotEnabledView.swift */,
 			);
 			path = CreateEditHabit;
 			sourceTree = "<group>";
@@ -1134,6 +1137,7 @@
 				B347DE712B81305700F2FA74 /* View+RecordSheetPresentation.swift in Sources */,
 				B3C9E54E2B6EC5C900153158 /* View+SectionBackground.swift in Sources */,
 				B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */,
+				B33580252CC37DD900704D3B /* InAppNotificationsNotEnabledView.swift in Sources */,
 				B37AC76E2BA082E00052552B /* Date+GraphDisplayDate.swift in Sources */,
 				B32947B42B633E3F007C8C1E /* HomeNavigationFlow.swift in Sources */,
 				B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */,
