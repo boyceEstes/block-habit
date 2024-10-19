@@ -68,7 +68,19 @@ public class NotificationPermissionManager {
 
 extension NotificationPermissionManager {
     
+    /// Useful in Settings Menu
+    /// We do not need to know whether or not notificaitons are allowed, if we call this. Murder em all
+    func removeAllNotifications() {
+        
+        center.removeAllPendingNotificationRequests()
+    }
+    
+    
+    /// We want to make sure that when reminders are scheduled but the user has said that they do not want
+    /// any notifications in the app, that we do not schedule the notifications.
     func scheduleNotification(for habit: Habit, previousDays: Set<ScheduleDay>? = nil) {
+        
+        guard UserDefaults.isNotificationsAllowed else { return }
         
         Task {
         

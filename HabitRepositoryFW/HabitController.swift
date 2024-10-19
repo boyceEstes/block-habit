@@ -368,13 +368,33 @@ extension HabitController {
         }
     }
     
-//    var 
+//    var
+    
+    // MARK: Notificaitons for Habits
     
     /// Meant to be used whenever we are toggling back and forth on the NotificationSettings menu
-    public func scheduleNotificationsForHabits() {
+//    public func scheduleNotificationsForHabits() {
+//        
+//        let habitsToSchedule = latestNonArchivedHabits.filter { $0.reminderTime != nil }
+//    }
+//
+    
+    var habitsWithReminders: [Habit] {
+        latestNonArchivedHabits.filter { $0.reminderTime != nil }
+    }
+    
+    
+    public func scheduleAllNotifications(isOn: Bool) {
         
-        let habitsToSchedule = latestNonArchivedHabits.filter { $0.reminderTime != nil }
-        
+        if isOn {
+            for habit in habitsWithReminders {
+                NotificationPermissionManager.shared.scheduleNotification(for: habit)
+            }
+            print("Turned on notifications for all habits with reminders")
+        } else {
+            NotificationPermissionManager.shared.removeAllNotifications()
+            print("Turned off notifications for all habits")
+        }
     }
 }
 
