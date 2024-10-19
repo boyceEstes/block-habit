@@ -9,6 +9,9 @@ import SwiftUI
 
 extension Color {
     
+    static let accent: Color = .blue
+    static let accentText: Color = .white // Whatever works with accent as background
+    
     static let primaryBackground: Color = Color(uiColor: .secondarySystemGroupedBackground)
     static let secondaryBackground: Color = Color(uiColor: .tertiarySystemGroupedBackground)
     // tertiaryBackground color that I have in Assets because it is more custom
@@ -16,6 +19,15 @@ extension Color {
     static let secondaryFont: Color = .secondary
     
     static let restore: Color = .purple
+    
+    
+    // MARK: Settings Colors
+    static let notifications: Color = .green
+    static let archivedHabits: Color = .purple
+    static let archivedActivityDetails: Color = .orange
+    static let rateApp: Color = .teal
+    static let emailMe: Color = .blue
+    static let sendMeMoney: Color = .orange
 }
 
 

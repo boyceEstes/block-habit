@@ -25,6 +25,10 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         case habitDetail(habit: Habit)
         case statistics
         case settings
+        // settings paths
+        case notifications
+        case archivedHabits
+        case archivedActivityDetails
     }
     
     

@@ -237,6 +237,11 @@ struct ArchivedActivityDetailsView: View {
 
 struct SettingsView: View {
     
+    // MARK: Injected Properties
+    let goToNotifications: () -> Void
+    let goToArchivedHabits: () -> Void
+    let goToArchivedActivityDetails: () -> Void
+    // MARK: View Properties
     let reviewLink = URL(string: "https://apps.apple.com/app/6476879214?action=write-review")
     @Environment(\.openURL) var openURL
     
@@ -244,56 +249,45 @@ struct SettingsView: View {
         
         List {
             Section("🚧 Under Construction 🚧") {
-                NavigationLink("Notifications", destination: NotificationSettingsView())
+                SettingsRow(imageSystemName: "paperplane.fill", label: "Notifications", color: .notifications, tapAction: goToNotifications)
             }
             // Section for archived stuff
             Section {
-                NavigationLink("Archived Habits", destination: ArchivedHabitsView())
-                NavigationLink("Archived Activity Details", destination: ArchivedActivityDetailsView())
+                SettingsRow(imageSystemName: "archivebox.fill", label: "Archived Habits", color: .archivedHabits, tapAction: goToArchivedHabits)
+                SettingsRow(imageSystemName: "archivebox.fill", label: "Archived Activity Details", color: .archivedActivityDetails, tapAction: goToArchivedHabits)
             }
             
             Section("🚧 Under Construction 🚧") {
-                Button {
-                    if let link = reviewLink {
-                        openURL(link)
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: "star.fill")
-                        Text("Love this app? Share your Review!")
-                        
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Button {
-                    
-                } label: {
-                    HStack {
-                        Image(systemName: "cloud.drizzle.fill")
-                        Text("Hate this app? Let's talk about it")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                SettingsRow(imageSystemName: "star.fill", label: "Love this app? Share your Review!", color: .rateApp, tapAction: rateApp)
                 
-                Button {
-                    
-                } label: {
-                    HStack {
-                        Image(systemName: "cup.and.saucer.fill")
-                        Text("Buy me a cup of coffee")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                SettingsRow(imageSystemName: "cloud.drizzle.fill", label: "Hate this app? Let's talk about it", color: .emailMe, tapAction: emailMe)
+                
+                SettingsRow(imageSystemName: "cup.and.saucer.fill", label: "Buy me a coffee", color: .pink, tapAction: emailMe)
             }
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
     }
+    
+    
+    func rateApp() {
+        if let link = reviewLink {
+            openURL(link)
+        }
+    }
+    
+    func emailMe() {
+        print("TBD")
+    }
+    
+    func sendMeMoney() {
+        print("TBD $")
+    }
 }
 
 #Preview {
     NavigationStack {
-        SettingsView()
+        SettingsView(goToNotifications: { }, goToArchivedHabits: { }, goToArchivedActivityDetails: { })
     }
 }

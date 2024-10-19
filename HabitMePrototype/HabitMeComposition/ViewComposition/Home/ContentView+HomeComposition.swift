@@ -24,6 +24,12 @@ extension ContentView {
                     makeStatisticsView()
                 case .settings:
                     makeSettingsView()
+                case .notifications:
+                    makeNotificationSettingsView()
+                case .archivedHabits:
+                    makeArchivedHabitsView()
+                case .archivedActivityDetails:
+                    makeArchivedActivityDetailsView()
                 }
             }
     }

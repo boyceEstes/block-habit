@@ -11,7 +11,7 @@ struct CustomDisclosure: View {
     
     let color: Color
     
-    init(color: Color = .blue) {
+    init(color: Color = Color.accent) {
         self.color = color
     }
     
@@ -19,7 +19,7 @@ struct CustomDisclosure: View {
     var body: some View {
         Image(systemName: "chevron.right")
             .fontWeight(.semibold)
-            .foregroundColor(.blue)
+            .foregroundColor(color)
     }
 }
 
