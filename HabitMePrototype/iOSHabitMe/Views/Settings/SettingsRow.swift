@@ -15,29 +15,30 @@ struct SettingsRow: View {
     let tapAction: () -> Void
     
     var body: some View {
-        HStack {
-            Image(systemName: imageSystemName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 20, height: 20)
-                .foregroundStyle(Color.accentText)
-                .padding(4)
-                .background(
-                    RoundedRectangle(cornerRadius: 6, style: .continuous)
-                        .fill(color)
-                )
-            
-            Button(action: tapAction) {
+
+        Button(action: tapAction) {
+            HStack {
+                Image(systemName: imageSystemName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(Color.accentText)
+                    .padding(4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6, style: .continuous)
+                            .fill(color)
+                    )
                 Text("\(label)")
                     .font(.headline)
                     .fontWeight(.regular)
+                
+                Spacer()
+                
+                CustomDisclosure()
             }
-            .buttonStyle(.plain)
-            
-            Spacer()
-            
-            CustomDisclosure()
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
     }
 }
 
