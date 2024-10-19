@@ -50,6 +50,9 @@
 		B33385862CB8E59B0087C9D7 /* NotificationPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */; };
 		B33385882CB99B660087C9D7 /* WeekSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33385872CB99B660087C9D7 /* WeekSelectionView.swift */; };
 		B335801D2CC35A7200704D3B /* SettingsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335801C2CC35A7200704D3B /* SettingsRow.swift */; };
+		B335801F2CC3742000704D3B /* ArchivedHabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335801E2CC3742000704D3B /* ArchivedHabitsView.swift */; };
+		B33580212CC3783700704D3B /* ArchivedItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33580202CC3783700704D3B /* ArchivedItemRow.swift */; };
+		B33580232CC378CB00704D3B /* LittleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33580222CC378CB00704D3B /* LittleImage.swift */; };
 		B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */; };
 		B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3A2B7DA69C00F2FA74 /* BJRepositoryError.swift */; };
 		B347DE3D2B7E747200F2FA74 /* DecimalNumberPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B347DE3C2B7E747200F2FA74 /* DecimalNumberPolicy.swift */; };
@@ -233,6 +236,9 @@
 		B33385842CB8C69E0087C9D7 /* NotificationPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionManager.swift; sourceTree = "<group>"; };
 		B33385872CB99B660087C9D7 /* WeekSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekSelectionView.swift; sourceTree = "<group>"; };
 		B335801C2CC35A7200704D3B /* SettingsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRow.swift; sourceTree = "<group>"; };
+		B335801E2CC3742000704D3B /* ArchivedHabitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedHabitsView.swift; sourceTree = "<group>"; };
+		B33580202CC3783700704D3B /* ArchivedItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedItemRow.swift; sourceTree = "<group>"; };
+		B33580222CC378CB00704D3B /* LittleImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittleImage.swift; sourceTree = "<group>"; };
 		B347DE332B7D8C1A00F2FA74 /* TextFieldRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
 		B347DE352B7DA50C00F2FA74 /* ActivityDetailCalculationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailCalculationType.swift; sourceTree = "<group>"; };
 		B347DE382B7DA58F00F2FA74 /* ActivityDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailType.swift; sourceTree = "<group>"; };
@@ -617,6 +623,7 @@
 				B333854E2CB6E2110087C9D7 /* Alerts */,
 				B3BFEA0D2B76767E00DE7617 /* TextFields */,
 				B33385572CB845FA0087C9D7 /* CustomDisclosure.swift */,
+				B33580222CC378CB00704D3B /* LittleImage.swift */,
 			);
 			path = Reusable;
 			sourceTree = "<group>";
@@ -869,6 +876,8 @@
 				B39A27512BF3A3D0002A5A88 /* SettingsView.swift */,
 				B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */,
 				B335801C2CC35A7200704D3B /* SettingsRow.swift */,
+				B335801E2CC3742000704D3B /* ArchivedHabitsView.swift */,
+				B33580202CC3783700704D3B /* ArchivedItemRow.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1068,6 +1077,7 @@
 				B33385622CB854670087C9D7 /* ScheduleHabitView.swift in Sources */,
 				B3B2F3092BDFCC9000240EB0 /* ActivityDetailType+UI.swift in Sources */,
 				B3C97F282B5CE97500211B4C /* HabitsMenu.swift in Sources */,
+				B335801F2CC3742000704D3B /* ArchivedHabitsView.swift in Sources */,
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */,
 				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
 				B33385582CB845FA0087C9D7 /* CustomDisclosure.swift in Sources */,
@@ -1107,8 +1117,10 @@
 				B37AC7762BA086E50052552B /* HomeViewModel.swift in Sources */,
 				B3BFE9E52B7520DB00DE7617 /* ActivityDetailLineMarkChart.swift in Sources */,
 				B3BFEA0F2B76769900DE7617 /* NumberTextField.swift in Sources */,
+				B33580212CC3783700704D3B /* ArchivedItemRow.swift in Sources */,
 				B3BFEA1E2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift in Sources */,
 				B32947C82B65950D007C8C1E /* StatisticsView.swift in Sources */,
+				B33580232CC378CB00704D3B /* LittleImage.swift in Sources */,
 				B32947AA2B61E848007C8C1E /* DateFormatter+Reusable.swift in Sources */,
 				B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */,
 				B33385642CB8565D0087C9D7 /* ContentView+ScheduleComposition.swift in Sources */,

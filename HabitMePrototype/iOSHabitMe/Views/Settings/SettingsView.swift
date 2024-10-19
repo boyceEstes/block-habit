@@ -26,62 +26,6 @@ struct ArchiveTip: Tip {
 }
 
 
-struct ArchivedHabitsView: View {
-    
-    @EnvironmentObject var habitController: HabitController
-    
-    private let archiveTip = ArchiveTip()
-    
-    
-    var body: some View {
-        VStack {
-//            TipView(archiveTip)
-//                .padding()
-            
-            List {
-                Section {
-                    ForEach(habitController.latestArchivedHabits, id: \.id) { archivedHabit in
-                        
-                    Text("\(archivedHabit.name)")
-                        .swipeActions(edge: .leading) {
-                            // Restore
-                            Button {
-                                habitController.restoreHabit(archivedHabit)
-                            } label: {
-                                Label {
-                                    Text("Restore")
-                                } icon: {
-                                    BJAsset.restore.image()
-                                }
-                            }
-                            .tint(Color.restore)
-                        }
-                        .swipeActions(edge: .trailing) {
-                            // Delete
-                            Button(role: .destructive) {
-                                habitController.deleteHabit(archivedHabit)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                    }
-                } footer: {
-                    if habitController.latestArchivedHabits.isEmpty {
-                        Text("There are no archived habits!")
-                    } else {
-                        VStack {
-                            Text("Swipe Left to Right to restore Habits")
-                            Text("Swipe Right to Left to destroy Habits and all their data... forever")
-                        }
-                    }
-                }
-            }
-        }
-        .navigationTitle("Archived Habits")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
 
 /*
  
@@ -248,7 +192,7 @@ struct SettingsView: View {
     var body: some View {
         
         List {
-            Section("🚧 Under Construction 🚧") {
+            Section {
                 SettingsRow(imageSystemName: "paperplane.fill", label: "Notifications", color: .notifications, tapAction: goToNotifications)
             }
             // Section for archived stuff

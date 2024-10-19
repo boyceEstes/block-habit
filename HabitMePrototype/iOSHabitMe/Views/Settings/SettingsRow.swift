@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct SettingsRow: View {
     
     let imageSystemName: String
@@ -18,16 +20,7 @@ struct SettingsRow: View {
 
         Button(action: tapAction) {
             HStack {
-                Image(systemName: imageSystemName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .foregroundStyle(Color.accentText)
-                    .padding(4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 6, style: .continuous)
-                            .fill(color)
-                    )
+                LittleImage(imageSystemName: imageSystemName, color: color)
                 Text("\(label)")
                     .font(.headline)
                     .fontWeight(.regular)
