@@ -12,8 +12,7 @@ import HabitRepositoryFW
 struct NotificationSettingsView: View {
     
     @EnvironmentObject var habitController: HabitController
-    
-    @State private var isAllNotificationsAllowed = true
+    @AppStorage("isAllNotificationsAllowed") var isAllNotificationsAllowed: Bool = true
     
     var body: some View {
         
@@ -24,20 +23,20 @@ struct NotificationSettingsView: View {
             .padding(.horizontal)
             .navigationTitle("Notifications")
             .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: isAllNotificationsAllowed) { _, newValue in
-                // Save this value
-                UserDefaults.isNotificationsAllowed = newValue
-                
-                if newValue {
-                    print("turned on")
-                    // We need to ensure that everything is scheduled
-//                    habitController.scheduleAllHabitsWithNotifications()
-                } else {
-                    print("turned off")
-                    // We need to ensure that everything is unscheduled
-//                    habitController.unscheduleAllHabitsWithNotifications()
-                }
-            }
+//            .onChange(of: isAllNotificationsAllowed) { _, newValue in
+//                // Save this value
+//                UserDefaults.isNotificationsAllowed = newValue
+//                
+//                if newValue {
+//                    print("turned on")
+//                    // We need to ensure that everything is scheduled
+////                    habitController.scheduleAllHabitsWithNotifications()
+//                } else {
+//                    print("turned off")
+//                    // We need to ensure that everything is unscheduled
+////                    habitController.unscheduleAllHabitsWithNotifications()
+//                }
+//            }
     }
 }
 
