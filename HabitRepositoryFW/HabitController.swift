@@ -379,7 +379,8 @@ extension HabitController {
 //    }
 //
     
-    var habitsWithReminders: [Habit] {
+    
+    public var habitsWithReminders: [Habit] {
         latestNonArchivedHabits.filter { $0.reminderTime != nil }
     }
     

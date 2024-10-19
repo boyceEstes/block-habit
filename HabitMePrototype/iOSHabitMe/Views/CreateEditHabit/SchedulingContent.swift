@@ -8,6 +8,51 @@
 import SwiftUI
 import HabitRepositoryFW
 
+struct SchedulingNotificationSettingsContent: View {
+    
+//    let habit: Habit
+    let reminderName: String
+    let scheduledWeekDays: Set<ScheduleDay>
+    let reminderTime: Date
+    
+    var body: some View {
+        
+        VStack(alignment: .leading) {
+            
+            Text("\(reminderName)")
+                .hAlign(.leading)
+            
+            HStack {
+                Label("\(scheduleSummary)", systemImage: "bell")
+                Spacer()
+                Text("\(DateFormatter.shortTime.string(from: reminderTime))")
+            }
+            .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
+        }
+        .padding()
+        .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+    }
+    
+    
+    private var scheduleSummary: String {
+        
+//        switch schedulingUnits {
+//        case .daily:
+//            if rate == 1 {
+//                return "Daily"
+//            } else {
+//                return "Every \(rate) days"
+//            }
+//        case .weekly:
+            if scheduledWeekDays.count == 7 {
+                return "Daily"
+            } else {
+                return scheduledWeekDays.sorted { $0.rawValue < $1.rawValue }.map { $0.abbreviation }.joined(separator: ", ")
+            }
+//        }
+    }
+}
+
 struct SchedulingContent: View {
 
     // MARK: Injected Properties
@@ -87,12 +132,20 @@ struct SchedulingContent: View {
     @Previewable @State var scheduledWeekDays: Set<ScheduleDay> = ScheduleDay.allDays
     @Previewable @State var reminderTime: Date? = Date()
     
-    return SchedulingContent(
+    return VStack {
+        SchedulingContent(
+            
+            schedulingUnits: $schedulingUnits,
+            rate: $rate,
+            scheduledWeekDays: $scheduledWeekDays,
+            reminderTime: $reminderTime,
+            goToScheduleSelection: { _, _, _, _ in }
+        )
         
-        schedulingUnits: $schedulingUnits,
-        rate: $rate,
-        scheduledWeekDays: $scheduledWeekDays,
-        reminderTime: $reminderTime,
-        goToScheduleSelection: { _, _, _, _ in }
-    )
+        SchedulingNotificationSettingsContent(
+            reminderName: "Shave Carrot",
+            scheduledWeekDays: ScheduleDay.allDays,
+            reminderTime: Date()
+        )
+    }
 }

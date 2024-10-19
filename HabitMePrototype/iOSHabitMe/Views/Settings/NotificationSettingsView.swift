@@ -18,11 +18,48 @@ struct NotificationSettingsView: View {
         self._isAllNotificationsAllowed = State(initialValue: UserDefaults.isNotificationsAllowed)
     }
     
+    var isNotAllowedSummary: String {
+        "Notifications are disabled - you will get ZERO reminders"
+    }
+    
+    var habitsWithReminders: [Habit] {
+        
+        habitController.habitsWithReminders
+    }
+    
     var body: some View {
         
-        VStack {
-            Toggle("Allow Notifications", isOn: $isAllNotificationsAllowed)
-            Spacer()
+        ScrollView {
+            LazyVStack {
+                VStack(alignment: .leading) {
+                    Toggle("Allow Notifications", isOn: $isAllNotificationsAllowed)
+                    if !isAllNotificationsAllowed {
+                        Text("\(isNotAllowedSummary)")
+                            .font(.caption)
+                    }
+                }
+                    .padding()
+                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
+                    .padding(.bottom, 20)
+
+                
+                if !habitsWithReminders.isEmpty {
+                    
+                    Text("Habits With Reminders")
+                        .font(.headline)
+                        .hAlign(.leading)
+                        .padding(.horizontal)
+                    
+                    ForEach(habitsWithReminders, id: \.self) { habit in
+                        
+                        SchedulingNotificationSettingsContent(
+                            reminderName: habit.name,
+                            scheduledWeekDays: habit.scheduledWeekDays,
+                            reminderTime: habit.reminderTime ?? Date()
+                        )
+                    }
+                }
+            }
         }
             .padding(.horizontal)
             .navigationTitle("Notifications")
