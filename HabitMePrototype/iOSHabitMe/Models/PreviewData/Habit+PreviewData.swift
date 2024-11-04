@@ -22,7 +22,7 @@ extension Habit {
         isArchived: false,
         goalCompletionsPerDay: 1,
         color: "#a89cf0",
-        activityDetails: [],
+        activityDetails: [.amount, .note],
         schedulingUnits: .weekly,
         rate: 1,
         scheduledWeekDays: ScheduleDay.allDays,
@@ -170,7 +170,7 @@ extension HabitRecord {
 
 extension HabitRecord {
     
-    static func recordsForDaysPreviewForOneHabit(date: Date) -> [Date: [HabitRecord]] {
+    static func recordsForDaysPreviewForOneHabitWithActivityDetails(date: Date) -> [Date: [HabitRecord]] {
         
         let today = date
         let oneDayAgo = date.adding(days: -1)
@@ -186,7 +186,10 @@ extension HabitRecord {
             id: UUID().uuidString,
             creationDate: today,
             completionDate: today,
-            activityDetailRecords: [],
+            activityDetailRecords: [
+                ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
+                ActivityDetailRecord(value: "Something important", unit: nil, activityDetail: .note)
+            ],
             habit: .walkTheCat
         )
         
@@ -194,7 +197,10 @@ extension HabitRecord {
             id: UUID().uuidString,
             creationDate: oneDayAgo,
             completionDate: oneDayAgo,
-            activityDetailRecords: [],
+            activityDetailRecords: [
+                ActivityDetailRecord(value: "34", unit: nil, activityDetail: .amount),
+                ActivityDetailRecord(value: "Something less important", unit: nil, activityDetail: .note)
+            ],
             habit: .walkTheCat
         )
         
@@ -202,12 +208,15 @@ extension HabitRecord {
             id: UUID().uuidString,
             creationDate: threeDaysAgo,
             completionDate: threeDaysAgo,
-            activityDetailRecords: [],
+            activityDetailRecords: [
+                ActivityDetailRecord(value: "92", unit: nil, activityDetail: .amount),
+                ActivityDetailRecord(value: "Something super important", unit: nil, activityDetail: .note)
+            ],
             habit: .walkTheCat
         )
         
         return [
-            date: [recordwalkTheCatToday,  recordwalkTheCatToday],
+            date: [recordwalkTheCatToday],
             oneDayAgo: [recordwalkTheCatOneDayAgo],
             twoDaysAgo: [],
             threeDaysAgo: [recordwalkTheCatThreeDaysAgo],

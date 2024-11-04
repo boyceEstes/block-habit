@@ -47,7 +47,9 @@ struct RecordDetailsForDaysList: View {
 
 #Preview {
     
-    @Previewable @State var recordsForDays = HabitRecord.recordsForDaysPreviewForOneHabit(date: Date())
+    @Previewable @State var recordsForDays = HabitRecord.recordsForDaysPreviewForOneHabitWithActivityDetails(date: Date())
     
-    RecordDetailsForDaysList(recordsForDays: recordsForDays)
+    ScrollView {
+        RecordDetailsForDaysList(recordsForDays: recordsForDays)
+    }
 }

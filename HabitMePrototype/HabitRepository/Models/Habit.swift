@@ -9,22 +9,6 @@ import Foundation
 import HabitRepositoryFW
  
 
-extension ActivityDetail {
-    
-    static var preview: ActivityDetail {
-        
-        ActivityDetail(
-            id: UUID().uuidString,
-            name: "Hoodlum",
-            availableUnits: nil,
-            isArchived: false,
-            creationDate: Date(),
-            calculationType: .sum,
-            valueType: .text
-        )
-    }
-}
-
 extension HabitRecord {
     
     static var preview: HabitRecord {
@@ -34,7 +18,7 @@ extension HabitRecord {
             creationDate: Date(),
             completionDate: Date(),
             activityDetailRecords: [
-                ActivityDetailRecord(value: "This is a lot of string, don'tcha know - Where is it I'm going to out\n", unit: nil, activityDetail: .preview)
+                ActivityDetailRecord(value: "This is a lot of string, don'tcha know - Where is it I'm going to out\n", unit: nil, activityDetail: .note)
             ],
             habit: Habit.mopTheCarpet
         )
@@ -93,6 +77,30 @@ extension ActivityDetail {
 
 extension ActivityDetail {
     
+    // MARK: Text
+    static let note = ActivityDetail(
+        id: UUID().uuidString,
+        name: "Note",
+        availableUnits: nil,
+        isArchived: false,
+        creationDate: Date(),
+        calculationType: .sum,
+        valueType: .text
+    )
+    
+    static let mood = ActivityDetail(
+        id: UUID().uuidString,
+        name: "Mood",
+        availableUnits: nil,
+        isArchived: false,
+        creationDate: Date(),
+        calculationType: .sum,
+        valueType: .text
+    )
+    
+    
+    
+    // MARK: Values
     static let time = ActivityDetail(
         id: UUID().uuidString,
         name: "Time",
@@ -112,7 +120,6 @@ extension ActivityDetail {
         creationDate: Date(),
         calculationType: .sum,
         valueType: .number
-
     )
     
     
@@ -124,7 +131,6 @@ extension ActivityDetail {
         creationDate: Date(),
         calculationType: .sum,
         valueType: .number
-        
     )
     
     
@@ -136,26 +142,5 @@ extension ActivityDetail {
         creationDate: Date(),
         calculationType: .sum,
         valueType: .number
-    )
-    
-    
-    static let note = ActivityDetail(
-        id: UUID().uuidString,
-        name: "Note",
-        availableUnits: nil,
-        isArchived: false,
-        creationDate: Date(),
-        calculationType: .sum,
-        valueType: .text
-    )
-    
-    static let mood = ActivityDetail(
-        id: UUID().uuidString,
-        name: "Mood",
-        availableUnits: nil,
-        isArchived: false,
-        creationDate: Date(),
-        calculationType: .sum,
-        valueType: .text
     )
 }

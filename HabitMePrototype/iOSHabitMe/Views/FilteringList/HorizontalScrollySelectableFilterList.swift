@@ -74,7 +74,7 @@ import HabitRepositoryFW
 #Preview {
     
     @Previewable @State var items: [SelectableHabit] = Habit.previewHabits.map { SelectableHabit(habit: $0) }
-    return HorizontalScrollySelectableFilterList(items: $items)
+    HorizontalScrollySelectableFilterList(items: $items)
 }
 
 #endif
