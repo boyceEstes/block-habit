@@ -170,6 +170,55 @@ extension HabitRecord {
 
 extension HabitRecord {
     
+    static func recordsForDaysPreviewForOneHabit(date: Date) -> [Date: [HabitRecord]] {
+        
+        let today = date
+        let oneDayAgo = date.adding(days: -1)
+        let twoDaysAgo = date.adding(days: -2)
+        let threeDaysAgo = date.adding(days: -3)
+        let fourDaysAgo = date.adding(days: -4)
+        let fiveDaysAgo = date.adding(days: -5)
+        let sixDaysAgo = date.adding(days: -6)
+        let sevenDaysAgo = date.adding(days: -7)
+        let eightDaysAgo = date.adding(days: -8)
+        
+        let recordwalkTheCatToday = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today,
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        let recordwalkTheCatOneDayAgo = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: oneDayAgo,
+            completionDate: oneDayAgo,
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        let recordwalkTheCatThreeDaysAgo = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: threeDaysAgo,
+            completionDate: threeDaysAgo,
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        return [
+            date: [recordwalkTheCatToday,  recordwalkTheCatToday],
+            oneDayAgo: [recordwalkTheCatOneDayAgo],
+            twoDaysAgo: [],
+            threeDaysAgo: [recordwalkTheCatThreeDaysAgo],
+            fourDaysAgo: [],
+            fiveDaysAgo: [],
+            sixDaysAgo: [],
+            sevenDaysAgo: [],
+            eightDaysAgo: []
+        ]
+    }
+    
     static func recordsForDaysPreview(date: Date) -> [Date: [HabitRecord]] {
         
         let today = date

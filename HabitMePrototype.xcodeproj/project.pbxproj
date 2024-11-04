@@ -144,6 +144,7 @@
 		B3C9E5502B6F16F100153158 /* View+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54F2B6F16F100153158 /* View+Font.swift */; };
 		B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5622B6F25EB00153158 /* View+toolbar.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
+		B3E0FB5A2CD946F1005608E8 /* RecordDetailsForDaysList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E0FB592CD946F1005608E8 /* RecordDetailsForDaysList.swift */; };
 		B3E610E62CBB7769009EE331 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -332,6 +333,7 @@
 		B3C9E54F2B6F16F100153158 /* View+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Font.swift"; sourceTree = "<group>"; };
 		B3C9E5622B6F25EB00153158 /* View+toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+toolbar.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
+		B3E0FB592CD946F1005608E8 /* RecordDetailsForDaysList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailsForDaysList.swift; sourceTree = "<group>"; };
 		B3E34F6C2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRecordsForDateByHabitFRCDataSourceAdapter.swift; sourceTree = "<group>"; };
 		B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -787,6 +789,7 @@
 		B3C97F242B5CE94500211B4C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B3E0FB562CD946BD005608E8 /* HabitDetail */,
 				B3E610E42CBB7753009EE331 /* Settings */,
 				B33385592CB84EA10087C9D7 /* CreateEditHabit */,
 				B33385442CB6DAC70087C9D7 /* FilteringList */,
@@ -871,6 +874,14 @@
 				B3BFEA1D2B7BBF1400DE7617 /* ModelContext+CreateActivityDetail.swift */,
 			);
 			path = SwiftData;
+			sourceTree = "<group>";
+		};
+		B3E0FB562CD946BD005608E8 /* HabitDetail */ = {
+			isa = PBXGroup;
+			children = (
+				B3E0FB592CD946F1005608E8 /* RecordDetailsForDaysList.swift */,
+			);
+			path = HabitDetail;
 			sourceTree = "<group>";
 		};
 		B3E610E42CBB7753009EE331 /* Settings */ = {
@@ -1146,6 +1157,7 @@
 				B32947C62B640431007C8C1E /* ContentView+EditHabitComposition.swift in Sources */,
 				B347DE3B2B7DA69C00F2FA74 /* BJRepositoryError.swift in Sources */,
 				B3BFEA182B7838B400DE7617 /* ActivityDetailSummaryRow.swift in Sources */,
+				B3E0FB5A2CD946F1005608E8 /* RecordDetailsForDaysList.swift in Sources */,
 				B3BFEA0A2B76635000DE7617 /* ActivityRecordRow.swift in Sources */,
 				B3B403842B702AEA00D1967E /* ContentView+CreateActivityRecordWithDetailsComposition.swift in Sources */,
 				B33385882CB99B660087C9D7 /* WeekSelectionView.swift in Sources */,
