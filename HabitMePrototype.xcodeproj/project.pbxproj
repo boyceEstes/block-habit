@@ -145,6 +145,7 @@
 		B3C9E5632B6F25EB00153158 /* View+toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5622B6F25EB00153158 /* View+toolbar.swift */; };
 		B3CC60AD2B5EA94A0074ED41 /* DataHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */; };
 		B3E0FB5A2CD946F1005608E8 /* RecordDetailsForDaysList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E0FB592CD946F1005608E8 /* RecordDetailsForDaysList.swift */; };
+		B3E0FB5C2CD94C15005608E8 /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E0FB5B2CD94C0F005608E8 /* WrappingHStack.swift */; };
 		B3E610E62CBB7769009EE331 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -334,6 +335,7 @@
 		B3C9E5622B6F25EB00153158 /* View+toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+toolbar.swift"; sourceTree = "<group>"; };
 		B3CC60AC2B5EA94A0074ED41 /* DataHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHabit.swift; sourceTree = "<group>"; };
 		B3E0FB592CD946F1005608E8 /* RecordDetailsForDaysList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailsForDaysList.swift; sourceTree = "<group>"; };
+		B3E0FB5B2CD94C0F005608E8 /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappingHStack.swift; sourceTree = "<group>"; };
 		B3E34F6C2BBC31B900E1699A /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRecordsForDateByHabitFRCDataSourceAdapter.swift; sourceTree = "<group>"; };
 		B3E610E52CBB7769009EE331 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -625,6 +627,7 @@
 		B387B2242CB1E11400256C64 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				B3E0FB5B2CD94C0F005608E8 /* WrappingHStack.swift */,
 				B333854E2CB6E2110087C9D7 /* Alerts */,
 				B3BFEA0D2B76767E00DE7617 /* TextFields */,
 				B33385572CB845FA0087C9D7 /* CustomDisclosure.swift */,
@@ -1099,6 +1102,7 @@
 				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */,
 				B333854D2CB6DCC10087C9D7 /* SelectableHabit.swift in Sources */,
+				B3E0FB5C2CD94C15005608E8 /* WrappingHStack.swift in Sources */,
 				B37AC77B2BAF53760052552B /* Habit.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B33385412CB5CB770087C9D7 /* BlockStack.swift in Sources */,

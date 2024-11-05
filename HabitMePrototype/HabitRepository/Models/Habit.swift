@@ -134,6 +134,17 @@ extension ActivityDetail {
     )
     
     
+    static let weight = ActivityDetail(
+        id: UUID().uuidString,
+        name: "Weight",
+        availableUnits: nil,
+        isArchived: false,
+        creationDate: Date(),
+        calculationType: .average,
+        valueType: .number
+    )
+    
+    
     static let touchdowns = ActivityDetail(
         id: UUID().uuidString,
         name: "Touchdowns",

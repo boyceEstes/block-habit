@@ -233,7 +233,7 @@ struct HabitDetailView: View {
                     activityDetailCharts
                         .padding(.horizontal)
                     
-                    RecordDetailsForDaysList(recordsForDays: habitRecordsForDaysLogged)
+                    RecordDetailsForDaysList(color: Color(hex: activity.color) ?? Color.blue, recordsForDays: habitRecordsForDaysLogged)
                     .padding(.horizontal)
                 }
             }
