@@ -191,6 +191,7 @@ extension HabitRecord {
                 ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
                 ActivityDetailRecord(value: "23", unit: nil, activityDetail: .length),
                 ActivityDetailRecord(value: "180", unit: nil, activityDetail: .weight),
+                ActivityDetailRecord(value: "190", unit: nil, activityDetail: .weight),
 //                ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
                 ActivityDetailRecord(value: "Something important", unit: nil, activityDetail: .note)
             ],

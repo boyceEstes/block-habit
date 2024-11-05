@@ -75,6 +75,7 @@ struct RecordDetailsForDaysList: View {
         
         // We want to return ActivityDetailREcord and its corresponding sum for the day
         var sumForRecords = [ActivityDetail: Double]()
+        var tmpAvgForRecords = [ActivityDetail: (Double, Double)]()
         // We'll tackle summation first, its easier
         
         // Each record has some number of activity detail records
@@ -89,19 +90,51 @@ struct RecordDetailsForDaysList: View {
                     
                     if activityDetailRecord.activityDetail.calculationType == .sum {
                         
-                        let latestValue = Double(activityDetailRecord.value) ?? -1.0
+                        guard let latestValue = Double(activityDetailRecord.value) else { continue }
                         
                         if sumForRecords[activityDetailRecord.activityDetail] == nil {
                             sumForRecords[activityDetailRecord.activityDetail] = latestValue
                         } else {
                             sumForRecords[activityDetailRecord.activityDetail]! += latestValue
                         }
+                        
+                    } else {
+                        
+                        // This is an average type. We want to keep track of the number
+                        // Average is sum / num - so we need to keep the count of each thing.
+                        // We can do that by having a Dictionary with the
+                        
+                        guard let latestValue = Double(activityDetailRecord.value) else { continue }
+                        
+                        if tmpAvgForRecords[activityDetailRecord.activityDetail] == nil {
+                            tmpAvgForRecords[activityDetailRecord.activityDetail] = (latestValue, 1)
+                        } else {
+                            guard let currentDayValuesForDetail = tmpAvgForRecords[activityDetailRecord.activityDetail] else { continue }
+                            
+                            let newestLatestValue = currentDayValuesForDetail.0 + latestValue
+                            let numOfRecordsUntilNow = currentDayValuesForDetail.1
+          
+                            tmpAvgForRecords[activityDetailRecord.activityDetail] = (newestLatestValue, numOfRecordsUntilNow + 1)
+                        }
                     }
-                } // Else its text and we can't sum it
+                }
             }
         }
         
-        return sumForRecords
+        
+        let avgForRecords = tmpAvgForRecords.mapValues { value in
+            
+            let sum = value.0
+            let count = value.1
+            let average = sum / count
+            
+            return average
+        }
+        
+        
+        return sumForRecords.merging(avgForRecords) { current, new in
+            current
+        }
     }
 }
 
