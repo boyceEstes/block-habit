@@ -24,7 +24,7 @@ struct RecordDetailsForDaysList: View {
             if !recordsForDays.isEmpty {
                 ForEach(recordsForDays.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
                     
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Text("\(day.displayDate)")
                                 .font(.rowTitle)
@@ -50,13 +50,40 @@ struct RecordDetailsForDaysList: View {
                                 )
                             }
                         }
+
+                        LazyVStack(spacing: 0) {
+                            
+                            ForEach(Array(records.enumerated()), id: \.offset) { index, record in
+                                
+                                let completionDate = DateFormatter.shortTime.string(for: record.completionDate) ?? "Unknown Completion"
+                                
+                                ZStack(alignment: .bottom) {
+                                    HStack {
+                                        Text("\(completionDate)")
+                                        Spacer()
+                                        ActivityDetailRecordIndicators(detailRecords: record.activityDetailRecords)
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 16)
+                                    
+                                    // We do not need a divider at the last element
+                                    if index != records.count - 1 {
+                                        Divider()
+                                            .padding(.leading)
+                                    }
+                                }
+
+                            }
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color(uiColor: .tertiarySystemBackground))
+                        )
                     }
                     
-//                    ForEach(records, id: \.self) { record in
-//                        WrappingHStack {
-//                            
-//                        }
-//                    }
+                    
+                    
+
 //                    ForEach(records, id: \.self) { record in
 //                        ActivityRecordRowDateWithInfo(habitRecord: record)
 //                    }
@@ -146,4 +173,5 @@ struct RecordDetailsForDaysList: View {
     ScrollView {
         RecordDetailsForDaysList(color: .orange, recordsForDays: recordsForDays)
     }
+    .background(Color(uiColor: .secondarySystemBackground))
 }

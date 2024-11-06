@@ -173,6 +173,7 @@ extension HabitRecord {
     static func recordsForDaysPreviewForOneHabitWithActivityDetails(date: Date) -> [Date: [HabitRecord]] {
         
         let today = date
+        let todayADifferentTime = date.addingTimeInterval(-300) // 5 min earlier
         let oneDayAgo = date.adding(days: -1)
         let twoDaysAgo = date.adding(days: -2)
         let threeDaysAgo = date.adding(days: -3)
@@ -188,15 +189,25 @@ extension HabitRecord {
             completionDate: today,
             activityDetailRecords: [
                 ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
-                ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
                 ActivityDetailRecord(value: "23", unit: nil, activityDetail: .length),
                 ActivityDetailRecord(value: "180", unit: nil, activityDetail: .weight),
-                ActivityDetailRecord(value: "190", unit: nil, activityDetail: .weight),
-//                ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
                 ActivityDetailRecord(value: "Something important", unit: nil, activityDetail: .note)
             ],
             habit: .walkTheCat
         )
+        let recordWalkTheCatTodayAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: todayADifferentTime,
+            completionDate: todayADifferentTime,
+            activityDetailRecords: [
+                ActivityDetailRecord(value: "12", unit: nil, activityDetail: .amount),
+                ActivityDetailRecord(value: "23", unit: nil, activityDetail: .length),
+                ActivityDetailRecord(value: "190", unit: nil, activityDetail: .weight),
+                ActivityDetailRecord(value: "Something important New", unit: nil, activityDetail: .note)
+            ],
+            habit: .walkTheCat
+        )
+        
         
         let recordwalkTheCatOneDayAgo = HabitRecord(
             id: UUID().uuidString,
@@ -221,7 +232,7 @@ extension HabitRecord {
         )
         
         return [
-            date: [recordwalkTheCatToday],
+            date: [recordwalkTheCatToday, recordWalkTheCatTodayAgain],
             oneDayAgo: [recordwalkTheCatOneDayAgo],
             twoDaysAgo: [],
             threeDaysAgo: [recordwalkTheCatThreeDaysAgo],
@@ -283,7 +294,7 @@ extension HabitRecord {
         )
         
         return [
-            date: [recordwalkTheCatToday, recordMirrorPepTalkToday],
+            date: [recordwalkTheCatToday],
             oneDayAgo: [recordwalkTheCatOneDayAgo],
             twoDaysAgo: [recordMirrorPepTalkTwoDaysAgo],
             threeDaysAgo: [recordwalkTheCatThreeDaysAgo],
