@@ -17,20 +17,17 @@ struct RecordDetailsForDaysList: View {
         
         LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
             
-            // FIXME: 2 Orient this so that all the information is given
-            Text("Records")
-                .font(.title3)
-            
             if !recordsForDays.isEmpty {
                 ForEach(recordsForDays.sorted(by: { $0.key > $1.key }), id: \.key) { day, records in
                     
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 12) {
                         HStack {
                             Text("\(day.displayDate)")
                                 .font(.rowTitle)
                                 .layoutPriority(1)
                             Spacer()
                         }
+                        .padding(.top, 8)
                         
                         let totalRecordInfo = totalNumberSumForDay(records: records)
                         
@@ -80,6 +77,7 @@ struct RecordDetailsForDaysList: View {
                                 .fill(Color(uiColor: .tertiarySystemBackground))
                         )
                     }
+                    
                     
                     
                     
