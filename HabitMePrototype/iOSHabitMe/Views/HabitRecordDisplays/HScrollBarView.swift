@@ -75,8 +75,10 @@ struct HScrollBarView: View {
         
         let habitCount = habitRecords.count
         let labelHeight: CGFloat = 30
+        let dividerHeight: CGFloat = 1
         // This will also be the usual height
-        let itemWidth = (graphHeight - labelHeight) / numOfItemsToReachTop
+        let barAreaHeight = (graphHeight - labelHeight - dividerHeight)
+        let itemWidth = barAreaHeight / numOfItemsToReachTop
         
         // If there are 4 items to reach the top...
         // Your graph is 100
@@ -85,7 +87,7 @@ struct HScrollBarView: View {
         // We would then want to say that each block would be 70 / 10, its smaller
         // Otherwise if we are <= habitCount then we would just divide it by the number to reach the top (4)
         
-        let itemHeight = habitCount > Int(numOfItemsToReachTop) ? ((graphHeight - labelHeight) / Double(habitCount)) : itemWidth
+        let itemHeight = habitCount > Int(numOfItemsToReachTop) ? (barAreaHeight / Double(habitCount)) : itemWidth
         
         let _ = print("date: \(DateFormatter.shortDate.string(from: date)), numOfItems: \(habitCount), graphHeight: \(graphHeight), numOfItemsToReachTop: \(numOfItemsToReachTop), itemWidth: \(itemWidth), itemHeight: \(itemHeight)")
         
@@ -108,7 +110,7 @@ struct HScrollBarView: View {
             
             Rectangle()
                 .fill(.ultraThickMaterial)
-                .frame(height: 1)
+                .frame(height: dividerHeight)
             
             Text("\(date.displayDate)")
                 .font(.footnote)
