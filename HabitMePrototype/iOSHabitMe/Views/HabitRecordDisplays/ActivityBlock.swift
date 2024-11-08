@@ -32,7 +32,7 @@ struct ActivityBlock: View {
         
         Rectangle()
             .fill(color)
-            .frame(width: 24, height: 24)
+            .frame(width: itemWidth, height: itemHeight)
             .onTapGesture(perform: tapAction)
     }
 }

@@ -8,12 +8,6 @@
 import SwiftUI
 import HabitRepositoryFW
 
-//struct HScrollBarView: View {
-//    var body: some View {
-//        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//    }
-//}
-
 
 struct HScrollBarView: View {
     
@@ -33,6 +27,7 @@ struct HScrollBarView: View {
         
         // TODO: If the device is horizontal, do not use this calculation
         let columnWidth = graphWidth / 5
+        
         VStack {
             
             ScrollViewReader { value in
@@ -42,13 +37,14 @@ struct HScrollBarView: View {
                     LazyHStack(spacing: 0) {
                         
                         ForEach(habitRecordsForDays.sorted(by: { $0.key < $1.key}), id: \.key) { date, habitRecords in
+                            
                             dateColumn(
                                 graphHeight: graphHeight,
                                 numOfItemsToReachTop: numOfItemsToReachTop,
                                 date: date,
                                 habitRecords: habitRecords
                             )
-                            .frame(width: columnWidth, height: graphHeight, alignment: .bottom)
+                            .frame(width: columnWidth)
                             .id(date)
                         }
                     }
@@ -81,10 +77,20 @@ struct HScrollBarView: View {
         let labelHeight: CGFloat = 30
         // This will also be the usual height
         let itemWidth = (graphHeight - labelHeight) / numOfItemsToReachTop
+        
+        // If there are 4 items to reach the top...
+        // Your graph is 100
+        // your label takes up 30
+        // your available space would then be 70
+        // We would then want to say that each block would be 70 / 10, its smaller
+        // Otherwise if we are <= habitCount then we would just divide it by the number to reach the top (4)
+        
         let itemHeight = habitCount > Int(numOfItemsToReachTop) ? ((graphHeight - labelHeight) / Double(habitCount)) : itemWidth
         
+        let _ = print("date: \(DateFormatter.shortDate.string(from: date)), numOfItems: \(habitCount), graphHeight: \(graphHeight), numOfItemsToReachTop: \(numOfItemsToReachTop), itemWidth: \(itemWidth), itemHeight: \(itemHeight)")
+        
         VStack(spacing: 0) {
-
+            
             BlockStack(
                 habitRecords: habitRecords,
                 itemWidth: itemWidth,
@@ -114,6 +120,8 @@ struct HScrollBarView: View {
                     habitController.setSelectedDay(to: date)
                 }
         }
+        .frame(maxHeight: .infinity, alignment: .bottom)
+        .background(Color.green)
     }
     
     
@@ -144,19 +152,29 @@ struct HScrollBarView: View {
 
 #Preview {
 
-    @Previewable @State var day = Date()
     @Previewable @Namespace var namespace
     @Previewable @State var showDayDetail = false
+    @Previewable @State var day = Date()
 
-    let maxNumOfItemsBeforeCrushing = 10.0
+    let maxNumOfItemsBeforeCrushing = 4.0
     
-    return HScrollBarView(
-        graphWidth: 300,
-        graphHeight: 300,
-        numOfItemsToReachTop: maxNumOfItemsBeforeCrushing,
-        habitRecordsForDays: HabitRecord.recordsForDaysPreview(date: day),
-        selectedDay: $day,
-        animation: namespace,
-        showDayDetail: $showDayDetail
-    )
+    VStack {
+        Text("Top")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.blue)
+        
+        HScrollBarView(
+            graphWidth: 300,
+            graphHeight: 200,
+            numOfItemsToReachTop: maxNumOfItemsBeforeCrushing,
+            habitRecordsForDays: HabitRecord.recordsForDaysPreview(date: Date()),
+            selectedDay: $day,
+            animation: namespace,
+            showDayDetail: $showDayDetail
+        )
+        
+        Text("Bottom")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.yellow)
+    }
 }

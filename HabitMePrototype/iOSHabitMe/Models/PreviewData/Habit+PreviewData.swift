@@ -195,6 +195,7 @@ extension HabitRecord {
             ],
             habit: .walkTheCat
         )
+        
         let recordWalkTheCatTodayAgain = HabitRecord(
             id: UUID().uuidString,
             creationDate: todayADifferentTime,
@@ -207,7 +208,6 @@ extension HabitRecord {
             ],
             habit: .walkTheCat
         )
-        
         
         let recordwalkTheCatOneDayAgo = HabitRecord(
             id: UUID().uuidString,
@@ -263,6 +263,23 @@ extension HabitRecord {
             activityDetailRecords: [],
             habit: .walkTheCat
         )
+        
+        let recordwalkTheCatTodayAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today.addingTimeInterval(-300),
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        let recordwalkTheCatTodayAgainAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today.addingTimeInterval(-600),
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
         let recordwalkTheCatOneDayAgo = HabitRecord(
             id: UUID().uuidString,
             creationDate: oneDayAgo,
@@ -270,6 +287,7 @@ extension HabitRecord {
             activityDetailRecords: [],
             habit: .walkTheCat
         )
+        
         let recordwalkTheCatThreeDaysAgo = HabitRecord(
             id: UUID().uuidString,
             creationDate: threeDaysAgo,
@@ -285,6 +303,39 @@ extension HabitRecord {
             activityDetailRecords: [],
             habit: .mirrorPepTalk
         )
+        
+        let recordwalkTheCatTodayAgainAgainAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today.addingTimeInterval(-900),
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        let recordwalkTheCatTodayAgainAgainAgainAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today.addingTimeInterval(-1200),
+            activityDetailRecords: [],
+            habit: .walkTheCat
+        )
+        
+        let recordMirrorPepTalkTodayAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today.addingTimeInterval(-310),
+            activityDetailRecords: [],
+            habit: .mirrorPepTalk
+        )
+        
+        let recordMirrorPepTalkTodayAgainAgain = HabitRecord(
+            id: UUID().uuidString,
+            creationDate: today,
+            completionDate: today.addingTimeInterval(-610),
+            activityDetailRecords: [],
+            habit: .drinkTheKoolaid
+        )
+        
         let recordMirrorPepTalkTwoDaysAgo = HabitRecord(
             id: UUID().uuidString,
             creationDate: twoDaysAgo,
@@ -294,7 +345,7 @@ extension HabitRecord {
         )
         
         return [
-            date: [recordwalkTheCatToday],
+            date: [recordwalkTheCatToday, recordwalkTheCatTodayAgain, recordMirrorPepTalkToday, recordwalkTheCatTodayAgainAgain, recordwalkTheCatTodayAgainAgainAgain, recordwalkTheCatTodayAgainAgainAgainAgain, recordMirrorPepTalkTodayAgain, recordMirrorPepTalkTodayAgainAgain],
             oneDayAgo: [recordwalkTheCatOneDayAgo],
             twoDaysAgo: [recordMirrorPepTalkTwoDaysAgo],
             threeDaysAgo: [recordwalkTheCatThreeDaysAgo],

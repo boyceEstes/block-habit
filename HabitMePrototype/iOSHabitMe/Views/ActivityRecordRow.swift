@@ -97,10 +97,19 @@ struct ActivityDetailRecordIndicators: View {
     
     let detailRecords: [ActivityDetailRecord]
     
+    var sortedDetailRecords: [ActivityDetailRecord] {
+        
+        detailRecords.sorted { curr, next in
+            
+           return curr.activityDetail.valueType == .number && next.activityDetail.valueType == .text
+        }
+    }
+    
+    
     var body: some View {
         
         HStack {
-            ForEach(detailRecords, id: \.id) { detailRecord in
+            ForEach(sortedDetailRecords, id: \.id) { detailRecord in
                 
                 let detail = detailRecord.activityDetail
                 
