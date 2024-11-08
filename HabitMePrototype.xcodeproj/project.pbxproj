@@ -87,6 +87,9 @@
 		B39A27502BEC5063002A5A88 /* StatisticsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A274F2BEC5062002A5A88 /* StatisticsCalculator.swift */; };
 		B39A27522BF3A3D0002A5A88 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A27512BF3A3D0002A5A88 /* SettingsView.swift */; };
 		B39A27542BF3A614002A5A88 /* ContentView+SettingsComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A27532BF3A614002A5A88 /* ContentView+SettingsComposition.swift */; };
+		B3B02F892CDEB02800DEC71B /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B02F882CDEB02600DEC71B /* MailView.swift */; };
+		B3B02F8B2CDEB0AE00DEC71B /* LetsTalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B02F8A2CDEB0AE00DEC71B /* LetsTalkView.swift */; };
+		B3B02F8D2CDEB2BA00DEC71B /* DonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B02F8C2CDEB2BA00DEC71B /* DonationView.swift */; };
 		B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */; };
 		B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F72BDFC9D800240EB0 /* Habit.swift */; };
 		B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */; };
@@ -291,6 +294,9 @@
 		B39A274F2BEC5062002A5A88 /* StatisticsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalculator.swift; sourceTree = "<group>"; };
 		B39A27512BF3A3D0002A5A88 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B39A27532BF3A614002A5A88 /* ContentView+SettingsComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+SettingsComposition.swift"; sourceTree = "<group>"; };
+		B3B02F882CDEB02600DEC71B /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
+		B3B02F8A2CDEB0AE00DEC71B /* LetsTalkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetsTalkView.swift; sourceTree = "<group>"; };
+		B3B02F8C2CDEB2BA00DEC71B /* DonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationView.swift; sourceTree = "<group>"; };
 		B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMenuDataSourceTests.swift; sourceTree = "<group>"; };
 		B3B2F2F72BDFC9D800240EB0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		B3B2F2F92BDFC9EC00240EB0 /* ActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetail.swift; sourceTree = "<group>"; };
@@ -627,6 +633,7 @@
 		B387B2242CB1E11400256C64 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				B3B02F872CDEB02200DEC71B /* Mail */,
 				B3E0FB5B2CD94C0F005608E8 /* WrappingHStack.swift */,
 				B333854E2CB6E2110087C9D7 /* Alerts */,
 				B3BFEA0D2B76767E00DE7617 /* TextFields */,
@@ -643,6 +650,14 @@
 				B389D2F62BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B3B02F872CDEB02200DEC71B /* Mail */ = {
+			isa = PBXGroup;
+			children = (
+				B3B02F882CDEB02600DEC71B /* MailView.swift */,
+			);
+			path = Mail;
 			sourceTree = "<group>";
 		};
 		B3B2F2F62BDFC9C800240EB0 /* Model */ = {
@@ -895,6 +910,8 @@
 				B335801C2CC35A7200704D3B /* SettingsRow.swift */,
 				B335801E2CC3742000704D3B /* ArchivedHabitsView.swift */,
 				B33580202CC3783700704D3B /* ArchivedItemRow.swift */,
+				B3B02F8A2CDEB0AE00DEC71B /* LetsTalkView.swift */,
+				B3B02F8C2CDEB2BA00DEC71B /* DonationView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1073,6 +1090,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3B02F8B2CDEB0AE00DEC71B /* LetsTalkView.swift in Sources */,
 				B3C97F262B5CE95000211B4C /* BJBarChart.swift in Sources */,
 				B3C9E5182B698C7D00153158 /* ModelContext+DeleteHabit.swift in Sources */,
 				B387B2222CB1BD7600256C64 /* View+GeneralUtilities.swift in Sources */,
@@ -1098,6 +1116,7 @@
 				B32947CA2B65BFDB007C8C1E /* ContentView+StatisticsComposition.swift in Sources */,
 				B3BFEA082B765C5500DE7617 /* CGFloat+Constants.swift in Sources */,
 				B33385582CB845FA0087C9D7 /* CustomDisclosure.swift in Sources */,
+				B3B02F8D2CDEB2BA00DEC71B /* DonationView.swift in Sources */,
 				B33385482CB6DB3C0087C9D7 /* FilterButtonStyle.swift in Sources */,
 				B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */,
 				B3BFE9E72B75268B00DE7617 /* LineChartActivityDetailData.swift in Sources */,
@@ -1107,6 +1126,7 @@
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B33385412CB5CB770087C9D7 /* BlockStack.swift in Sources */,
 				B333854A2CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift in Sources */,
+				B3B02F892CDEB02800DEC71B /* MailView.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,
 				B32947BB2B6346D5007C8C1E /* ContentView+CreateHabitComposition.swift in Sources */,
 				B333853F2CB5C9D80087C9D7 /* ActivityBlock.swift in Sources */,

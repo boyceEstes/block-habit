@@ -46,7 +46,9 @@ extension ContentView {
         SettingsView(
             goToNotifications: goToNotificationsFromSettings,
             goToArchivedHabits: goToArchivedHabitsFromSettings,
-            goToArchivedActivityDetails: goToArchivedActivityDetailsFromSettings
+            goToArchivedActivityDetails: goToArchivedActivityDetailsFromSettings,
+            goToLetsTalk: goToLetsTalkFromSettings,
+            goToBuyMeACoffee: goToBuyMeACoffeeFromSettings
         )
     }
     
@@ -62,6 +64,15 @@ extension ContentView {
     func goToArchivedActivityDetailsFromSettings() {
         homeNavigationFlowPath.append(.archivedActivityDetails)
     }
+    
+    func goToLetsTalkFromSettings() {
+        homeNavigationFlowPath.append(.letsTalk)
+    }
+    
+    func goToBuyMeACoffeeFromSettings() {
+        homeNavigationFlowPath.append(.buyMeACoffee)
+    }
+    
     
     // MARK: Settings-Specific Views that may need to be extracted later
     @ViewBuilder
@@ -80,5 +91,18 @@ extension ContentView {
     func makeArchivedActivityDetailsView() -> some View {
         
         ArchivedActivityDetailsView()
+    }
+    
+    @ViewBuilder
+    func makeGoToLetsTalkView() -> some View {
+        
+        LetsTalkView()
+    }
+    
+    
+    @ViewBuilder
+    func makeGoToBuyMeACoffeeView() -> some View {
+        
+        DonationView()
     }
 }

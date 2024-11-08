@@ -100,75 +100,6 @@ struct ArchivedActivityDetailsView: View {
                         Text("There are no archived activity details!")
                     }
                 )
-//                SectionWithDisclaimerIfEmpty(isEmpty: archivedActivityDetails.isEmpty, sectionContent: {
-//                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
-//                        
-//                        Text("\(archivedActivityDetail.name)")
-//                            .swipeActions(edge: .leading) {
-//                                // Restore
-//                                Button {
-//                                    print("restore activity detail")
-//                                    habitController.restoreActivityDetail(archivedActivityDetail)
-//                                } label: {
-//                                    Label {
-//                                        Text("Restore")
-//                                    } icon: {
-//                                        BJAsset.restore.image()
-//                                    }
-//                                }
-//                                .tint(Color.restore)
-//                            }
-//                            .swipeActions(edge: .trailing) {
-//                                // Delete
-//                                Button(role: .destructive) {
-//                                    print("delete activity detail")
-//                                    habitController.deleteActivityDetail(archivedActivityDetail)
-//                                } label: {
-//                                    Label("Delete", systemImage: "trash")
-//                                }
-//                            }
-//                    }
-//                }, sectionHeader: {
-//                    Text("Header world")
-//                }, sectionEmpty: {
-//                    if archivedActivityDetails.isEmpty {
-//                        Text("There are no archived activity details!")
-//                    }
-//                })
-                
-//                Section {
-//                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
-//                        
-//                        Text("\(archivedActivityDetail.name)")
-//                            .swipeActions(edge: .leading) {
-//                                // Restore
-//                                Button {
-//                                    print("restore activity detail")
-//                                    habitController.restoreActivityDetail(archivedActivityDetail)
-//                                } label: {
-//                                    Label {
-//                                        Text("Restore")
-//                                    } icon: {
-//                                        BJAsset.restore.image()
-//                                    }
-//                                }
-//                                .tint(Color.restore)
-//                            }
-//                            .swipeActions(edge: .trailing) {
-//                                // Delete
-//                                Button(role: .destructive) {
-//                                    print("delete activity detail")
-//                                    habitController.deleteActivityDetail(archivedActivityDetail)
-//                                } label: {
-//                                    Label("Delete", systemImage: "trash")
-//                                }
-//                            }
-//                    }
-//                } footer: {
-//                    if archivedActivityDetails.isEmpty {
-//                        Text("There are no archived activity details!")
-//                    }
-//                }
             }
         }
         .navigationTitle("Archived Details")
@@ -185,6 +116,8 @@ struct SettingsView: View {
     let goToNotifications: () -> Void
     let goToArchivedHabits: () -> Void
     let goToArchivedActivityDetails: () -> Void
+    let goToLetsTalk: () -> Void
+    let goToBuyMeACoffee: () -> Void
     // MARK: View Properties
     let reviewLink = URL(string: "https://apps.apple.com/app/6476879214?action=write-review")
     @Environment(\.openURL) var openURL
@@ -207,7 +140,7 @@ struct SettingsView: View {
                 
                 SettingsRow(imageSystemName: "cloud.drizzle.fill", label: "Hate this app? Let's talk about it", color: .emailMe, tapAction: emailMe)
                 
-                SettingsRow(imageSystemName: "cup.and.saucer.fill", label: "Buy me a coffee", color: .pink, tapAction: emailMe)
+                SettingsRow(imageSystemName: "cup.and.saucer.fill", label: "Buy me a coffee", color: .pink, tapAction: sendMeMoney)
             }
         }
         .navigationTitle("Settings")
@@ -221,17 +154,27 @@ struct SettingsView: View {
         }
     }
     
+    
     func emailMe() {
-        print("TBD")
+        
+        goToLetsTalk()
     }
     
+    
     func sendMeMoney() {
-        print("TBD $")
+        
+        goToBuyMeACoffee()
     }
 }
 
 #Preview {
     NavigationStack {
-        SettingsView(goToNotifications: { }, goToArchivedHabits: { }, goToArchivedActivityDetails: { })
+        SettingsView(
+            goToNotifications: { },
+            goToArchivedHabits: { },
+            goToArchivedActivityDetails: { },
+            goToLetsTalk: { },
+            goToBuyMeACoffee: { }
+        )
     }
 }
