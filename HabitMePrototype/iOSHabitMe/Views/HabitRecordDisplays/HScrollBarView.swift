@@ -123,7 +123,6 @@ struct HScrollBarView: View {
                 }
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
-        .background(Color.green)
     }
     
     

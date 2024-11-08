@@ -25,8 +25,8 @@ struct HabitsSection: View {
     var body: some View {
         
         VStack(spacing: 0) {
+            
                 HStack {
-                    
                     HStack {
                         Button {
                             habitController.goToPrevDay()
@@ -84,7 +84,7 @@ struct HabitsSection: View {
                 goToHabitDetail: goToHabitDetail,
                 goToEditHabit: goToEditHabit,
                 didTapHabitButton: { habit in
-                    //                         FIXME: 2 - viewModel.createHabitRecord(for: habit)
+                    // FIXME: 2 - viewModel.createHabitRecord(for: habit)
                     habitController.createRecordOrNavigateToRecordWithDetails(
                         for: habit,
                         goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
@@ -100,16 +100,14 @@ struct HabitsSection: View {
         }
         .background(Color.secondaryBackground)
         .clipShape(
-            RoundedRectangle(cornerRadius: 20))
+            RoundedRectangle(cornerRadius: 20)
+        )
         .padding()
     }
 }
 
 
-
 #Preview {
-    
-    
     HabitsSection(
         habitController: HabitController(
             blockHabitRepository: CoreDataBlockHabitStore.preview(),

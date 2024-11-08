@@ -109,7 +109,7 @@ struct HabitsMenu: View {
                 }
             }
             .padding(.horizontal)
-        .alert(showAlert: $showAlert, alertDetail: alertDetail)
+            .alert(showAlert: $showAlert, alertDetail: alertDetail)
     }
     
     func habitButton(habit: IsCompletedHabit) -> some View {
@@ -132,7 +132,6 @@ struct HabitsMenu: View {
             Button("Archive Habit", role: .destructive) {
                 archiveHabit(habit.habit)
             }
-            
             
             Button("Delete Habit and All Data", role: .destructive) {
                 
