@@ -23,7 +23,7 @@ struct ArchivedItemRow: View {
                     LittleImage(imageSystemName: "trash", color: .red)
                 }
                 Button(action: restoreItem) {
-                    Text("Restore")
+                    LittleImage(imageSystemName: "cross", color: .restore)
                 }
             }
         }

@@ -18,14 +18,14 @@ extension Color {
     
     static let secondaryFont: Color = .secondary
     
-    static let restore: Color = .purple
+    static let restore: Color = .green
     
     
     // MARK: Settings Colors
     static let notifications: Color = .green
     static let archivedHabits: Color = .purple
     static let archivedActivityDetails: Color = .orange
-    static let rateApp: Color = .teal
+    static let rateApp: Color = .yellow
     static let emailMe: Color = .blue
     static let sendMeMoney: Color = .orange
 }

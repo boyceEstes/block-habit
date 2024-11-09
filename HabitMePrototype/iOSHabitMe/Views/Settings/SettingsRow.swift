@@ -15,6 +15,16 @@ struct SettingsRow: View {
     let label: String
     let color: Color
     let tapAction: () -> Void
+    let showDisclosure: Bool
+    
+    init(imageSystemName: String, label: String, color: Color, showDisclosure: Bool = true, tapAction: @escaping () -> Void) {
+        
+        self.imageSystemName = imageSystemName
+        self.label = label
+        self.color = color
+        self.showDisclosure = showDisclosure
+        self.tapAction = tapAction
+    }
     
     var body: some View {
 
@@ -27,7 +37,9 @@ struct SettingsRow: View {
                 
                 Spacer()
                 
-                CustomDisclosure()
+                if showDisclosure {
+                    CustomDisclosure()
+                }
             }
             .contentShape(Rectangle())
         }

@@ -8,13 +8,15 @@ import MessageUI
 import SwiftUI
 
 struct MailView: UIViewControllerRepresentable {
+    
     @Environment(\.presentationMode) var presentation
-    @Binding var result: Result<MFMailComposeResult, Error>?
+    @Binding var result: MailStatus?
 
     var recipients: [String]
     var subject: String
     var body: String
 
+    
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         var parent: MailView
 
@@ -24,9 +26,11 @@ struct MailView: UIViewControllerRepresentable {
 
         func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
             defer { parent.presentation.wrappedValue.dismiss() }
+            
             if let error = error {
-                parent.result = .failure(error)
+                parent.result = .failure(error.localizedDescription)
             } else {
+                print("Succeeded \(result)")
                 parent.result = .success(result)
             }
         }

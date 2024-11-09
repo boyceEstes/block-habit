@@ -108,8 +108,6 @@ struct ArchivedActivityDetailsView: View {
 }
 
 
-
-
 struct SettingsView: View {
     
     // MARK: Injected Properties
@@ -126,21 +124,47 @@ struct SettingsView: View {
         
         List {
             Section {
-                SettingsRow(imageSystemName: "paperplane.fill", label: "Notifications", color: .notifications, tapAction: goToNotifications)
+                SettingsRow(
+                    imageSystemName: "paperplane.fill",
+                    label: "Notifications",
+                    color: .notifications,
+                    tapAction: goToNotifications
+                )
             }
             // Section for archived stuff
             Section {
-                SettingsRow(imageSystemName: "archivebox.fill", label: "Archived Habits", color: .archivedHabits, tapAction: goToArchivedHabits)
-                SettingsRow(imageSystemName: "archivebox.fill", label: "Archived Activity Details", color: .archivedActivityDetails, tapAction: goToArchivedHabits)
+                SettingsRow(
+                    imageSystemName: "archivebox.fill",
+                    label: "Archived Habits",
+                    color: .archivedHabits,
+                    tapAction: goToArchivedHabits
+                )
+                SettingsRow(
+                    imageSystemName: "archivebox.fill",
+                    label: "Archived Activity Details",
+                    color: .archivedActivityDetails,
+                    tapAction: goToArchivedHabits
+                )
             }
             
-            Section("🚧 Under Construction 🚧") {
+            Section {
                 
-                SettingsRow(imageSystemName: "star.fill", label: "Love this app? Share your Review!", color: .rateApp, tapAction: rateApp)
+                SettingsRow(
+                    imageSystemName: "star.fill",
+                    label: "Love this app? Share your Review!",
+                    color: .rateApp,
+                    showDisclosure: false,
+                    tapAction: rateApp
+                )
                 
-                SettingsRow(imageSystemName: "cloud.drizzle.fill", label: "Hate this app? Let's talk about it", color: .emailMe, tapAction: emailMe)
+                LetsTalkView()
                 
-                SettingsRow(imageSystemName: "cup.and.saucer.fill", label: "Buy me a coffee", color: .pink, tapAction: sendMeMoney)
+                SettingsRow(
+                    imageSystemName: "cup.and.saucer.fill",
+                    label: "🚧 Buy me a coffee 🚧",
+                    color: .pink,
+                    tapAction: sendMeMoney
+                )
             }
         }
         .navigationTitle("Settings")

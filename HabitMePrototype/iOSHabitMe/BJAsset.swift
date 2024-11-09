@@ -15,7 +15,7 @@ enum BJAsset: String, CustomStringConvertible {
     case characterBubble = "character.bubble" // Text Detail
     
     case tip = "info.circle" // Tip
-    case restore = "staroflife" // Unarchive/Restore
+    case restore = "cross" // Unarchive/Restore
     
     /// access string by typecasting `AssetLibrary` instance.
     ///

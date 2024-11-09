@@ -17,4 +17,3 @@ extension View {
         self.frame(maxHeight: .infinity, alignment: alignment)
     }
 }
-
