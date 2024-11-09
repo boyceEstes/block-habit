@@ -11,11 +11,11 @@ import SwiftUI
 
 enum BJAsset: String, CustomStringConvertible {
     
-    case numberSquare = "number.square"// Number Detail
+    case numberSquare = "number.square" // Number Detail
     case characterBubble = "character.bubble" // Text Detail
     
     case tip = "info.circle" // Tip
-    case restore = "cross" // Unarchive/Restore
+    case restore = "arrow.up.bin.fill" // Unarchive/Restore
     
     /// access string by typecasting `AssetLibrary` instance.
     ///

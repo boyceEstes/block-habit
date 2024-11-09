@@ -18,7 +18,7 @@ extension Color {
     
     static let secondaryFont: Color = .secondary
     
-    static let restore: Color = .green
+    static let restore: Color = .blue
     
     
     // MARK: Settings Colors

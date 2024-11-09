@@ -19,12 +19,16 @@ struct ArchivedItemRow: View {
             Text("\(name)")
             Spacer()
             HStack(spacing: 16) {
+                
                 Button(action: deleteItem) {
                     LittleImage(imageSystemName: "trash", color: .red)
                 }
+                .buttonStyle(BorderlessButtonStyle())
+                
                 Button(action: restoreItem) {
-                    LittleImage(imageSystemName: "cross", color: .restore)
+                    LittleImage(imageSystemName: BJAsset.restore.rawValue, color: .restore)
                 }
+                .buttonStyle(BorderlessButtonStyle())
             }
         }
     }

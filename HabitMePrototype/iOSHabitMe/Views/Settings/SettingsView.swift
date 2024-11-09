@@ -55,53 +55,109 @@ struct ArchivedActivityDetailsView: View {
     private let archiveTip = ArchiveTip()
     
     var body: some View {
-        
-        VStack {
-//            TipView(archiveTip)
-//                .padding()
-            
-            List {
-                SectionWithDisclaimerIfEmpty(
-                    isEmpty: archivedActivityDetails.isEmpty,
-                    
-                    sectionContent: {
-                        ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
-    
-                            Text("\(archivedActivityDetail.name)")
-                                .swipeActions(edge: .leading) {
-                                    // Restore
-                                    Button {
-                                        print("restore activity detail")
-                                        habitController.restoreActivityDetail(archivedActivityDetail)
-                                    } label: {
-                                        Label {
-                                            Text("Restore")
-                                        } icon: {
-                                            BJAsset.restore.image()
-                                        }
-                                    }
-                                    .tint(Color.restore)
-                                }
-                                .swipeActions(edge: .trailing) {
-                                    // Delete
-                                    Button(role: .destructive) {
-                                        print("delete activity detail")
-                                        habitController.deleteActivityDetail(archivedActivityDetail)
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
-                                }
+        Group {
+            if !archivedActivityDetails.isEmpty {
+                List {
+                    ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
+                        
+                        ArchivedItemRow(name: archivedActivityDetail.name) {
+                            habitController.deleteActivityDetail(archivedActivityDetail)
+                        } restoreItem: {
+                            habitController.restoreActivityDetail(archivedActivityDetail)
                         }
-                    },
-                    sectionHeader: {
-                        EmptyView()
-                    },
-                    sectionEmpty: {
-                        Text("There are no archived activity details!")
+                        .swipeActions(edge: .leading) {
+                            // Restore
+                            Button {
+                                habitController.restoreActivityDetail(archivedActivityDetail)
+                            } label: {
+                                Label {
+                                    Text("Restore")
+                                } icon: {
+                                    BJAsset.restore.image()
+                                }
+                            }
+                            .tint(Color.restore)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            // Delete
+                            Button(role: .destructive) {
+                                habitController.deleteActivityDetail(archivedActivityDetail)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
-                )
+                }
+            } else {
+                
+                VStack {
+                    Image(systemName: "archivebox")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                    
+                    Text("No Archived Activity Details")
+                        .multilineTextAlignment(.center)
+                        .font(.headline)
+                    
+                    VStack {
+                        Text("Come back after you've archived an activity detail")
+                            .multilineTextAlignment(.center)
+                            .font(.subheadline)
+                        Text("(The extra info you can track with each habit)")
+                            .font(.caption)
+                    }
+
+                }
+                .padding(.horizontal)
             }
         }
+//        VStack {
+////            TipView(archiveTip)
+////                .padding()
+//            
+//            List {
+//                SectionWithDisclaimerIfEmpty(
+//                    isEmpty: archivedActivityDetails.isEmpty,
+//                    
+//                    sectionContent: {
+//                        ForEach(archivedActivityDetails, id: \.id) { archivedActivityDetail in
+//    
+//                            Text("\(archivedActivityDetail.name)")
+//                                .swipeActions(edge: .leading) {
+//                                    // Restore
+//                                    Button {
+//                                        print("restore activity detail")
+//                                        habitController.restoreActivityDetail(archivedActivityDetail)
+//                                    } label: {
+//                                        Label {
+//                                            Text("Restore")
+//                                        } icon: {
+//                                            BJAsset.restore.image()
+//                                        }
+//                                    }
+//                                    .tint(Color.restore)
+//                                }
+//                                .swipeActions(edge: .trailing) {
+//                                    // Delete
+//                                    Button(role: .destructive) {
+//                                        print("delete activity detail")
+//                                        habitController.deleteActivityDetail(archivedActivityDetail)
+//                                    } label: {
+//                                        Label("Delete", systemImage: "trash")
+//                                    }
+//                                }
+//                        }
+//                    },
+//                    sectionHeader: {
+//                        EmptyView()
+//                    },
+//                    sectionEmpty: {
+//                        Text("There are no archived activity details!")
+//                    }
+//                )
+//            }
+//        }
         .navigationTitle("Archived Details")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -142,7 +198,7 @@ struct SettingsView: View {
                     imageSystemName: "archivebox.fill",
                     label: "Archived Activity Details",
                     color: .archivedActivityDetails,
-                    tapAction: goToArchivedHabits
+                    tapAction: goToArchivedActivityDetails
                 )
             }
             
