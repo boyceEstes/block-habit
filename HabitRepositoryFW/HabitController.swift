@@ -555,7 +555,7 @@ extension HabitController {
             await MainActor.run {
                 // 2. destroy last record in-memory
                 // We know for sure that day is in there because we just got it above, so we can forcibly unwrap
-                let lastRecord = habitRecordsForDays[day]!.removeLast()
+                let lastRecord = habitRecordsForDays[day]!.removeFirst()
                 
                 Task {
                     do {
