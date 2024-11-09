@@ -138,6 +138,47 @@ public class HabitController: ObservableObject {
     }
     
     
+    /// When the user has not closed the app and they open it past midnight, we should update the day... We don't need to necessarily update the selectedDay. Just add the new day to the dictionary
+    public func refreshForNewDayIfNecessary() {
+        
+        // FIXME: This could be optimized by keeping track of the most recent date each time we add it. This way we could easily see it on coming back to the app
+        // Get the most recent date key in the dictionary
+        guard let mostRecentDate = habitRecordsForDays.keys.max() else {
+            // We cannot find the most recent date. Something is wrong here
+            print("Could not find most recent date")
+            return
+        }
+        
+        print("\(mostRecentDate) was found as most recent date")
+        let isMostRecentDateToday = Calendar.current.isDateInToday(mostRecentDate)
+        print("Date is today - \(isMostRecentDateToday)")
+        
+        // If the most recent date is not today... We could even be two or more days behind. We want to add the days from the last date that we have to the current date
+        if !isMostRecentDateToday {
+            guard let nowNoon = Date().noon else { return }
+            
+            let numOfDaysFromMostRecentToNow = Calendar.current.dateComponents([.day], from: mostRecentDate, to: nowNoon).day ?? 0
+            
+            // If there are missing days, add them to the dictionary
+            if numOfDaysFromMostRecentToNow > 0 {
+                for i in 1...numOfDaysFromMostRecentToNow {
+                    if let newDate = Calendar.current.date(byAdding: .day, value: i, to: mostRecentDate) {
+                        
+                        DispatchQueue.main.async {
+                            // Ensure that this is updating on the main queue
+                            self.habitRecordsForDays[newDate] = []
+                            // Ensure that we are saving this in the database... Well actually. I don't think we need to because we will be saving it whenever we record records and if we don't and close the app it will auto-generate.
+                        }
+                    }
+                }
+                print("Added \(numOfDaysFromMostRecentToNow) missing days to the dictionary.")
+            } else {
+                print("No missing days.")
+            }
+        }
+    }
+    
+    
     private func populateHabits() async {
         
         do {

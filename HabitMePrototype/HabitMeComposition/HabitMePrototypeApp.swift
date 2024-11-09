@@ -132,6 +132,7 @@ struct HabitMePrototypeApp: App {
      * We need to ensure that we can use this same store to setup CoreData PersistentContainer
      * Do that logic in the initialization, here.
      */
+    @Environment(\.scenePhase) private var scenePhase
     @State private var habitController: HabitController
     
     let blockHabitStore: CoreDataBlockHabitStore
@@ -193,6 +194,12 @@ struct HabitMePrototypeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(blockHabitStore: blockHabitStore)
+                .onChange(of: scenePhase) { _, newPhase in
+                    if newPhase == .active {
+                        print("refreshForNewDayIfNecessary \(newPhase)")
+                        habitController.refreshForNewDayIfNecessary()
+                    }
+                }
         }
 //        .modelContainer(container)
         .environmentObject(habitController)
