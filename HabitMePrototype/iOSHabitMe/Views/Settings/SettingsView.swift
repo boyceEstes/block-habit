@@ -114,7 +114,6 @@ struct SettingsView: View {
     let goToNotifications: () -> Void
     let goToArchivedHabits: () -> Void
     let goToArchivedActivityDetails: () -> Void
-    let goToLetsTalk: () -> Void
     let goToBuyMeACoffee: () -> Void
     // MARK: View Properties
     let reviewLink = URL(string: "https://apps.apple.com/app/6476879214?action=write-review")
@@ -179,12 +178,6 @@ struct SettingsView: View {
     }
     
     
-    func emailMe() {
-        
-        goToLetsTalk()
-    }
-    
-    
     func sendMeMoney() {
         
         goToBuyMeACoffee()
@@ -197,7 +190,6 @@ struct SettingsView: View {
             goToNotifications: { },
             goToArchivedHabits: { },
             goToArchivedActivityDetails: { },
-            goToLetsTalk: { },
             goToBuyMeACoffee: { }
         )
     }

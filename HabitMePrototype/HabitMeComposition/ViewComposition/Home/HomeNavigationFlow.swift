@@ -29,7 +29,6 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         case notifications
         case archivedHabits
         case archivedActivityDetails
-        case letsTalk
         case buyMeACoffee
     }
     

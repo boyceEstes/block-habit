@@ -30,8 +30,6 @@ extension ContentView {
                     makeArchivedHabitsView()
                 case .archivedActivityDetails:
                     makeArchivedActivityDetailsView()
-                case .letsTalk:
-                    makeGoToLetsTalkView()
                 case .buyMeACoffee:
                     makeGoToBuyMeACoffeeView()
                 }

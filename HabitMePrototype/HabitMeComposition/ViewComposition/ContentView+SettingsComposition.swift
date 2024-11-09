@@ -47,7 +47,6 @@ extension ContentView {
             goToNotifications: goToNotificationsFromSettings,
             goToArchivedHabits: goToArchivedHabitsFromSettings,
             goToArchivedActivityDetails: goToArchivedActivityDetailsFromSettings,
-            goToLetsTalk: goToLetsTalkFromSettings,
             goToBuyMeACoffee: goToBuyMeACoffeeFromSettings
         )
     }
@@ -65,10 +64,7 @@ extension ContentView {
         homeNavigationFlowPath.append(.archivedActivityDetails)
     }
     
-    func goToLetsTalkFromSettings() {
-        homeNavigationFlowPath.append(.letsTalk)
-    }
-    
+
     func goToBuyMeACoffeeFromSettings() {
         homeNavigationFlowPath.append(.buyMeACoffee)
     }
