@@ -39,9 +39,12 @@ public extension Array where Element == HabitRecord {
         var recordsForDays = [Date: [HabitRecord]]()
         
         
+        // FIXME: This might be where we are ruining it with whenever there are bad timezones
         for record in self {
             
-            guard let noonDate = record.completionDate.noon else { return [:] }
+            guard let noonDate = record.completionDate.noon else {
+                return [:]
+            }
             
             if recordsForDays[noonDate] != nil {
                 recordsForDays[noonDate]?.append(record)

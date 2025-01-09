@@ -26,9 +26,10 @@ struct StatisticsView: View {
         
         habitController.habitRecordsForDays.mapValues {
             
-            $0.filter {
+            let habitRecords = $0.filter {
                 selectedHabits.contains($0.habit)
             }
+            return habitRecords
         }
     }
     

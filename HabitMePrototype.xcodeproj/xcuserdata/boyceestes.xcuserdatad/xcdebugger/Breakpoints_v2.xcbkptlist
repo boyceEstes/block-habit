@@ -48,23 +48,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "363269C6-F392-4C8E-9854-DA830AD512DC"
-            shouldBeEnabled = "Yes"
-            condition = "$0.habit.name == &quot;Turtle&quot; &amp;&amp; !selectedHabits.isEmpty"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "selectedHabitRecordsForDays"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D54AF043-682B-4832-AA22-F17BA6CAFCA2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -81,33 +64,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F0EE44F8-26D7-4320-96FD-667536F6F314"
+            uuid = "6C9D8C8A-A33E-4714-AB33-B950FF05CF50"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HabitRepositoryFW/CoreData/CoreDataBlockHabitStore+Habit.swift"
+            filePath = "HabitRepositoryFW/Array+HabitRecordsForDays.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "fetchHabit(withID:)"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "toHabitRecordsForDays(onCurrentDate:delimiter:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "72991950-8735-403A-A8D9-22F331161E24"
+            uuid = "FBDFAC86-EF4A-42A2-AD22-8117F6F383C1"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HabitRepositoryFW/HabitController.swift"
+            filePath = "HabitMePrototype/iOSHabitMe/Views/StatisticsView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "refreshForNewDayIfNecessary()"
-            landmarkType = "7">
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "selectedHabitRecordsForDays"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
