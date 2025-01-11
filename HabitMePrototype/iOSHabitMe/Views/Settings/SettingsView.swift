@@ -176,7 +176,7 @@ struct ThanksView: View {
                   .font(.system(.title2, design: .rounded).bold())
                   .multilineTextAlignment(.center)
               
-              Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+              Text("Thank you so much for your support! Your generosity means the world and helps keep this project going strong. Seriously, you're making a difference. Thank you for being awesome!")
                   .font(.system(.body, design: .rounded))
                   .multilineTextAlignment(.center)
                   .padding(.bottom, 16)
@@ -336,8 +336,9 @@ struct SettingsView: View {
                 
                 SettingsRow(
                     imageSystemName: "cup.and.saucer.fill",
-                    label: "🚧 Buy me a coffee 🚧",
+                    label: "Buy Me a Coffee",
                     color: .pink,
+                    showDisclosure: false,
                     tapAction: sendMeMoney
                 )
             }
