@@ -164,6 +164,125 @@ struct ArchivedActivityDetailsView: View {
 }
 
 
+struct ThanksView: View {
+    
+    let didTapClose: () -> Void
+    
+    
+    var body: some View {
+        VStack(spacing: 8) {
+              
+              Text("Thank You 💕")
+                  .font(.system(.title2, design: .rounded).bold())
+                  .multilineTextAlignment(.center)
+              
+              Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+                  .font(.system(.body, design: .rounded))
+                  .multilineTextAlignment(.center)
+                  .padding(.bottom, 16)
+              
+              Button(action: didTapClose) {
+                  Text("Close")
+                      .font(.system(.title3, design: .rounded).bold())
+                      .tint(.white)
+                      .frame(height: 55)
+                      .frame(maxWidth: .infinity)
+                      .background(.blue, in: RoundedRectangle(cornerRadius: 10,
+                                                              style: .continuous))
+              }
+          }
+          .padding(16)
+          .background(Color(UIColor.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+          .padding(.horizontal, 8)
+    }
+}
+
+// No because this doesn't work for Settings. Where this is tapped.
+// I need something that when tapped on the row. Will update this view accordingly.
+// Like a settings wrapper for everything - then a settings donation view
+
+/*
+ By having a settingscontainerview I can make all of the settings stuff work the same way but now
+ I can have a donation logic that is separate. This means that if I ever want to bring this to another
+ app I can simply move this container view instead of needing to bring everything.
+ 
+ Then we can just trigger things to happen in the closure that we pass to the settingsview and mkae it
+ modify this page
+ */
+struct SettingsContainerView: View {
+    
+    // MARK: Environment Properties
+    @EnvironmentObject var store: TipStore
+    // MARK: Injected Properties
+    let goToNotifications: () -> Void
+    let goToArchivedHabits: () -> Void
+    let goToArchivedActivityDetails: () -> Void
+    
+    @State private var isShowingDonationView = false
+    @State private var isShowingThankYouView = false
+    
+    
+    var body: some View {
+        
+        SettingsView(
+            goToNotifications: goToNotifications,
+            goToArchivedHabits: goToArchivedHabits,
+            goToArchivedActivityDetails: goToArchivedActivityDetails,
+            goToBuyMeACoffee: showDonationView
+        )
+            .overlay {
+                
+                if isShowingDonationView {
+                    Color.black.opacity(0.8)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                        .onTapGesture {
+                            isShowingDonationView.toggle()
+                            
+                        }
+                    DonationView{
+                        isShowingDonationView.toggle()
+                    } // Might need a way to tell it to get the fuck off
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+            
+            .overlay(alignment: .bottom) {
+
+                if isShowingThankYouView {
+                    
+                    ThanksView { isShowingThankYouView = false }
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+            .animation(.spring(), value: isShowingDonationView)
+            .animation(.spring(), value: isShowingThankYouView)
+        
+            .onChange(of: store.action) { _, newValue in
+                
+                if newValue == .successful {
+                    
+                    isShowingDonationView = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        
+                        isShowingThankYouView = true
+                        store.reset()
+                    }
+                }
+            }
+            .navigationBarBackButtonHidden(isShowingDonationView)
+            .alert(isPresented: $store.hasError, error: store.error, actions: {})
+    }
+    
+    
+    func showDonationView() {
+        
+        // Present that overlap. Do it snappy
+        isShowingDonationView = true
+    }
+}
+
+
 struct SettingsView: View {
     
     // MARK: Injected Properties
@@ -172,6 +291,8 @@ struct SettingsView: View {
     let goToArchivedActivityDetails: () -> Void
     let goToBuyMeACoffee: () -> Void
     // MARK: View Properties
+    @State private var showDonation = false
+    @State private var showThanks = false
     let reviewLink = URL(string: "https://apps.apple.com/app/6476879214?action=write-review")
     @Environment(\.openURL) var openURL
     
@@ -203,7 +324,6 @@ struct SettingsView: View {
             }
             
             Section {
-                
                 SettingsRow(
                     imageSystemName: "star.fill",
                     label: "Love this app? Share your Review!",

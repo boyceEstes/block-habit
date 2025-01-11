@@ -36,6 +36,21 @@ import SwiftUI
 //    }
 //}
 
+class SettingsNavigationFlow: NewSheetyNavigationFlow {
+    
+    // MARK: Properties
+    @Published var displayedSheet: SheetyIdentifier?
+    
+    // MARK: Sheety Identifier
+    enum SheetyIdentifier: Identifiable, Hashable {
+        
+        var id: Int { self.hashValue }
+        
+        case donation
+    }
+}
+
+
 
 extension ContentView {
     
@@ -43,12 +58,19 @@ extension ContentView {
     @ViewBuilder
     func makeSettingsView() -> some View {
         
-        SettingsView(
+        SettingsContainerView(
             goToNotifications: goToNotificationsFromSettings,
             goToArchivedHabits: goToArchivedHabitsFromSettings,
-            goToArchivedActivityDetails: goToArchivedActivityDetailsFromSettings,
-            goToBuyMeACoffee: goToBuyMeACoffeeFromSettings
+            goToArchivedActivityDetails: goToArchivedActivityDetailsFromSettings
+//            goToBuyMeACoffee: goToBuyMeACoffeeFromSettings
         )
+        .sheet(item: $settingsDisplayedSheet) { identifier in
+            switch identifier {
+            case .donation:
+                let _ = print("so we say to make the donation view")
+                makeGoToBuyMeACoffeeView()
+            }
+        }
     }
     
     
@@ -66,7 +88,8 @@ extension ContentView {
     
 
     func goToBuyMeACoffeeFromSettings() {
-        homeNavigationFlowPath.append(.buyMeACoffee)
+        settingsDisplayedSheet = .donation
+        print("Donate dammit!")
     }
     
     
@@ -75,6 +98,7 @@ extension ContentView {
     func makeNotificationSettingsView() -> some View {
         
         NotificationSettingsView()
+
     }
     
     @ViewBuilder
@@ -99,6 +123,6 @@ extension ContentView {
     @ViewBuilder
     func makeGoToBuyMeACoffeeView() -> some View {
         
-        DonationView()
+        DonationView() { }
     }
 }

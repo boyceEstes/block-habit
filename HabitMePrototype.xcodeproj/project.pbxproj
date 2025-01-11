@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4ECE4F412D30502500307A52 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ECE4F402D30502500307A52 /* StoreKit.framework */; };
+		4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECE4F442D30CC7100307A52 /* TipStore.swift */; };
 		B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */; };
 		B313EEB52B5C4C93002AE8CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB42B5C4C93002AE8CE /* ContentView.swift */; };
 		B313EEB72B5C4C99002AE8CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B313EEB62B5C4C99002AE8CE /* Assets.xcassets */; };
@@ -198,6 +200,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4ECE4F402D30502500307A52 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		4ECE4F422D30508C00307A52 /* BlockHabitStoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = BlockHabitStoreKitConfiguration.storekit; path = HabitMePrototype/BlockHabitStoreKitConfiguration.storekit; sourceTree = "<group>"; };
+		4ECE4F442D30CC7100307A52 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
 		B313EEAF2B5C4C93002AE8CE /* HabitMePrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitMePrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMePrototypeApp.swift; sourceTree = "<group>"; };
 		B313EEB42B5C4C93002AE8CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -352,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3621E622BDDE0F900BE88C2 /* HabitRepositoryFW.framework in Frameworks */,
+				4ECE4F412D30502500307A52 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,14 +386,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4ECE4F3F2D30502500307A52 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4ECE4F402D30502500307A52 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4ECE4F432D30CC5600307A52 /* TipStore */ = {
+			isa = PBXGroup;
+			children = (
+				4ECE4F442D30CC7100307A52 /* TipStore.swift */,
+			);
+			path = TipStore;
+			sourceTree = "<group>";
+		};
 		B313EEA62B5C4C93002AE8CE = {
 			isa = PBXGroup;
 			children = (
+				4ECE4F422D30508C00307A52 /* BlockHabitStoreKitConfiguration.storekit */,
 				B3621E6B2BDDE35200BE88C2 /* HabitRepositoryFW.xctestplan */,
 				B313EEB12B5C4C93002AE8CE /* HabitMePrototype */,
 				B3621E712BDDE3E500BE88C2 /* HabitMePrototypeTests */,
 				B3621E502BDDE0F900BE88C2 /* HabitRepositoryFW */,
 				B3621E5C2BDDE0F900BE88C2 /* HabitRepositoryFWTests */,
+				4ECE4F3F2D30502500307A52 /* Frameworks */,
 				B313EEB02B5C4C93002AE8CE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -406,6 +430,7 @@
 		B313EEB12B5C4C93002AE8CE /* HabitMePrototype */ = {
 			isa = PBXGroup;
 			children = (
+				4ECE4F432D30CC5600307A52 /* TipStore */,
 				B387B21C2CB1A4C800256C64 /* Info.plist */,
 				B3C97F2E2B5CEA4B00211B4C /* Supporting Files */,
 				B3C97F1A2B5CE88600211B4C /* HabitRepository */,
@@ -1125,6 +1150,7 @@
 				B37AC77B2BAF53760052552B /* Habit.swift in Sources */,
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B33385412CB5CB770087C9D7 /* BlockStack.swift in Sources */,
+				4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */,
 				B333854A2CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift in Sources */,
 				B3B02F892CDEB02800DEC71B /* MailView.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,

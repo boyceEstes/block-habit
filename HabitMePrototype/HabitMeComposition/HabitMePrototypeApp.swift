@@ -134,6 +134,7 @@ struct HabitMePrototypeApp: App {
      */
     @Environment(\.scenePhase) private var scenePhase
     @State private var habitController: HabitController
+    @StateObject private var store = TipStore()
     
     let blockHabitStore: CoreDataBlockHabitStore
 //    var container: ModelContainer
@@ -203,6 +204,7 @@ struct HabitMePrototypeApp: App {
         }
 //        .modelContainer(container)
         .environmentObject(habitController)
+        .environmentObject(store)
 //        .modelContainer(
 //            for: [
 //                DataHabit.self,
