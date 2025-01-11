@@ -89,8 +89,7 @@ struct HScrollBarView: View {
         
         let itemHeight = habitCount > Int(numOfItemsToReachTop) ? (barAreaHeight / Double(habitCount)) : itemWidth
         
-        let _ = print("date: \(DateFormatter.shortDate.string(from: date)), numOfItems: \(habitCount), graphHeight: \(graphHeight), numOfItemsToReachTop: \(numOfItemsToReachTop), itemWidth: \(itemWidth), itemHeight: \(itemHeight)")
-        
+
         VStack(spacing: 0) {
             
             BlockStack(
@@ -99,7 +98,6 @@ struct HScrollBarView: View {
                 itemHeight: itemHeight,
                 animation: animation,
                 didTapBlock: {
-                    print("tapped dat ish")
                     if Calendar.current.isDate(date, inSameDayAs: selectedDay) {
                         showDayDetail = true
                     } else {

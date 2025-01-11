@@ -30,6 +30,7 @@ struct BlockStack: View {
                     itemHeight: itemHeight,
                     tapAction: didTapBlock
                 )
+                .transition(.move(edge: .bottom).combined(with: .opacity).combined(with: .scale))
 //                .matchedGeometryEffect(
 //                    id: habitRecord.id,
 //                    in: animation,
@@ -45,6 +46,7 @@ struct BlockStack: View {
                 )
             }
         }
+        .transition(.move(edge: .bottom).combined(with: .opacity).combined(with: .scale))
     }
 }
 
