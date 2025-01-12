@@ -123,7 +123,7 @@ extension ManagedHabit {
             throw HabitRepositoryError.toModelFailedBecausePropertyWasNil
         }
         
-        let activityDetails: [ActivityDetail] = try activityDetails?.toModel() ?? []
+        let activityDetails: Set<ActivityDetail> = try activityDetails?.toModel() ?? []
         
         // I want to represent no "goalCompletionsPerDay" as a null value instead of a "-1" in the model
         // This is my favorite option given the Core Data constraints

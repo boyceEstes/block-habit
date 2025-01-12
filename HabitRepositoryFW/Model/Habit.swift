@@ -24,7 +24,7 @@ public struct Habit: Hashable {
     // public var colorfulColor: Color { Color(decipherString: color) }
     
     // TODO: Fill in the data for habitRecords and activityDetails that should be known from this struct
-    public var activityDetails: [ActivityDetail]
+    public var activityDetails: Set<ActivityDetail>
     
     
     public var schedulingUnits: ScheduleTimeUnit = .weekly // "Frequency" in Reminders app
@@ -39,7 +39,7 @@ public struct Habit: Hashable {
         isArchived: Bool,
         goalCompletionsPerDay: Int?,
         color: String,
-        activityDetails: [ActivityDetail],
+        activityDetails: Set<ActivityDetail>,
         schedulingUnits: ScheduleTimeUnit,
         rate: Int,
         scheduledWeekDays: Set<ScheduleDay>,

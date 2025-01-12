@@ -21,18 +21,18 @@ struct StatisticsView: View {
         return allSelectedHabits
     }
     
-    
     private var selectedHabitRecordsForDays: [Date: [HabitRecord]] {
         
-        habitController.habitRecordsForDays.mapValues {
-            
-            let habitRecords = $0.filter {
-                selectedHabits.contains($0.habit)
-            }
-            return habitRecords
+        print("calculating selectedHabitRecordsForDays")
+        let recordsForDays = habitController.habitRecordsForDays
+        let selectedHabitsSnapshot = Set(selectedHabits)
+        
+        // Filter based on which habit records are part of the habits that are selected
+        return recordsForDays.mapValues {
+            $0.filter { selectedHabitsSnapshot.contains($0.habit) }
         }
     }
-    
+
     
     @State private var selectableHabits = [SelectableHabit]()
     

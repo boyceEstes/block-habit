@@ -65,7 +65,7 @@ struct EditHabitView: View {
         self.goToScheduleSelection = goToScheduleSelection
         
         // FIXME: When `Habit` has `activityDetails` initialize this like expected
-        self._selectedDetails = State(initialValue: habit.activityDetails)
+        self._selectedDetails = State(initialValue: habit.activityDetails.bjSort())
         self._completionGoal = State(initialValue: habit.goalCompletionsPerDay)
         
         self._schedulingUnits = State(initialValue: habit.schedulingUnits)
@@ -158,7 +158,7 @@ struct EditHabitView: View {
             isArchived: habit.isArchived,
             goalCompletionsPerDay: completionGoal,
             color: selectedColorString,
-            activityDetails: selectedDetails,
+            activityDetails: Set(selectedDetails),
             schedulingUnits: schedulingUnits,
             rate: rate,
             scheduledWeekDays: scheduledWeekDays,

@@ -147,22 +147,23 @@ extension ActivityDetail {
 }
 
 
-extension Array where Element == ActivityDetail {
+extension Set where Element == ActivityDetail {
     
     func toManaged(context: NSManagedObjectContext) throws -> Set<ManagedActivityDetail> {
         
-        Set(try map { try $0.toManaged(context: context) })
+        Set<ManagedActivityDetail>(try map { try $0.toManaged(context: context) })
     }
 }
 
 
 extension Set where Element == ManagedActivityDetail {
     
-    func toModel() throws -> [ActivityDetail] {
+    func toModel() throws -> Set<ActivityDetail> {
         
-        try map {
+        let arr = try self.map {
             try $0.toModel()
         }
+        return Set<ActivityDetail>(arr)
     }
 }
 

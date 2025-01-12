@@ -200,7 +200,7 @@ struct CreateHabitView: View {
             isArchived: false,
             goalCompletionsPerDay: completionGoal,
             color: stringColorHex,
-            activityDetails: selectedDetails,
+            activityDetails: Set(selectedDetails),
             schedulingUnits: schedulingUnits,
             rate: rate,
             scheduledWeekDays: scheduledWeekDays,

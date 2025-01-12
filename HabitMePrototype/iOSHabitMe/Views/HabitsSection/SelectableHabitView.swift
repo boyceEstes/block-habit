@@ -30,7 +30,7 @@ struct SelectableHabitView: View {
                 
                     // injecting height to resize the icons according to the height
                     ActivityDetailIndicators(
-                        activityDetails: habit.habit.activityDetails,
+                        activityDetails: habit.habit.activityDetails.bjSort(),
                         detailHeight: detailHeight
                     )
                     .frame(minHeight: detailHeight, maxHeight: detailHeight)

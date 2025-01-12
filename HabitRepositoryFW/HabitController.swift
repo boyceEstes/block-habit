@@ -819,10 +819,12 @@ public extension HabitController {
     }
     
     
+    // We want to remove all of the activity details with id from all of the habits it is associated with...
     func removeActivityDetails(withID id: String, from habits: inout [Habit]) {
         
         for index in habits.indices {
-            habits[index].activityDetails.removeAll { $0.id == id }
+            // filter only keeps what returns true - so if we don't want to keep things with an ID, we will keep everything without that ID
+            habits[index].activityDetails = habits[index].activityDetails.filter { $0.id != id }
         }
     }
 

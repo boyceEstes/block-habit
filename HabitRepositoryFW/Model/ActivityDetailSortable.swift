@@ -17,7 +17,7 @@ public protocol ActivityDetailSortable {
 }
 
 
-public extension Array where Element: ActivityDetailSortable {
+public extension Set where Element: ActivityDetailSortable {
     
     /// This is basically the same logic used in sorting the activity details as well
     func bjSort() -> [Element] {
