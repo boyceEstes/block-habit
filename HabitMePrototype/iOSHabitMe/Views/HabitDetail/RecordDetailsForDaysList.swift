@@ -12,6 +12,7 @@ import HabitRepositoryFW
 struct RecordDetailsForDaysList: View {
     
     let color: Color
+    let goToHabitRecordDetail: (HabitRecord) -> Void
     let recordsForDays: [Date: [HabitRecord]]
     var body: some View {
         
@@ -81,8 +82,12 @@ struct RecordDetailsForDaysList: View {
                                             .padding(.leading)
                                     }
                                 }
-
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    goToHabitRecordDetail(record)
+                                }
                             }
+                            
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -205,7 +210,7 @@ struct RecordDetailsForDaysList: View {
     @Previewable @State var recordsForDays = HabitRecord.recordsForDaysPreviewForOneHabitWithActivityDetails(date: Date())
     
     ScrollView {
-        RecordDetailsForDaysList(color: .orange, recordsForDays: recordsForDays)
+        RecordDetailsForDaysList(color: .orange, goToHabitRecordDetail: { _ in }, recordsForDays: recordsForDays)
             .padding(.horizontal)
     }
     .background(Color(uiColor: .secondarySystemBackground))

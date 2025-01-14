@@ -35,6 +35,7 @@ struct HabitDetailView: View {
     @EnvironmentObject var habitController: HabitController
 //    @State private var viewModel: HabitDetailViewModel
     let goToEditHabit: () -> Void
+    let goToHabitRecordDetail: (HabitRecord) -> Void
     let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
     
     // Keeping a separate selectedDay here so that it does not impact the home screen when
@@ -174,12 +175,14 @@ struct HabitDetailView: View {
         activity: Habit,
         blockHabitStore: CoreDataBlockHabitStore,
         goToEditHabit: @escaping () -> Void,
+        goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
     ) {
         
         self._activity = State(initialValue: activity)
         
         self.goToEditHabit = goToEditHabit
+        self.goToHabitRecordDetail = goToHabitRecordDetail
         self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
     }
     
@@ -233,7 +236,11 @@ struct HabitDetailView: View {
                     activityDetailCharts
                         .padding(.horizontal)
                     
-                    RecordDetailsForDaysList(color: Color(hex: activity.color) ?? Color.blue, recordsForDays: habitRecordsForDaysLogged)
+                    RecordDetailsForDaysList(
+                        color: Color(hex: activity.color) ?? Color.blue,
+                        goToHabitRecordDetail: goToHabitRecordDetail,
+                        recordsForDays: habitRecordsForDaysLogged
+                    )
                     .padding(.horizontal)
                 }
             }
@@ -445,6 +452,7 @@ struct StatBox: View {
             activity: habit,
             blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToEditHabit: { },
+            goToHabitRecordDetail: { _ in },
             goToCreateActivityRecordWithDetails: { _, _ in }
         )
         .environmentObject(
