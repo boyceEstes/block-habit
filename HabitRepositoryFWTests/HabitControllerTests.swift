@@ -21,7 +21,12 @@ extension Habit {
             isArchived: true,
             goalCompletionsPerDay: 1,
             color: "#ffffff",
-            activityDetails: []
+            activityDetails: [],
+            // Dummy for now
+            schedulingUnits: .daily,
+            rate: 1,
+            scheduledWeekDays: [],
+            reminderTime: nil
         )
     }
     
@@ -33,7 +38,12 @@ extension Habit {
             isArchived: false,
             goalCompletionsPerDay: 0,
             color: "#ffffff",
-            activityDetails: []
+            activityDetails: [],
+            // Dummy for now
+            schedulingUnits: .daily,
+            rate: 1,
+            scheduledWeekDays: [],
+            reminderTime: nil
         )
     }
     
@@ -45,7 +55,12 @@ extension Habit {
             isArchived: false,
             goalCompletionsPerDay: 1,
             color: "#ffffff",
-            activityDetails: []
+            activityDetails: [],
+            // Dummy for now
+            schedulingUnits: .daily,
+            rate: 1,
+            scheduledWeekDays: [],
+            reminderTime: nil
         )
     }
     
@@ -57,7 +72,12 @@ extension Habit {
             isArchived: false,
             goalCompletionsPerDay: 2,
             color: "#ffffff",
-            activityDetails: []
+            activityDetails: [],
+            // Dummy for now
+            schedulingUnits: .daily,
+            rate: 1,
+            scheduledWeekDays: [],
+            reminderTime: nil
         )
     }
 }

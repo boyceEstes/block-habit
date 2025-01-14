@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */; };
 		4ECE4F412D30502500307A52 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ECE4F402D30502500307A52 /* StoreKit.framework */; };
 		4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECE4F442D30CC7100307A52 /* TipStore.swift */; };
 		B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */; };
@@ -200,6 +201,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordsSummaryTests.swift; sourceTree = "<group>"; };
 		4ECE4F402D30502500307A52 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4ECE4F422D30508C00307A52 /* BlockHabitStoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = BlockHabitStoreKitConfiguration.storekit; path = HabitMePrototype/BlockHabitStoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		4ECE4F442D30CC7100307A52 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 		B3621E5C2BDDE0F900BE88C2 /* HabitRepositoryFWTests */ = {
 			isa = PBXGroup;
 			children = (
+				4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */,
 				B389D2F32BE414DC004A8CF0 /* Model */,
 				B3621E5D2BDDE0F900BE88C2 /* HabitRepositoryFWTests.swift */,
 				B3B2F2F42BDFC84000240EB0 /* HabitMenuDataSourceTests.swift */,
@@ -1260,6 +1263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B389D2F72BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift in Sources */,
+				4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */,
 				B3B2F33F2BE2C46B00240EB0 /* HabitControllerTests.swift in Sources */,
 				B3B2F2F52BDFC84000240EB0 /* HabitMenuDataSourceTests.swift in Sources */,
 				B389D2F52BE414F5004A8CF0 /* Array+HabitRecordsForDaysTests.swift in Sources */,

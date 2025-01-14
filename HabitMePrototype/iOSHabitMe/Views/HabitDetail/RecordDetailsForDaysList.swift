@@ -55,10 +55,22 @@ struct RecordDetailsForDaysList: View {
                                 let completionDate = DateFormatter.shortTime.string(for: record.completionDate) ?? "Unknown Completion"
                                 
                                 ZStack(alignment: .bottom) {
-                                    HStack {
-                                        Text("\(completionDate)")
-                                        Spacer()
-                                        ActivityDetailRecordIndicators(detailRecords: record.activityDetailRecords)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        HStack {
+                                            Text("\(completionDate)")
+                                            Spacer()
+                                            ActivityDetailRecordIndicators(detailRecords: record.activityDetailRecords)
+                                        }
+                                        
+                                        let summary = summary(for: record.activityDetailRecords)
+                                        
+                                        if !summary.isEmpty {
+                                            
+                                            Text("\(summary)")
+                                                .font(.caption2)
+                                                .foregroundStyle(.secondary)
+                                                .lineLimit(1)
+                                        }
                                     }
                                     .padding(.horizontal)
                                     .padding(.vertical, 16)
@@ -93,6 +105,30 @@ struct RecordDetailsForDaysList: View {
             }
         }
         
+    }
+    
+    
+    func summary(for detailRecords: [ActivityDetailRecord]) -> String {
+        
+        // We want to sort everything the same way...
+        // Numbers first, then Notes
+        // Numbers in alphabetical order, same with notes
+        var summary: String = ""
+        
+        for i in 0..<detailRecords.count {
+            let label = detailRecords[i].activityDetail.name
+            let units = detailRecords[i].activityDetail.availableUnits
+            let value = detailRecords[i].value
+            
+            if i != detailRecords.count - 1 {
+                // If we are not at the last index, append with ", " to prep for next one
+                summary += "\(label): \(value)\(units != nil ? " \(units!)" : ""), "
+            } else {
+                summary += "\(label): \(value)\(units != nil ? " \(units!)" : "")"
+            }
+        }
+        
+        return summary
     }
     
     
@@ -170,6 +206,7 @@ struct RecordDetailsForDaysList: View {
     
     ScrollView {
         RecordDetailsForDaysList(color: .orange, recordsForDays: recordsForDays)
+            .padding(.horizontal)
     }
     .background(Color(uiColor: .secondarySystemBackground))
 }
