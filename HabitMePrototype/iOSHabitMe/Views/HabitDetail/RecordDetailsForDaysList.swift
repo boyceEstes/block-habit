@@ -62,7 +62,7 @@ struct RecordDetailsForDaysList: View {
                                             ActivityDetailRecordIndicators(detailRecords: record.activityDetailRecords)
                                         }
                                         
-                                        let summary = summary(for: record.activityDetailRecords)
+                                        let summary = record.activityDetailRecords.summary()
                                         
                                         if !summary.isEmpty {
                                             
