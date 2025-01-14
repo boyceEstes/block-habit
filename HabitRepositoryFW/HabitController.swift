@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 
+@MainActor
 public class HabitController: ObservableObject {
     
     /// This is the minimum number of days because it is approximately the amount of columns that could fit on the screen by default
