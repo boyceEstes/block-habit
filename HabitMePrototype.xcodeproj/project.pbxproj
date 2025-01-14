@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */; };
+		4E527CA42D36E3F000D8AD24 /* Array+ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */; };
 		4ECE4F412D30502500307A52 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ECE4F402D30502500307A52 /* StoreKit.framework */; };
 		4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECE4F442D30CC7100307A52 /* TipStore.swift */; };
 		B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */; };
@@ -202,6 +203,7 @@
 
 /* Begin PBXFileReference section */
 		4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordsSummaryTests.swift; sourceTree = "<group>"; };
+		4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ActivityDetailRecord.swift"; sourceTree = "<group>"; };
 		4ECE4F402D30502500307A52 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4ECE4F422D30508C00307A52 /* BlockHabitStoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = BlockHabitStoreKitConfiguration.storekit; path = HabitMePrototype/BlockHabitStoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		4ECE4F442D30CC7100307A52 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
@@ -564,6 +566,7 @@
 		B3621E502BDDE0F900BE88C2 /* HabitRepositoryFW */ = {
 			isa = PBXGroup;
 			children = (
+				4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */,
 				B33385832CB8C6820087C9D7 /* Managers */,
 				B3B4038A2B71331E00D1967E /* Protocols */,
 				B3B2F30B2BE0036800240EB0 /* CoreData */,
@@ -1242,6 +1245,7 @@
 				B39A27502BEC5063002A5A88 /* StatisticsCalculator.swift in Sources */,
 				B3B2F2FA2BDFC9EC00240EB0 /* ActivityDetail.swift in Sources */,
 				B3B2F30E2BE005F300240EB0 /* HabitFRCDataSourceAdapter.swift in Sources */,
+				4E527CA42D36E3F000D8AD24 /* Array+ActivityDetailRecord.swift in Sources */,
 				B389D2FF2BE59343004A8CF0 /* Array+IsCompletedHabits.swift in Sources */,
 				B3B2F3172BE02AD500240EB0 /* CoreDataBlockHabitStore+HabitRecord.swift in Sources */,
 				B333857F2CB8AA860087C9D7 /* ScheduleDay.swift in Sources */,
