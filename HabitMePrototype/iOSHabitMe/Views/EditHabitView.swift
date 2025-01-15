@@ -104,14 +104,14 @@ struct EditHabitView: View {
                     completionGoal: $completionGoal
                 )
                 
-                Spacer()
-                
-                HabitMePrimaryButton(
-                    title: "Save",
-                    isAbleToTap: isAbleToCreate,
-                    action: didTapSaveAndExit
-                )
-                .padding(.horizontal)
+//                Spacer()
+//                
+//                HabitMePrimaryButton(
+//                    title: "Save",
+//                    isAbleToTap: isAbleToCreate,
+//                    action: didTapSaveAndExit
+//                )
+//                .padding(.horizontal)
             }
         }
         .createEditHabitSheetPresentation()
@@ -120,7 +120,21 @@ struct EditHabitView: View {
             self.selectedColor = Color(hex: habit.color) ?? .gray
         }
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
+        .navigationTitle("Edit Habit")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    resetAndExit()
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Save") {
+                    didTapSaveAndExit()
+                }
+                .disabled(!isAbleToCreate)
+            }
+        }
+//        .sheetyTopBarNav(title: "Edit Activity", dismissAction: resetAndExit)
     }
     
     

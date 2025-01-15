@@ -157,16 +157,30 @@ struct CreateHabitView: View {
                 
                 Spacer()
                 
-                HabitMePrimaryButton(
-                    title: "Create",
-                    isAbleToTap: isAbleToCreate,
-                    action: didTapButtonToCreateHabit
-                )
-                .padding(.horizontal)
+//                HabitMePrimaryButton(
+//                    title: "Create",
+//                    isAbleToTap: isAbleToCreate,
+//                    action: didTapButtonToCreateHabit
+//                )
+//                .padding(.horizontal)
             }
         }
         .createEditHabitSheetPresentation()
-        .sheetyTopBarNav(title: "New Habit", dismissAction: { dismiss() })
+        .navigationTitle("New Habit")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Create") {
+                    didTapButtonToCreateHabit()
+                }
+                .disabled(!isAbleToCreate)
+            }
+        }
+//        .sheetyTopBarNav(title: "New Habit", dismissAction: { dismiss() })
 //        .sheetyBottomBarButton(title: "Create", isAbleToTap: isAbleToCreate, action: didTapButtonToCreateHabit)
     }
     
