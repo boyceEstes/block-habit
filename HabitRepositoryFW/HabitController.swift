@@ -661,7 +661,7 @@ extension HabitController {
     
     public func updateHabitRecord(_ updatedHabitRecord: HabitRecord) {
         
-        Task {
+        Task { @MainActor in
             do {
                 try await blockHabitRepository.updateHabitRecord(id: updatedHabitRecord.id, with: updatedHabitRecord)
                 
