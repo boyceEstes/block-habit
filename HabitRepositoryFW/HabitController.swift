@@ -9,7 +9,6 @@ import Foundation
 import Combine
 
 
-@MainActor
 public class HabitController: ObservableObject {
     
     /// This is the minimum number of days because it is approximately the amount of columns that could fit on the screen by default
@@ -301,7 +300,7 @@ extension HabitController {
     /// Expected to be given the updated habit (it should have all the fields updated and is expected to have the same ID as the previous store)
     public func updateHabit(_ updatedHabit: Habit) {
         
-        Task {
+        Task { @MainActor in
             do {
                 try await blockHabitRepository.updateHabit(id: updatedHabit.id, with: updatedHabit)
                 
