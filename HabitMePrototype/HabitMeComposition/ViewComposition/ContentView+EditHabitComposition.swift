@@ -20,10 +20,15 @@ extension ContentView {
             goToAddDetailsSelection: goToAddDetailsSelectionFromCreateEditHabit,
             goToScheduleSelection: goToSchedulingSelectionFromCreateEditHabit
         )
-        .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
+        .sheet(item: $createEditHabitNavigationFlowDisplayedSheet) { identifier in
             switch identifier {
             case let .detailSelection(selectedDetails, selectedColor):
+                let _ = print("we're supposed to go here! I know it!")
                 makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
+            }
+        }
+        .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
+            switch identifier {
             case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
                 makeScheduleView(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
             }

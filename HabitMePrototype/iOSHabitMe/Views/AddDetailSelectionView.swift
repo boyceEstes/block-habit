@@ -49,6 +49,7 @@ struct AddDetailsView: View {
     
     @EnvironmentObject var habitController: HabitController
     @Environment(\.editMode) var editMode
+    @Environment(\.dismiss) var dismiss
 //    @Environment(\.modelContext) var modelContext
 //    @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
 //        activityDetail.isArchived == false
@@ -90,92 +91,189 @@ struct AddDetailsView: View {
 
     var body: some View {
         
+//        ScrollView {
+//            LazyVStack {
+//                ForEach(activityDetails) { activityDetail in
+//                    
+//                }
+//            }
+//        }
+//        VStack {
+            
         List {
-            SectionWithDisclaimerIfEmpty(
-                isEmpty: activityDetails.isEmpty) {
-                    ForEach(activityDetails) { activityDetail in
-    //                    let activityDetail = dataActivityDetail.toModel()
+            Section {
+                HStack {
+                    Text("Activity Details")
+                        .font(.headline)
+                    Spacer()
+                    Button {
+                        goToCreateActivityDetail()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .imageScale(.large)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.blue)
+                            
+                    }
+                }
+                .listRowSeparator(.hidden)
+                .listStyle(.plain)
+                .padding(.top)
+            }
+            
+            
+            Section {
+                ForEach(activityDetails) { activityDetail in
+                    VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+                        ActivityDetailBasicInfo(activityDetail: activityDetail)
                         
-                        VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+                        HStack(alignment: .firstTextBaseline) {
                             
-                            ActivityDetailBasicInfo(activityDetail: activityDetail)
+                            Text("Ex. \"\(activityDetail.example)\"")
+                                .foregroundStyle(.secondary)
+                                .font(.rowDetail)
                             
-                            HStack(alignment: .firstTextBaseline) {
-                                
-                                Text("Ex. \"\(activityDetail.example)\"")
+                            Spacer()
+                            
+                            if activityDetail.valueType == .number {
+                                Text("[\(activityDetail.calculationType.rawValue)]")
                                     .foregroundStyle(.secondary)
                                     .font(.rowDetail)
-                                
-                                Spacer()
-                                
-                                if activityDetail.valueType == .number {
-                                    Text("[\(activityDetail.calculationType.rawValue)]")
-                                        .foregroundStyle(.secondary)
-                                        .font(.rowDetail)
-                                }
-                            }
-                        }
-                        .swipeActions {
-                            Button {
-                                // FIXME: Make sure archival for activity detail works
-                                archiveActivityDetails(activityDetail)
-                            } label: {
-                                Label(String.archive, systemImage: "archivebox.fill")
-                            }
-                            .tint(.indigo)
-    //
-    //                        Button(role: .destructive) {
-    //                            // FIXME: Make sure deletion for activity detail works
-    //                            warnBeforeDeletion(activityDetail)
-    //                        } label: {
-    //                            Label(String.delete, systemImage: "trash.fill")
-    //                        }
-                        }
-                        .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: .cornerRadius)
-                                .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
-                        )
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets(top: 0, leading: .detailSelectionHorizontalPadding, bottom: .vItemSpacing, trailing: .detailSelectionHorizontalPadding))
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            // Do not allow to select if we are editing
-                            if !(editMode?.wrappedValue.isEditing ?? false) {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    toggleSelection(for: activityDetail)
-                                }
                             }
                         }
                     }
-                } sectionHeader: {
-                    
-                    HStack {
-                        Text("Activity Details")
-                        Spacer()
+                    .swipeActions {
                         Button {
-                            goToCreateActivityDetail()
+                            // FIXME: Make sure archival for activity detail works
+                            archiveActivityDetails(activityDetail)
                         } label: {
-                            Text("New")
-                                .font(.subheadline)
+                            Label(String.archive, systemImage: "archivebox.fill")
+                        }
+                        .tint(.indigo)
+                        //
+                        //                        Button(role: .destructive) {
+                        //                            // FIXME: Make sure deletion for activity detail works
+                        //                            warnBeforeDeletion(activityDetail)
+                        //                        } label: {
+                        //                            Label(String.delete, systemImage: "trash.fill")
+                        //                        }
+                    }
+                    .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: .cornerRadius)
+                            .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
+                    )
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 4, leading: .detailSelectionHorizontalPadding, bottom: 4, trailing: .detailSelectionHorizontalPadding))
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        // Do not allow to select if we are editing
+                        if !(editMode?.wrappedValue.isEditing ?? false) {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                toggleSelection(for: activityDetail)
+                            }
                         }
                     }
-                    .padding()
-                    
-                } sectionEmpty: {
-                    Text("Just a blank void. Not an activity detail in sight. Try adding one!")
-                        .font(.footnote)
-                        .foregroundStyle(Color.secondaryFont)
-                        .padding(.horizontal)
-                        .listRowSeparator(.hidden)
-                    
                 }
+            }
         }
+        
+        
+//            List {
+//                SectionWithDisclaimerIfEmpty(
+//                    isEmpty: activityDetails.isEmpty) {
+//                        ForEach(activityDetails) { activityDetail in
+//                            //                    let activityDetail = dataActivityDetail.toModel()
+//                            
+//                            VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+//                                
+//                                ActivityDetailBasicInfo(activityDetail: activityDetail)
+//                                
+//                                HStack(alignment: .firstTextBaseline) {
+//                                    
+//                                    Text("Ex. \"\(activityDetail.example)\"")
+//                                        .foregroundStyle(.secondary)
+//                                        .font(.rowDetail)
+//                                    
+//                                    Spacer()
+//                                    
+//                                    if activityDetail.valueType == .number {
+//                                        Text("[\(activityDetail.calculationType.rawValue)]")
+//                                            .foregroundStyle(.secondary)
+//                                            .font(.rowDetail)
+//                                    }
+//                                }
+//                            }
+//                            .swipeActions {
+//                                Button {
+//                                    // FIXME: Make sure archival for activity detail works
+//                                    archiveActivityDetails(activityDetail)
+//                                } label: {
+//                                    Label(String.archive, systemImage: "archivebox.fill")
+//                                }
+//                                .tint(.indigo)
+//                                //
+//                                //                        Button(role: .destructive) {
+//                                //                            // FIXME: Make sure deletion for activity detail works
+//                                //                            warnBeforeDeletion(activityDetail)
+//                                //                        } label: {
+//                                //                            Label(String.delete, systemImage: "trash.fill")
+//                                //                        }
+//                            }
+//                            .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: .cornerRadius)
+//                                    .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
+//                            )
+//                            .listRowBackground(Color.clear)
+//                            .listRowSeparator(.hidden)
+//                            .listRowInsets(EdgeInsets(top: 0, leading: .detailSelectionHorizontalPadding, bottom: .vItemSpacing, trailing: .detailSelectionHorizontalPadding))
+//                            .contentShape(Rectangle())
+//                            .onTapGesture {
+//                                // Do not allow to select if we are editing
+//                                if !(editMode?.wrappedValue.isEditing ?? false) {
+//                                    withAnimation(.easeInOut(duration: 0.3)) {
+//                                        toggleSelection(for: activityDetail)
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    } sectionEmpty: {
+//                        Text("Just a blank void. Not an activity detail in sight. Try adding one!")
+//                            .font(.footnote)
+//                            .foregroundStyle(Color.secondaryFont)
+//                            .padding(.horizontal)
+//                            .listRowSeparator(.hidden)
+//                        
+//                    }
+//            }
+//        }
         .listStyle(.plain)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .navigationTitle(String.addActivityDetails_navTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                
+                Button("Cancel") {
+                    // Remove all of the stuff that was selected
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                
+                Button("Done") {
+                    // Should have everyting already binded
+                    dismiss()
+                }
+            }
+        }
+    }
+    
+    
+    private func removeAllSelections() {
+        selectedDetails = []
     }
     
     
@@ -246,3 +344,22 @@ struct AddDetailsView: View {
 //    }
 //    .modelContainer(container)
 //}
+
+#Preview {
+    
+    @Previewable @State var selectedDetails = [ActivityDetail]()
+    
+    NavigationStack {
+        AddDetailsView(
+            selectedDetails: $selectedDetails,
+            detailSelectionColor: .yellow,
+            goToCreateActivityDetail: { }
+        )
+        .environmentObject(
+            HabitController(
+                blockHabitRepository: CoreDataBlockHabitStore.preview(),
+                selectedDay: Date().noon!
+            )
+        )
+    }
+}

@@ -9,22 +9,24 @@ import SwiftUI
 import HabitRepositoryFW
 
 
-class CreateEditHabitNavigationFlow: NewStackNavigationFlow {
+    
+class CreateEditHabitNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
     
     // MARK: Properties
     @Published var path = [StackIdentifier]()
+    @Published var displayedSheet: SheetyIdentifier?
     
     // MARK: Stack Identifiers
     enum StackIdentifier: Hashable {
         
-        case detailSelection(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?)
+//        case detailSelection(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?)
         case scheduleSelection(schedulingUnits: Binding<ScheduleTimeUnit>, rate: Binding<Int>, scheduledWeekDays: Binding<Set<ScheduleDay>>, reminderTime: Binding<Date?>)
         
         func hash(into hasher: inout Hasher) {
             switch self {
-            case let .detailSelection(value, color):
-                hasher.combine(value.wrappedValue)
-                hasher.combine(color)
+//            case let .detailSelection(value, color):
+//                hasher.combine(value.wrappedValue)
+//                hasher.combine(color)
                 
             case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
                 hasher.combine(schedulingUnits.wrappedValue)
@@ -39,6 +41,28 @@ class CreateEditHabitNavigationFlow: NewStackNavigationFlow {
             lhs.hashValue == rhs.hashValue
         }
     }
+    
+    
+    enum SheetyIdentifier: Identifiable, Hashable {
+        
+        var id: Int { self.hashValue }
+        
+        case detailSelection(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?)
+        
+        
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case let .detailSelection(value, color):
+                hasher.combine(value.wrappedValue)
+                hasher.combine(color)
+            }
+        }
+        
+        
+        static func ==(lhs: SheetyIdentifier, rhs: SheetyIdentifier) -> Bool {
+            return lhs.hashValue == rhs.hashValue
+        }
+    }
 }
 
 
@@ -51,12 +75,18 @@ extension ContentView {
         // as expected (there was weird behavior with it disappearing after the sheet was
         // dismissed when this was not in a NavigationStack
         makeCreateHabitView()
-        .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
+        .sheet(item: $createEditHabitNavigationFlowDisplayedSheet) { identifier in
             switch identifier {
-                
             case let .detailSelection(selectedDetails, selectedColor):
                 makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
-                
+            }
+        }
+        .flowNavigationDestination(flowPath: $createEditHabitNavigationFlowPath) { identifier in
+            switch identifier {
+//                
+//            case let .detailSelection(selectedDetails, selectedColor):
+//                makeAddDetailsViewWithSheetyNavigation(selectedDetails: selectedDetails, selectedColor: selectedColor)
+//                
             case let .scheduleSelection(schedulingUnits, rate, scheduledWeekDays, reminderTime):
                 makeScheduleView(schedulingUnits: schedulingUnits, rate: rate, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
             }
@@ -77,7 +107,7 @@ extension ContentView {
     
     func goToAddDetailsSelectionFromCreateEditHabit(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?) {
         
-        createEditHabitNavigationFlowPath.append(.detailSelection(selectedDetails: selectedDetails, selectedColor: selectedColor))
+        createEditHabitNavigationFlowDisplayedSheet = .detailSelection(selectedDetails: selectedDetails, selectedColor: selectedColor)
     }
     
     

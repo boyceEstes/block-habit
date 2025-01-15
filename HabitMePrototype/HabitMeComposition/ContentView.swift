@@ -45,6 +45,7 @@ struct ContentView: View {
     @State var habitDetailNavigationFlowDisplayedSheet: HabitDetailNavigationFlow.SheetyIdentifier?
     // Create Habit navigation
     @State var createEditHabitNavigationFlowPath = [CreateEditHabitNavigationFlow.StackIdentifier]()
+    @State var createEditHabitNavigationFlowDisplayedSheet: CreateEditHabitNavigationFlow.SheetyIdentifier?
     // Add Details navigation
     @State var addDetailsNavigationFlowDisplayedSheet: AddDetailsNavigationFlow.SheetyIdentifier?
     // Settings navigation

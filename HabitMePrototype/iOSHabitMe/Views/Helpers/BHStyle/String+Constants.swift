@@ -25,7 +25,7 @@ extension String {
     static let avgExplanation = "Example (Average Type): If you logged your weight in the morning for 190lbs and at night for 200lbs, this would be displayed as 195 lbs for the day"
     
     // add details
-    static let addActivityDetails_navTitle = "Select Activity Details"
+    static let addActivityDetails_navTitle = "Select"
     
     // delete activity detail
     static let deleteActivityDetail_alertTitle = "Danger Zone!"

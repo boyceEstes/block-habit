@@ -43,12 +43,15 @@ extension ContentView {
     @ViewBuilder
     func makeAddDetailsView(selectedDetails: Binding<[ActivityDetail]>, selectedColor: Color?) -> some View {
         
-        AddDetailsView(
-            selectedDetails: selectedDetails,
-            detailSelectionColor: selectedColor,
-            goToCreateActivityDetail: goToCreateActivityDetailFromAddDetailSelection
-        )
-        .interactiveDismissDisabled()
+        // necessary for navigation title and buttons
+        NavigationStack {
+            AddDetailsView(
+                selectedDetails: selectedDetails,
+                detailSelectionColor: selectedColor,
+                goToCreateActivityDetail: goToCreateActivityDetailFromAddDetailSelection
+            )
+        }
+//        .interactiveDismissDisabled()
     }
     
     
