@@ -28,11 +28,14 @@ struct ActivityDetailBasicInfo: View {
         HStack {
             HStack(alignment: .firstTextBaseline) {
                 Text("\(activityDetail.name)")
-                if let units = activityDetail.availableUnits {
-                    Text("in \(units)")
+                
+                let prettyUnits = activityDetail.prettyUnits()
+                if !prettyUnits.isEmpty {
+                    Text("\(prettyUnits)")
                         .foregroundStyle(Color.secondaryFont)
                 }
             }
+            
             Spacer()
             
             if activityDetail.valueType == .number {

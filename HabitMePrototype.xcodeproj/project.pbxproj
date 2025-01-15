@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */; };
 		4E527CA42D36E3F000D8AD24 /* Array+ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */; };
+		4E527CA62D381C1B00D8AD24 /* DetailPrettyInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */; };
+		4E527CAA2D38212B00D8AD24 /* ActivityDetail+PrettyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA92D38212200D8AD24 /* ActivityDetail+PrettyInfo.swift */; };
 		4ECE4F412D30502500307A52 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ECE4F402D30502500307A52 /* StoreKit.framework */; };
 		4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECE4F442D30CC7100307A52 /* TipStore.swift */; };
 		B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */; };
@@ -204,6 +206,8 @@
 /* Begin PBXFileReference section */
 		4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordsSummaryTests.swift; sourceTree = "<group>"; };
 		4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ActivityDetailRecord.swift"; sourceTree = "<group>"; };
+		4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPrettyInfoTests.swift; sourceTree = "<group>"; };
+		4E527CA92D38212200D8AD24 /* ActivityDetail+PrettyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityDetail+PrettyInfo.swift"; sourceTree = "<group>"; };
 		4ECE4F402D30502500307A52 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4ECE4F422D30508C00307A52 /* BlockHabitStoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = BlockHabitStoreKitConfiguration.storekit; path = HabitMePrototype/BlockHabitStoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		4ECE4F442D30CC7100307A52 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
@@ -566,6 +570,7 @@
 		B3621E502BDDE0F900BE88C2 /* HabitRepositoryFW */ = {
 			isa = PBXGroup;
 			children = (
+				4E527CA92D38212200D8AD24 /* ActivityDetail+PrettyInfo.swift */,
 				4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */,
 				B33385832CB8C6820087C9D7 /* Managers */,
 				B3B4038A2B71331E00D1967E /* Protocols */,
@@ -585,6 +590,7 @@
 		B3621E5C2BDDE0F900BE88C2 /* HabitRepositoryFWTests */ = {
 			isa = PBXGroup;
 			children = (
+				4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */,
 				4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */,
 				B389D2F32BE414DC004A8CF0 /* Model */,
 				B3621E5D2BDDE0F900BE88C2 /* HabitRepositoryFWTests.swift */,
@@ -1233,6 +1239,7 @@
 				B389D3012BE66C45004A8CF0 /* CoreDataBlockHabitStore+BlockHabitRepository.swift in Sources */,
 				B3B2F2F82BDFC9D800240EB0 /* Habit.swift in Sources */,
 				B3B2F2FD2BDFCA3700240EB0 /* IsCompletedHabit.swift in Sources */,
+				4E527CAA2D38212B00D8AD24 /* ActivityDetail+PrettyInfo.swift in Sources */,
 				B3B2F30F2BE005F300240EB0 /* HabitRecordsForDateByHabitFRCDataSourceAdapter.swift in Sources */,
 				B3B2F2FF2BDFCA4E00240EB0 /* HabitRecord.swift in Sources */,
 				B3B2F31B2BE2850000240EB0 /* HabitMenuDataSource.swift in Sources */,
@@ -1266,6 +1273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E527CA62D381C1B00D8AD24 /* DetailPrettyInfoTests.swift in Sources */,
 				B389D2F72BE585A5004A8CF0 /* Array+IsCompletedHabitsTests.swift in Sources */,
 				4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */,
 				B3B2F33F2BE2C46B00240EB0 /* HabitControllerTests.swift in Sources */,
