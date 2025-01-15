@@ -69,6 +69,7 @@ struct AddDetailsView: View {
     @Binding var selectedDetails: [ActivityDetail]
     let goToCreateActivityDetail: () -> Void
     let detailSelectionColor: Color
+    let originalSelectedDetails: [ActivityDetail]
     
     init(
         selectedDetails: Binding<[ActivityDetail]>,
@@ -77,6 +78,7 @@ struct AddDetailsView: View {
     ) {
         
         self._selectedDetails = selectedDetails
+        self.originalSelectedDetails = selectedDetails.wrappedValue
         self.detailSelectionColor = detailSelectionColor ?? .blue
         self.goToCreateActivityDetail = goToCreateActivityDetail
         
@@ -103,22 +105,30 @@ struct AddDetailsView: View {
         List {
             Section {
                 HStack {
-                    Text("Activity Details")
-                        .font(.headline)
+//                    Button("Reset") {
+//                        removeAllSelections()
+//                    }
+//                        .font(.headline)
+//                        .foregroundStyle(.blue)
+//            
+//                    
                     Spacer()
                     Button {
                         goToCreateActivityDetail()
                     } label: {
-                        Image(systemName: "plus.circle")
+                        Label("New Detail", systemImage: "plus.circle")
+//                        Image(systemName: "plus.circle")
                             .imageScale(.large)
                             .fontWeight(.medium)
                             .foregroundStyle(.blue)
                             
                     }
+                    .buttonStyle(.plain)
+                    Spacer()
                 }
                 .listRowSeparator(.hidden)
                 .listStyle(.plain)
-                .padding(.top)
+                .padding(.vertical, 8)
             }
             
             
@@ -127,21 +137,22 @@ struct AddDetailsView: View {
                     VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
                         ActivityDetailBasicInfo(activityDetail: activityDetail)
                         
-                        HStack(alignment: .firstTextBaseline) {
-                            
-                            Text("Ex. \"\(activityDetail.example)\"")
-                                .foregroundStyle(.secondary)
-                                .font(.rowDetail)
-                            
-                            Spacer()
-                            
-                            if activityDetail.valueType == .number {
-                                Text("[\(activityDetail.calculationType.rawValue)]")
-                                    .foregroundStyle(.secondary)
-                                    .font(.rowDetail)
-                            }
-                        }
+//                        HStack(alignment: .firstTextBaseline) {
+//                            
+//                            Text("Ex. \"\(activityDetail.example)\"")
+//                                .foregroundStyle(.secondary)
+//                                .font(.rowDetail)
+//                            
+//                            Spacer()
+//                            
+//                            if activityDetail.valueType == .number {
+//                                Text("[\(activityDetail.calculationType.rawValue)]")
+//                                    .foregroundStyle(.secondary)
+//                                    .font(.rowDetail)
+//                            }
+//                        }
                     }
+                    .padding(.vertical, 4)
                     .swipeActions {
                         Button {
                             // FIXME: Make sure archival for activity detail works
@@ -258,6 +269,7 @@ struct AddDetailsView: View {
                 
                 Button("Cancel") {
                     // Remove all of the stuff that was selected
+                    selectedDetails = originalSelectedDetails
                     dismiss()
                 }
             }

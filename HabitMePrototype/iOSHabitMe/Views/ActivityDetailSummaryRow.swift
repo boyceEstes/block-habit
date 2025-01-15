@@ -34,6 +34,13 @@ struct ActivityDetailBasicInfo: View {
                 }
             }
             Spacer()
+            
+            if activityDetail.valueType == .number {
+                Text("[\(activityDetail.calculationType.rawValue)]")
+                    .foregroundStyle(.secondary)
+                    .font(.rowDetail)
+            }
+            
             activityDetail.valueType.asset.image()
         }
     }
