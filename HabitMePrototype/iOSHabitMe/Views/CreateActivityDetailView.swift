@@ -50,8 +50,22 @@ struct CreateActivityDetailView: View {
         }
         .padding(.horizontal)
         .animation(.default, value: typeSelection)
-        .sheetyTopBarNav(title: "Create Activity Detail", dismissAction: { dismiss() })
-        .sheetyBottomBarButton(title: "Create", isAbleToTap: isAbleToTapCreate, action: didTapCreateDetail)
+        .navigationTitle("New Detail")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Create") {
+                    didTapCreateDetail()
+                }
+                .disabled(!isAbleToTapCreate)
+            }
+        }
     }
     
     
