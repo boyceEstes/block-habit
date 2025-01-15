@@ -25,5 +25,5 @@ extension CGFloat {
     static var detailPadding: CGFloat = 12
     ///
     /// Intended to be as close to the default padding but I"m sure its gonna be replaced in the future
-    static var detailSelectionHorizontalPadding: CGFloat = 20
+    static var detailSelectionHorizontalPadding: CGFloat = 16
 }
