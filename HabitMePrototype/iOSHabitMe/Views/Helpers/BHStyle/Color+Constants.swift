@@ -43,28 +43,14 @@ extension Color {
         .sectionBackground()
         
         VStack {
-            Text("In secondary background")
+            Text("Secondary Background")
+            Text("Tertiary Background")
                 .foregroundStyle(.secondary)
-                .padding()
-                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
-            Text("In secondary background")
-                .foregroundStyle(Color.secondaryFont)
                 .padding()
                 .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
         }
         .sectionBackground()
         
-        VStack {
-            Text("In tertiary background")
-                .foregroundStyle(.secondary)
-                .padding()
-                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
-            Text("In tertiary background")
-                .foregroundStyle(Color.secondaryFont)
-                .padding()
-                .background(Color.tertiaryBackground, in: RoundedRectangle(cornerRadius: 10))
-        }
-        .sectionBackground()
         
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

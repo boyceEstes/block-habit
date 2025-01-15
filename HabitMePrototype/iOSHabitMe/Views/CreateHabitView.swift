@@ -379,29 +379,29 @@ struct CreateEditHabitContent: View {
             Color(hex: "#9e444e") ?? .pink, // rust
             Color.orange,
             Color.yellow,
-            Color(hex: "#ffe6a8") ?? .pink, // cream
-            Color(hex: "#8bf8a7") ?? .pink, // pastel green
+            Color(hex: "#ffd966") ?? .pink, // cream og - ffe6a8
+            Color(hex: "#6ef790") ?? .pink, // pastel green og - 8bf8a7
             Color.green,
             Color(hex: "#73d016") ?? .pink, // green
             Color(hex: "#4fb06d") ?? .pink, // different green
-            Color(hex: "#d3e412") ?? .pink, // lime green
-            Color(hex: "#556b2f") ?? .pink, // swamp green
-            Color(hex: "#065535") ?? .pink, // forrest green
+            Color(hex: "#aebd0f") ?? .pink, // lime green og - d3e412
+            Color(hex: "#728e3e") ?? .pink, // swamp green og - 556b2f
+            Color(hex: "#09774b") ?? .pink, // forrest green og - 065535
             Color.mint,
             Color.teal,
             Color.cyan,
-            Color(hex: "#a6c3e3") ?? .pink, // light blue
+            Color(hex: "#6497ce") ?? .pink, // light blue - a6c3e3
             Color.blue,
-            Color(hex: "#8clclc") ?? .pink, // navy blue
-            Color(hex: "#666999") ?? .pink, // purple gray
+            Color(hex: "#3333ff") ?? .pink, // navy blue og - 8clclc
+            Color(hex: "#428cd7") ?? .pink, // purple gray og - 666999
             Color.indigo,
             Color.purple,
-            Color(hex: "#a89cf0") ?? .pink, // lavender
-            Color(hex: "#bdabc4") ?? .pink, // lavender gray?
-            Color(hex: "#800080") ?? .pink, // purple
+            Color(hex: "#9f91ee") ?? .pink, // lavender - og a89cf0
+            Color(hex: "#a580b3") ?? .pink, // lavender gray? - og bdabc4
+            Color(hex: "#b300b3") ?? .pink, // purple - og 800080
             Color(hex: "#be398d") ?? .pink, // deep pink/purple
             Color(hex: "#ef5fbe") ?? .pink, // pink
-            Color(hex: "#fdcfe5") ?? .pink, // light pink
+            Color(hex: "#fb9dca") ?? .pink, // light pink og - fdcfe5
             Color.brown,
 //            Color(hex: "#4c516d") ?? .pink, // gray
 //            Color(hex: "#ffff00") ?? .pink, // stupid bright yellow

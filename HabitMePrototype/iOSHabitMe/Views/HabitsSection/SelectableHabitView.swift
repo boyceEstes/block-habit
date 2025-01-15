@@ -79,6 +79,14 @@ struct SelectableHabitView2: View {
 //                .brightness(habit.isCompleted ? -0.1 : 0.0)
         )
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//        .shadow(color: .black.opacity(0.2), radius: 2)
+//        .shadow(radius: 5)
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 10, style: .continuous)
+//
+//                .stroke(Color(.tertiaryBackground), lineWidth: 1)
+//        )
+
         .contentShape(Rectangle())
         .onTapGesture {
             goToHabitDetail(habit.habit)
@@ -96,13 +104,19 @@ struct SelectableHabitView2: View {
             .fontWeight(.semibold)
             .padding(10)
             .background(color
+                        
 //                .overlay(isCompleted ? .clear : .black.opacity(0.3))
-                .brightness(isCompleted ? 0 : -0.4)
+                .brightness(isCompleted ? 0 : -0.3)
+                        
             )
 //            .background(isCompleted ? color : .black.opacity(0.4))
-            .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 3)
+//            .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 3)
 //            .overlay(isCompleted ? .clear : Color.black.opacity(0.4), alignment: .center)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 10, style: .continuous)
+//                    .stroke(isCompleted ? color : color, lineWidth: 2)
+//                )
     }
 }
 
@@ -172,7 +186,8 @@ struct SelectableHabitView: View {
 }
 
 #Preview {
-    
+    ZStack {
+        Color.primaryBackground
     VStack(spacing: 40) {
         
         
@@ -212,7 +227,7 @@ struct SelectableHabitView: View {
                     completeHabit: { _ in },
                     goToHabitDetail: { _ in }
                 )
-
+                
                 SelectableHabitView(
                     habit: IsCompletedHabit(
                         habit: .drinkTheKoolaid,
@@ -226,57 +241,58 @@ struct SelectableHabitView: View {
         
         
         VStack {
+            
+            Text("Version 2")
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: 8) {
+                SelectableHabitView2(
+                    habit: IsCompletedHabit(
+                        habit: .mirrorPepTalk,
+                        isCompleted: false
+                    ),
+                    completeHabit: { _ in },
+                    uncompleteHabit: { _ in },
+                    goToHabitDetail: { _ in }
+                )
                 
-                Text("Version 2")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                HStack(spacing: 8) {
-                    SelectableHabitView2(
-                        habit: IsCompletedHabit(
-                            habit: .mirrorPepTalk,
-                            isCompleted: false
-                        ),
-                        completeHabit: { _ in },
-                        uncompleteHabit: { _ in },
-                        goToHabitDetail: { _ in }
-                    )
-                    
-                    SelectableHabitView2(
-                        habit: IsCompletedHabit(
-                            habit: .drinkTheKoolaid,
-                            isCompleted: false
-                        ),
-                        completeHabit: { _ in },
-                        uncompleteHabit: { _ in },
-                        goToHabitDetail: { _ in }
-                    )
-                }
-                
-                Text("Completed")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                HStack {
-                    SelectableHabitView2(
-                        habit: IsCompletedHabit(
-                            habit: .mirrorPepTalk,
-                            isCompleted: true
-                        ),
-                        completeHabit: { _ in },
-                        uncompleteHabit: { _ in },
-                        goToHabitDetail: { _ in }
-                    )
-
-                    SelectableHabitView2(
-                        habit: IsCompletedHabit(
-                            habit: .drinkTheKoolaid,
-                            isCompleted: true
-                        ),
-                        completeHabit: { _ in },
-                        uncompleteHabit: { _ in },
-                        goToHabitDetail: { _ in }
-                    )
-                }
+                SelectableHabitView2(
+                    habit: IsCompletedHabit(
+                        habit: .drinkTheKoolaid,
+                        isCompleted: false
+                    ),
+                    completeHabit: { _ in },
+                    uncompleteHabit: { _ in },
+                    goToHabitDetail: { _ in }
+                )
             }
+            
+            Text("Completed")
+                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                SelectableHabitView2(
+                    habit: IsCompletedHabit(
+                        habit: .mirrorPepTalk,
+                        isCompleted: true
+                    ),
+                    completeHabit: { _ in },
+                    uncompleteHabit: { _ in },
+                    goToHabitDetail: { _ in }
+                )
+                
+                SelectableHabitView2(
+                    habit: IsCompletedHabit(
+                        habit: .drinkTheKoolaid,
+                        isCompleted: true
+                    ),
+                    completeHabit: { _ in },
+                    uncompleteHabit: { _ in },
+                    goToHabitDetail: { _ in }
+                )
+            }
+        }
         
     }
     .padding(.horizontal, 8)
+}
 }
