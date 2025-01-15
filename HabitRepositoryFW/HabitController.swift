@@ -555,6 +555,18 @@ extension HabitController {
     }
     
     
+    public func uncompleteHabitRecordsForToday(
+        for habit: Habit
+    ) {
+        Task {
+            print("Uncomplete the thing")
+            // We need to remove it from the saved store store
+            // I was doing it in reverse before. I was trying to
+            // We need to remove it from the local store - habit records with this habit will be removed - habit should move to `incomplete`
+        }
+    }
+    
+    
     /// It will use the completionDay on the habitRecord to determine where to remove the record in the local dictionary
     public func destroyRecord(
         _ habitRecord: HabitRecord

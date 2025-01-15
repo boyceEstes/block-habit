@@ -37,6 +37,7 @@ struct HabitsMenu: View {
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
     let didTapHabitButton: (Habit) -> Void
+    let didTapUncompleteHabit: (Habit) -> Void
     let archiveHabit: (Habit) -> Void
     let destroyHabit: (Habit) -> Void
     // MARK: View Properties
@@ -112,11 +113,18 @@ struct HabitsMenu: View {
             .alert(showAlert: $showAlert, alertDetail: alertDetail)
     }
     
+    @ViewBuilder
+    func habitButton2(habit: IsCompletedHabit) -> some View {
+        
+    }
+    
+    @ViewBuilder
     func habitButton(habit: IsCompletedHabit) -> some View {
         
-        SelectableHabitView(
+        SelectableHabitView2(
             habit: habit,
             completeHabit: didTapHabitButton,
+            uncompleteHabit: didTapUncompleteHabit,
             goToHabitDetail: goToHabitDetail
         )
         .contextMenu {
@@ -153,6 +161,7 @@ struct HabitsMenu: View {
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         didTapHabitButton: { _ in },
+        didTapUncompleteHabit: { _ in },
         archiveHabit: { _ in },
         destroyHabit: { _ in }
     )

@@ -89,6 +89,10 @@ struct HabitsSection: View {
                         for: habit,
                         goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                     )
+                }, didTapUncompleteHabit: { habit in
+                    
+                    habitController.uncompleteHabitRecordsForToday(for: habit)
+                    
                 }, archiveHabit: { habit in
                     
                     habitController.archiveHabit(habit)
@@ -98,11 +102,11 @@ struct HabitsSection: View {
                 }
             )
         }
-        .background(Color.secondaryBackground)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        .padding()
+//        .background(Color.secondaryBackground)
+//        .clipShape(
+//            RoundedRectangle(cornerRadius: 20)
+//        )
+//        .padding()
     }
 }
 
