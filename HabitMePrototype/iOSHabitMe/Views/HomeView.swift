@@ -86,7 +86,7 @@ struct HomeView: View {
             let graphHeight = screenHeight * 0.4
             
             VStack {
-                    if !showDayDetail {
+//                    if !showDayDetail {
                         HScrollBarView(
                             graphWidth: screenWidth,
                             graphHeight: graphHeight,
@@ -96,20 +96,8 @@ struct HomeView: View {
                             animation: animation,
                             showDayDetail: $showDayDetail
                         )
-                    } else {
-                        DayDetailView(
-                            destroyHabitRecord: { habitRecord in
-                                habitController.destroyRecord(habitRecord)
-                            },
-                            goToHabitRecordDetail: goToHabitRecordDetail,
-                            graphHeight: graphHeight,
-                            numOfItemsToReachTop: 8,
-                            habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [HabitRecord.preview],
-                            selectedDay: habitController.selectedDay,
-                            animation: animation,
-                            showDayDetail: $showDayDetail
-                        )
-                    }
+//                    } else {
+//                    }
                 
                 HabitsSection(
                     habitController: habitController,
@@ -122,6 +110,33 @@ struct HomeView: View {
             .background(Color.primaryBackground)
             .animation(.easeInOut(duration: 0.2), value: habitController.incompleteHabits)
         }
+        .overlay(
+            ZStack {
+                if showDayDetail {
+                    Color.primaryBackground
+                        .ignoresSafeArea()
+                    
+                    DayDetailView(
+                        destroyHabitRecord: { habitRecord in
+                            habitController.destroyRecord(habitRecord)
+                        },
+                        goToHabitRecordDetail: goToHabitRecordDetail,
+                        graphHeight: .infinity,
+                        numOfItemsToReachTop: 8,
+                        habitRecords: habitController.habitRecordsForDays[habitController.selectedDay] ?? [HabitRecord.preview],
+                        selectedDay: habitController.selectedDay,
+                        animation: animation,
+                        showDayDetail: $showDayDetail
+                    )
+//                    .background(Color.primaryBackground)
+//                    .ignoresSafeArea()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else {
+                    EmptyView()
+                }
+            }
+        )
+        .toolbar(showDayDetail ? .hidden : .visible)
         .animation(.easeInOut(duration: 0.2), value: showDayDetail)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

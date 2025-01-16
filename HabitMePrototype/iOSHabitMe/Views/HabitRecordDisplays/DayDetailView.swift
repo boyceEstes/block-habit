@@ -61,8 +61,8 @@ struct DayDetailView: View {
                         
                         ActivityBlock(
                             color: Color(hex: habitRecord.habit.color) ?? Color.black,
-                            itemWidth: itemWidth,
-                            itemHeight: itemHeight
+                            itemWidth: 32,
+                            itemHeight: 32
                         )
                         .matchedGeometryEffect(
                             id: habitRecord.id,
@@ -110,7 +110,7 @@ struct DayDetailView: View {
                 }
             }
         }
-        .frame(height: graphHeight)
+        .frame(maxHeight: graphHeight)
 //        .background(Color(uiColor: .systemGroupedBackground))
 //        .scrollContentBackground(.hidden)
         .listStyle(.plain)
