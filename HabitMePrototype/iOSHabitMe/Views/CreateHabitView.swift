@@ -325,7 +325,7 @@ struct CreateEditHabitContent: View {
                 ForEach(allColors, id: \.self) { color in
                     Circle()
                         .fill(color)
-                        .stroke(Color.white, lineWidth: isColorSelected(color) ? 2 : 0)
+                        .stroke(color, lineWidth: isColorSelected(color) ? 8 : 0)
                         .frame(width: 30, height: 30)
                         .onTapGesture {
                             if isColorSelected(color) {
@@ -338,6 +338,7 @@ struct CreateEditHabitContent: View {
             })
             .padding(.horizontal, 6)
         }
+        .animation(.easeInOut(duration: 0.2), value: selectedColor)
         .frame(maxWidth: .infinity)
         .padding(.vertical)
         .background(Color(uiColor: .tertiarySystemGroupedBackground))
