@@ -11,6 +11,7 @@
 		4E527CA42D36E3F000D8AD24 /* Array+ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */; };
 		4E527CA62D381C1B00D8AD24 /* DetailPrettyInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */; };
 		4E527CAA2D38212B00D8AD24 /* ActivityDetail+PrettyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA92D38212200D8AD24 /* ActivityDetail+PrettyInfo.swift */; };
+		4E527CAC2D38839700D8AD24 /* AnimatedTappableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CAB2D38838000D8AD24 /* AnimatedTappableCell.swift */; };
 		4ECE4F412D30502500307A52 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ECE4F402D30502500307A52 /* StoreKit.framework */; };
 		4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECE4F442D30CC7100307A52 /* TipStore.swift */; };
 		B313EEB32B5C4C93002AE8CE /* HabitMePrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313EEB22B5C4C93002AE8CE /* HabitMePrototypeApp.swift */; };
@@ -208,6 +209,7 @@
 		4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ActivityDetailRecord.swift"; sourceTree = "<group>"; };
 		4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPrettyInfoTests.swift; sourceTree = "<group>"; };
 		4E527CA92D38212200D8AD24 /* ActivityDetail+PrettyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityDetail+PrettyInfo.swift"; sourceTree = "<group>"; };
+		4E527CAB2D38838000D8AD24 /* AnimatedTappableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedTappableCell.swift; sourceTree = "<group>"; };
 		4ECE4F402D30502500307A52 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4ECE4F422D30508C00307A52 /* BlockHabitStoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = BlockHabitStoreKitConfiguration.storekit; path = HabitMePrototype/BlockHabitStoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		4ECE4F442D30CC7100307A52 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
@@ -670,6 +672,7 @@
 		B387B2242CB1E11400256C64 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				4E527CAB2D38838000D8AD24 /* AnimatedTappableCell.swift */,
 				B3B02F872CDEB02200DEC71B /* Mail */,
 				B3E0FB5B2CD94C0F005608E8 /* WrappingHStack.swift */,
 				B333854E2CB6E2110087C9D7 /* Alerts */,
@@ -1163,6 +1166,7 @@
 				B3C97F2C2B5CE9CB00211B4C /* CreateHabitView.swift in Sources */,
 				B33385412CB5CB770087C9D7 /* BlockStack.swift in Sources */,
 				4ECE4F452D30CC7400307A52 /* TipStore.swift in Sources */,
+				4E527CAC2D38839700D8AD24 /* AnimatedTappableCell.swift in Sources */,
 				B333854A2CB6DB780087C9D7 /* HorizontalScrollySelectableFilterList.swift in Sources */,
 				B3B02F892CDEB02800DEC71B /* MailView.swift in Sources */,
 				B32947A22B5FFD36007C8C1E /* UIColor+Hex.swift in Sources */,

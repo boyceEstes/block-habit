@@ -18,7 +18,7 @@ struct SelectableHabitView2: View {
     let goToHabitDetail: (Habit) -> Void
     
     // MARK: View Info
-    @ScaledMetric(relativeTo: .body) var detailHeight = 12
+    @ScaledMetric(relativeTo: .body) var detailHeight = 14
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -35,6 +35,7 @@ struct SelectableHabitView2: View {
                 
                 
                 if habit.isCompleted {
+//                    SelectableCell(color: Color(hex: habit.habit.color) ?? .yellow, systemName: "checkmark", isCompleted: habit.isCompleted, onSelection: { completeHabit(habit.habit) })
                     // Double tap to allow to break through and log again
                     checkmark(isCompleted: habit.isCompleted, color: Color(hex: habit.habit.color) ?? .blue)
                         .gesture(
@@ -46,6 +47,7 @@ struct SelectableHabitView2: View {
                             })
                         )
                 } else {
+//                    SelectableCell(color: Color(hex: habit.habit.color) ?? .yellow, systemName: "checkmark", onSelection: { completeHabit(habit.habit) })
                     // Single responsive tap
                     checkmark(
                         isCompleted: habit.isCompleted,
@@ -56,8 +58,8 @@ struct SelectableHabitView2: View {
                     }
                 }
             }
-            .padding(8)
-            .background(Color.secondaryBackground)
+            .padding([.top, .horizontal], 8)
+//            .background(Color.secondaryBackground)
             // injecting height to resize the icons according to the height
             ActivityDetailIndicators(
                 activityDetails: habit.habit.activityDetails.bjSort(),
@@ -65,28 +67,18 @@ struct SelectableHabitView2: View {
             )
             .fontWeight(.medium)
             .frame(minHeight: detailHeight, maxHeight: detailHeight)
-            .padding(.vertical, 4)
+            .padding(.bottom, 4)
+            .padding(.top, 4)
             .padding(.horizontal, 8)
-            .foregroundStyle(.white)
+            .foregroundStyle(.primary)
         }
         .frame(maxWidth: .infinity)
         .background(
+            Color.secondaryBackground, in:
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-//                .fill(
-//                    .shadow(.inner(color: habit.isCompleted ? .black.opacity(0.1) : .clear, radius: 3, x: 3, y: 8))
-//                )
-                .foregroundStyle(Color(hex:habit.habit.color) ?? Color.blue)
-//                .brightness(habit.isCompleted ? -0.1 : 0.0)
         )
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//        .shadow(color: .black.opacity(0.2), radius: 2)
-//        .shadow(radius: 5)
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 10, style: .continuous)
-//
-//                .stroke(Color(.tertiaryBackground), lineWidth: 1)
-//        )
 
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .contentShape(Rectangle())
         .onTapGesture {
             goToHabitDetail(habit.habit)
@@ -104,19 +96,10 @@ struct SelectableHabitView2: View {
             .fontWeight(.semibold)
             .padding(10)
             .background(color
-                        
-//                .overlay(isCompleted ? .clear : .black.opacity(0.3))
                 .brightness(isCompleted ? 0 : -0.3)
                         
             )
-//            .background(isCompleted ? color : .black.opacity(0.4))
-//            .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 3)
-//            .overlay(isCompleted ? .clear : Color.black.opacity(0.4), alignment: .center)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//            .overlay(
-//                RoundedRectangle(cornerRadius: 10, style: .continuous)
-//                    .stroke(isCompleted ? color : color, lineWidth: 2)
-//                )
     }
 }
 
