@@ -103,6 +103,19 @@ class DetailRecordsSummaryTests: XCTestCase {
         XCTAssertEqual(detailRecords.summary(), "Any: Its not the coffee bean, its the cacao bean to watch out for, Something: I challenge you to a duel of wits!")
     }
     
+    func test_textWithNoValue_deliversDetailSummaryWithDash() {
+        
+        // given
+        let activityDetailRecordReorderedToBeFirst = makeActivityDetailRecord(name: "Any", value: "", units: nil, valueType: .text)
+        
+        let detailRecords: [ActivityDetailRecord] = [
+            activityDetailRecordReorderedToBeFirst
+        ]
+        
+        // when/then
+        XCTAssertEqual(detailRecords.summary(), "Any: N/A")
+    }
+    
     
     
     // MARK: Helpers

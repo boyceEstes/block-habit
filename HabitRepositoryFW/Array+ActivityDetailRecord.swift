@@ -37,7 +37,7 @@ public extension Array where Element == ActivityDetailRecord {
         for i in 0..<sortedActivityDetailRecords.count {
             let label = sortedActivityDetailRecords[i].activityDetail.name
             let units = sortedActivityDetailRecords[i].activityDetail.availableUnits
-            let value = sortedActivityDetailRecords[i].value
+            let value = sortedActivityDetailRecords[i].value.isEmpty ? "N/A" : sortedActivityDetailRecords[i].value
             
             if i != sortedActivityDetailRecords.count - 1 {
                 // If we are not at the last index, append with ", " to prep for next one
