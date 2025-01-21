@@ -12,11 +12,16 @@ import Foundation
 public struct IsCompletedHabit: Hashable {
     
     public let habit: Habit
-    public var isCompleted: Bool
+    public var status: HabitState
     
     
-    public init(habit: Habit, isCompleted: Bool) {
+    public init(habit: Habit, status: HabitState) {
         self.habit = habit
-        self.isCompleted = isCompleted
+        self.status = status
+    }
+    
+    
+    public var isCompleted: Bool {
+        return status == .complete
     }
 }

@@ -100,7 +100,6 @@ struct HomeView: View {
 //                    }
                 
                 HabitsSection(
-                    habitController: habitController,
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
                     goToCreateHabit: goToCreateHabit,

@@ -113,7 +113,7 @@ extension IsCompletedHabit {
             Habit.drinkTheKoolaid,
             Habit.mopTheCarpet
         ].map {
-            IsCompletedHabit(habit: $0, isCompleted: false)
+            IsCompletedHabit(habit: $0, status: .incomplete)
         }
     }
     
@@ -122,7 +122,7 @@ extension IsCompletedHabit {
             Habit.seoulSearch,
             Habit.mirrorPepTalk
         ].map {
-            IsCompletedHabit(habit: $0, isCompleted: true)
+            IsCompletedHabit(habit: $0, status: .complete)
         }
     }
 }

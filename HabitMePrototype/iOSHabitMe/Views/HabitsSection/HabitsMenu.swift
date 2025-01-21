@@ -31,13 +31,13 @@ struct HomeDetailTitle: ViewModifier {
 struct HabitsMenu: View {
     
     // MARK: Injected Logic
+    @Binding var isCompletedHabits: Set<IsCompletedHabit>
     let completedHabits: [IsCompletedHabit]
     let incompletedHabits: [IsCompletedHabit]
     // Navigation & Actions
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
-    let didTapHabitButton: (Habit) -> Void
-    let didTapUncompleteHabit: (Habit) -> Void
+    let didTapHabitButton: (IsCompletedHabit) -> Void
     let archiveHabit: (Habit) -> Void
     let destroyHabit: (Habit) -> Void
     // MARK: View Properties
@@ -66,7 +66,7 @@ struct HabitsMenu: View {
                             ForEach(0..<incompletedHabits.count, id: \.self) { i in
                                 
                                 habitButton(
-                                    habit: incompletedHabits[i]
+                                    isCompletedHabit: incompletedHabits[i]
                                 )
                             }
                         }
@@ -84,7 +84,7 @@ struct HabitsMenu: View {
                                 ForEach(0..<completedHabits.count, id: \.self) { i in
                                     
                                     habitButton(
-                                        habit: completedHabits[i]
+                                        isCompletedHabit: completedHabits[i]
                                     )
                                     .onAppear {
                                         print("completed Habit - \(completedHabits[i].habit.name)")
@@ -119,36 +119,53 @@ struct HabitsMenu: View {
     }
     
     @ViewBuilder
-    func habitButton(habit: IsCompletedHabit) -> some View {
+    func habitButton(isCompletedHabit: IsCompletedHabit) -> some View {
         
-        SelectableHabitView2(
-            habit: habit,
-            completeHabit: didTapHabitButton,
-            uncompleteHabit: didTapUncompleteHabit,
-            goToHabitDetail: goToHabitDetail
-        )
-        .contextMenu {
+        if let isCompletedHabitBinding = binding(for: isCompletedHabit.habit.id) {
             
-            Button("Habit Details") {
-                goToHabitDetail(habit.habit)
-            }
-            
-            Button("Edit Habit") {
-                goToEditHabit(habit.habit)
-            }
-            
-            Button("Archive Habit", role: .destructive) {
-                archiveHabit(habit.habit)
-            }
-            
-            Button("Delete Habit and All Data", role: .destructive) {
+            SelectableHabitView2(
+                isCompletedHabit: isCompletedHabitBinding,
+                tapHabitAction: didTapHabitButton,
+                goToHabitDetail: goToHabitDetail
+            )
+            .contextMenu {
                 
-                alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-                    destroyHabit(habit.habit)
-                }).alertData()
-                showAlert = true
+                Button("Habit Details") {
+                    goToHabitDetail(isCompletedHabit.habit)
+                }
+                
+                Button("Edit Habit") {
+                    // FIXME: I need to make sure this updates the isComplete state if we mess with the completion goals
+                    goToEditHabit(isCompletedHabit.habit)
+                }
+                
+                Button("Archive Habit", role: .destructive) {
+                    archiveHabit(isCompletedHabit.habit)
+                }
+                
+                Button("Delete Habit and All Data", role: .destructive) {
+                    
+                    alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
+                        destroyHabit(isCompletedHabit.habit)
+                    }).alertData()
+                    showAlert = true
+                }
             }
+        } else {
+            EmptyView()
         }
+    }
+        
+    func binding(for habitID: String) -> Binding<IsCompletedHabit>? {
+        guard let isCompletedHabit = isCompletedHabits.first(where: { $0.habit.id == habitID }) else { return nil }
+    
+        return Binding(
+            get: { isCompletedHabit },
+            set: { updatedHabit in
+                isCompletedHabits.remove(isCompletedHabit) // Remove the old habit
+                isCompletedHabits.insert(updatedHabit) // Insert the updated habit
+            }
+        )
     }
 }
 
@@ -156,12 +173,12 @@ struct HabitsMenu: View {
 #Preview {
     
     HabitsMenu(
+        isCompletedHabits: Binding(get: { Set(IsCompletedHabit.previewCompletedHabits) }, set:  { _ in }),
         completedHabits: IsCompletedHabit.previewCompletedHabits,
         incompletedHabits: IsCompletedHabit.previewIncompletedHabits,
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         didTapHabitButton: { _ in },
-        didTapUncompleteHabit: { _ in },
         archiveHabit: { _ in },
         destroyHabit: { _ in }
     )

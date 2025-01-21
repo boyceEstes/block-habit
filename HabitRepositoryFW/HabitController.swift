@@ -8,6 +8,20 @@
 import Foundation
 import Combine
 
+// Used for determining button state
+
+public enum HabitState: Hashable {
+    
+    case incomplete
+    case partiallyComplete(count: Int, goal: Int)
+    case complete
+    // TODO: include `neverComplete`
+    
+    public var isCompleted: Bool {
+        return self == .complete
+    }
+}
+
 
 public class HabitController: ObservableObject {
     
@@ -24,7 +38,6 @@ public class HabitController: ObservableObject {
     
     // These are created from data in latestNonArchivedHabits
     @Published public var isCompletedHabits = Set<IsCompletedHabit>()
-    
     
     @Published var latestHabits = [Habit]()
     
@@ -52,7 +65,7 @@ public class HabitController: ObservableObject {
     public var completeHabits: [IsCompletedHabit] {
         
         isCompletedHabits
-            .filter { $0.isCompleted }
+            .filter { $0.status == .complete }
             .sorted(by: { $0.habit.name.lowercased() < $1.habit.name.lowercased() })
     }
     
@@ -60,7 +73,7 @@ public class HabitController: ObservableObject {
     public var incompleteHabits: [IsCompletedHabit] {
         
         isCompletedHabits
-            .filter { !$0.isCompleted }
+            .filter { !($0.status == .complete) } // When .incomplete or .partiallyComplete
             .sorted(by: { $0.habit.name.lowercased() < $1.habit.name.lowercased() })
     }
     
@@ -281,7 +294,7 @@ extension HabitController {
                     latestHabits.append(habit)
                     // adding this here because I don't feel like recalculating all the IsCompletedHabits
                     // when we know this is false
-                    isCompletedHabits.insert(IsCompletedHabit(habit: habit, isCompleted: false))
+                    isCompletedHabits.insert(IsCompletedHabit(habit: habit, status: .incomplete))
                 }
                     
                 if habit.reminderTime != nil {
@@ -519,6 +532,42 @@ extension HabitController {
 // MARK: Record
 extension HabitController {
     
+    public func toggleHabit(
+        habit: IsCompletedHabit,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+    ) {
+        
+        switch habit.status {
+        case .complete:
+            uncompleteHabit(habit: habit.habit)
+            
+        default: // incomplete OR partially complete
+            createRecordOrNavigateToRecordWithDetails(
+                for: habit.habit,
+                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+            )
+        }
+    }
+    
+    /// This is for removing all of the records for a habit for the day - "uncompleting them"
+    private func uncompleteHabit(habit: Habit) {
+        Task { @MainActor in
+            
+            // Want to find all records for today for this habit
+            let thisHabitsRecordsForSelectedDay = habitRecordsForSelectedDay.filter { $0.habit.id == habit.id }
+            // now... Delete them. Locally and in the store.
+            
+            // TODO: I know there is a more efficient way to batch a deletion of records. This is the first time we are doing multiple
+            // This is especially bad because I think we are reloading everything multiple times when only need to do it one time at the end
+            for habitRecord in thisHabitsRecordsForSelectedDay {
+                try await deleteHabitRecordInStoreAndLocally(habitRecord)
+            }
+            
+            // Update isCompleted state for habits
+//            updateHabitsIsCompletedForDay()
+        }
+    }
+    
     // I am moving away from using that fun protocol system that I made because this
     // logic should be pretty central and shared with everything. If I need to break it up
     // I know how, but simplicity is the name of the game for now.
@@ -541,6 +590,7 @@ extension HabitController {
     ) {
         Task {
             do {
+                
                 let habitRecord = await makeHabitRecord(for: habit, activityDetailRecords: activityDetailRecords)
                 
                 try await insertRecord(habitRecord: habitRecord, in: blockHabitRepository)
@@ -550,20 +600,27 @@ extension HabitController {
             } catch {
                 // FIXME: Handle Errors
                 fatalError("ERROR OH NO - BURN IT ALL DOWN")
+                // TODO: Rollback the in-memory IsCompleted Habit state.
             }
         }
     }
     
     
-    public func uncompleteHabitRecordsForToday(
-        for habit: Habit
-    ) {
-        Task {
-            print("Uncomplete the thing")
-            // We need to remove it from the saved store store
-            // I was doing it in reverse before. I was trying to
-            // We need to remove it from the local store - habit records with this habit will be removed - habit should move to `incomplete`
+    /// Created so that we can have more flexibility with calling the `updateHabitsIsCompletedForDay()` only when we are done with all deletion
+    /// (discovered I wanted this on multiple deletions for the uncompleteHabit method)
+    @MainActor
+    private func deleteHabitRecordInStoreAndLocally(_ habitRecord: HabitRecord) async throws {
+        
+        // Remove in store
+        try await blockHabitRepository.destroyHabitRecord(habitRecord)
+        
+        // Remove in in-memory
+        guard let day = habitRecord.completionDate.noon,
+                let habitRecordIndex = habitRecordsForDays[day]?.firstIndex(where: { $0.id == habitRecord.id }) else {
+            throw NSError(domain: "Could not find the habitRecord in the day (locally)", code: 1)
         }
+        
+        habitRecordsForDays[day]?.remove(at: habitRecordIndex)
     }
     
     
@@ -575,15 +632,7 @@ extension HabitController {
         Task { @MainActor in
             
             do {
-                try await blockHabitRepository.destroyHabitRecord(habitRecord)
-                
-                // Update habitRecordsForDays locally
-                guard let day = habitRecord.completionDate.noon,
-                        let habitRecordIndex = habitRecordsForDays[day]?.firstIndex(where: { $0.id == habitRecord.id }) else {
-                    throw NSError(domain: "Could not find the habitRecord in the day (locally)", code: 1)
-                }
-                
-                habitRecordsForDays[day]?.remove(at: habitRecordIndex)
+                try await deleteHabitRecordInStoreAndLocally(habitRecord)
                 
                 // Ensure that habits are updated for isCompleted
                 updateHabitsIsCompletedForDay() // FIXME: There should be some issue because this is using selectedDay instead of the deleted - but wait. That might be expected because we would not need to worry about isCompleted if it is not the selected Day - to optimize we can just check to see if we are deleting on the selectedDay
@@ -632,7 +681,9 @@ extension HabitController {
         Task { @MainActor in
             // This should never be nil because we set each date in the dictionary to have an empty array
             habitRecordsForDays[selectedDay]?.insert(habitRecord, at: 0)
-            await populateHabits()
+            
+            // MARK: We should no longer be reading from the DB to populate in-memory, it should already be incremented at this point for the habit
+//            await populateHabits()
         }
     }
     

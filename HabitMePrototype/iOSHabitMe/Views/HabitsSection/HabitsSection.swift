@@ -12,8 +12,8 @@ import HabitRepositoryFW
 struct HabitsSection: View {
     
     // Would prefer dependency injection accessing environmentObject everywhere
-    // MARK: Injected Logic
-    let habitController: HabitController
+    // MARK: Environment Logic
+    @EnvironmentObject var habitController: HabitController
     // Navigation
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
@@ -79,20 +79,17 @@ struct HabitsSection: View {
             
             
             HabitsMenu(
+                isCompletedHabits: $habitController.isCompletedHabits,
                 completedHabits: habitController.completeHabits,
                 incompletedHabits: habitController.incompleteHabits,
                 goToHabitDetail: goToHabitDetail,
                 goToEditHabit: goToEditHabit,
                 didTapHabitButton: { habit in
                     // FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                    habitController.createRecordOrNavigateToRecordWithDetails(
-                        for: habit,
+                    habitController.toggleHabit(
+                        habit: habit,
                         goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                     )
-                }, didTapUncompleteHabit: { habit in
-                    
-                    habitController.uncompleteHabitRecordsForToday(for: habit)
-                    
                 }, archiveHabit: { habit in
                     
                     habitController.archiveHabit(habit)
@@ -113,13 +110,15 @@ struct HabitsSection: View {
 
 #Preview {
     HabitsSection(
-        habitController: HabitController(
-            blockHabitRepository: CoreDataBlockHabitStore.preview(),
-            selectedDay: Date()
-        ),
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         goToCreateHabit: { },
         goToCreateActivityRecordWithDetails: { _, _ in }
+    )
+    .environmentObject(
+        HabitController(
+            blockHabitRepository: CoreDataBlockHabitStore.preview(),
+            selectedDay: Date()
+        )
     )
 }
