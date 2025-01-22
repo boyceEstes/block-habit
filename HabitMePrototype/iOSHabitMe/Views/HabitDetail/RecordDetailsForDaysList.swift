@@ -44,7 +44,7 @@ struct RecordDetailsForDaysList: View {
                                 .foregroundStyle(.white)
                                 .background(
                                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .fill(color)
+                                        .fill(color.lessBright(by: -0.3))
                                 )
                             }
                         }
