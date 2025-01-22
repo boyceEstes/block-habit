@@ -91,14 +91,10 @@ struct RecordDetailsForDaysList: View {
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color(uiColor: .tertiarySystemBackground))
+                                .fill(Color.secondaryBackground)
                         )
                     }
                     
-                    
-                    
-                    
-
 //                    ForEach(records, id: \.self) { record in
 //                        ActivityRecordRowDateWithInfo(habitRecord: record)
 //                    }
