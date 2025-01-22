@@ -36,7 +36,7 @@ struct HabitDetailView: View {
 //    @State private var viewModel: HabitDetailViewModel
     let goToEditHabit: () -> Void
     let goToHabitRecordDetail: (HabitRecord) -> Void
-    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date, @escaping () -> Void) -> Void
     
     // Keeping a separate selectedDay here so that it does not impact the home screen when
     // this is dismissed
@@ -176,7 +176,7 @@ struct HabitDetailView: View {
         blockHabitStore: CoreDataBlockHabitStore,
         goToEditHabit: @escaping () -> Void,
         goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
-        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
     ) {
         
         self._activity = State(initialValue: activity)
@@ -214,6 +214,8 @@ struct HabitDetailView: View {
                             for: activity,
                             goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                         )
+                        // We would not have a dismiss closure here. But it does make ya wonder how we'll update it if we do it from here...
+                        // It would not update the completed status of the object... So it looks like I need to pass some sort of completion
                     }
                     .padding(.horizontal)
                     
@@ -453,7 +455,7 @@ struct StatBox: View {
             blockHabitStore: CoreDataBlockHabitStore.preview(),
             goToEditHabit: { },
             goToHabitRecordDetail: { _ in },
-            goToCreateActivityRecordWithDetails: { _, _ in }
+            goToCreateActivityRecordWithDetails: { _, _, _ in }
         )
         .environmentObject(
             HabitController(

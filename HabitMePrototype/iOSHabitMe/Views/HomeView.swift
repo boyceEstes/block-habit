@@ -43,7 +43,7 @@ struct HomeView: View {
     let goToHabitRecordDetail: (HabitRecord) -> Void
     let goToEditHabit: (Habit) -> Void
     let goToStatistics: () -> Void
-    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date, @escaping () -> Void) -> Void
     let goToSettings: () -> Void
     // MARK: View Properties
     @State private var habitRecordVisualMode: HabitRecordVisualMode = .bar
@@ -58,7 +58,7 @@ struct HomeView: View {
         goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
         goToEditHabit: @escaping (Habit) -> Void,
         goToStatistics: @escaping () -> Void,
-        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void,
         goToSettings: @escaping () -> Void
     ) {
         self.goToHabitDetail = goToHabitDetail
@@ -258,7 +258,7 @@ struct HomeView: View {
             goToHabitRecordDetail: { _ in },
             goToEditHabit: { _ in },
             goToStatistics: { },
-            goToCreateActivityRecordWithDetails: { _, _ in },
+            goToCreateActivityRecordWithDetails: { _, _, _ in },
             goToSettings: { }
         )
         .environmentObject(

@@ -535,6 +535,7 @@ extension HabitController {
     public func toggleHabit(
         habit: IsCompletedHabit,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
     ) {
         
         switch habit.status {
@@ -573,11 +574,13 @@ extension HabitController {
     // I know how, but simplicity is the name of the game for now.
     public func createRecordOrNavigateToRecordWithDetails(
         for habit: Habit,
-        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
     ) {
         
         if isNavigatingToCreateRecordWithDetails(for: habit) {
-            goToCreateActivityRecordWithDetails(habit, selectedDay)
+            goToCreateActivityRecordWithDetails(habit, selectedDay, {
+                print("dismiss creating habit record with details")
+            })
         } else {
             createRecord(for: habit, activityDetailRecords: [])
         }
@@ -590,7 +593,6 @@ extension HabitController {
     ) {
         Task {
             do {
-                
                 let habitRecord = await makeHabitRecord(for: habit, activityDetailRecords: activityDetailRecords)
                 
                 try await insertRecord(habitRecord: habitRecord, in: blockHabitRepository)

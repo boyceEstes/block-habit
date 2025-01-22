@@ -18,7 +18,7 @@ struct HabitsSection: View {
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
     let goToCreateHabit: () -> Void
-    let goToCreateActivityRecordWithDetails: (Habit, Date) -> Void
+    let goToCreateActivityRecordWithDetails: (Habit, Date, @escaping () -> Void) -> Void
     // MARK: View Properties
     @ScaledMetric(relativeTo: .body) var scaledDayTitleWidth: CGFloat = 150
     
@@ -87,7 +87,7 @@ struct HabitsSection: View {
                 didTapHabitButton: { habit in
                     // FIXME: 2 - viewModel.createHabitRecord(for: habit)
                     habitController.toggleHabit(
-                        habit: habit,
+                        isCompletedHabit: habit,
                         goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
                     )
                 }, archiveHabit: { habit in
@@ -113,7 +113,7 @@ struct HabitsSection: View {
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         goToCreateHabit: { },
-        goToCreateActivityRecordWithDetails: { _, _ in }
+        goToCreateActivityRecordWithDetails: { _, _, _ in }
     )
     .environmentObject(
         HabitController(

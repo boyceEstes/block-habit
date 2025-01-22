@@ -22,8 +22,34 @@ class HabitDetailNavigationFlow: NewSheetyNavigationFlow {
         
         case editHabit(habit: Habit)
         case habitRecordDetail(habitRecord: HabitRecord)
-        case createActivityRecordWithDetails(activity: Habit, selectedDay: Date)
+        case createActivityRecordWithDetails(activity: Habit, selectedDay: Date, dismissAction: () -> Void)
         
+        
+        static func ==(lhs: SheetyIdentifier, rhs: SheetyIdentifier) -> Bool {
+            
+            switch (lhs, rhs) {
+            case (.editHabit(let lhsHabit), .editHabit(let rhsHabit)):
+                return lhsHabit == rhsHabit
+            case (.habitRecordDetail(let lhsHabitRecord), .habitRecordDetail(let rhsHabitRecord)):
+                return lhsHabitRecord == rhsHabitRecord
+            case let (.createActivityRecordWithDetails(lhsHabit, lhsSelectedDay, _), .createActivityRecordWithDetails(rhsHabit, rhsSelectedDay, _ )):
+                  // The dismissAction will not apply to equating the two sheetyIdentifiers, we will keep it simpler - should be fine
+                return lhsHabit == rhsHabit && lhsSelectedDay == rhsSelectedDay
+                  
+            default: return false
+            }
+        }
+        
+        
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case let .editHabit(habit): hasher.combine(habit)
+            case let .habitRecordDetail(habitRecord): hasher.combine(habitRecord)
+            case let .createActivityRecordWithDetails(habit, selectedDay, dismissAction: _):
+                hasher.combine(habit)
+                hasher.combine(selectedDay)
+            }
+        }
     }
 }
 
@@ -42,8 +68,8 @@ extension ContentView {
                 case let .habitRecordDetail(habitRecord):
                     makeHabitRecordDetailView(activityRecord: habitRecord)
                     
-                case let .createActivityRecordWithDetails(activity, selectedDay):
-                    makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
+                case let .createActivityRecordWithDetails(activity, selectedDay, dismissAction):
+                    makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay, dismissAction: dismissAction)
                 }
             }
     }
@@ -73,8 +99,12 @@ extension ContentView {
     }
     
     
-    private func goToCreateActivityRecordWithDetailsFromHabitDetail(activity: Habit, selectedDay: Date) {
+    private func goToCreateActivityRecordWithDetailsFromHabitDetail(
+        activity: Habit,
+        selectedDay: Date,
+        dismissAction: @escaping () -> Void
+    ) {
         
-        habitDetailNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
+        habitDetailNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity, selectedDay: selectedDay, dismissAction: dismissAction)
     }
 }

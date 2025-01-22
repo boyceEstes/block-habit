@@ -29,6 +29,7 @@ struct CreateHabitRecordWithDetailsView: View {
     let activity: Habit
     let selectedDay: Date
     let blockHabitStore: CoreDataBlockHabitStore
+    let dismissAction: () -> Void
     
     let creationDate = Date()
 //    @State private var activityRecord: DataHabitRecord
@@ -44,12 +45,14 @@ struct CreateHabitRecordWithDetailsView: View {
     init(
         activity: Habit,
         selectedDay: Date,
-        blockHabitStore: CoreDataBlockHabitStore
+        blockHabitStore: CoreDataBlockHabitStore,
+        dismissAction: @escaping () -> Void
     ) {
         
         self.activity = activity
         self.selectedDay = selectedDay
         self.blockHabitStore = blockHabitStore
+        self.dismissAction = dismissAction
 
         self._activityDetailRecords = State(
             initialValue: activity.activityDetails.bjSort()
@@ -140,7 +143,10 @@ struct CreateHabitRecordWithDetailsView: View {
                 }
             }
         }
-        .sheetyTopBarNav(title: activity.name, dismissAction: { dismiss() })
+        .sheetyTopBarNav(title: activity.name, dismissAction: {
+            dismissAction() // Handles cleanup in resetting the completion status
+            dismiss() // Actually dismisses the view
+        })
         .sheetyBottomBarButton(title: "Record Activity", action: didTapCreateActivityRecord)
     }
     
@@ -230,7 +236,7 @@ struct CreateHabitRecordWithDetailsView: View {
             activity: habit,
             selectedDay: Date(),
             blockHabitStore: CoreDataBlockHabitStore.preview()
-        )
+        ) { }
     }
     .modelContainer(container)
 }

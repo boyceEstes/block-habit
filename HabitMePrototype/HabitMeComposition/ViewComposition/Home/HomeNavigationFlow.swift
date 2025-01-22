@@ -39,8 +39,37 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         var id: Int { self.hashValue }
         
         case createHabit
-        case createActivityRecordWithDetails(activity: Habit, selectedDay: Date)
+        case createActivityRecordWithDetails(activity: Habit, selectedDay: Date, dismissAction: () -> Void)
         case habitRecordDetail(habitRecord: HabitRecord)
         case editHabit(habit: Habit)
+        
+        
+        static func ==(lhs: SheetyIdentifier, rhs: SheetyIdentifier) -> Bool {
+            
+            switch (lhs, rhs) {
+            case (.createHabit, .createHabit): return true
+            case (.editHabit(let lhsHabit), .editHabit(let rhsHabit)):
+                return lhsHabit == rhsHabit
+            case (.habitRecordDetail(let lhsHabitRecord), .habitRecordDetail(let rhsHabitRecord)):
+                return lhsHabitRecord == rhsHabitRecord
+            case let (.createActivityRecordWithDetails(lhsHabit, lhsSelectedDay, _), .createActivityRecordWithDetails(rhsHabit, rhsSelectedDay, _ )):
+                  // The dismissAction will not apply to equating the two sheetyIdentifiers, we will keep it simpler - should be fine
+                return lhsHabit == rhsHabit && lhsSelectedDay == rhsSelectedDay
+            
+            default: return false
+            }
+        }
+        
+        
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case .createHabit: hasher.combine(self)
+            case let .editHabit(habit): hasher.combine(habit)
+            case let .habitRecordDetail(habitRecord): hasher.combine(habitRecord)
+            case let .createActivityRecordWithDetails(habit, selectedDay, dismissAction: _):
+                hasher.combine(habit)
+                hasher.combine(selectedDay)
+            }
+        }
     }
 }

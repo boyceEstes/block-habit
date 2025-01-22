@@ -47,8 +47,8 @@ extension ContentView {
                 case .createHabit:
                     makeCreateHabitViewWithStackNavigation()
                     
-                case let .createActivityRecordWithDetails(activity, selectedDay):
-                    makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
+                case let .createActivityRecordWithDetails(activity, selectedDay, dismissAction):
+                    makeCreateActivityRecordWithDetails(activity: activity, selectedDay: selectedDay, dismissAction: dismissAction)
                     
                 case let .habitRecordDetail(habitRecord):
                     makeHabitRecordDetailView(activityRecord: habitRecord)
@@ -108,9 +108,13 @@ extension ContentView {
     }
     
     
-    private func goToCreateActivityRecordWithDetailsFromHome(activity: Habit, selectedDay: Date) {
+    private func goToCreateActivityRecordWithDetailsFromHome(habit: Habit, selectedDay: Date, dismissAction: @escaping () -> Void) {
         
-        homeNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(activity: activity, selectedDay: selectedDay)
+        homeNavigationFlowDisplayedSheet = .createActivityRecordWithDetails(
+            activity: habit,
+            selectedDay: selectedDay,
+            dismissAction: dismissAction
+        )
     }
     
     
