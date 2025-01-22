@@ -39,7 +39,7 @@ public extension Array where Element == Habit {
                 // There are no records for habit for today, keep as incomplete
                 
             } else if numOfRecordsForHabitForToday > 0 {
-                if numOfRecordsForHabitForToday >= numOfRecordsForHabitForToday {
+                if numOfRecordsForHabitForToday >= completionGoal {
                     isCompletedHabit.status = .complete
                 } else {
                     isCompletedHabit.status = .partiallyComplete(count: numOfRecordsForHabitForToday, goal: completionGoal)
