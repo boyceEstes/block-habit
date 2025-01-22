@@ -120,8 +120,8 @@ struct SelectableCell2: View {
             .fontWeight(animationTrigger == true ? (nextState.isCompleted ? .semibold : .medium) : (isCompletedHabit.isCompleted ? .semibold : .medium))
             .scaleEffect(animationTrigger == true ? (nextState.isCompleted ? 1.2 : 0.8) : (isCompletedHabit.isCompleted ? 1.2 : 0.8))
             .padding(10)
-            .background((Color(hex: isCompletedHabit.habit.color) ?? .pink)
-                .brightness(animationTrigger == true ? (nextState.isCompleted ? 0 : -0.3) : (isCompletedHabit.isCompleted ? 0 : -0.3))
+            .background(
+                animationTrigger == true ? (nextState.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor) : isCompletedHabit.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor
             )
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }

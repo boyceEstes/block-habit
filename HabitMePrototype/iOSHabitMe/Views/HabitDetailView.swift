@@ -195,6 +195,7 @@ struct HabitDetailView: View {
             let screenWidth = proxy.size.width
             let screenHeight = proxy.size.height
             let graphHeight = screenHeight * 0.3
+            
             ScrollView {
                 LazyVStack(spacing: .vSectionSpacing) {
                     // FIXME: Extract into a view where the user can tap to always go to day details view
@@ -356,6 +357,7 @@ struct HabitDetailView: View {
     
     
     private func totalRecordsStatBox(totalRecords: String) -> some View {
+        
         StatBox(title: "Total Records", value: totalRecords)
     }
 
@@ -369,16 +371,17 @@ struct HabitDetailView: View {
     }
     
     private func avgRecordsPerDayStatBox(avgRecordsPerDay: Double) -> some View {
+        
         let title = "Average Records / Day"
         if avgRecordsPerDay > 0 {
             return StatBox(title: title, value: String(format: "%.2f", avgRecordsPerDay), units: "rpd")
         } else {
             return StatBox(title: title, value: "N/A")
         }
-
     }
     
     private func bestStreakStatBox(bestStreak: Int) -> some View {
+        
         if bestStreak == 1 {
             return StatBox(title: "Best Streak", value: "\(bestStreak)", units: "day")
         } else {
@@ -386,6 +389,7 @@ struct HabitDetailView: View {
         }
     }
 }
+
 
 extension Habit {
     
@@ -396,7 +400,7 @@ extension Habit {
     
     var incompleteColor: Color {
         
-        realColor.lessBright(by: -0.3)
+        realColor.lessBright(by: -0.1)
     }
 }
 
@@ -419,7 +423,7 @@ struct DetailCompleteHabitButton: View {
             }
             
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 
                 withAnimation(.spring(duration: 0.3)) {
                     scale = 1
@@ -438,7 +442,6 @@ struct DetailCompleteHabitButton: View {
                     isCompletedHabit.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor,
                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                 )
-            
         }
         .scaleEffect(scale)
         .buttonStyle(.plain)
