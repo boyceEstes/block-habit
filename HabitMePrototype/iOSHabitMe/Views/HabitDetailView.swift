@@ -230,9 +230,9 @@ struct HabitDetailView: View {
                         }
                     }
                     .padding()
-                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
-                    )
-                    .padding([.horizontal])
+//                    .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10)
+//                    )
+//                    .padding([.horizontal])
                     
                     
                     activityDetailCharts
@@ -439,7 +439,7 @@ struct StatBox: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
+        .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
     }
 }
 
