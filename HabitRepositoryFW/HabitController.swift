@@ -12,6 +12,7 @@ import Combine
 
 public enum HabitState: Hashable {
     
+    case eternallyIncomplete
     case incomplete
     case partiallyComplete(count: Int, goal: Int)
     case complete
@@ -544,20 +545,12 @@ extension HabitController {
          * individual binding to everywhere that could do the toggle. If this is animatable, we will have
          * no problems big fella
          */
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            if let isCompletedHabitElement = isCompletedHabits.first(where: { $0 == isCompletedHabit }) {
-                
-                isCompletedHabits.remove(isCompletedHabitElement)
-                var newIsCompletedHabitElement = isCompletedHabitElement
-                newIsCompletedHabitElement.status = isCompletedHabitElement.nextState()
-                isCompletedHabits.insert(newIsCompletedHabitElement)
-            }
-        }
         
         switch isCompletedHabit.status {
         case .complete:
+            
+            moveToNextState(for: isCompletedHabit.habit)
+            
             uncompleteHabit(habit: isCompletedHabit.habit)
             
         default: // incomplete OR partially complete
@@ -565,6 +558,22 @@ extension HabitController {
                 for: isCompletedHabit.habit,
                 goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
             )
+        }
+    }
+    
+    
+    private func moveToNextState(for habit: Habit) {
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            if let isCompletedHabitElement = isCompletedHabits.first(where: { $0.habit.id == habit.id }) {
+                
+                isCompletedHabits.remove(isCompletedHabitElement)
+                var newIsCompletedHabitElement = isCompletedHabitElement
+                newIsCompletedHabitElement.status = isCompletedHabitElement.nextState()
+                isCompletedHabits.insert(newIsCompletedHabitElement)
+            }
         }
     }
     
@@ -581,11 +590,9 @@ extension HabitController {
             for habitRecord in thisHabitsRecordsForSelectedDay {
                 try await deleteHabitRecordInStoreAndLocally(habitRecord)
             }
-            
-            // Update isCompleted state for habits
-//            updateHabitsIsCompletedForDay()
         }
     }
+    
     
     // I am moving away from using that fun protocol system that I made because this
     // logic should be pretty central and shared with everything. If I need to break it up
@@ -594,6 +601,8 @@ extension HabitController {
         for habit: Habit,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
     ) {
+        
+        moveToNextState(for: habit)
         
         if isNavigatingToCreateRecordWithDetails(for: habit) {
             goToCreateActivityRecordWithDetails(habit, selectedDay, {
@@ -604,6 +613,11 @@ extension HabitController {
                     
                     print("dismiss creating habit record with details")
                     
+                    // Find the isCompletedHabit, it should already be completed by this point.
+                    // Get its previousState
+                    // Remove the current isCompletedHabit
+                    // Insert the new previousState isCompletedHabit
+                    
                     if let isCompletedHabitElement = isCompletedHabits.first(where: { $0.habit.id == habit.id }) {
                         
                         isCompletedHabits.remove(isCompletedHabitElement)
@@ -612,10 +626,7 @@ extension HabitController {
                         isCompletedHabits.insert(newIsCompletedHabitElement)
                     }
                 }
-                // Find the isCompletedHabit, it should already be completed by this point.
-                // Get its previousState
-                // Remove the current isCompletedHabit
-                // Insert the new previousState isCompletedHabit
+
             })
         } else {
             createRecord(for: habit, activityDetailRecords: [])

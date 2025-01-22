@@ -28,7 +28,9 @@ public struct IsCompletedHabit: Hashable {
     
     public func nextState() -> HabitState {
         
-        let habitGoal = habit.goalCompletionsPerDay ?? 1
+        guard let habitGoal = habit.goalCompletionsPerDay, habitGoal > 0 else {
+            return .incomplete
+        }
         // If this was more than 1 and it was incomplete, go to partially complete
         
         switch status {
@@ -52,6 +54,9 @@ public struct IsCompletedHabit: Hashable {
         case .complete:
             // Even if there are multiple, if we are tapping a competed habit, it should loop back around.
             return .incomplete
+            
+        case .eternallyIncomplete:
+            return .eternallyIncomplete
         }
     }
     
@@ -82,6 +87,9 @@ public struct IsCompletedHabit: Hashable {
             } else {
                 return .incomplete
             }
+            
+        case .eternallyIncomplete:
+            return .eternallyIncomplete
         }
     }
 }
