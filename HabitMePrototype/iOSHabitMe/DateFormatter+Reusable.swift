@@ -37,6 +37,15 @@ extension DateFormatter {
     }()
     
     
+    /// Ex: (depending on locale) `Jan 1, Wednesday`
+    static let monthDayWithWrittenDayDate: DateFormatter = {
+        
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("MMMd, EEEE")
+        return formatter
+    }()
+    
+    
     /// Ex: (depending on locale) `1:34 PM`
     static let shortTime: DateFormatter = {
         

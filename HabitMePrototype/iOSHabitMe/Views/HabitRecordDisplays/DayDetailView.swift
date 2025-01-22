@@ -55,6 +55,26 @@ struct DayDetailView: View {
         
         List {
             Section {
+                
+                   HStack {
+                       Text("\(DateFormatter.monthDayWithWrittenDayDate.string(from: selectedDay))")
+                           .font(.title)
+                       Spacer()
+                       Button {
+                           withAnimation {
+                               showDayDetail = false
+                           }
+                       } label: {
+                           Image(systemName: "x.circle.fill")
+                               .imageScale(.large)
+                       }
+                   }
+            }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.primaryBackground)
+            .padding(.vertical)
+            
+            Section {
                 ForEach(habitRecords, id: \.self) { habitRecord in
                     
                     HStack(spacing: 16) {
@@ -96,18 +116,6 @@ struct DayDetailView: View {
                 }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.primaryBackground)
-            } header: {
-                HStack {
-                    Text("Day Records")
-                    Spacer()
-                    Button {
-                        withAnimation {
-                            showDayDetail = false
-                        }
-                    } label: {
-                        Image(systemName: "x.circle.fill")
-                    }
-                }
             }
         }
         .frame(maxHeight: graphHeight)
