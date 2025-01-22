@@ -63,7 +63,7 @@ class HomeNavigationFlow: NewStackNavigationFlow, NewSheetyNavigationFlow {
         
         func hash(into hasher: inout Hasher) {
             switch self {
-            case .createHabit: hasher.combine(self)
+            case .createHabit: hasher.combine(1)
             case let .editHabit(habit): hasher.combine(habit)
             case let .habitRecordDetail(habitRecord): hasher.combine(habitRecord)
             case let .createActivityRecordWithDetails(habit, selectedDay, dismissAction: _):

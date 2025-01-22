@@ -533,18 +533,36 @@ extension HabitController {
 extension HabitController {
     
     public func toggleHabit(
-        habit: IsCompletedHabit,
-        goToCreateActivityRecordWithDetails: @escaping (Habit, Date) -> Void
+        isCompletedHabit: IsCompletedHabit,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
     ) {
         
-        switch habit.status {
+        // THIS WILL UPDATE THE COMPLETION OF THE ISCOMPLETED HABIT ON TOGGLE
+        /*
+         * The point of doing it here, instead of in the binding that we took soooo much time implementing
+         * yesterday is so that we could modify the in-memory published set without needing to pass the
+         * individual binding to everywhere that could do the toggle. If this is animatable, we will have
+         * no problems big fella
+         */
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            if let isCompletedHabitElement = isCompletedHabits.first(where: { $0 == isCompletedHabit }) {
+                
+                isCompletedHabits.remove(isCompletedHabitElement)
+                var newIsCompletedHabitElement = isCompletedHabitElement
+                newIsCompletedHabitElement.status = isCompletedHabitElement.nextState()
+                isCompletedHabits.insert(newIsCompletedHabitElement)
+            }
+        }
+        
+        switch isCompletedHabit.status {
         case .complete:
-            uncompleteHabit(habit: habit.habit)
+            uncompleteHabit(habit: isCompletedHabit.habit)
             
         default: // incomplete OR partially complete
             createRecordOrNavigateToRecordWithDetails(
-                for: habit.habit,
+                for: isCompletedHabit.habit,
                 goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
             )
         }
@@ -579,12 +597,39 @@ extension HabitController {
         
         if isNavigatingToCreateRecordWithDetails(for: habit) {
             goToCreateActivityRecordWithDetails(habit, selectedDay, {
-                print("dismiss creating habit record with details")
+                
+                DispatchQueue.main.async { [weak self] in
+                    
+                    guard let self else { return }
+                    
+                    print("dismiss creating habit record with details")
+                    
+                    if let isCompletedHabitElement = isCompletedHabits.first(where: { $0.habit.id == habit.id }) {
+                        
+                        isCompletedHabits.remove(isCompletedHabitElement)
+                        var newIsCompletedHabitElement = isCompletedHabitElement
+                        newIsCompletedHabitElement.status = isCompletedHabitElement.previousState()
+                        isCompletedHabits.insert(newIsCompletedHabitElement)
+                    }
+                }
+                // Find the isCompletedHabit, it should already be completed by this point.
+                // Get its previousState
+                // Remove the current isCompletedHabit
+                // Insert the new previousState isCompletedHabit
             })
         } else {
             createRecord(for: habit, activityDetailRecords: [])
         }
     }
+    
+    /*
+     * What I want to figure out is how I could toggle the completion to be reversed whenever I dismiss the create screen...
+     * 1. Send isCompletedHabit binding there
+     * 2. Reload the view after we dismiss
+     * 3. Pass a "dismissAction" closure to execute before we dismiss. This would toggle the isCompleted to the previous state
+     *
+     * I like option 3 the most because it seem the most interchangable with new logic.
+     */
     
     
     public func createRecord(

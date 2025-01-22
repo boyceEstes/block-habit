@@ -54,4 +54,34 @@ public struct IsCompletedHabit: Hashable {
             return .incomplete
         }
     }
+    
+    
+    public func previousState() -> HabitState {
+        
+        let habitGoal = habit.goalCompletionsPerDay ?? 1
+        // TODO: We need to make sure that we account for the infinite goals (is that zero or nil? - can't remember)
+        
+        switch status {
+        case .incomplete:
+            // Then the last had to be complete.
+            return .complete
+            
+        case let .partiallyComplete(count, goal):
+            // then the last had to be another partially complete or an incomplete
+            if count - 1 == 0 {
+                return .incomplete
+            } else {
+                return .partiallyComplete(count: count - 1, goal: goal)
+            }
+            
+        case .complete:
+            // Then the last had to be partially complete or an incomplete
+            if habitGoal > 1 {
+                // partially complete
+                return .partiallyComplete(count: habitGoal - 1, goal: habitGoal)
+            } else {
+                return .incomplete
+            }
+        }
+    }
 }
