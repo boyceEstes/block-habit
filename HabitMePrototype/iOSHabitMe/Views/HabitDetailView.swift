@@ -208,16 +208,34 @@ struct HabitDetailView: View {
                         showDayDetail: $showDayDetail
                     )
                     
-                    HabitMePrimaryButton(title: "Log New Record", color: Color(hex: activity.color)) {
-                        // FIXME: Update to have the CoreDataHabitBlockStore in this class before we can save
-                        habitController.createRecordOrNavigateToRecordWithDetails(
-                            for: activity,
-                            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-                        )
-                        // We would not have a dismiss closure here. But it does make ya wonder how we'll update it if we do it from here...
-                        // It would not update the completed status of the object... So it looks like I need to pass some sort of completion
+                    
+                    if let isCompletedHabit = habitController.isCompletedHabits.first(where: {
+                        $0.habit == activity
+                    }) {
+                        
+                        DetailCompleteHabitButton(isCompletedHabit: isCompletedHabit, tapAction: {
+                            
+                            withAnimation {
+                                habitController.toggleHabit(
+                                    isCompletedHabit: isCompletedHabit,
+                                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+                                )
+                            }
+                        })
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
+                    
+//                    HabitMePrimaryButton(title: "Complete Habit", color: Color(hex: activity.color)) {
+//                        // FIXME: Update to have the CoreDataHabitBlockStore in this class before we can save
+//                        // Complete the habit then do the next part.
+//                        habitController.createRecordOrNavigateToRecordWithDetails(
+//                            for: activity,
+//                            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+//                        )
+//                        // We would not have a dismiss closure here. But it does make ya wonder how we'll update it if we do it from here...
+//                        // It would not update the completed status of the object... So it looks like I need to pass some sort of completion
+//                    }
+//                    .padding(.horizontal)
                     
                     Grid() {
                         GridRow {
@@ -366,6 +384,65 @@ struct HabitDetailView: View {
         } else {
             return StatBox(title: "Best Streak", value: "\(bestStreak)", units: "days")
         }
+    }
+}
+
+extension Habit {
+    
+    var realColor: Color {
+        
+        Color(hex: color) ?? .yellow
+    }
+    
+    var incompleteColor: Color {
+        
+        realColor.lessBright(by: -0.3)
+    }
+}
+
+
+struct DetailCompleteHabitButton: View {
+    
+    // MARK: Injected Properties
+    let isCompletedHabit: IsCompletedHabit
+    let tapAction: () -> Void
+    // MARK: View Properties
+    @State var animationTrigger = false
+    @State var scale: CGFloat = 1
+    
+    var body: some View {
+        
+        Button {
+            withAnimation {
+                animationTrigger.toggle()
+                scale = 1.1
+            }
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                
+                withAnimation(.spring(duration: 0.3)) {
+                    scale = 1
+                }
+            }
+            
+            tapAction()
+            
+        } label: {
+            Text("\(isCompletedHabit.isCompleted ? "Uncomplete Habit" : "Complete Habit")")
+                .font(.headline)
+                .foregroundStyle(.white)
+                .padding(.vertical)
+                .frame(maxWidth: .infinity)
+                .background(
+                    isCompletedHabit.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor,
+                    in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+                )
+            
+        }
+        .scaleEffect(scale)
+        .buttonStyle(.plain)
+        .sensoryFeedback(.increase, trigger: animationTrigger)
     }
 }
 
