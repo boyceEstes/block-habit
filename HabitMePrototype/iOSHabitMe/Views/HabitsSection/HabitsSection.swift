@@ -31,31 +31,70 @@ class HabitSectionViewModel {
     
     
     func newToggleHabit(
-        override: Bool,
+        override: Bool = false,
         isCompletedHabit: IsCompletedHabit
     ) {
-        
         do {
             try habitController.newToggleHabit(
                 override: override,
                 isCompletedHabit: isCompletedHabit,
                 goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
             )
+            
+        } catch HabitControllerError.uncompleteHabitWithRecordWithDetails(let isCompleteHabit) {
+            displayWarningForUncompleteWithDetails(isCompletedHabit: isCompleteHabit)
+            
+        } catch HabitControllerError.uncompleteHabitWithMultipleRecords(let isCompleteHabit) {
+            displayWarningForUncompleteWithRecords(isCompletedHabit: isCompleteHabit)
+            
+            
         } catch {
+            // FIXME: I need a fix!
             fatalError(error.localizedDescription)
         }
     }
     
     
-    func originalToggleHabit(
-        isCompletedHabit: IsCompletedHabit
-    ) {
-        habitController.toggleHabit(
-            isCompletedHabit: isCompletedHabit,
-            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+    private func displayWarningForUncompleteWithRecords(isCompletedHabit: IsCompletedHabit) {
+        
+        alertDetail = AlertDetail(
+            title: .habitSectionMenu_uncompletingMultipleRecordsTitle,
+            message: .habitSectionMenu_uncompletingMultipleRecordsMessage,
+            actions: [
+                ActionDetail(title: .nevermind, role: .cancel, action: { }),
+                ActionDetail(title: .uncomplete, role: .destructive, action: { [weak self] in
+                    
+                    guard let self else { return }
+                    
+                    newToggleHabit(override: true, isCompletedHabit: isCompletedHabit)
+                })
+            ]
         )
+        showAlert = true
+    }
+    
+    
+    private func displayWarningForUncompleteWithDetails(isCompletedHabit: IsCompletedHabit) {
+        
+        alertDetail = AlertDetail(
+            title: .habitSectionMenu_uncompletingRecordsWithDetailsTitle,
+            message: .habitSectionMenu_uncompletingRecordsWithDetailsMessage,
+            actions: [
+                ActionDetail(title: .nevermind, role: .cancel, action: { }),
+                ActionDetail(title: .uncomplete, role: .destructive, action: { [weak self] in
+                    
+                    guard let self else { return }
+                    
+                    newToggleHabit(override: true, isCompletedHabit: isCompletedHabit)
+                })
+            ]
+        )
+        showAlert = true
     }
 }
+
+
+
 
 
 struct HabitsSection: View {
@@ -136,7 +175,7 @@ struct HabitsSection: View {
                 goToEditHabit: goToEditHabit,
                 didTapHabitButton: { habit in
                     // FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                    viewModel.originalToggleHabit(isCompletedHabit: habit)
+                    viewModel.newToggleHabit(isCompletedHabit: habit)
                 }, archiveHabit: { habit in
                     
                     habitController.archiveHabit(habit)

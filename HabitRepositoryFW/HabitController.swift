@@ -25,10 +25,10 @@ public enum HabitState: Hashable {
 }
 
 
-enum HabitControllerError: Error {
+public enum HabitControllerError: Error {
     
-    case uncompleteHabitWithMultipleRecords
-    case uncompleteHabitWithRecordWithDetails
+    case uncompleteHabitWithMultipleRecords(isCompletedHabit: IsCompletedHabit)
+    case uncompleteHabitWithRecordWithDetails(isCompletedHabit: IsCompletedHabit)
     case general(description: String)
 }
 
@@ -548,7 +548,58 @@ extension HabitController {
         goToCreateActivityRecordWithDetails: @escaping GoToCreateHabitRecordWithDetailsType
     ) throws {
         print("Habit Controllers new stuff")
+        
+        
+        /*
+         I want to check to make sure:
+         if this is completed and override is false
+         if this has multiple records
+         throw the multiple records error
+         if this has details filled out
+         throw the details filled out
+         if it has both
+         throw the details filled out first
+         */
+        
+        
+        if !isCompletedHabit.isCompleted {
+            
+            // If incomplete, add a record
+            createRecordOrNavigateToRecordWithDetails(
+                for: isCompletedHabit.habit,
+                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+            )
+            
+        } else {
+            
+            if !override {
+                
+                guard isCompletedHabit.habit.activityDetails.isEmpty else {
+                    throw HabitControllerError.uncompleteHabitWithRecordWithDetails(isCompletedHabit: isCompletedHabit)
+                }
+                
+                let habitRecordedCount = habitRecordsForSelectedDay.filter({ $0.habit.id == isCompletedHabit.habit.id }).count
+                guard habitRecordedCount <= 1 else {
+                    throw HabitControllerError.uncompleteHabitWithMultipleRecords(isCompletedHabit: isCompletedHabit)
+                }
+                
+                // Uncomplete Habit
+                updateStateAndUncomplete(habit: isCompletedHabit.habit)
+            } else {
+                
+                // Uncomplete habit
+                updateStateAndUncomplete(habit: isCompletedHabit.habit)
+            }
+        }
     }
+    
+    
+    private func updateStateAndUncomplete(habit: Habit) {
+        
+        moveToNextState(for: habit)
+        uncompleteHabit(habit: habit)
+    }
+    
     
     public func toggleHabit(
         isCompletedHabit: IsCompletedHabit,
@@ -565,10 +616,7 @@ extension HabitController {
         
         switch isCompletedHabit.status {
         case .complete:
-            
-            moveToNextState(for: isCompletedHabit.habit)
-            
-            uncompleteHabit(habit: isCompletedHabit.habit)
+            updateStateAndUncomplete(habit: isCompletedHabit.habit)
             
         default: // incomplete OR partially complete
             createRecordOrNavigateToRecordWithDetails(

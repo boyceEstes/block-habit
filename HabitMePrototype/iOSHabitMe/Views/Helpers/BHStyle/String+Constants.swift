@@ -17,6 +17,8 @@ extension String {
     static let cancel = "Cancel"
     static let archive = "Archive"
     static let delete = "Delete"
+    static let uncomplete = "Uncomplete"
+    static let nevermind = "Nevermind"
     
     
     // Calculation Type
@@ -33,4 +35,12 @@ extension String {
     
     static let deleteActivityDetail_archiveActionTitle = "Archive"
     static let deleteActivityDetail_deleteActionTitle = "Seriously, Delete It"
+    
+    
+    // alerts
+    static let habitSectionMenu_uncompletingMultipleRecordsTitle = "Uncompleting Multiple Records"
+    static let habitSectionMenu_uncompletingMultipleRecordsMessage = "You have logged this habit a lot today. You sure you want to uncomplete (delete) all of those records?"
+    static let habitSectionMenu_uncompletingRecordsWithDetailsTitle = "Uncompleting Records With Details"
+    static let habitSectionMenu_uncompletingRecordsWithDetailsMessage = "You have records logged with details. You sure you want to uncomplete (delete) the record(s) and all its details?"
+    
 }
