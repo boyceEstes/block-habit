@@ -743,7 +743,7 @@ extension HabitController {
             throw NSError(domain: "Could not find the habitRecord in the day (locally)", code: 1)
         }
         
-        withAnimation {
+        withAnimation(.easeInOut(duration: 0.15)) {
             _ = habitRecordsForDays[day]?.remove(at: habitRecordIndex)
         }
     }
@@ -782,7 +782,7 @@ extension HabitController {
             await MainActor.run {
                 // 2. destroy last record in-memory
                 // We know for sure that day is in there because we just got it above, so we can forcibly unwrap
-                withAnimation {
+                withAnimation(.easeInOut(duration: 0.15)) {
                     let lastRecord = habitRecordsForDays[day]!.removeFirst()
                     
                     Task {
@@ -807,7 +807,7 @@ extension HabitController {
     private func updateLocalWithNewRecord(_ habitRecord: HabitRecord) async {
         
         Task { @MainActor in
-            withAnimation {
+            withAnimation(.easeInOut(duration: 0.15)) {
                 // This should never be nil because we set each date in the dictionary to have an empty array
                 habitRecordsForDays[selectedDay]?.insert(habitRecord, at: 0)
                 
