@@ -64,33 +64,33 @@ struct SelectableCell2: View {
             .sensoryFeedback(.increase, trigger: animationTrigger) // This will happen when we tap, as it will change to something else
             .onTapGesture {
                 
-                withAnimation {
-                    animationTrigger = true
-                }
-                
-                withAnimation(.spring(duration: 0.2)) {
-
-                    scale = 1.2
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if !animationTrigger {
+                    
+                    withAnimation {
+                        animationTrigger = true
+                    }
+                    
+                    withAnimation(.spring(duration: 0.2)) {
                         
-                        withAnimation() {
+                        scale = 1.2
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             
-                            scale = 1
-                            // I could probably update the isCompletedHabitStatus to the next state in the habitController...
-                            // Then we could use the same logic when we are doing it from another view without this button... would this work?
-                            
-                            // We wait until after animation has complete to trigger this because it will be moved to the "completed section then"
-                            //nextState(isCompletedHabit: isCompletedHabit)
-                            
-                            tapAction()
-                            animationTrigger = false
+                            withAnimation() {
+                                
+                                scale = 1
+                                // I could probably update the isCompletedHabitStatus to the next state in the habitController...
+                                // Then we could use the same logic when we are doing it from another view without this button... would this work?
+                                
+                                // We wait until after animation has complete to trigger this because it will be moved to the "completed section then"
+                                //nextState(isCompletedHabit: isCompletedHabit)
+                                
+                                tapAction()
+                                animationTrigger = false
+                            }
                         }
                     }
                 }
-                
-                
-                
                 // This will not have the scaling effect - but it will have the color/icon change
 //                tapAction()
             }
