@@ -180,7 +180,7 @@ struct HabitsSection: View {
                     
                     habitController.archiveHabit(habit)
                 }, destroyHabit: { habit in
-                    
+
                     habitController.deleteHabit(habit)
                 }
             )

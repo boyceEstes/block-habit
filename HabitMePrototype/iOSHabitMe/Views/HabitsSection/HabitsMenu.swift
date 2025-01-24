@@ -111,6 +111,12 @@ struct HabitsMenu: View {
             }
             .padding(.horizontal)
             .alert(showAlert: $showAlert, alertDetail: alertDetail)
+            .onChange(of: showAlert) { _, newValue in
+                // Each time the showAlert is reset, nil out alertDetails
+                if !newValue {
+                    alertDetail = nil
+                }
+            }
     }
     
     @ViewBuilder
@@ -145,9 +151,15 @@ struct HabitsMenu: View {
                 
                 Button("Delete Habit and All Data", role: .destructive) {
                     
-                    alertDetail = HabitsMenuAlert.deleteHabit(yesAction: {
-                        destroyHabit(isCompletedHabit.habit)
-                    }).alertData()
+                    print("`make sure your habit is up to date here` they said - \(isCompletedHabit.habit.name)")
+                    
+                    alertDetail = HabitsMenuAlert.deleteHabit(
+                        yesAction: {
+                            print("`make sure your habit is up to date here` when tapping yes they said - \(isCompletedHabit.habit.name)")
+                            destroyHabit(isCompletedHabit.habit)
+                        }
+                    ).alertData()
+                    
                     showAlert = true
                 }
             }

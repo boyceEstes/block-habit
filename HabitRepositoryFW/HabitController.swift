@@ -423,11 +423,13 @@ extension HabitController {
                 }
                 
                 
+        
                 if habit.reminderTime != nil {
                     NotificationPermissionManager.shared.removeNotifications(habitID: habit.id, days: habit.scheduledWeekDays)
                 }
             } catch {
-                fatalError("Fix it. The ... yard trimmings... need to be removed. \(error)")
+                print("We had a problem, captain")
+//                fatalError("Fix it. The ... yard trimmings... need to be removed. \(error)")
             }
         }
     }
