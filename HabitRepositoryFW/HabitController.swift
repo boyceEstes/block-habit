@@ -25,6 +25,14 @@ public enum HabitState: Hashable {
 }
 
 
+enum HabitControllerError: Error {
+    
+    case uncompleteHabitWithMultipleRecords
+    case uncompleteHabitWithRecordWithDetails
+    case general(description: String)
+}
+
+
 public class HabitController: ObservableObject {
     
     /// This is the minimum number of days because it is approximately the amount of columns that could fit on the screen by default
@@ -530,13 +538,21 @@ extension HabitController {
     }
 }
 
-
+public typealias GoToCreateHabitRecordWithDetailsType = (Habit, Date, @escaping () -> Void) -> Void
 // MARK: Record
 extension HabitController {
     
+    public func newToggleHabit(
+        override: Bool,
+        isCompletedHabit: IsCompletedHabit,
+        goToCreateActivityRecordWithDetails: @escaping GoToCreateHabitRecordWithDetailsType
+    ) throws {
+        print("Habit Controllers new stuff")
+    }
+    
     public func toggleHabit(
         isCompletedHabit: IsCompletedHabit,
-        goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
+        goToCreateActivityRecordWithDetails: @escaping GoToCreateHabitRecordWithDetailsType
     ) {
         
         // THIS WILL UPDATE THE COMPLETION OF THE ISCOMPLETED HABIT ON TOGGLE

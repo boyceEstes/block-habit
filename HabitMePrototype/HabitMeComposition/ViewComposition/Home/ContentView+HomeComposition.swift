@@ -63,8 +63,14 @@ extension ContentView {
     @ViewBuilder
     private func makeHomeView(blockHabitStore: CoreDataBlockHabitStore) -> some View {
         
+        let habitSectionViewModel = HabitSectionViewModel(
+            habitController: habitController,
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetailsFromHome
+        )
+        
         HomeView(
             blockHabitStore: blockHabitStore,
+            habitSectionViewModel: habitSectionViewModel,
             goToHabitDetail: goToHabitDetailFromHome,
             goToCreateHabit: goToCreateHabitFromHome,
             goToHabitRecordDetail: goToHabitRecordDetailFromHome,

@@ -37,6 +37,7 @@ struct HomeView: View {
     @EnvironmentObject var habitController: HabitController
     
     // MARK: Injected Properties
+    let habitSectionViewModel: HabitSectionViewModel
     // Navigation & Actions
     let goToHabitDetail: (Habit) -> Void
     let goToCreateHabit: () -> Void
@@ -53,6 +54,7 @@ struct HomeView: View {
     
     init(
         blockHabitStore: CoreDataBlockHabitStore,
+        habitSectionViewModel: HabitSectionViewModel,
         goToHabitDetail: @escaping (Habit) -> Void,
         goToCreateHabit: @escaping () -> Void,
         goToHabitRecordDetail: @escaping (HabitRecord) -> Void,
@@ -61,6 +63,7 @@ struct HomeView: View {
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void,
         goToSettings: @escaping () -> Void
     ) {
+        self.habitSectionViewModel = habitSectionViewModel
         self.goToHabitDetail = goToHabitDetail
         self.goToCreateHabit = goToCreateHabit
         self.goToHabitRecordDetail = goToHabitRecordDetail
@@ -100,10 +103,10 @@ struct HomeView: View {
 //                    }
                 
                 HabitsSection(
+                    viewModel: habitSectionViewModel,
                     goToHabitDetail: goToHabitDetail,
                     goToEditHabit: goToEditHabit,
-                    goToCreateHabit: goToCreateHabit,
-                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+                    goToCreateHabit: goToCreateHabit
                 )
             }
             .background(Color.primaryBackground)
@@ -249,10 +252,21 @@ struct HomeView: View {
 
 
 #Preview {
-
+    
+    @Previewable @State var habitSectionViewModel = HabitSectionViewModel(
+        habitController: HabitController(
+            blockHabitRepository: CoreDataBlockHabitStore.preview(),
+            selectedDay: Date()
+        ),
+        goToCreateActivityRecordWithDetails: { _, _, _ in }
+    )
+    
+    
     return NavigationStack {
+
         HomeView(
             blockHabitStore: CoreDataBlockHabitStore.preview(),
+            habitSectionViewModel: habitSectionViewModel,
             goToHabitDetail: { _ in },
             goToCreateHabit: { },
             goToHabitRecordDetail: { _ in },

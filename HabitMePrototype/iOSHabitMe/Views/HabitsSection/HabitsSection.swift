@@ -9,16 +9,66 @@ import SwiftUI
 import HabitRepositoryFW
 
 
+@Observable
+class HabitSectionViewModel {
+    
+    // Injected Dependencies
+    let habitController: HabitController
+    let goToCreateActivityRecordWithDetails: GoToCreateHabitRecordWithDetailsType
+    // State Properties
+    var showAlert = false
+    var alertDetail: AlertDetail?
+    
+    
+    init(
+        habitController: HabitController,
+        goToCreateActivityRecordWithDetails: @escaping GoToCreateHabitRecordWithDetailsType
+    ) {
+        
+        self.habitController = habitController
+        self.goToCreateActivityRecordWithDetails = goToCreateActivityRecordWithDetails
+    }
+    
+    
+    func newToggleHabit(
+        override: Bool,
+        isCompletedHabit: IsCompletedHabit
+    ) {
+        
+        do {
+            try habitController.newToggleHabit(
+                override: override,
+                isCompletedHabit: isCompletedHabit,
+                goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+            )
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
+    
+    func originalToggleHabit(
+        isCompletedHabit: IsCompletedHabit
+    ) {
+        habitController.toggleHabit(
+            isCompletedHabit: isCompletedHabit,
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+        )
+    }
+}
+
+
 struct HabitsSection: View {
     
     // Would prefer dependency injection accessing environmentObject everywhere
     // MARK: Environment Logic
     @EnvironmentObject var habitController: HabitController
+    
+    @Bindable var viewModel: HabitSectionViewModel
     // Navigation
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
     let goToCreateHabit: () -> Void
-    let goToCreateActivityRecordWithDetails: (Habit, Date, @escaping () -> Void) -> Void
     // MARK: View Properties
     @ScaledMetric(relativeTo: .body) var scaledDayTitleWidth: CGFloat = 150
     
@@ -86,10 +136,7 @@ struct HabitsSection: View {
                 goToEditHabit: goToEditHabit,
                 didTapHabitButton: { habit in
                     // FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                    habitController.toggleHabit(
-                        isCompletedHabit: habit,
-                        goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-                    )
+                    viewModel.originalToggleHabit(isCompletedHabit: habit)
                 }, archiveHabit: { habit in
                     
                     habitController.archiveHabit(habit)
@@ -99,6 +146,7 @@ struct HabitsSection: View {
                 }
             )
         }
+        .alert(showAlert: $viewModel.showAlert, alertDetail: viewModel.alertDetail)
 //        .background(Color.secondaryBackground)
 //        .clipShape(
 //            RoundedRectangle(cornerRadius: 20)
@@ -109,12 +157,19 @@ struct HabitsSection: View {
 
 
 #Preview {
+    @Previewable @State var viewModel = HabitSectionViewModel(habitController: HabitController(
+        blockHabitRepository: CoreDataBlockHabitStore.preview(),
+        selectedDay: Date()
+    ), goToCreateActivityRecordWithDetails: { _, _, _ in })
+    
+    
     HabitsSection(
+        viewModel: viewModel,
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
-        goToCreateHabit: { },
-        goToCreateActivityRecordWithDetails: { _, _, _ in }
+        goToCreateHabit: { }
     )
+    // FIXME: Move away from this environmentObject in favorite of the view model
     .environmentObject(
         HabitController(
             blockHabitRepository: CoreDataBlockHabitStore.preview(),
