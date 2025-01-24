@@ -75,7 +75,7 @@ struct DonationView: View {
                 .font(.system(.title2, design: .rounded).bold())
                 .multilineTextAlignment(.center)
             
-            Text("Thanks for using Block Habit! If you're enjoying the app and want to fuel my endless quest for better features (and fancier coffee), consider leaving a tip!")
+            Text("If you're enjoying the app and want to fuel my endless quest for better features (and fancier coffee), consider leaving a tip!")
             //  Who knew good code runs on caffeine and validation?
                 .font(.system(.body, design: .rounded))
                 .multilineTextAlignment(.center)
