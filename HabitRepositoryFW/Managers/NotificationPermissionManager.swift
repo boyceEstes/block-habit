@@ -16,7 +16,15 @@ public extension UserDefaults {
     
    static var isNotificationsAllowed: Bool {
         get {
-            UserDefaults.standard.bool(forKey: CustomKey.isNotificationsAllowed.rawValue)
+            // If this is the first time that we opening the app, I want it to be allowed
+            // to receive notifications
+            if UserDefaults.standard.object(forKey: CustomKey.isNotificationsAllowed.rawValue) == nil {
+                
+                UserDefaults.standard.set(true, forKey: CustomKey.isNotificationsAllowed.rawValue)
+                return true
+            } else {
+                return UserDefaults.standard.bool(forKey: CustomKey.isNotificationsAllowed.rawValue)
+            }
         } set {
             UserDefaults.standard.set(newValue, forKey: CustomKey.isNotificationsAllowed.rawValue)
         }
