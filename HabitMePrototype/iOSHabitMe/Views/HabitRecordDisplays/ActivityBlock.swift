@@ -32,7 +32,8 @@ struct ActivityBlock: View {
         
         Rectangle()
             .fill(color)
-            .frame(width: itemWidth, height: itemHeight)
+            .frame(width: itemWidth)
+            .frame(minHeight: itemHeight, maxHeight: itemHeight)
             .onTapGesture(perform: tapAction)
     }
 }

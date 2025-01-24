@@ -116,7 +116,7 @@ struct SelectableCell2: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 20, height: 20)
-            .foregroundStyle(.white)
+            .foregroundStyle(animationTrigger == true ? (nextState.isCompleted ? Color.white : Color(.lightGray)) : (isCompletedHabit.isCompleted ? Color.white : Color(.lightGray)))
             .fontWeight(animationTrigger == true ? (nextState.isCompleted ? .semibold : .medium) : (isCompletedHabit.isCompleted ? .semibold : .medium))
             .scaleEffect(animationTrigger == true ? (nextState.isCompleted ? 1.2 : 0.8) : (isCompletedHabit.isCompleted ? 1.2 : 0.8))
             .padding(10)

@@ -9,6 +9,15 @@ import SwiftUI
 import HabitRepositoryFW
 
 
+extension AnyTransition {
+    
+    static var moveWithOpacity: AnyTransition {
+
+        AnyTransition.move(edge: .bottom).combined(with: .opacity)
+    }
+}
+
+
 struct BlockStack: View {
     
     let habitRecords: [HabitRecord]
@@ -30,7 +39,7 @@ struct BlockStack: View {
                     itemHeight: itemHeight,
                     tapAction: didTapBlock
                 )
-                .transition(.move(edge: .bottom).combined(with: .opacity).combined(with: .scale))
+                .transition(.moveWithOpacity)
 //                .matchedGeometryEffect(
 //                    id: habitRecord.id,
 //                    in: animation,
@@ -46,7 +55,6 @@ struct BlockStack: View {
                 )
             }
         }
-        .transition(.move(edge: .bottom).combined(with: .opacity).combined(with: .scale))
     }
 }
 

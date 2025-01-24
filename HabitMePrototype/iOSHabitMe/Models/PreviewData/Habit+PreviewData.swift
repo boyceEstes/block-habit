@@ -160,6 +160,20 @@ extension HabitRecord {
             completionDate: Date(),
             activityDetailRecords: [],
             habit: .mirrorPepTalk
+        ),
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: .somethingComplicated
+        ),
+        HabitRecord(
+            id: UUID().uuidString,
+            creationDate: Date(),
+            completionDate: Date(),
+            activityDetailRecords: [],
+            habit: .mirrorPepTalk
         )
     ]
 }

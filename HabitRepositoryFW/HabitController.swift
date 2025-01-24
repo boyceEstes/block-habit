@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 // Used for determining button state
 
@@ -678,7 +679,9 @@ extension HabitController {
             throw NSError(domain: "Could not find the habitRecord in the day (locally)", code: 1)
         }
         
-        habitRecordsForDays[day]?.remove(at: habitRecordIndex)
+        withAnimation {
+            _ = habitRecordsForDays[day]?.remove(at: habitRecordIndex)
+        }
     }
     
     
@@ -715,19 +718,22 @@ extension HabitController {
             await MainActor.run {
                 // 2. destroy last record in-memory
                 // We know for sure that day is in there because we just got it above, so we can forcibly unwrap
-                let lastRecord = habitRecordsForDays[day]!.removeFirst()
-                
-                Task {
-                    do {
-                        // 3. destroy last record in blockHabitRepository
-                        try await blockHabitRepository.destroyHabitRecord(lastRecord)
-                        
-                    } catch {
-                        fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
+                withAnimation {
+                    let lastRecord = habitRecordsForDays[day]!.removeFirst()
+                    
+                    Task {
+                        do {
+                            // 3. destroy last record in blockHabitRepository
+                            try await blockHabitRepository.destroyHabitRecord(lastRecord)
+                            
+                        } catch {
+                            fatalError("DESTROYING DIDN'T WORK - ITS INVINCIBLE \(error)")
+                        }
                     }
                 }
                 
                 // Ensure that habits are updated for isCompleted
+                
                 updateHabitsIsCompletedForDay()
             }
         }
@@ -737,11 +743,13 @@ extension HabitController {
     private func updateLocalWithNewRecord(_ habitRecord: HabitRecord) async {
         
         Task { @MainActor in
-            // This should never be nil because we set each date in the dictionary to have an empty array
-            habitRecordsForDays[selectedDay]?.insert(habitRecord, at: 0)
-            
-            // MARK: We should no longer be reading from the DB to populate in-memory, it should already be incremented at this point for the habit
-//            await populateHabits()
+            withAnimation {
+                // This should never be nil because we set each date in the dictionary to have an empty array
+                habitRecordsForDays[selectedDay]?.insert(habitRecord, at: 0)
+                
+                // MARK: We should no longer be reading from the DB to populate in-memory, it should already be incremented at this point for the habit
+                //            await populateHabits()
+            }
         }
     }
     

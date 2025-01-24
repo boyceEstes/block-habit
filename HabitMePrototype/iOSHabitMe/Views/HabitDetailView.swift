@@ -399,8 +399,13 @@ extension Habit {
     }
     
     var incompleteColor: Color {
-        
-        realColor.lessBright(by: -0.1)
+        if #available(iOS 18.0, *) {
+            realColor.lessBright(by: -0.3)
+        } else {
+            // Fallback on earlier versions
+            realColor.lessBright(by: -0.3)
+        }
+//        realColor.
     }
 }
 
