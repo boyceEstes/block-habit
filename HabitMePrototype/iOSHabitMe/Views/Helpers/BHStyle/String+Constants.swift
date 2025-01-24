@@ -39,8 +39,8 @@ extension String {
     
     // alerts
     static let habitSectionMenu_uncompletingMultipleRecordsTitle = "Uncompleting Multiple Records"
-    static let habitSectionMenu_uncompletingMultipleRecordsMessage = "You have logged this habit a lot today. You sure you want to uncomplete (delete) all of those records?"
+    static let habitSectionMenu_uncompletingMultipleRecordsMessage = "You have logged this habit a lot today. Are you sure you want to uncomplete (delete) all of those records?"
     static let habitSectionMenu_uncompletingRecordsWithDetailsTitle = "Uncompleting Records With Details"
-    static let habitSectionMenu_uncompletingRecordsWithDetailsMessage = "You have records logged with details. You sure you want to uncomplete (delete) the record(s) and all its details?"
+    static let habitSectionMenu_uncompletingRecordsWithDetailsMessage = "You have records logged with details. Are you sure you want to uncomplete (delete) the record(s) and all its details?"
     
 }
