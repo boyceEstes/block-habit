@@ -92,26 +92,25 @@ struct AddDetailsView: View {
     
 
     var body: some View {
-        
-//        ScrollView {
-//            LazyVStack {
-//                ForEach(activityDetails) { activityDetail in
-//                    
-//                }
-//            }
-//        }
-//        VStack {
+
             
         List {
+            
+            Section {
+                Text("Details are useful bits of info that you want to record each time that you complete a habit\n\nAn example could be adding a 'Note' detail to your 'Workout' Habit to describe exactly much you loved it on this particular day")
+                    .frame(maxWidth: .infinity)
+                    .font(.callout)
+                    .padding(.vertical, .detailPadding)
+                    .padding(.horizontal, .detailPadding)
+                    .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                    .sectionBackground(padding: .detailPadding)
+                    .frame(maxWidth: .infinity)
+            }
+            .listRowSeparator(.hidden)
+            .listStyle(.plain)
+            
             Section {
                 HStack {
-                    //                    Button("Reset") {
-                    //                        removeAllSelections()
-                    //                    }
-                    //                        .font(.headline)
-                    //                        .foregroundStyle(.blue)
-                    //
-                    //
                     Spacer()
                     Button {
                         goToCreateActivityDetail()
@@ -128,7 +127,7 @@ struct AddDetailsView: View {
                 }
                 .listRowSeparator(.hidden)
                 .listStyle(.plain)
-                .padding(.vertical, 8)
+//                .padding(.vertical, 8)
             }
             
             
