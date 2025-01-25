@@ -181,12 +181,28 @@ struct AddDetailsView: View {
             } else {
                 
                 Section {
-                    Text("\(.addDetailSelection_emptyList)")
-                        .listRowSeparator(.hidden)
-                        .multilineTextAlignment(.center)
+                    VStack {
+//                        Image("empty-box-sad-star")
+//                            .resizable()
+//                            .scaledToFill()
+//                            .rotationEffect(.degrees(90))
+//                            .frame(width: 140, height: 140)
+//                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        
+                        Text("\(.addDetailSelection_emptyList)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: 250, alignment: .center)
+                    }
+                    .frame(maxWidth: .infinity)
                 }
-                .padding(.vertical, 16)
+                .listRowSeparator(.hidden)
+//                .multilineTextAlignment(.center)
+  
+//                .padding(.vertical, 16)
             }
+                
         }
     
         
