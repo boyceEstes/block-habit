@@ -28,7 +28,7 @@ struct SelectableHabit: Hashable, SelectableListItem {
         
         self.id = habit.id
         self.name = habit.name
-        self.color = Color(hex: habit.color) ?? Color.blue
+        self.color = habit.readableColor
         self.habit = habit
     }
 }

@@ -15,7 +15,8 @@ struct HorizontalScrollySelectableFilterList<T: SelectableListItem>: View {
     var body: some View {
         ScrollView(.horizontal) {
             LazyHStack {
-                Button {
+
+                ToggleButton(title: "All", isOn: isAllSelected, color: .blue) {
                     withAnimation {
                         if isAllSelected {
                             // Set none to be selected
@@ -28,11 +29,7 @@ struct HorizontalScrollySelectableFilterList<T: SelectableListItem>: View {
                             items.indices.forEach { items[$0].isSelected = true }
                         }
                     }
-                } label: {
-                    Text("All")
-                        .foregroundStyle(.white)
                 }
-                .filterButtonStyle(color: .blue, isSelected: isAllSelected)
                 
                 Divider()
                 
@@ -40,11 +37,12 @@ struct HorizontalScrollySelectableFilterList<T: SelectableListItem>: View {
                     
                     let item = items[i]
                     let isSelected = item.isSelected
-                    let name = item.name
-                    let color = item.color
                     
-                    Button {
-                        print("tapped selectableHabit")
+                    ToggleButton(
+                        title: item.name,
+                        isOn: isSelected,
+                        color: item.color
+                    ) {
                         withAnimation {
                             items[i].isSelected.toggle()
                             // We want to make sure that the "All" button is going to be unselected if even one is false
@@ -54,11 +52,7 @@ struct HorizontalScrollySelectableFilterList<T: SelectableListItem>: View {
                                 isAllSelected = true
                             }
                         }
-                    } label: {
-                        Text("\(name)")
-                            .foregroundStyle(Color.primary)
                     }
-                    .filterButtonStyle(color: color, isSelected: isSelected)
                 }
             }
             .padding(.leading)

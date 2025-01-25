@@ -29,8 +29,11 @@ struct WeekSelectionView: View {
                     let name = item.name
                     let color = item.color
                     
-                    Button {
-                        print("tapped selectableHabit")
+                    ToggleButton(
+                        title: item.name,
+                        isOn: isSelected,
+                        color: item.color
+                    ) {
                         withAnimation {
                             items[i].isSelected.toggle()
                             // We want to make sure that the "All" button is going to be unselected if even one is false
@@ -40,20 +43,55 @@ struct WeekSelectionView: View {
                                 isAllSelected = true
                             }
                         }
-                    } label: {
-                        Text("\(name)")
-                            .foregroundStyle(isSelected ? Color.white : .primary)
                     }
-                    .frame(maxWidth: .infinity)
-                    .buttonStyle(.plain)
-                    .filterButtonStyle(color: color, isSelected: isSelected)
                     .gridCellColumns(1)
+//                    Button {
+//                        print("tapped selectableHabit")
+//                        withAnimation {
+//                            items[i].isSelected.toggle()
+//                            // We want to make sure that the "All" button is going to be unselected if even one is false
+//                            if !items[i].isSelected && isAllSelected {
+//                                isAllSelected = false
+//                            } else if items[i].isSelected && isAllSelected == false && items.allSatisfy({ $0.isSelected }) {
+//                                isAllSelected = true
+//                            }
+//                        }
+//                    } label: {
+//                        Text("\(name)")
+//                            .foregroundStyle(isSelected ? Color.white : .primary)
+//                    }
+                    
+//                    .buttonStyle(.plain)
+                    
+//                    .gridCellColumns(1)
                 }
                 
 
             }
             .frame(maxWidth: .infinity)
         }
+    }
+}
+
+
+struct ToggleButton: View {
+    
+    let title: String
+    let isOn: Bool
+    let color: Color
+    let tapAction: () -> Void
+    
+    var body: some View {
+        
+        Button {
+            tapAction()
+        } label: {
+            Text("\(title)")
+                .foregroundStyle(isOn ? Color.white : .primary)
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
+        .filterButtonStyle(color: color, isSelected: isOn)
     }
 }
 
