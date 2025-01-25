@@ -37,7 +37,11 @@ struct StatisticsView: View {
     @State private var selectableHabits = [SelectableHabit]()
     
     
-    // Basic stats
+    /// To know when we actually should display content or not
+    private var allTotalRecords: Int {
+        StatisticsCalculator.findTotalRecords(for: habitController.habitRecordsForDays)
+    }
+    
     private var totalRecords: Int {
         return StatisticsCalculator.findTotalRecords(for: selectedHabitRecordsForDays)
     }
@@ -85,7 +89,7 @@ struct StatisticsView: View {
 
                 VStack(spacing: 0) {
                     // FIXME: Statistics is broken until further notice
-                    if totalRecords != 0 {
+                    if allTotalRecords != 0 {
                         
                         StatisticsBarView(
                             graphWidth: screenWidth,
