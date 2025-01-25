@@ -85,35 +85,50 @@ struct StatisticsView: View {
 
                 VStack(spacing: 0) {
                     // FIXME: Statistics is broken until further notice
-                    StatisticsBarView(
-                        graphWidth: screenWidth,
-                        graphHeight: graphHeight,
-                        numOfItemsToReachTop: 12,
-                        datesWithHabitRecords: selectedHabitRecordsForDays
-                    )
-                    .padding(.bottom)
-                    
-                    VStack(alignment: .leading, spacing: 0) {
-                        if !selectableHabits.isEmpty {
-                            HStack {
-                                Text("Habits")
-                                    .font(.title3)
+                    if totalRecords != 0 {
+                        
+                        StatisticsBarView(
+                            graphWidth: screenWidth,
+                            graphHeight: graphHeight,
+                            numOfItemsToReachTop: 12,
+                            datesWithHabitRecords: selectedHabitRecordsForDays
+                        )
+                        .padding(.bottom)
+                        
+                        
+                        VStack(alignment: .leading, spacing: 0) {
+                            if !selectableHabits.isEmpty {
+                                HStack {
+                                    Text("Habits")
+                                        .font(.title3)
+                                    
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal)
                                 
-//                                Spacer()
-//                                
-//                                Button("Reset") {
-//                                    for i in 0..<selectableHabits.count {
-//                                        selectableHabits[i].isSelected = true
-//                                    }
-//                                }
+                                
+                                HorizontalScrollySelectableFilterList(items: $selectableHabits)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                            
-                            
-                            HorizontalScrollySelectableFilterList(items: $selectableHabits)
                         }
+                    } else {
+                        VStack {
+                            
+                            Image("empty-box-sad-star")
+                                .resizable()
+                                .scaledToFill()
+                                .rotationEffect(.degrees(90))
+                                .frame(width: 140, height: 140)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            Text("You need to complete a habit first, ya goofball")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: 250, alignment: .center)
+                        }
+                        .padding(.vertical, 20)
                     }
+                    
+
                     
                     
                     Grid(alignment: .topLeading) {
