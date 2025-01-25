@@ -181,7 +181,7 @@ struct AddDetailsView: View {
             } else {
                 
                 Section {
-                    Text("No Details available to track with your Habits... You might need to make one 🙊")
+                    Text("\(.addDetailSelection_emptyList)")
                         .listRowSeparator(.hidden)
                         .multilineTextAlignment(.center)
                 }

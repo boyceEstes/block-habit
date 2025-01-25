@@ -43,4 +43,7 @@ extension String {
     static let habitSectionMenu_uncompletingRecordsWithDetailsTitle = "Uncompleting Records With Details"
     static let habitSectionMenu_uncompletingRecordsWithDetailsMessage = "You have records logged with details. Are you sure you want to uncomplete (delete) the record(s) and all its details?"
     
+    
+    
+    static let addDetailSelection_emptyList = "Your detail list is looking more empty than a highway after a zombie apocalypse"
 }
