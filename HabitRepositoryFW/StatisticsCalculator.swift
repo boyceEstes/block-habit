@@ -80,7 +80,9 @@ public enum StatisticsCalculator {
         return mostHabit == nil ? nil : (mostHabit!, mostHabitCount)
     }
     
-    
+
+    // More performant method because it would only look through all of the days in the habit record once
+    // and the other method would do it for each of the habits.
     public static func findHabitWithBestStreak(for recordsForDays: RecordsForDays, with habits: [Habit]) -> HabitWithCount? {
         
         // We want to have all habits that exist here so that we can easily test their streak values
@@ -100,7 +102,38 @@ public enum StatisticsCalculator {
             let habitsInHabitRecordsForDay = Set<Habit>(habitRecordsForDay.map { $0.habit})
             
             // We can leave early if there is nothing here
-            guard !habitsInHabitRecordsForDay.isEmpty else { continue }
+            guard !habitsInHabitRecordsForDay.isEmpty else {
+                
+                // We cannot just LEAVE - there could be habitStreaks that need to be
+                // reset because there was nothing here!
+                
+                // We just want to ensure that we udpate the currentStreaks and
+                // We update the bestStreaks before we leave the loop
+                
+                // So if there are any habitStreaks that are not 0 when we get to one of
+                // these nothing days... Do the check on them.
+                
+                // loop through each of the habits, check if habitStreaks is > 0
+                // if that particular habitStreak > bestHabitStreak, update, else
+                // zero it out
+                
+                for habit in habits {
+                    if habitStreaks[habit]! > 0 {
+                        // check and reset
+                        if habitStreaks[habit]! > habitBestStreaks[habit]! {
+                            // 7. set best [habit: int] to the value of the whatever and zero out the og [habit: int]
+                            habitBestStreaks[habit] = habitStreaks[habit]
+                            habitStreaks[habit] = 0
+                        } else {
+                            habitStreaks[habit] = 0
+                        }
+                    } else {
+                        continue
+                    }
+                }
+                
+                continue
+            }
 
             // 2. Loop through each available habit
             for habit in habits {
@@ -210,6 +243,7 @@ extension StatisticsCalculator {
     
     
     /// If there is no date found there is no current streak
+    /// ASSUMPTION: All Records in RecordsFor Days are the same habit
     public static func findCurrentStreakInRecordsForHabit(for recordsForDays: RecordsForDays) -> Int {
         
         var streakCount = 0

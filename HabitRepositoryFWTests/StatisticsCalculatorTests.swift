@@ -172,6 +172,30 @@ class StatisticsCalculatorTests: XCTestCase {
     }
     
     
+    func test_findHabitWithBestStreak_withIncompleteGapBetweenDays_deliversBestHabitAndCorrectCount() {
+        
+        // given
+        let nonArcihved1GoalHabit = nonArchivedOneGoalHabit
+        var habitRecordsForDays = setupDaysForDictionary() // Zeros out all the dates in the [Date: [HabitRecord]] dict
+        
+        let latestDate = someDay
+        let yesterDate = someDay.adding(days: -1)
+        // skip the next date
+        let threeDatesAgo = someDay.adding(days: -3)
+        
+        habitRecordsForDays[latestDate] = [HabitRecord.habitRecord(date: latestDate, habit: nonArcihved1GoalHabit)]
+        habitRecordsForDays[yesterDate] = [HabitRecord.habitRecord(date: yesterDate, habit: nonArcihved1GoalHabit)]
+        habitRecordsForDays[threeDatesAgo] = [HabitRecord.habitRecord(date: threeDatesAgo, habit: nonArcihved1GoalHabit)]
+        
+        // when
+        let bestStreak = StatisticsCalculator.findHabitWithBestStreak(for: habitRecordsForDays, with: [nonArcihved1GoalHabit])
+        
+        // then
+        XCTAssertEqual(bestStreak?.habit, nonArcihved1GoalHabit)
+        XCTAssertEqual(bestStreak?.count, 2)
+    }
+    
+    
     func test_findHabitWithBestStreak_withMultipleEmptyDays_deliversNil() {
         
         // given

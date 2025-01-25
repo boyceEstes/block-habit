@@ -356,9 +356,9 @@ class HabitControllerTests: XCTestCase {
 //        let expectedCompleteHabitsForOneDayAgo = [nonArchivedOneGoal]
 //        let expectedIncompleteHabitsForOneDayAgo = [nonArchivedTwoGoal, nonArchivedZeroGoal]
         let expectedIsCompletedHabitsForOneDayAgo = Set<IsCompletedHabit>(
-            arrayLiteral: IsCompletedHabit(habit: nonArchivedOneGoal, isCompleted: true),
-            IsCompletedHabit(habit: nonArchivedTwoGoal, isCompleted: false),
-            IsCompletedHabit(habit: nonArchivedZeroGoal, isCompleted: false)
+            arrayLiteral: IsCompletedHabit(habit: nonArchivedOneGoal,  status: .complete),
+            IsCompletedHabit(habit: nonArchivedTwoGoal, status: .incomplete),
+            IsCompletedHabit(habit: nonArchivedZeroGoal, status: .incomplete)
         )
         
         var cancellables = Set<AnyCancellable>()
