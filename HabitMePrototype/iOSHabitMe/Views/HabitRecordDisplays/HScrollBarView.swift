@@ -23,12 +23,25 @@ struct HScrollBarView: View {
     let animation: Namespace.ID
     @Binding var showDayDetail: Bool
     
+    /// Fitting less dates on the screen means that there is more room for bigger fonts
+    var numOfDatesToFitOnGraph: CGFloat {
+        
+        if dynamicTypeSize < .xxxLarge {
+            return 5.0
+        } else if dynamicTypeSize < .accessibility1 {
+            return 4.0
+        } else if dynamicTypeSize < .accessibility4 {
+            return 4.0
+        } else {
+            return 3.0
+        }
+    }
     
     var body: some View {
         
         // TODO: If the device is horizontal, do not use this calculation
 
-        let columnWidth = graphWidth / (dynamicTypeSize.isAccessibilitySize ? (dynamicTypeSize > .accessibility4 ? 3 : 4) : 5)
+        let columnWidth = graphWidth / numOfDatesToFitOnGraph
         
         VStack {
             

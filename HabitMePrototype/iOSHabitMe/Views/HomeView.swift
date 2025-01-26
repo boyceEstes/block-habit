@@ -32,9 +32,11 @@ enum HabitRecordVisualMode {
 //}
 
 
+
 struct HomeView: View {
     
     @EnvironmentObject var habitController: HabitController
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     // MARK: Injected Properties
     let habitSectionViewModel: HabitSectionViewModel
@@ -88,6 +90,20 @@ struct HomeView: View {
         return completedNumberOfHabitsOnSelectedDay / goalNumberOfHabitCompletionsOnSelectedDay == 1
     }
     
+    var numOfItemsToFillGraph: Double {
+        
+        if dynamicTypeSize < .accessibility1 {
+            return 8.0
+        } else if dynamicTypeSize < .accessibility3 {
+            return 6.0
+        } else {
+            // The bigger the font, the wider we make the square blocks
+            // We do that by making it require less blocks to get to the top
+            // (meaning that each block would have to fill more room)
+            return 4.0
+        }
+    }
+    
     
     var body: some View {
         
@@ -97,12 +113,13 @@ struct HomeView: View {
             let screenHeight = proxy.size.height
             let graphHeight = screenHeight * 0.4
             
+            
             VStack {
 //                    if !showDayDetail {
                         HScrollBarView(
                             graphWidth: screenWidth,
                             graphHeight: graphHeight,
-                            numOfItemsToReachTop: 8,
+                            numOfItemsToReachTop: numOfItemsToFillGraph,
                             habitRecordsForDays: habitRecordsForDays,
                             selectedDay: $habitController.selectedDay,
                             animation: animation,
