@@ -30,10 +30,11 @@ extension String {
     static let addActivityDetails_navTitle = "Select Details"
     static let addDetailSelection_emptyList = "Your detail list is looking more empty than a highway after a zombie apocalypse"
     
+    static let addDetailSelection_tipText = "Create a reusable Detail to attach to a Habit, allowing you to log additional information each time you complete it"
+    
     // create activity detail view
-//    static let createDetail_textTypeExample = 
-    
-    
+//    static let createDetail_textTypeExample =
+
     // delete activity detail
     static let deleteActivityDetail_alertTitle = "Danger Zone!"
     static let deleteActivityDetail_alertMessage = "By deleting this, you would be deleting all the statistics associated. That's crazy, no? You can always archive it if you don't want to look at it right now."

@@ -15,41 +15,63 @@ struct CreateActivityDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var detailName: String = ""
-    @State private var typeSelection: ActivityDetailType = .text
+    @State private var typeSelection: ActivityDetailType = .number
     @State private var units: String = ""
     @State private var calculationTypeSelection: ActivityDetailCalculationType = .sum
     
     var body: some View {
     
-        VStack(spacing: .vSectionSpacing) {
-            HStack {
-                TextField("Name", text: $detailName)
-                    .textFieldBackground(color: .tertiaryBackground)
-                
-                Picker("Type", selection: $typeSelection) {
-                    ForEach(ActivityDetailType.allCases) { type in
-                        Text("\(type.rawValue)")
-                    }
-                }
-                .tint(.primary)
-                .sectionBackground(padding: 0, color: .tertiaryBackground)
-            }
-            .sectionBackground()
-            
-            switch typeSelection {
-            case .number:
-                numberDetailSection
-                
-            case .text:
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Record some text with each habit completion that this detail is attached to")
+        VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    TextField("Name", text: $detailName)
+                        .textFieldBackground()
                     
-                    Text("\(detailName.isEmpty ? "Detail" : "\(detailName)"): 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo'")
+                    //                    .textFieldBackground(color: .tertiaryBackground)
+                    
+                    Picker("Type", selection: $typeSelection) {
+                        ForEach(ActivityDetailType.allCases) { type in
+                            Text("\(type.rawValue)")
+                        }
+                    }
+                    .tint(.primary)
+                    .padding(6)
+                    .background(
+                        Color.secondaryBackground,
+                        in: RoundedRectangle(
+                            cornerRadius: 10, style: .continuous
+                        )
+                    )
+                    
+                    //                .sectionBackground(padding: 0, color: .tertiaryBackground)
                 }
-                .font(.footnote)
-                .padding(.horizontal)
                 
-            }
+                //            .padding(8)
+                //            .background(
+                //                Color.secondaryBackground,
+                //                in: RoundedRectangle(
+                //                    cornerRadius: 10, style: .continuous
+                //                )
+                //            )
+                //            .sectionBackground()
+                
+                switch typeSelection {
+                case .number:
+                    Text("Create a reusable number detail with your habit like 'Amount', 'Weight', or 'Duration'")
+                        .font(.footnote)
+                    
+                    numberDetailSection
+                        .padding(.top)
+                    
+                case .text:
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Create a reusable text detail with your habit like 'Summary', 'Note', or 'Highlights'")
+                        
+                        //                    Text("\(detailName.isEmpty ? "Detail" : "\(detailName)"): 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo'")
+                    }
+                    .font(.footnote)
+                    
+                }
+            
             
             Spacer()
         }
@@ -78,44 +100,94 @@ struct CreateActivityDetailView: View {
         
         VStack(alignment: .leading, spacing: .vItemSpacing) {
             
-            Text("Number Details")
-                .font(.sectionTitle)
-                .padding(.horizontal)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Number Details")
+                    .font(.headline)
+                //                .fontWeight(<#T##weight: Font.Weight?##Font.Weight?#>)
+            }
+                
             
-            VStack(alignment: .leading, spacing: .vSectionSpacing) {
-                HStack {
-                    TextField("Units", text: $units)
-                        .frame(width: 85)
-                        .textFieldBackground(color: .tertiaryBackground)
-                    Spacer()
-                    Text("Example '27\(units.isEmpty ? "" : " \(units)")'")
+            
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        TextField("Units", text: $units)
+                            .frame(maxWidth: .infinity)
+                        //                        .textFieldBackground(color: .tertiaryBackground)
+                        //                    Spacer()
+                        Text("'27\(units.isEmpty ? "" : " \(units)")'")
+                    }
+                    .textFieldBackground()
+                    
+                    
+                        
                 }
-                .sectionBackground()
+                
+//                .sectionBackground()
                 
                 calculationType
-                .sectionBackground()
-            }
+//                .sectionBackground()
+            
             
             Text("\(calculationTypeSelection.explanation)")
                 .font(.footnote)
-                .padding(.horizontal)
+//                .padding(.horizontal)
         }
     }
     
     
     var calculationType: some View {
         
+//        Menu {
+//            Picker("Calculation Type", selection: $calculationTypeSelection) {
+//                ForEach(ActivityDetailCalculationType.allCases) { type in
+//                    Text("\(type.rawValue)")
+//                }
+//            }
+////            Picker(selection: $selectedNumber, label: EmptyView()) {
+////                ForEach(0..<10) {
+////                    Text("\($0)")
+////                }
+////            }
+//        } label: {
+//            HStack {
+//                Text("Calculation Type")
+//                Spacer()
+//                Text("\(calculationTypeSelection.rawValue)")
+//            }
+//        }
+//        .buttonStyle(.plain)
+//        .frame(maxWidth: .infinity)
+//        .padding(13)
+//        .background(
+//            Color.secondaryBackground,
+//            in: RoundedRectangle(
+//                cornerRadius: 10, style: .continuous
+//            )
+//        )
         HStack {
             Text("Calculation Type")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(6)
             Spacer()
             Picker("Calculation Type", selection: $calculationTypeSelection) {
                 ForEach(ActivityDetailCalculationType.allCases) { type in
                     Text("\(type.rawValue)")
                 }
             }
+
             .tint(.primary)
-            .sectionBackground(padding: 0, color: .tertiaryBackground)
+//            .frame(maxWidth: .infinity, alignment: .trailing)
+
+            
+//            .sectionBackground(padding: 0, color: .tertiaryBackground)
         }
+        .padding(6)
+        .background(
+            Color.secondaryBackground,
+            in: RoundedRectangle(
+                cornerRadius: 10, style: .continuous
+            )
+        )
     }
     
     
