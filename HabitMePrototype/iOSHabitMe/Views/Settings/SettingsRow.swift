@@ -17,7 +17,13 @@ struct SettingsRow: View {
     let tapAction: () -> Void
     let showDisclosure: Bool
     
-    init(imageSystemName: String, label: String, color: Color, showDisclosure: Bool = true, tapAction: @escaping () -> Void) {
+    init(
+        imageSystemName: String,
+        label: String,
+        color: Color,
+        showDisclosure: Bool = true,
+        tapAction: @escaping () -> Void
+    ) {
         
         self.imageSystemName = imageSystemName
         self.label = label

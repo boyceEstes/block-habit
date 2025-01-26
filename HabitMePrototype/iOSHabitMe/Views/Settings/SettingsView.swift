@@ -228,6 +228,7 @@ struct SettingsContainerView: View {
             goToArchivedActivityDetails: goToArchivedActivityDetails,
             goToBuyMeACoffee: showDonationView
         )
+        .toolbar(isShowingDonationView ? .hidden : .visible)
             .overlay {
                 
                 if isShowingDonationView {
@@ -244,7 +245,6 @@ struct SettingsContainerView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-            
             .overlay(alignment: .bottom) {
 
                 if isShowingThankYouView {

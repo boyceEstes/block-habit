@@ -19,34 +19,65 @@ let myDonationProductIdentifiers = [
 
 struct TipItemView: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @EnvironmentObject var store: TipStore
     let item: Product
     
     var body: some View {
         
-        HStack {
+        if dynamicTypeSize.isAccessibilitySize {
             
-            VStack(alignment: .leading, spacing: 3) {
-                Text(item.displayName)
-                    .font(.system(.title3, design: .rounded).bold())
-                Text(item.description)
-                    .font(.system(.callout, design: .rounded).weight(.regular))
+            VStack(alignment: .leading) {
                 
-            }
-            
-            Spacer()
-            
-            Button("\(item.displayPrice)"){
-                Task {
-                    await store.purchase(item)
+                VStack(alignment: .leading, spacing: 3) {
+                    
+                    Text(item.displayName)
+                        .font(.system(.title3, design: .rounded).bold())
+                    Text(item.description)
+                        .font(.system(.callout, design: .rounded).weight(.regular))
                 }
-            }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Spacer()
+                
+                Button("\(item.displayPrice)") {
+                    Task {
+                        await store.purchase(item)
+                    }
+                }
                 .tint(.blue)
                 .buttonStyle(.bordered)
                 .font(.callout.bold())
+                .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(UIColor.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        }  else {
+            
+            HStack {
+                
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(item.displayName)
+                        .font(.system(.title3, design: .rounded).bold())
+                    Text(item.description)
+                        .font(.system(.callout, design: .rounded).weight(.regular))
+                }
+                
+                Spacer()
+                
+                Button("\(item.displayPrice)"){
+                    Task {
+                        await store.purchase(item)
+                    }
+                }
+                .tint(.blue)
+                .buttonStyle(.bordered)
+                .font(.callout.bold())
+            }
+            .padding(16)
+            .background(Color(UIColor.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
-        .padding(16)
-        .background(Color(UIColor.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 
@@ -58,36 +89,43 @@ struct DonationView: View {
     
     var body: some View {
         
-        VStack(spacing: 8) {
-            
-            HStack {
-                Spacer()
-                Button(action: didTapClose) {
-                    Image(systemName: "xmark")
-                        .symbolVariant(.circle.fill)
-                        .font(.system(.largeTitle, design: .rounded).bold())
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.gray, .gray.opacity(0.2))
-                }
-            }
-            
-            Text("Enjoying the app so far?")
-                .font(.system(.title2, design: .rounded).bold())
-                .multilineTextAlignment(.center)
-            
-            Text("If you're enjoying the app and want to fuel my endless quest for better features (and fancier coffee), consider leaving a tip!")
-            //  Who knew good code runs on caffeine and validation?
-                .font(.system(.body, design: .rounded))
-                .multilineTextAlignment(.center)
-                .padding(.bottom, 16)
-            
-            ForEach(store.items, id: \.self) { item in
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 8) {
                 
-                TipItemView(item: item)
+                HStack {
+                    Spacer()
+                    Button(action: didTapClose) {
+                        Image(systemName: "xmark")
+                            .symbolVariant(.circle.fill)
+                            .font(.system(.largeTitle, design: .rounded).bold())
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.gray, .gray.opacity(0.2))
+                    }
+                }
+                
+                Text("Enjoying the app so far?")
+                    .font(.system(.title2, design: .rounded).bold())
+                    .multilineTextAlignment(.center)
+                
+                Text("If you're enjoying the app and want to fuel my endless quest for better features (and fancier coffee), consider leaving a tip!")
+                //  Who knew good code runs on caffeine and validation?
+                    .font(.system(.body, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 16)
+                
+                ForEach(store.items, id: \.self) { item in
+                    
+                    TipItemView(item: item)
+                }
             }
         }
         .padding(16)
-        .background(Color(UIColor.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .background(
+            Color(UIColor.secondarySystemBackground),
+            in: RoundedRectangle(
+                cornerRadius: 10, style: .continuous
+            )
+        )
         .padding(8)
         .overlay(alignment: .top) {
             Image("appIcon")
