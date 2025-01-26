@@ -8,6 +8,60 @@
 import SwiftUI
 import HabitRepositoryFW
 
+struct ReminderInfo: View {
+    
+    let backgroundColor: Color
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    let scheduledWeekDays: Set<ScheduleDay>
+    let reminderTime: Date
+    
+    var body: some View {
+        
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading) {
+//                    Label("\(scheduleSummary)", systemImage: "bell")
+//                        .foregroundStyle(.primary)
+                HStack {
+                    Image(systemName: "bell")
+                    Text("\(scheduleSummary)")
+                }
+                .foregroundStyle(.primary)
+                Text("\(DateFormatter.shortTime.string(from: reminderTime))")
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .sectionBackground(padding: .detailPadding, color: backgroundColor)
+        } else {
+            HStack {
+                Label("\(scheduleSummary)", systemImage: "bell")
+                    .foregroundStyle(.primary)
+                Spacer()
+                Text("\(DateFormatter.shortTime.string(from: reminderTime))")
+            }
+            .sectionBackground(padding: .detailPadding, color: backgroundColor)
+        }
+    }
+    
+    
+    private var scheduleSummary: String {
+        
+//        switch schedulingUnits {
+//        case .daily:
+//            if rate == 1 {
+//                return "Daily"
+//            } else {
+//                return "Every \(rate) days"
+//            }
+//        case .weekly:
+            if scheduledWeekDays.count == 7 {
+                return "Daily"
+            } else {
+                return scheduledWeekDays.sorted { $0.rawValue < $1.rawValue }.map { $0.abbreviation }.joined(separator: ", ")
+            }
+//        }
+    }
+}
+
 struct SchedulingNotificationSettingsContent: View {
     
 //    let habit: Habit
@@ -21,14 +75,7 @@ struct SchedulingNotificationSettingsContent: View {
             
             Text("\(reminderName)")
                 .hAlign(.leading)
-            
-            HStack {
-                Label("\(scheduleSummary)", systemImage: "bell")
-                    .foregroundStyle(.primary)
-                Spacer()
-                Text("\(DateFormatter.shortTime.string(from: reminderTime))")
-            }
-            .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
+            ReminderInfo(backgroundColor: .secondaryBackground, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
         }
     }
     
@@ -76,12 +123,7 @@ struct SchedulingContent: View {
             
             if let reminderTime {
                 
-                HStack {
-                    Label("\(scheduleSummary)", systemImage: "bell")
-                    Spacer()
-                    Text("\(DateFormatter.shortTime.string(from: reminderTime))")
-                }
-                .sectionBackground(padding: .detailPadding, color: .tertiaryBackground)
+                ReminderInfo(backgroundColor: .tertiaryBackground, scheduledWeekDays: scheduledWeekDays, reminderTime: reminderTime)
                 
             } else {
                 
@@ -101,25 +143,6 @@ struct SchedulingContent: View {
                 $reminderTime
             )
         }
-    }
-    
-    
-    private var scheduleSummary: String {
-        
-//        switch schedulingUnits {
-//        case .daily:
-//            if rate == 1 {
-//                return "Daily"
-//            } else {
-//                return "Every \(rate) days"
-//            }
-//        case .weekly:
-            if scheduledWeekDays.count == 7 {
-                return "Daily"
-            } else {
-                return scheduledWeekDays.sorted { $0.rawValue < $1.rawValue }.map { $0.abbreviation }.joined(separator: ", ")
-            }
-//        }
     }
 }
 
@@ -144,7 +167,14 @@ struct SchedulingContent: View {
         Form {
             SchedulingNotificationSettingsContent(
                 reminderName: "Shave Carrot",
-                scheduledWeekDays: ScheduleDay.allDays,
+                scheduledWeekDays: [
+                    ScheduleDay.monday,
+                    ScheduleDay.tuesday,
+                    ScheduleDay.wednesday,
+                    ScheduleDay.thursday,
+                    ScheduleDay.friday,
+                    ScheduleDay.saturday
+                ], //ScheduleDay.allDays,
                 reminderTime: Date()
             )
         }
