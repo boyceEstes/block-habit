@@ -20,27 +20,34 @@ struct StatisticsBarView: View {
     
     var body: some View {
         
-        ScrollViewReader { value in
+        VStack(spacing: 0) {
             
-            ScrollView(.horizontal) {
+            ScrollViewReader { value in
                 
-                LazyHStack(alignment: .bottom, spacing: 0) {
+                ScrollView(.horizontal) {
                     
-                    ForEach(datesWithHabitRecords.sorted(by: { $0.key < $1.key}), id: \.key) { date, habitRecords in
-                        dateColumn(
-                            graphHeight: graphHeight,
-                            numOfItemsToReachTop: numOfItemsToReachTop,
-                            date: date,
-                            habitRecords: habitRecords
-                        )
-                        .id(date)
+                    LazyHStack(alignment: .bottom, spacing: 0) {
+                        
+                        ForEach(datesWithHabitRecords.sorted(by: { $0.key < $1.key}), id: \.key) { date, habitRecords in
+                            dateColumn(
+                                graphHeight: graphHeight,
+                                numOfItemsToReachTop: numOfItemsToReachTop,
+                                date: date,
+                                habitRecords: habitRecords
+                            )
+                            .id(date)
+                        }
                     }
+                    .frame(height: graphHeight, alignment: .trailing)
                 }
-                .frame(height: graphHeight, alignment: .trailing)
+                .onAppear {
+                    scrollToToday(value: value)
+                }
             }
-            .onAppear {
-                scrollToToday(value: value)
-            }
+//            .background(Color.red)
+            Rectangle()
+                .frame(height: 1)
+                
         }
     }
     
@@ -75,10 +82,6 @@ struct StatisticsBarView: View {
                 )
                     .padding(.horizontal, 1)
             }
-            
-            Rectangle()
-                .fill(.ultraThickMaterial)
-                .frame(height: 1)
             
             // This isn't very useful because it is too crunched to really be seen, need to think of a better way to group things.
 //            Text("\(date.displayDate)")

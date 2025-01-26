@@ -17,6 +17,7 @@ extension View {
     }
 }
 
+
 struct HomeDetailTitle: ViewModifier {
     func body(content: Content) -> some View {
         content
