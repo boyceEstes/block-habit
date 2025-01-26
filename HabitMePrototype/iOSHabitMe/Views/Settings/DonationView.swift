@@ -95,7 +95,9 @@ struct DonationView: View {
                 .scaledToFill()
                 .frame(width: 50, height: 50)
 //                .padding(6)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                )
                 .offset(y: -15)
         }
     }

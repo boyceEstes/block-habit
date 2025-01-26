@@ -44,7 +44,7 @@ struct HabitsMenu: View {
     // MARK: View Properties
     @State private var showAlert: Bool = false
     @State private var alertDetail: AlertDetail? = nil
-    
+    @Namespace private var animationNamespace
     
     let columns = [
         GridItem(.flexible()),
@@ -66,10 +66,11 @@ struct HabitsMenu: View {
                         // MARK: Incompleted Habits
                         LazyVGrid(columns: columns, spacing: 8) {
                             ForEach(0..<incompletedHabits.count, id: \.self) { i in
-                                
+                                let uniqueID = "habit_button_\(incompletedHabits[i].habit.name)"
                                 habitButton(
                                     isCompletedHabit: incompletedHabits[i]
                                 )
+                                .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
                             }
                         }
                         
@@ -85,11 +86,13 @@ struct HabitsMenu: View {
                             LazyVGrid(columns: columns, spacing: 8) {
                                 ForEach(0..<completedHabits.count, id: \.self) { i in
                                     
+                                    let uniqueID = "habit_button_\(completedHabits[i].habit.id)"
                                     habitButton(
                                         isCompletedHabit: completedHabits[i]
                                     )
+                                    .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
                                     .onAppear {
-                                        print("completed Habit - \(completedHabits[i].habit.name)")
+                                        print("completed Habit - \(completedHabits[i].habit.id)")
                                     }
                                 }
                             }
@@ -131,10 +134,6 @@ struct HabitsMenu: View {
         }
     }
     
-    @ViewBuilder
-    func habitButton2(habit: IsCompletedHabit) -> some View {
-        
-    }
     
     @ViewBuilder
     func habitButton(isCompletedHabit: IsCompletedHabit) -> some View {
