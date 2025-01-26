@@ -22,27 +22,38 @@ struct ActivityDetailSummaryRow: View {
 
 struct ActivityDetailBasicInfo: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     let activityDetail: ActivityDetail
     
     var body: some View {
         HStack {
-            HStack(alignment: .firstTextBaseline) {
-                Text("\(activityDetail.name)")
-                
-                let prettyUnits = activityDetail.prettyUnits()
-                if !prettyUnits.isEmpty {
-                    Text("\(prettyUnits)")
-                        .foregroundStyle(Color.secondaryFont)
+            if dynamicTypeSize > .accessibility1 {
+                VStack(alignment: .leading) {
+                    Text("\(activityDetail.name)")
+                        
+                    
+                    let prettyUnits = activityDetail.prettyUnits()
+                    if !prettyUnits.isEmpty {
+                        Text("\(prettyUnits)")
+                            .foregroundStyle(Color.secondaryFont)
+                    }
                 }
+                .lineLimit(2)
+            } else {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("\(activityDetail.name)")
+                    
+                    let prettyUnits = activityDetail.prettyUnits()
+                    if !prettyUnits.isEmpty {
+                        Text("\(prettyUnits)")
+                            .foregroundStyle(Color.secondaryFont)
+                    }
+                }
+                .lineLimit(1)
             }
+
             
             Spacer()
-            
-            if activityDetail.valueType == .number {
-                Text("[\(activityDetail.calculationType.rawValue)]")
-                    .foregroundStyle(.secondary)
-                    .font(.rowDetail)
-            }
             
             activityDetail.valueType.asset.image()
         }

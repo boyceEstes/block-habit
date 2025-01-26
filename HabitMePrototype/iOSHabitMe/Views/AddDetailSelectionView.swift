@@ -66,13 +66,7 @@ struct AddDetailsView: View {
     @EnvironmentObject var habitController: HabitController
     @Environment(\.editMode) var editMode
     @Environment(\.dismiss) var dismiss
-//    @Environment(\.modelContext) var modelContext
-//    @Query(filter: #Predicate<DataActivityDetail> { activityDetail in
-//        activityDetail.isArchived == false
-//    }, sort: [
-//        SortDescriptor(\DataActivityDetail.creationDate, order: .reverse),
-//        SortDescriptor(\DataActivityDetail.name, order: .forward)
-//    ], animation: .default) var activityDetails: [DataActivityDetail]
+    
     
     private var activityDetails: [ActivityDetail] {
         habitController.nonArchivedActivityDetails
@@ -116,21 +110,6 @@ struct AddDetailsView: View {
                 }
                 .listRowSeparator(.hidden)
                     
-                
-                //            Section {
-                //                Text("Details are useful bits of info that you want to record each time that you complete a habit\n\nAn example could be adding a 'Note' detail to your 'Workout' Habit to describe exactly much you loved it on this particular day")
-                //                    .frame(maxWidth: .infinity)
-                //                    .font(.callout)
-                //                    .padding(.vertical, .detailPadding)
-                //                    .padding(.horizontal, .detailPadding)
-                //                    .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                ////                    .sectionBackground(padding: .detailPadding)
-                //                    .frame(maxWidth: .infinity)
-                //            }
-                //            .listRowSeparator(.hidden)
-                //            .listStyle(.plain)
-                
-                
                 Section {
                     HStack {
                         Spacer()

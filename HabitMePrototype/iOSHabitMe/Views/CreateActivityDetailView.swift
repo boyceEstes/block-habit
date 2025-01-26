@@ -62,7 +62,6 @@ struct CreateActivityDetailView: View {
                         //                    Text("\(detailName.isEmpty ? "Detail" : "\(detailName)"): 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo'")
                     }
                     .font(.footnote)
-                    
                 }
             Spacer()
         }
