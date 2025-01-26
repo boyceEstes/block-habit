@@ -187,11 +187,6 @@ struct HabitsSection: View {
             )
         }
         .alert(showAlert: $viewModel.showAlert, alertDetail: viewModel.alertDetail)
-//        .background(Color.secondaryBackground)
-//        .clipShape(
-//            RoundedRectangle(cornerRadius: 20)
-//        )
-//        .padding()
     }
     
     
