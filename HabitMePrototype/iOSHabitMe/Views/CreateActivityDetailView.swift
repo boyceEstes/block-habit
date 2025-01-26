@@ -12,6 +12,7 @@ import HabitRepositoryFW
 struct CreateActivityDetailView: View {
     
     @EnvironmentObject var habitController: HabitController
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.dismiss) var dismiss
     
     @State private var detailName: String = ""
@@ -22,11 +23,57 @@ struct CreateActivityDetailView: View {
     var body: some View {
     
         VStack(alignment: .leading, spacing: 8) {
-                HStack {
+            
+            if dynamicTypeSize.isAccessibilitySize {
+                
+                VStack {
                     TextField("Name", text: $detailName)
                         .textFieldBackground()
                     
+                    HStack {
+                        if dynamicTypeSize <= .accessibility4 {
                             
+                            Text("Type")
+                                .padding(.vertical, 6)
+                                .foregroundStyle(.secondary)
+                            
+                            Spacer()
+                            Picker(selection: $typeSelection) {
+                                ForEach(ActivityDetailType.allCases) { type in
+                                    Text("\(type.rawValue)")
+                                    
+                                }
+                            } label: {
+                                Text("\(typeSelection.rawValue)")
+                            }
+                            .tint(.primary)
+                            
+                        } else {
+                            Picker(selection: $typeSelection) {
+                                ForEach(ActivityDetailType.allCases) { type in
+                                    Text("\(type.rawValue)")
+                                    
+                                }
+                            } label: {
+                                Text("\(typeSelection.rawValue)")
+                            }
+                            .tint(.primary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .sectionBackground(padding: 10, color: .secondaryBackground)
+//                    .background(
+//                        Color.secondaryBackground,
+//                        in: RoundedRectangle(
+//                            cornerRadius: 10, style: .continuous
+//                        )
+//                    )
+//                    .contentShape(Rectangle())
+                }
+            } else {
+                HStack {
+                    TextField("Name", text: $detailName)
+                        .textFieldBackground()
                     
                     Picker("Type", selection: $typeSelection) {
                         ForEach(ActivityDetailType.allCases) { type in
@@ -41,15 +88,13 @@ struct CreateActivityDetailView: View {
                             cornerRadius: 10, style: .continuous
                         )
                     )
-                    
-                    
                 }
-                
-
+            }
                 
                 switch typeSelection {
                 case .number:
                     Text("Create a reusable number detail with your habit like 'Amount', 'Weight', or 'Duration'")
+                        .foregroundStyle(.secondary)
                         .font(.footnote)
                     
                     numberDetailSection
@@ -57,8 +102,9 @@ struct CreateActivityDetailView: View {
                     
                 case .text:
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Create a reusable text detail with your habit like 'Summary', 'Note', or 'Highlights'")
                         
+                        Text("Create a reusable text detail with your habit like 'Summary', 'Note', or 'Highlights'")
+                            .foregroundStyle(.secondary)
                         //                    Text("\(detailName.isEmpty ? "Detail" : "\(detailName)"): 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo'")
                     }
                     .font(.footnote)
@@ -102,9 +148,12 @@ struct CreateActivityDetailView: View {
                     HStack {
                         TextField("Units", text: $units)
                             .frame(maxWidth: .infinity)
-                        Text("'27\(units.isEmpty ? "" : " \(units)")'")
+                        
                     }
                     .textFieldBackground()
+                    Text("'27\(units.isEmpty ? "" : " \(units)")'")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
                 
 

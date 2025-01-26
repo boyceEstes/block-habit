@@ -27,7 +27,7 @@ struct ActivityDetailBasicInfo: View {
     
     var body: some View {
         HStack {
-            if dynamicTypeSize > .accessibility1 {
+            if dynamicTypeSize >= .accessibility1 {
                 VStack(alignment: .leading) {
                     Text("\(activityDetail.name)")
                         
