@@ -29,6 +29,8 @@ import HabitRepositoryFW
 
 struct SelectableCell2: View {
     
+    // MARK: Environment
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     // MARK: Injected Properties
     @Binding var isCompletedHabit: IsCompletedHabit
     let tapAction: () -> Void
@@ -112,14 +114,19 @@ struct SelectableCell2: View {
     @ViewBuilder
     func image() -> some View {
         
+        let maxHeight: CGFloat = 80 // Maximum image height
+        let fontSize = UIFont.preferredFont(forTextStyle: .body).pointSize
+        let scaledHeight = min(fontSize, maxHeight)
+        
         Image(systemName: "checkmark")
             .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 20, height: 20)
+            .scaledToFit()
+            .frame(width: scaledHeight, height: scaledHeight)
             .foregroundStyle(animationTrigger == true ? (nextState.isCompleted ? Color.white : Color(.lightGray)) : (isCompletedHabit.isCompleted ? Color.white : Color(.lightGray)))
             .fontWeight(animationTrigger == true ? (nextState.isCompleted ? .semibold : .medium) : (isCompletedHabit.isCompleted ? .semibold : .medium))
             .scaleEffect(animationTrigger == true ? (nextState.isCompleted ? 1.2 : 0.8) : (isCompletedHabit.isCompleted ? 1.2 : 0.8))
             .padding(10)
+//            .animation(.easeInOut, value: dynamicTypeSize)
             .background(
                 animationTrigger == true ? (nextState.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor) : isCompletedHabit.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor
             )

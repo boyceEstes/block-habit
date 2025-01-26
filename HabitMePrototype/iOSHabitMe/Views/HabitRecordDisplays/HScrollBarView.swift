@@ -12,6 +12,7 @@ import HabitRepositoryFW
 struct HScrollBarView: View {
     
     // MARK: Environment
+    @Environment(\.dynamicTypeSize) private var sizeCategory
     @EnvironmentObject var habitController: HabitController
     // MARK: Injected Properties
     let graphWidth: CGFloat
@@ -110,7 +111,7 @@ struct HScrollBarView: View {
                 .fill(.ultraThickMaterial)
                 .frame(height: dividerHeight)
             
-            Text("\(date.displayDate)")
+            Text("\(date.displayDate(sizeCategory))")
                 .font(.footnote)
                 .fontWeight(date == selectedDay ? .bold : .regular)
                 .frame(maxWidth: .infinity, maxHeight: labelHeight)

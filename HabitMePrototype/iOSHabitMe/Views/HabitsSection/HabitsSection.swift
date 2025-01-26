@@ -99,7 +99,7 @@ class HabitSectionViewModel {
 
 struct HabitsSection: View {
     
-    // Would prefer dependency injection accessing environmentObject everywhere
+    @Environment(\.dynamicTypeSize) var sizeCategory
     // MARK: Environment Logic
     @EnvironmentObject var habitController: HabitController
     
@@ -128,7 +128,7 @@ struct HabitsSection: View {
                         
                         Spacer()
                         
-                        Text(habitController.selectedDay.displayDate)
+                        Text(habitController.selectedDay.displayDate(sizeCategory))
                             .font(.title2)
                             .fontWeight(.semibold)
                         

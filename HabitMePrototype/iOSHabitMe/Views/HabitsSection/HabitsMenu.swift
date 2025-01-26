@@ -31,6 +31,8 @@ struct HomeDetailTitle: ViewModifier {
 
 struct HabitsMenu: View {
     
+    // MARK: Environment
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     // MARK: Injected Logic
     @Binding var isCompletedHabits: Set<IsCompletedHabit>
     let completedHabits: [IsCompletedHabit]
@@ -65,13 +67,25 @@ struct HabitsMenu: View {
                     
                     VStack {
                         // MARK: Incompleted Habits
-                        LazyVGrid(columns: columns, spacing: 8) {
-                            ForEach(0..<incompletedHabits.count, id: \.self) { i in
-                                let uniqueID = "habit_button_\(incompletedHabits[i].habit.name)"
-                                habitButton(
-                                    isCompletedHabit: incompletedHabits[i]
-                                )
-                                .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
+                        if !dynamicTypeSize.isAccessibilitySize {
+                            LazyVGrid(columns: columns, spacing: 8) {
+                                ForEach(0..<incompletedHabits.count, id: \.self) { i in
+                                    let uniqueID = "habit_button_\(incompletedHabits[i].habit.name)"
+                                    habitButton(
+                                        isCompletedHabit: incompletedHabits[i]
+                                    )
+                                    .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
+                                }
+                            }
+                        } else {
+                            LazyVStack {
+                                ForEach(0..<incompletedHabits.count, id: \.self) { i in
+                                    let uniqueID = "habit_button_\(incompletedHabits[i].habit.name)"
+                                    habitButton(
+                                        isCompletedHabit: incompletedHabits[i]
+                                    )
+                                    .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
+                                }
                             }
                         }
                         
@@ -84,20 +98,36 @@ struct HabitsMenu: View {
                         
                         
                         if !completedHabits.isEmpty {
-                            LazyVGrid(columns: columns, spacing: 8) {
-                                ForEach(0..<completedHabits.count, id: \.self) { i in
-                                    
-                                    let uniqueID = "habit_button_\(completedHabits[i].habit.id)"
-                                    habitButton(
-                                        isCompletedHabit: completedHabits[i]
-                                    )
-                                    .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
-                                    .onAppear {
-                                        print("completed Habit - \(completedHabits[i].habit.id)")
+                            if !dynamicTypeSize.isAccessibilitySize {
+                                LazyVGrid(columns: columns, spacing: 8) {
+                                    ForEach(0..<completedHabits.count, id: \.self) { i in
+                                        
+                                        let uniqueID = "habit_button_\(completedHabits[i].habit.id)"
+                                        habitButton(
+                                            isCompletedHabit: completedHabits[i]
+                                        )
+                                        .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
+                                        .onAppear {
+                                            print("completed Habit - \(completedHabits[i].habit.id)")
+                                        }
+                                    }
+                                }
+                                .padding(.bottom)
+                            } else {
+                                LazyVStack {
+                                    ForEach(0..<completedHabits.count, id: \.self) { i in
+                                        
+                                        let uniqueID = "habit_button_\(completedHabits[i].habit.id)"
+                                        habitButton(
+                                            isCompletedHabit: completedHabits[i]
+                                        )
+                                        .matchedGeometryEffect(id: "Habit_Button_\(uniqueID)", in: animationNamespace)
+                                        .onAppear {
+                                            print("completed Habit - \(completedHabits[i].habit.id)")
+                                        }
                                     }
                                 }
                             }
-                            .padding(.bottom)
                         } else {
                             Text("So... you haven't completed any habits at all, huh? 👀 No judgement")
                                 .dynamicTypeSize(...DynamicTypeSize.accessibility1)

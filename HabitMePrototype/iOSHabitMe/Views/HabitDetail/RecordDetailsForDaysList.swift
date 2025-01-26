@@ -23,7 +23,7 @@ struct RecordDetailsForDaysList: View {
                     
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            Text("\(day.displayDate)")
+                            Text("\(day.displayDate())")
                                 .font(.rowTitle)
                                 .layoutPriority(1)
                             Spacer()

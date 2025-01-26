@@ -6,21 +6,32 @@
 //
 
 import Foundation
+import SwiftUICore
 
 
 extension Date {
     
-    var displayDate: String {
-        let formatter: DateFormatter = .monthDayDate
+    func displayDate(_ sizeCategory: DynamicTypeSize = .xxxLarge) -> String {
+        
+        
+        let formatter: DateFormatter = sizeCategory.isAccessibilitySize ? .shortDateWithoutYear : .monthDayDate
         
         let today = Date().noon!
         let yesterday = Date().noon!.adding(days: -1)
+        
         switch self {
         case today:
             return "Today"
         case yesterday:
-            return "Yesterday"
+            
+            if sizeCategory.isAccessibilitySize {
+                fallthrough
+            } else {
+                return "Yesterday"
+            }
+            
         default:
+            
             return formatter.string(from: self)
         }
     }
