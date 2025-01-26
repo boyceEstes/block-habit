@@ -64,7 +64,7 @@ struct CreateEditActivityCompletionGoalContent: View {
                 if isCompletionGoalWanted {
                     
                     HStack {
-                        Text("\(transientCompletionGoal) \(transientCompletionGoal > 1 ? "Completions" : "Completion") per Day")
+                        Text("\(transientCompletionGoal) / Day")
                         
                         Spacer()
                         
