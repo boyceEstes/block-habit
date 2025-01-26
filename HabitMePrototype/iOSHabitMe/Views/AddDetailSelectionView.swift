@@ -148,7 +148,7 @@ struct AddDetailsView: View {
                         .onTapGesture {
                             // Do not allow to select if we are editing
                             if !(editMode?.wrappedValue.isEditing ?? false) {
-                                withAnimation(.easeInOut(duration: 0.3)) {
+                                withAnimation(.spring(duration: 0.2)) {
                                     toggleSelection(for: activityDetail)
                                 }
                             }
