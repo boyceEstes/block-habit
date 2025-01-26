@@ -188,9 +188,11 @@ public class HabitController: ObservableObject {
                     if let newDate = Calendar.current.date(byAdding: .day, value: i, to: mostRecentDate) {
                         
                         DispatchQueue.main.async {
-                            // Ensure that this is updating on the main queue
-                            self.habitRecordsForDays[newDate] = []
-                            // Ensure that we are saving this in the database... Well actually. I don't think we need to because we will be saving it whenever we record records and if we don't and close the app it will auto-generate.
+                            withAnimation {
+                                // Ensure that this is updating on the main queue
+                                self.habitRecordsForDays[newDate] = []
+                                // Ensure that we are saving this in the database... Well actually. I don't think we need to because we will be saving it whenever we record records and if we don't and close the app it will auto-generate.
+                            }
                         }
                     }
                 }

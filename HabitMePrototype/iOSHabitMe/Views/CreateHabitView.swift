@@ -378,6 +378,7 @@ struct CreateEditHabitContent: View {
             Color.red,
             Color(hex: "#f07857") ?? .pink, // bright rust
             Color(hex: "#9e444e") ?? .pink, // rust
+            Color.brown,
             Color.orange,
             Color.yellow,
             Color(hex: "#ffd966") ?? .pink, // cream og - ffe6a8
@@ -403,7 +404,6 @@ struct CreateEditHabitContent: View {
             Color(hex: "#be398d") ?? .pink, // deep pink/purple
             Color(hex: "#ef5fbe") ?? .pink, // pink
             Color(hex: "#fb9dca") ?? .pink, // light pink og - fdcfe5
-            Color.brown,
 //            Color(hex: "#4c516d") ?? .pink, // gray
 //            Color(hex: "#ffff00") ?? .pink, // stupid bright yellow
 //            Color(hex: "#ffd700") ?? .pink, // golden

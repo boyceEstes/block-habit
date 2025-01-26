@@ -8,6 +8,22 @@
 import SwiftUI
 import SwiftData
 import HabitRepositoryFW
+import TipKit
+
+
+struct DetailSelectionTip: Tip {
+    
+    var title: Text {
+        Text("Habit Details")
+    }
+
+
+    var message: Text? {
+        Text("Is there anything you'd like to track with your habit?\n\nFor example, if you have a 'Meditate' habit, you might add a 'Duration' Detail to track how long you meditated and a 'Mood' Detail to log how you felt afterward.")
+    }
+}
+
+
 
 
 enum AddDetailsAlert {
@@ -93,135 +109,141 @@ struct AddDetailsView: View {
 
     var body: some View {
 
-            
-        List {
-            
-//            Section {
-//                Text("Details are useful bits of info that you want to record each time that you complete a habit\n\nAn example could be adding a 'Note' detail to your 'Workout' Habit to describe exactly much you loved it on this particular day")
-//                    .frame(maxWidth: .infinity)
-//                    .font(.callout)
-//                    .padding(.vertical, .detailPadding)
-//                    .padding(.horizontal, .detailPadding)
-//                    .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-////                    .sectionBackground(padding: .detailPadding)
-//                    .frame(maxWidth: .infinity)
-//            }
-//            .listRowSeparator(.hidden)
-//            .listStyle(.plain)
-            
-
-            
-            
-            if !activityDetails.isEmpty {
+            List {
                 Section {
-                    ForEach(activityDetails) { activityDetail in
-                        VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
-                            ActivityDetailBasicInfo(activityDetail: activityDetail)
-                            
-                        }
-                        .padding(.vertical, 4)
-                        .swipeActions {
-                            Button {
-                                // FIXME: Make sure archival for activity detail works
-                                archiveActivityDetails(activityDetail)
-                            } label: {
-                                Label(String.archive, systemImage: "archivebox.fill")
+                    TipView(DetailSelectionTip(), arrowEdge: .none)
+                    
+                }
+                .listRowSeparator(.hidden)
+                    
+                
+                //            Section {
+                //                Text("Details are useful bits of info that you want to record each time that you complete a habit\n\nAn example could be adding a 'Note' detail to your 'Workout' Habit to describe exactly much you loved it on this particular day")
+                //                    .frame(maxWidth: .infinity)
+                //                    .font(.callout)
+                //                    .padding(.vertical, .detailPadding)
+                //                    .padding(.horizontal, .detailPadding)
+                //                    .background(Color.secondaryBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                ////                    .sectionBackground(padding: .detailPadding)
+                //                    .frame(maxWidth: .infinity)
+                //            }
+                //            .listRowSeparator(.hidden)
+                //            .listStyle(.plain)
+                
+                
+                
+                
+                if !activityDetails.isEmpty {
+                    Section {
+                        ForEach(activityDetails) { activityDetail in
+                            VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
+                                ActivityDetailBasicInfo(activityDetail: activityDetail)
+                                
                             }
-                            .tint(.indigo)
-                            //
-                            //                        Button(role: .destructive) {
-                            //                            // FIXME: Make sure deletion for activity detail works
-                            //                            warnBeforeDeletion(activityDetail)
-                            //                        } label: {
-                            //                            Label(String.delete, systemImage: "trash.fill")
-                            //                        }
-                        }
-                        .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: .cornerRadius)
-                                .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
-                        )
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets(top: 4, leading: .detailSelectionHorizontalPadding, bottom: 4, trailing: .detailSelectionHorizontalPadding))
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            // Do not allow to select if we are editing
-                            if !(editMode?.wrappedValue.isEditing ?? false) {
-                                withAnimation(.spring(duration: 0.2)) {
-                                    toggleSelection(for: activityDetail)
+                            .padding(.vertical, 4)
+                            .swipeActions {
+                                Button {
+                                    // FIXME: Make sure archival for activity detail works
+                                    archiveActivityDetails(activityDetail)
+                                } label: {
+                                    Label(String.archive, systemImage: "archivebox.fill")
+                                }
+                                .tint(.indigo)
+                                //
+                                //                        Button(role: .destructive) {
+                                //                            // FIXME: Make sure deletion for activity detail works
+                                //                            warnBeforeDeletion(activityDetail)
+                                //                        } label: {
+                                //                            Label(String.delete, systemImage: "trash.fill")
+                                //                        }
+                            }
+                            .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: .cornerRadius)
+                                    .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
+                            )
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets(top: 4, leading: .detailSelectionHorizontalPadding, bottom: 4, trailing: .detailSelectionHorizontalPadding))
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                // Do not allow to select if we are editing
+                                if !(editMode?.wrappedValue.isEditing ?? false) {
+                                    withAnimation(.spring(duration: 0.2)) {
+                                        toggleSelection(for: activityDetail)
+                                    }
                                 }
                             }
                         }
+                    } footer: {
+                        Text("Choose Details that you would like to record each time you complete your Habit")
+                            .font(.caption)
+                            .listRowSeparator(.hidden)
                     }
-                } footer: {
-                    Text("Choose Details that you would like to record each time you complete your Habit")
-                        .font(.caption)
-                        .listRowSeparator(.hidden)
+                } else {
+                    
+                    Section {
+                        VStack {
+                            //                        Image("empty-box-sad-star")
+                            //                            .resizable()
+                            //                            .scaledToFill()
+                            //                            .rotationEffect(.degrees(90))
+                            //                            .frame(width: 140, height: 140)
+                            //                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            
+                            Text("\(.addDetailSelection_emptyList)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .listRowSeparator(.hidden)
                 }
-            } else {
                 
                 Section {
-                    VStack {
-//                        Image("empty-box-sad-star")
-//                            .resizable()
-//                            .scaledToFill()
-//                            .rotationEffect(.degrees(90))
-//                            .frame(width: 140, height: 140)
-//                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        
-                        Text("\(.addDetailSelection_emptyList)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
+                    HStack {
+                        Spacer()
+                        Button {
+                            goToCreateActivityDetail()
+                        } label: {
+                            Label("New Detail", systemImage: "plus.circle")
+                                .imageScale(.large)
+                            //                            .foregroundStyle(.white)
+                            //                            .fontWeight(.medium)
+                                .foregroundStyle(.blue)
+                        }
+                        .buttonStyle(.plain)
+                        Spacer()
                     }
-                    .frame(maxWidth: .infinity)
+                    .listRowSeparator(.hidden)
+                    .listStyle(.plain)
+                    
                 }
-                .listRowSeparator(.hidden)
             }
-            
-            Section {
-                HStack {
-                    Spacer()
-                    Button {
-                        goToCreateActivityDetail()
-                    } label: {
-                        Label("New Detail", systemImage: "plus.circle")
-                            .imageScale(.large)
-//                            .foregroundStyle(.white)
-//                            .fontWeight(.medium)
-                            .foregroundStyle(.blue)
+            .listStyle(.plain)
+            .alert(showAlert: $showAlert, alertDetail: alertDetail)
+            .navigationTitle(String.addActivityDetails_navTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    
+                    Button("Cancel") {
+                        // Remove all of the stuff that was selected
+                        selectedDetails = originalSelectedDetails
+                        dismiss()
                     }
-                    .buttonStyle(.plain)
-                    Spacer()
                 }
-                .listRowSeparator(.hidden)
-                .listStyle(.plain)
-//                .padding(.vertical, 8)
-            }
                 
-        }
-        .listStyle(.plain)
-        .alert(showAlert: $showAlert, alertDetail: alertDetail)
-        .navigationTitle(String.addActivityDetails_navTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                
-                Button("Cancel") {
-                    // Remove all of the stuff that was selected
-                    selectedDetails = originalSelectedDetails
-                    dismiss()
+                ToolbarItem(placement: .topBarTrailing) {
+                    
+                    Button("Done") {
+                        // Should have everyting already binded
+                        dismiss()
+                    }
                 }
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                
-                Button("Done") {
-                    // Should have everyting already binded
-                    dismiss()
-                }
-            }
-        }
+        
     }
     
     
@@ -244,15 +266,9 @@ struct AddDetailsView: View {
     private func archiveActivityDetails(_ activityDetail: ActivityDetail) {
             
         habitController.archiveActivityDetail(activityDetail)
-//        activityDetail.isArchived = true
+
     }
     
-    
-//    private func isRowSelected(_ activityDetail: DataActivityDetail) -> Bool{
-//        withAnimation {
-//            return selectedDetails.contains(activityDetail)
-//        }
-//    }
     
     
     private func toggleSelection(for activityDetail: ActivityDetail) {
@@ -267,36 +283,6 @@ struct AddDetailsView: View {
     }
 }
 
-//#Preview {
-//    
-//    // FIXME: Remove the unnecessary preview logic since we might not need DataActivityDetail anymore
-//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//    let container = try! ModelContainer(for: DataHabit.self, DataHabitRecord.self, configurations: config)
-//    
-//    // Load and decode the json that we have inserted
-//    let resourceName = "ActivityDetailSeedData"
-//    let resourceExtension = "json"
-//    guard let url = Bundle.main.url(forResource: "\(resourceName)", withExtension: "\(resourceExtension)") else {
-//        fatalError("Failed to find '\(resourceName)' with '\(resourceExtension)' extension")
-//    }
-//    let data = try! Data(contentsOf: url)
-//    let decodedActivityDetails = try! JSONDecoder().decode([DataActivityDetail].self, from: data)
-//    
-//    // Save to the model container
-//    for activityDetail in decodedActivityDetails {
-//        
-//        container.mainContext.insert(activityDetail)
-//    }
-//    
-//    return NavigationStack {
-//        AddDetailsView(
-//            selectedDetails: .constant([ActivityDetail.amount]),
-//            detailSelectionColor: .yellow,
-//            goToCreateActivityDetail: { }
-//        )
-//    }
-//    .modelContainer(container)
-//}
 
 #Preview {
     
@@ -314,5 +300,15 @@ struct AddDetailsView: View {
                 selectedDay: Date().noon!
             )
         )
+        .task {
+            // Configure and load your tips at app launch.
+            do {
+                try Tips.configure()
+            }
+            catch {
+                // Handle TipKit errors
+                print("Error initializing TipKit \(error.localizedDescription)")
+            }
+        }
     }
 }

@@ -174,18 +174,6 @@ struct HabitMePrototypeApp: App {
             blockHabitStore = try CoreDataBlockHabitStore(storeURL: localStoreURL, bundle: bundle)
             self.habitController = HabitController(blockHabitRepository: blockHabitStore, selectedDay: Date().noon!)
 
-//            if let storeURL = container.mainContext.sqliteStore {
-//                let bundle = Bundle(for: CoreDataBlockHabitStore.self)
-//                blockHabitStore = try CoreDataBlockHabitStore(storeURL: storeURL, bundle: bundle)
-//                
-//                self.habitController = HabitController(blockHabitRepository: blockHabitStore, selectedDay: Date().noon!)
-////                self.habitController = HabitController(
-////                    blockHabitRepository: blockHabitStore,
-////                    selectedDay: Date()
-////                )
-//            } else {
-//                throw NSError(domain: "Could not find sqliteStore", code: 0)
-//            }
         } catch {
             fatalError("Could not configure local store: '\(error)'")
         }
