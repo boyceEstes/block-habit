@@ -96,16 +96,14 @@ struct ArchivedActivityDetailsView: View {
                         .scaledToFill()
                         .frame(width: 40, height: 40)
                     
-                    Text("No Archived Activity Details")
+                    Text("No Archived Details")
                         .multilineTextAlignment(.center)
                         .font(.headline)
                     
                     VStack {
-                        Text("Come back after you've archived an activity detail")
+                        Text("Come back after you've archived a detail")
                             .multilineTextAlignment(.center)
                             .font(.subheadline)
-                        Text("(The extra info you can track with each habit)")
-                            .font(.caption)
                     }
 
                 }
@@ -317,7 +315,7 @@ struct SettingsView: View {
                 )
                 SettingsRow(
                     imageSystemName: "archivebox.fill",
-                    label: "Archived Activity Details",
+                    label: "Archived Details",
                     color: .archivedActivityDetails,
                     tapAction: goToArchivedActivityDetails
                 )
