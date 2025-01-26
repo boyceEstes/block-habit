@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4E1FBE792D45ACFC00DF24DA /* DTOActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1FBE782D45ACF100DF24DA /* DTOActivityDetail.swift */; };
 		4E1FBE7A2D45B13B00DF24DA /* ActivityDetailSeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */; };
+		4E1FBE7C2D463A1200DF24DA /* ParticleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1FBE7B2D463A0B00DF24DA /* ParticleModifier.swift */; };
+		4E1FBE7E2D463AAF00DF24DA /* Particle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1FBE7D2D463AAD00DF24DA /* Particle.swift */; };
 		4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */; };
 		4E527CA42D36E3F000D8AD24 /* Array+ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */; };
 		4E527CA62D381C1B00D8AD24 /* DetailPrettyInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */; };
@@ -207,6 +209,8 @@
 
 /* Begin PBXFileReference section */
 		4E1FBE782D45ACF100DF24DA /* DTOActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTOActivityDetail.swift; sourceTree = "<group>"; };
+		4E1FBE7B2D463A0B00DF24DA /* ParticleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleModifier.swift; sourceTree = "<group>"; };
+		4E1FBE7D2D463AAD00DF24DA /* Particle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Particle.swift; sourceTree = "<group>"; };
 		4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordsSummaryTests.swift; sourceTree = "<group>"; };
 		4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ActivityDetailRecord.swift"; sourceTree = "<group>"; };
 		4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPrettyInfoTests.swift; sourceTree = "<group>"; };
@@ -404,6 +408,15 @@
 				4E1FBE782D45ACF100DF24DA /* DTOActivityDetail.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		4E1FBE7F2D463AB300DF24DA /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				4E1FBE7D2D463AAD00DF24DA /* Particle.swift */,
+				4E1FBE7B2D463A0B00DF24DA /* ParticleModifier.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		4ECE4F3F2D30502500307A52 /* Frameworks */ = {
@@ -683,6 +696,7 @@
 		B387B2242CB1E11400256C64 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				4E1FBE7F2D463AB300DF24DA /* New Group */,
 				4E527CAB2D38838000D8AD24 /* AnimatedTappableCell.swift */,
 				B3B02F872CDEB02200DEC71B /* Mail */,
 				B3E0FB5B2CD94C0F005608E8 /* WrappingHStack.swift */,
@@ -1153,6 +1167,7 @@
 				B32947A42B601CD3007C8C1E /* HabitDetailView.swift in Sources */,
 				B3BFEA162B781A1A00DE7617 /* String+Constants.swift in Sources */,
 				B33385432CB5CD9B0087C9D7 /* HScrollBarView.swift in Sources */,
+				4E1FBE7C2D463A1200DF24DA /* ParticleModifier.swift in Sources */,
 				B3BFEA1A2B791F8800DE7617 /* CreateActivityDetailView.swift in Sources */,
 				B347DE342B7D8C1A00F2FA74 /* TextFieldRow.swift in Sources */,
 				B33385822CB8C2760087C9D7 /* NotificationsNotEnabledView.swift in Sources */,
@@ -1189,6 +1204,7 @@
 				B33385562CB6E43C0087C9D7 /* HabitsMenuAlert.swift in Sources */,
 				B387B21F2CB1B19F00256C64 /* Habit+PreviewData.swift in Sources */,
 				B3BFEA142B77FF6B00DE7617 /* DisplayDatePolicy.swift in Sources */,
+				4E1FBE7E2D463AAF00DF24DA /* Particle.swift in Sources */,
 				B335801D2CC35A7200704D3B /* SettingsRow.swift in Sources */,
 				B387B2262CB1E15E00256C64 /* HabitsSection.swift in Sources */,
 				B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */,

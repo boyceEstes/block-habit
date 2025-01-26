@@ -80,6 +80,15 @@ struct HomeView: View {
     }
     
     
+    var selectedDayCompletionStatus: Bool {
+        
+        // If this is ever zero it technically means its completed right?
+        guard goalNumberOfHabitCompletionsOnSelectedDay != 0 else { return true }
+        
+        return completedNumberOfHabitsOnSelectedDay / goalNumberOfHabitCompletionsOnSelectedDay == 1
+    }
+    
+    
     var body: some View {
         
         GeometryReader { proxy in
@@ -149,7 +158,17 @@ struct HomeView: View {
                     .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     
                     
-                    Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay) ⭐️")
+                    HStack {
+                        Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay)")
+                        Text("\(selectedDayCompletionStatus ? "🌟" : "⭐️")")
+//                            .particleModifier(
+//                                systemImage: "star.fill",
+//                                font: .headline, // ??
+//                                status: selectedDayCompletionStatus,
+//                                activeTint: .yellow,
+//                                inactiveTint: .gray
+//                            )
+                    }
                         .foregroundStyle(.primary)
                         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
