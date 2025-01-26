@@ -171,6 +171,7 @@ struct HabitsSection: View {
                 isCompletedHabits: $habitController.isCompletedHabits,
                 completedHabits: habitController.completeHabits,
                 incompletedHabits: habitController.incompleteHabits,
+                goToCreateHabit: goToCreateHabit,
                 goToHabitDetail: goToHabitDetail,
                 goToEditHabit: goToEditHabit,
                 didTapHabitButton: { habit in

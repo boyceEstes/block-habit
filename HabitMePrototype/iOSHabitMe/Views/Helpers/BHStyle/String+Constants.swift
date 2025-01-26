@@ -26,8 +26,13 @@ extension String {
     static let sumExplanation = "Example (Sum Type): If you Read for 15 minutes in the morning and 20 min at night, you will have 35 min logged for the day"
     static let avgExplanation = "Example (Average Type): If you logged your weight in the morning for 190lbs and at night for 200lbs, this would be displayed as 195 lbs for the day"
     
-    // add details
+    // add details selection
     static let addActivityDetails_navTitle = "Select Details"
+    static let addDetailSelection_emptyList = "Your detail list is looking more empty than a highway after a zombie apocalypse"
+    
+    // create activity detail view
+//    static let createDetail_textTypeExample = 
+    
     
     // delete activity detail
     static let deleteActivityDetail_alertTitle = "Danger Zone!"
@@ -45,5 +50,5 @@ extension String {
     
     
     
-    static let addDetailSelection_emptyList = "Your detail list is looking more empty than a highway after a zombie apocalypse"
+
 }

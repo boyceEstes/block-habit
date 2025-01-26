@@ -41,9 +41,14 @@ struct CreateActivityDetailView: View {
                 numberDetailSection
                 
             case .text:
-                Text("Example 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo. Lesson learned.'")
-                    .font(.footnote)
-                    .padding(.horizontal)
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Record some text with each habit completion that this detail is attached to")
+                    
+                    Text("\(detailName.isEmpty ? "Detail" : "\(detailName)"): 'The horse was infuriated. I guess its true what they say about bringing snake to a rodeo'")
+                }
+                .font(.footnote)
+                .padding(.horizontal)
+                
             }
             
             Spacer()

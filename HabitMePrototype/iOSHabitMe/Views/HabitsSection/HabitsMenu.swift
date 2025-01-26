@@ -35,6 +35,7 @@ struct HabitsMenu: View {
     let completedHabits: [IsCompletedHabit]
     let incompletedHabits: [IsCompletedHabit]
     // Navigation & Actions
+    let goToCreateHabit: () -> Void
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
     let didTapHabitButton: (IsCompletedHabit) -> Void
@@ -57,9 +58,10 @@ struct HabitsMenu: View {
     
     
     var body: some View {
-            
-        ScrollView(showsIndicators: false) {
-                if !isHabitsEmpty {
+        Group {
+            if !isHabitsEmpty {
+                ScrollView(showsIndicators: false) {
+                    
                     VStack {
                         // MARK: Incompleted Habits
                         LazyVGrid(columns: columns, spacing: 8) {
@@ -101,22 +103,32 @@ struct HabitsMenu: View {
                                 .padding(.top, 4)
                         }
                     }
-                } else {
-                        Text("Try adding a habit to start the Block Party! 🎉")
-                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-                            .multilineTextAlignment(.center)
-                            .hAlign(.center)
-                            .padding(.top)
+                }
+            } else {
+                VStack {
+                    Spacer()
+                    Text("Try adding a habit to start the Block Party! 🎉")
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                        .multilineTextAlignment(.center)
+                        .hAlign(.center)
+                        .padding(.top)
+                    
+                    Button("Get Started") {
+                        goToCreateHabit()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Spacer()
                 }
             }
-            .padding(.horizontal)
-            .alert(showAlert: $showAlert, alertDetail: alertDetail)
-            .onChange(of: showAlert) { _, newValue in
-                // Each time the showAlert is reset, nil out alertDetails
-                if !newValue {
-                    alertDetail = nil
-                }
+        }
+        .padding(.horizontal)
+        .alert(showAlert: $showAlert, alertDetail: alertDetail)
+        .onChange(of: showAlert) { _, newValue in
+            // Each time the showAlert is reset, nil out alertDetails
+            if !newValue {
+                alertDetail = nil
             }
+        }
     }
     
     @ViewBuilder
@@ -185,9 +197,14 @@ struct HabitsMenu: View {
 #Preview {
     
     HabitsMenu(
-        isCompletedHabits: Binding(get: { Set(IsCompletedHabit.previewCompletedHabits) }, set:  { _ in }),
-        completedHabits: IsCompletedHabit.previewCompletedHabits,
-        incompletedHabits: IsCompletedHabit.previewIncompletedHabits,
+        isCompletedHabits:
+            Binding(
+                get: { []//Set(IsCompletedHabit.previewCompletedHabits)
+                }, set:  { _ in }
+            ),
+        completedHabits: [],//IsCompletedHabit.previewCompletedHabits,
+        incompletedHabits: [],//IsCompletedHabit.previewIncompletedHabits,
+        goToCreateHabit: { },
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
         didTapHabitButton: { _ in },
