@@ -46,6 +46,7 @@ public class ManagedActivityDetail: NSManagedObject {
 }
 
 
+
 // MARK: Generated accessors for detailRecords
 extension ManagedActivityDetail {
 

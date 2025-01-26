@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E1FBE792D45ACFC00DF24DA /* DTOActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1FBE782D45ACF100DF24DA /* DTOActivityDetail.swift */; };
+		4E1FBE7A2D45B13B00DF24DA /* ActivityDetailSeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */; };
 		4E527CA22D36D86300D8AD24 /* DetailRecordsSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */; };
 		4E527CA42D36E3F000D8AD24 /* Array+ActivityDetailRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */; };
 		4E527CA62D381C1B00D8AD24 /* DetailPrettyInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */; };
@@ -146,7 +148,6 @@
 		B3C9E51A2B698CAC00153158 /* ModelContext+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5192B698CAC00153158 /* ModelContext+Info.swift */; };
 		B3C9E5202B6B1A0800153158 /* AddDetailSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E51F2B6B1A0800153158 /* AddDetailSelectionView.swift */; };
 		B3C9E5222B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5212B6B1AB400153158 /* ContentView+AddDetailSelectionComposition.swift */; };
-		B3C9E5442B6BD9FE00153158 /* ActivityDetailSeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = B3C9E5432B6BD9FE00153158 /* ActivityDetailSeedData.json */; };
 		B3C9E5472B6BDC9900153158 /* DataActivityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5462B6BDC9900153158 /* DataActivityDetail.swift */; };
 		B3C9E5492B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E5482B6E982E00153158 /* CreateHabitRecordWithDetailsView.swift */; };
 		B3C9E54C2B6EC0A600153158 /* View+TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C9E54B2B6EC0A600153158 /* View+TextFieldStyle.swift */; };
@@ -205,6 +206,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4E1FBE782D45ACF100DF24DA /* DTOActivityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTOActivityDetail.swift; sourceTree = "<group>"; };
 		4E527CA12D36D84D00D8AD24 /* DetailRecordsSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordsSummaryTests.swift; sourceTree = "<group>"; };
 		4E527CA32D36E3E900D8AD24 /* Array+ActivityDetailRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ActivityDetailRecord.swift"; sourceTree = "<group>"; };
 		4E527CA52D381BF200D8AD24 /* DetailPrettyInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPrettyInfoTests.swift; sourceTree = "<group>"; };
@@ -396,6 +398,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E1FBE772D45ACE800DF24DA /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				4E1FBE782D45ACF100DF24DA /* DTOActivityDetail.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		4ECE4F3F2D30502500307A52 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -585,6 +595,7 @@
 				B389D2FC2BE59309004A8CF0 /* Array+HabitRecordsForDays.swift */,
 				B389D2FE2BE59343004A8CF0 /* Array+IsCompletedHabits.swift */,
 				B39A274F2BEC5062002A5A88 /* StatisticsCalculator.swift */,
+				B3C9E5422B6BD9B500153158 /* SeedData */,
 			);
 			path = HabitRepositoryFW;
 			sourceTree = "<group>";
@@ -703,6 +714,7 @@
 		B3B2F2F62BDFC9C800240EB0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4E1FBE772D45ACE800DF24DA /* DTO */,
 				B37AC7802BAF6C9D0052552B /* HaloRepositoryError.swift */,
 				B3B2F2F72BDFC9D800240EB0 /* Habit.swift */,
 				B333855D2CB84F640087C9D7 /* ScheduleDay.swift */,
@@ -802,7 +814,6 @@
 		B3C97F142B5CE83600211B4C /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				B3C9E5422B6BD9B500153158 /* SeedData */,
 				B3CC60AB2B5EA9380074ED41 /* SwiftData */,
 			);
 			path = Cache;
@@ -1098,7 +1109,6 @@
 			files = (
 				B313EEBA2B5C4C99002AE8CE /* Preview Assets.xcassets in Resources */,
 				B313EEB72B5C4C99002AE8CE /* Assets.xcassets in Resources */,
-				B3C9E5442B6BD9FE00153158 /* ActivityDetailSeedData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1106,6 +1116,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E1FBE7A2D45B13B00DF24DA /* ActivityDetailSeedData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1249,6 +1260,7 @@
 				B3B2F31B2BE2850000240EB0 /* HabitMenuDataSource.swift in Sources */,
 				B3B2F3122BE005F300240EB0 /* ManagedActivityDetailRecord+CoreDataProperties.swift in Sources */,
 				B3B2F3182BE02AD500240EB0 /* CoreDataBlockHabitStore+Habit.swift in Sources */,
+				4E1FBE792D45ACFC00DF24DA /* DTOActivityDetail.swift in Sources */,
 				B39A274C2BE9B12E002A5A88 /* ActivityRecordCreationPolicy.swift in Sources */,
 				B3B2F31E2BE2864E00240EB0 /* ManagedHabit+FetchRequest.swift in Sources */,
 				B3B2F3102BE005F300240EB0 /* ManagedHabitRecord+CoreDataProperties.swift in Sources */,

@@ -30,6 +30,7 @@ public class CoreDataBlockHabitStore {
         printCoreDataStoreURLLocation()
         
         // TODO: SEED INFORMATION HERE FOR NEW INSTALLS
+        seedDetailsIfNeeded()
     }
     
     
@@ -101,3 +102,57 @@ private extension NSManagedObjectModel {
     }
 }
 
+
+
+extension CoreDataBlockHabitStore {
+    
+    
+    // MARK: Seed Logic
+    private func seedDetailsIfNeeded() {
+        
+        guard !UserDefaults.standard.bool(forKey: "hasSeededDetails") else {
+            return
+        }
+        
+        do {
+            try seedDetails()
+            
+            UserDefaults.standard.set(true, forKey: "hasSeededDetails")
+        } catch {
+            // Seed info has not been set - handle error
+            // TODO: Handle Seeding Error
+            print("Theres an error - \(error.localizedDescription)")
+        }
+    }
+    
+    
+    private func seedDetails() throws {
+        
+        let context = context
+        
+        let resourceName = "ActivityDetailSeedData"
+        let resourceExtension = "json"
+        
+        guard let frameworkBundle = Bundle(identifier: "com.boycees.HabitRepositoryFW") else {
+            fatalError("Could not find the FrameworkBlockHabit bundle")
+        }
+        
+        guard let url = frameworkBundle.url(forResource: "\(resourceName)", withExtension: "\(resourceExtension)") else {
+            fatalError("Failed to find '\(resourceName)' with '\(resourceExtension)' extension")
+        }
+        
+        
+        let data = try Data(contentsOf: url)
+        
+        let decodedActivityDetails = try JSONDecoder().decode([DTOActivityDetail].self, from: data)
+        
+        Task {
+            for detail in decodedActivityDetails {
+                
+                await insertActivityDetail(detail)
+            }
+            
+            try context.save()
+        }
+    }
+}

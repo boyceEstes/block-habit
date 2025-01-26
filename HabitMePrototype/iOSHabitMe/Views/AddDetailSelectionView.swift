@@ -198,84 +198,9 @@ struct AddDetailsView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .listRowSeparator(.hidden)
-//                .multilineTextAlignment(.center)
-  
-//                .padding(.vertical, 16)
             }
                 
         }
-    
-        
-        
-//            List {
-//                SectionWithDisclaimerIfEmpty(
-//                    isEmpty: activityDetails.isEmpty) {
-//                        ForEach(activityDetails) { activityDetail in
-//                            //                    let activityDetail = dataActivityDetail.toModel()
-//                            
-//                            VStack(alignment: .leading, spacing: .vRowSubtitleSpacing) {
-//                                
-//                                ActivityDetailBasicInfo(activityDetail: activityDetail)
-//                                
-//                                HStack(alignment: .firstTextBaseline) {
-//                                    
-//                                    Text("Ex. \"\(activityDetail.example)\"")
-//                                        .foregroundStyle(.secondary)
-//                                        .font(.rowDetail)
-//                                    
-//                                    Spacer()
-//                                    
-//                                    if activityDetail.valueType == .number {
-//                                        Text("[\(activityDetail.calculationType.rawValue)]")
-//                                            .foregroundStyle(.secondary)
-//                                            .font(.rowDetail)
-//                                    }
-//                                }
-//                            }
-//                            .swipeActions {
-//                                Button {
-//                                    // FIXME: Make sure archival for activity detail works
-//                                    archiveActivityDetails(activityDetail)
-//                                } label: {
-//                                    Label(String.archive, systemImage: "archivebox.fill")
-//                                }
-//                                .tint(.indigo)
-//                                //
-//                                //                        Button(role: .destructive) {
-//                                //                            // FIXME: Make sure deletion for activity detail works
-//                                //                            warnBeforeDeletion(activityDetail)
-//                                //                        } label: {
-//                                //                            Label(String.delete, systemImage: "trash.fill")
-//                                //                        }
-//                            }
-//                            .sectionBackground(padding: .detailPadding, color: .secondaryBackground)
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: .cornerRadius)
-//                                    .stroke((activityDetailsWithSelection[activityDetail] ?? false) ? detailSelectionColor : .clear, lineWidth: 3)
-//                            )
-//                            .listRowBackground(Color.clear)
-//                            .listRowSeparator(.hidden)
-//                            .listRowInsets(EdgeInsets(top: 0, leading: .detailSelectionHorizontalPadding, bottom: .vItemSpacing, trailing: .detailSelectionHorizontalPadding))
-//                            .contentShape(Rectangle())
-//                            .onTapGesture {
-//                                // Do not allow to select if we are editing
-//                                if !(editMode?.wrappedValue.isEditing ?? false) {
-//                                    withAnimation(.easeInOut(duration: 0.3)) {
-//                                        toggleSelection(for: activityDetail)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } sectionEmpty: {
-//                        Text("Just a blank void. Not an activity detail in sight. Try adding one!")
-//                            .font(.footnote)
-//                            .foregroundStyle(Color.secondaryFont)
-//                            .padding(.horizontal)
-//                            .listRowSeparator(.hidden)
-//                        
-//                    }
-//            }
-//        }
         .listStyle(.plain)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .navigationTitle(String.addActivityDetails_navTitle)

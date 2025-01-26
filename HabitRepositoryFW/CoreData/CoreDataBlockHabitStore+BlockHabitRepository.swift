@@ -184,6 +184,33 @@ extension CoreDataBlockHabitStore: BlockHabitRepository {
         }
     }
     
+    // MARK: Activity Detail DTO
+    
+    /// Inserts only, wait for saving as this is being made
+    /// for seeding and it will have multiple inserted before
+    /// saving
+    ///
+    /// Only needs to be internal because it will be
+    /// done in the same place that we are creating our
+    /// CoreDataManager
+    func insertActivityDetail(_ activityDetail: DTOActivityDetail) async {
+        
+        let context = context
+        
+        await context.perform {
+
+            let managedActivityDetail = ManagedActivityDetail(context: context)
+            managedActivityDetail.id = activityDetail.id
+            managedActivityDetail.name = activityDetail.name
+            managedActivityDetail.availableUnits = activityDetail.availableUnits
+            managedActivityDetail.isArchived = activityDetail.isArchived
+            managedActivityDetail.creationDate = activityDetail.creationDate
+            managedActivityDetail.stringlyCalculationType = activityDetail.calculationType?.rawValue ?? ActivityDetailCalculationType.sum.rawValue
+            managedActivityDetail.stringlyValueType = activityDetail.valueType.rawValue
+
+        }
+    }
+    
     
     // MARK: Activity Details
     public func createActivityDetail(_ activityDetail: ActivityDetail) async throws {

@@ -1,0 +1,23 @@
+[
+{
+    "name": "Note",
+    "valueType": "Text"
+},
+{
+    "name": "Duration",
+    "valueType": "Number",
+    "availableUnits": "min"
+},
+{
+    "name": "Amount",
+    "valueType": "Number",
+    "availableUnits": "dollars"
+},
+{
+    "name": "Weight",
+    "valueType": "Number",
+    "calculationType": "Average",
+    "availableUnits": "lbs"
+}
+]
+ 

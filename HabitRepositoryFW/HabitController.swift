@@ -122,7 +122,7 @@ public class HabitController: ObservableObject {
             return latestForHabit
         }.eraseToAnyPublisher()
     }
-    
+
     
     public init(
         blockHabitRepository: BlockHabitRepository,
