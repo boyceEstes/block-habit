@@ -9,7 +9,7 @@ import SwiftUI
 
 
 // Needs to be Identifiable for the foreach conformance, just makes it easier
-protocol SelectableListItem: Identifiable, Equatable {
+protocol SelectableListItem: Identifiable, Hashable {
     
     var id: String { get } // Id stays the same
     var name: String { get } // Name stays the same
