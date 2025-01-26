@@ -12,7 +12,7 @@ import HabitRepositoryFW
 struct HScrollBarView: View {
     
     // MARK: Environment
-    @Environment(\.dynamicTypeSize) private var sizeCategory
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject var habitController: HabitController
     // MARK: Injected Properties
     let graphWidth: CGFloat
@@ -27,7 +27,8 @@ struct HScrollBarView: View {
     var body: some View {
         
         // TODO: If the device is horizontal, do not use this calculation
-        let columnWidth = graphWidth / 5
+
+        let columnWidth = graphWidth / (dynamicTypeSize.isAccessibilitySize ? (dynamicTypeSize > .accessibility4 ? 3 : 4) : 5)
         
         VStack {
             
@@ -39,12 +40,19 @@ struct HScrollBarView: View {
                         
                         ForEach(habitRecordsForDays.sorted(by: { $0.key < $1.key}), id: \.key) { date, habitRecords in
                             
-                            dateColumn(
+                            DateColumn(
                                 graphHeight: graphHeight,
                                 numOfItemsToReachTop: numOfItemsToReachTop,
-                                date: date,
-                                habitRecords: habitRecords
-                            )
+                                date: date, // For column
+                                habitRecords: habitRecords,
+                                selectedDay: selectedDay
+                            ) {
+                                if Calendar.current.isDate(date, inSameDayAs: selectedDay) {
+                                    showDayDetail = true
+                                } else {
+                                    habitController.setSelectedDay(to: date)
+                                }
+                            }
                             .frame(width: columnWidth)
                             .id(date)
                         }
@@ -66,63 +74,67 @@ struct HScrollBarView: View {
     }
     
     
-    @ViewBuilder
-    func dateColumn(
-        graphHeight: Double,
-        numOfItemsToReachTop: Double,
-        date: Date,
-        habitRecords: [HabitRecord]
-    ) -> some View {
-        
-        let habitCount = habitRecords.count
-        let labelHeight: CGFloat = 30
-        let dividerHeight: CGFloat = 1
-        // This will also be the usual height
-        let barAreaHeight = (graphHeight - labelHeight - dividerHeight)
-        let itemWidth = barAreaHeight / numOfItemsToReachTop
-        
-        // If there are 4 items to reach the top...
-        // Your graph is 100
-        // your label takes up 30
-        // your available space would then be 70
-        // We would then want to say that each block would be 70 / 10, its smaller
-        // Otherwise if we are <= habitCount then we would just divide it by the number to reach the top (4)
-        
-        let itemHeight = habitCount > Int(numOfItemsToReachTop) ? (barAreaHeight / Double(habitCount)) : itemWidth
-        
-
-        VStack(spacing: 0) {
-            
-            BlockStack(
-                habitRecords: habitRecords,
-                itemWidth: itemWidth,
-                itemHeight: itemHeight,
-                animation: animation,
-                didTapBlock: {
-                    if Calendar.current.isDate(date, inSameDayAs: selectedDay) {
-                        showDayDetail = true
-                    } else {
-                        habitController.setSelectedDay(to: date)
-                    }
-                }
-            )
-            
-            Rectangle()
-                .fill(.ultraThickMaterial)
-                .frame(height: dividerHeight)
-            
-            Text("\(date.displayDate(sizeCategory))")
-                .font(.footnote)
-                .fontWeight(date == selectedDay ? .bold : .regular)
-                .frame(maxWidth: .infinity, maxHeight: labelHeight)
-                .onTapGesture {
-                    // MARK: TO CHANGE OR NOT TO CHANGE
-                    print("tapped on display date")
-                    habitController.setSelectedDay(to: date)
-                }
-        }
-        .frame(maxHeight: .infinity, alignment: .bottom)
-    }
+//    @ViewBuilder
+//    func dateColumn(
+//        graphHeight: Double,
+//        numOfItemsToReachTop: Double,
+//        date: Date,
+//        habitRecords: [HabitRecord]
+//    ) -> some View {
+//        
+//        let habitCount = habitRecords.count
+////        let labelHeight: CGFloat = 30
+//        @ScaledMetric(relativeTo: .body) var labelHeight: CGFloat = 30
+//        let dividerHeight: CGFloat = 1
+//        // This will also be the usual height
+//        var barAreaHeight: CGFloat {
+//            graphHeight - labelHeight - dividerHeight
+//        }
+//        var itemWidth: CGFloat {
+//            barAreaHeight / numOfItemsToReachTop
+//        }
+//        
+//        // If there are 4 items to reach the top...
+//        // Your graph is 100
+//        // your label takes up 30
+//        // your available space would then be 70
+//        // We would then want to say that each block would be 70 / 10, its smaller
+//        // Otherwise if we are <= habitCount then we would just divide it by the number to reach the top (4)
+//        
+//        let itemHeight = habitCount > Int(numOfItemsToReachTop) ? (barAreaHeight / Double(habitCount)) : itemWidth
+//        
+//
+//        VStack(spacing: 0) {
+//            
+//            BlockStack(
+//                habitRecords: habitRecords,
+//                itemWidth: itemWidth,
+//                itemHeight: itemHeight,
+//                didTapBlock: {
+//                    if Calendar.current.isDate(date, inSameDayAs: selectedDay) {
+//                        showDayDetail = true
+//                    } else {
+//                        habitController.setSelectedDay(to: date)
+//                    }
+//                }
+//            )
+//            
+//            Rectangle()
+//                .fill(.ultraThickMaterial)
+//                .frame(height: dividerHeight)
+//            
+//            Text("\(date.displayDate(dynamicTypeSize))")
+//                .font(.footnote)
+//                .fontWeight(date == selectedDay ? .bold : .regular)
+//                .frame(maxWidth: .infinity, maxHeight: labelHeight)
+//                .onTapGesture {
+//                    // MARK: TO CHANGE OR NOT TO CHANGE
+//                    print("tapped on display date")
+//                    habitController.setSelectedDay(to: date)
+//                }
+//        }
+//        .frame(maxHeight: .infinity, alignment: .bottom)
+//    }
     
     
     private func setSelectedDay(to date: Date) {
@@ -146,6 +158,77 @@ struct HScrollBarView: View {
                 value.scrollTo(selectedDay, anchor: .center)
             }
         }
+    }
+}
+
+
+struct DateColumn: View {
+    
+    // Environment
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    // Injected
+    let graphHeight: Double
+    let numOfItemsToReachTop: Double
+    let date: Date
+    let habitRecords: [HabitRecord]
+    let selectedDay: Date
+    let tapAction: () -> Void
+    // Constants
+    let dividerHeight: CGFloat = 1
+    // View Properties
+    @ScaledMetric(relativeTo: .body) var labelHeight: CGFloat = 30
+    
+    // Computed
+    var habitCount: CGFloat {
+        CGFloat(habitRecords.count)
+    }
+    var barAreaHeight: CGFloat {
+        graphHeight - labelHeight - dividerHeight
+    }
+    var itemWidth: CGFloat {
+        barAreaHeight / numOfItemsToReachTop
+    }
+    var itemHeight: CGFloat {
+        CGFloat(habitCount > CGFloat(numOfItemsToReachTop) ? (barAreaHeight / CGFloat(habitCount)) : itemWidth)
+    }
+    
+    
+    var body: some View {
+
+        
+        // If there are 4 items to reach the top...
+        // Your graph is 100
+        // your label takes up 30
+        // your available space would then be 70
+        // We would then want to say that each block would be 70 / 10, its smaller
+        // Otherwise if we are <= habitCount then we would just divide it by the number to reach the top (4)
+        
+
+
+        VStack(spacing: 0) {
+            
+            BlockStack(
+                habitRecords: habitRecords,
+                itemWidth: itemWidth,
+                itemHeight: itemHeight,
+                didTapBlock: tapAction
+            )
+            
+            Rectangle()
+                .fill(.ultraThickMaterial)
+                .frame(height: dividerHeight)
+            
+            Text("\(date.displayDate(dynamicTypeSize))")
+                .font(.footnote)
+                .fontWeight(date == selectedDay ? .bold : .regular)
+                .frame(maxWidth: .infinity, maxHeight: labelHeight)
+                .onTapGesture {
+                    // MARK: TO CHANGE OR NOT TO CHANGE
+                    print("tapped on display date")
+                    tapAction()
+                }
+        }
+        .frame(maxHeight: .infinity, alignment: .bottom)
     }
 }
 

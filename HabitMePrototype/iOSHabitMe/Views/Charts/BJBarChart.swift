@@ -77,7 +77,6 @@ struct StatisticsBarView: View {
                     habitRecords: habitRecords,
                     itemWidth: itemWidth,
                     itemHeight: itemHeight,
-                    animation: animation,
                     didTapBlock: { }
                 )
                     .padding(.horizontal, 1)

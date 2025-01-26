@@ -23,7 +23,6 @@ struct BlockStack: View {
     let habitRecords: [HabitRecord]
     let itemWidth: CGFloat
     let itemHeight: CGFloat
-    let animation: Namespace.ID
     let didTapBlock: () -> Void
     
     var body: some View {
@@ -67,7 +66,6 @@ struct BlockStack: View {
         habitRecords: HabitRecord.previewRecords,
         itemWidth: 45,
         itemHeight: 45,
-        animation: namespace,
         didTapBlock: { }
     )
 }
