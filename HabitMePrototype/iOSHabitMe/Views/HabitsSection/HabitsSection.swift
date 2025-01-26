@@ -109,7 +109,7 @@ struct HabitsSection: View {
     let goToEditHabit: (Habit) -> Void
     let goToCreateHabit: () -> Void
     // MARK: View Properties
-    @ScaledMetric(relativeTo: .title2) var baseTitleWidth: CGFloat = 150
+    @ScaledMetric(relativeTo: .title2) var baseTitleWidth: CGFloat = 160
     
     var body: some View {
         
@@ -193,7 +193,13 @@ struct HabitsSection: View {
     // Custom scaling function
     func scaledSize(for dynamicTypeSize: DynamicTypeSize, base: CGFloat) -> CGFloat {
         
-        return dynamicTypeSize.isAccessibilitySize ? (base * 0.6) : base
+        if dynamicTypeSize < .accessibility1 {
+            return base
+        } else if dynamicTypeSize < .accessibility3 {
+            return base * 0.75
+        } else {
+            return base * 0.6
+        }
     }
 }
 

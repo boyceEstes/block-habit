@@ -149,6 +149,7 @@ struct CreateActivityDetailView: View {
                         TextField("Units", text: $units)
                             .frame(maxWidth: .infinity)
                         
+                        
                     }
                     .textFieldBackground()
                     Text("'27\(units.isEmpty ? "" : " \(units)")'")
