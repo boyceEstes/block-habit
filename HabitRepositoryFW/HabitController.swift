@@ -36,7 +36,7 @@ public enum HabitControllerError: Error {
 public class HabitController: ObservableObject {
     
     /// This is the minimum number of days because it is approximately the amount of columns that could fit on the screen by default
-    let minimumNumberOfDays = 7
+    let minimumNumberOfDays = 5
     let blockHabitRepository: BlockHabitRepository
     
     @Published public var selectedDay: Date
