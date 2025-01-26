@@ -99,7 +99,7 @@ class HabitSectionViewModel {
 
 struct HabitsSection: View {
     
-    @Environment(\.dynamicTypeSize) var sizeCategory
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     // MARK: Environment Logic
     @EnvironmentObject var habitController: HabitController
     
@@ -109,7 +109,7 @@ struct HabitsSection: View {
     let goToEditHabit: (Habit) -> Void
     let goToCreateHabit: () -> Void
     // MARK: View Properties
-    @ScaledMetric(relativeTo: .body) var scaledDayTitleWidth: CGFloat = 150
+    @ScaledMetric(relativeTo: .title2) var baseTitleWidth: CGFloat = 150
     
     var body: some View {
         
@@ -128,7 +128,7 @@ struct HabitsSection: View {
                         
                         Spacer()
                         
-                        Text(habitController.selectedDay.displayDate(sizeCategory))
+                        Text(habitController.selectedDay.displayDate(dynamicTypeSize))
                             .font(.title2)
                             .fontWeight(.semibold)
                         
@@ -142,7 +142,7 @@ struct HabitsSection: View {
                         }
                         .disabled(habitController.isAllowedToGoToNextDay() ? false : true)
                     }
-                    .frame(maxWidth: scaledDayTitleWidth)
+                    .frame(maxWidth: scaledSize(for: dynamicTypeSize, base: baseTitleWidth))
                     .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     
                     Spacer()
@@ -192,6 +192,13 @@ struct HabitsSection: View {
 //            RoundedRectangle(cornerRadius: 20)
 //        )
 //        .padding()
+    }
+    
+    
+    // Custom scaling function
+    func scaledSize(for dynamicTypeSize: DynamicTypeSize, base: CGFloat) -> CGFloat {
+        
+        return dynamicTypeSize.isAccessibilitySize ? (base * 0.6) : base
     }
 }
 
