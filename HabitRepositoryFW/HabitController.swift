@@ -62,6 +62,31 @@ public class HabitController: ObservableObject {
     }
     
     
+    /// For the Statistics Page so that we don't start 5 blocks in
+    public var habitRecordsForDaysWithoutTheFluffAtTheBeginning: [Date: [HabitRecord]] {
+        
+        var shortenedHabitRecordsForDays = habitRecordsForDays
+        let numOfDaysInHabitRecordsForDays = habitRecordsForDays.keys.count
+        
+        // If we can't find the startDate, give up. Its just a nicety
+        guard let startDay = habitRecordsForDays.min(by: { $0.key < $1.key })?.key else {
+            return habitRecordsForDays
+        }
+        
+        for i in 0..<numOfDaysInHabitRecordsForDays {
+            
+            let date = startDay.adding(days: i)
+            if shortenedHabitRecordsForDays[date]?.isEmpty ?? true {
+                shortenedHabitRecordsForDays.removeValue(forKey: date)
+            } else {
+                return shortenedHabitRecordsForDays
+            }
+        }
+        
+        // There wasn't anything... So return nothing.
+        return [:]
+    }
+    
     
     @Published var latestActivityDetails = [ActivityDetail]()
     

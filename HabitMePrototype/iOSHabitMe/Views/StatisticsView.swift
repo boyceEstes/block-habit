@@ -24,7 +24,7 @@ struct StatisticsView: View {
     private var selectedHabitRecordsForDays: [Date: [HabitRecord]] {
         
         print("calculating selectedHabitRecordsForDays")
-        let recordsForDays = habitController.habitRecordsForDays
+        let recordsForDays = habitController.habitRecordsForDaysWithoutTheFluffAtTheBeginning
         let selectedHabitsSnapshot = Set(selectedHabits)
         
         // Filter based on which habit records are part of the habits that are selected
