@@ -71,7 +71,7 @@ struct DonationView: View {
                 }
             }
             
-            Text("Enjoying the app so far? 👀")
+            Text("Enjoying the app so far?")
                 .font(.system(.title2, design: .rounded).bold())
                 .multilineTextAlignment(.center)
             
@@ -94,7 +94,13 @@ struct DonationView: View {
                 .resizable()
                 .scaledToFill()
                 .frame(width: 50, height: 50)
-//                .padding(6)
+                .background(
+                    LinearGradient(
+                              gradient: Gradient(colors: [.black, Color(.darkGray)]),
+                              startPoint: .bottomLeading,
+                              endPoint: .topTrailing
+                          )
+                )
                 .clipShape(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                 )

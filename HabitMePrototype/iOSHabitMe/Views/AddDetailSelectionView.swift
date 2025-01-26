@@ -131,6 +131,25 @@ struct AddDetailsView: View {
                 //            .listStyle(.plain)
                 
                 
+                Section {
+                    HStack {
+                        Spacer()
+                        Button {
+                            goToCreateActivityDetail()
+                        } label: {
+                            Label("New Detail", systemImage: "plus.circle")
+                                .imageScale(.large)
+                            //                            .foregroundStyle(.white)
+                            //                            .fontWeight(.medium)
+                                .foregroundStyle(.blue)
+                        }
+                        .buttonStyle(.plain)
+                        Spacer()
+                    }
+                    .listRowSeparator(.hidden)
+                    .listStyle(.plain)
+                    
+                }
                 
                 
                 if !activityDetails.isEmpty {
@@ -200,26 +219,7 @@ struct AddDetailsView: View {
                     }
                     .listRowSeparator(.hidden)
                 }
-                
-                Section {
-                    HStack {
-                        Spacer()
-                        Button {
-                            goToCreateActivityDetail()
-                        } label: {
-                            Label("New Detail", systemImage: "plus.circle")
-                                .imageScale(.large)
-                            //                            .foregroundStyle(.white)
-                            //                            .fontWeight(.medium)
-                                .foregroundStyle(.blue)
-                        }
-                        .buttonStyle(.plain)
-                        Spacer()
-                    }
-                    .listRowSeparator(.hidden)
-                    .listStyle(.plain)
-                    
-                }
+
             }
             .listStyle(.plain)
             .alert(showAlert: $showAlert, alertDetail: alertDetail)

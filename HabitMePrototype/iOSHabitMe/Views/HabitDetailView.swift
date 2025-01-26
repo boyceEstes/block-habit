@@ -409,7 +409,7 @@ extension Habit {
     
     /// Dark enough to be able to comfortably place white text
     var readableColor: Color {
-        realColor.lessBright(by: -0.3)
+        realColor.lessBright(by: -0.2)
     }
 }
 
