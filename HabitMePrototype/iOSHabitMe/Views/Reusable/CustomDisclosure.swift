@@ -18,6 +18,7 @@ struct CustomDisclosure: View {
     
     var body: some View {
         Image(systemName: "chevron.right")
+            .imageScale(.small)
             .fontWeight(.semibold)
             .foregroundColor(color)
     }
