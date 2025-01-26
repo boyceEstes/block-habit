@@ -15,7 +15,7 @@ struct CreateActivityDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var detailName: String = ""
-    @State private var typeSelection: ActivityDetailType = .number
+    @State private var typeSelection: ActivityDetailType = .text
     @State private var units: String = ""
     @State private var calculationTypeSelection: ActivityDetailCalculationType = .sum
     
