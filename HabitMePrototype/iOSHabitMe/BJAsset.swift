@@ -14,8 +14,14 @@ enum BJAsset: String, CustomStringConvertible {
     case numberSquare = "number.square" // Number Detail
     case characterBubble = "character.bubble" // Text Detail
     
+    case minusCircle = "minus.circle"
+    case checkmark = "checkmark"
     case tip = "info.circle" // Tip
     case restore = "arrow.up.bin.fill" // Unarchive/Restore
+    case archive = "archivebox"
+    case trash = "trash"
+    case edit = "pencil.circle"
+    case detail = "doc.text.magnifyingglass"
     
     /// access string by typecasting `AssetLibrary` instance.
     ///

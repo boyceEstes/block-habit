@@ -6,8 +6,21 @@
 //
 
 import SwiftUI
+import TipKit
 import HabitRepositoryFW
 
+
+struct HabitMenuOptionsTip: Tip {
+    
+    var title: Text {
+        Text("More Options")
+    }
+    
+    var message: Text? {
+        
+        Text("Long press on habits for more available actions! 👇")
+    }
+}
 
 
 extension View {
@@ -67,6 +80,7 @@ struct HabitsMenu: View {
                 ScrollView(showsIndicators: false) {
                     
                     VStack {
+                        
                         // MARK: Incompleted Habits
                         if !dynamicTypeSize.isAccessibilitySize {
                             LazyVGrid(columns: columns, spacing: 8) {
@@ -99,6 +113,9 @@ struct HabitsMenu: View {
                         
                         
                         if !completedHabits.isEmpty {
+                            
+                            TipView(HabitMenuOptionsTip(), arrowEdge: .bottom)
+
                             if !dynamicTypeSize.isAccessibilitySize {
                                 LazyVGrid(columns: columns, spacing: 8) {
                                     ForEach(0..<completedHabits.count, id: \.self) { i in
@@ -116,6 +133,7 @@ struct HabitsMenu: View {
                                 .padding(.bottom)
                             } else {
                                 LazyVStack {
+                                    
                                     ForEach(0..<completedHabits.count, id: \.self) { i in
                                         
                                         let uniqueID = "habit_button_\(completedHabits[i].habit.id)"
@@ -180,30 +198,49 @@ struct HabitsMenu: View {
             .contextMenu {
                 
                 if isCompletedHabit.isCompleted {
-                    Button("Uncomplete Habit") {
+                    Button {
                         // This is meant to toggle the habit to be off
                         toggleHabitAction(isCompletedHabit)
+                    } label: {
+                        Label("Uncomplete Habit", systemImage: BJAsset.minusCircle.rawValue)
                     }
-                } else {
-                    Button("Complete Habit") {
+                    
+                    Button {
                         completeHabitAction(isCompletedHabit)
+                    } label: {
+                        Label("Complete Again", systemImage: BJAsset.checkmark.rawValue)
+                    }
+                    
+                } else {
+                    Button {
+                        completeHabitAction(isCompletedHabit)
+                    } label: {
+                        Label("Complete Habit", systemImage: BJAsset.checkmark.rawValue)
                     }
                 }
                 
-                Button("Habit Details") {
+                Divider()
+                
+                Button {
                     goToHabitDetail(isCompletedHabit.habit)
+                } label: {
+                    Label("Habit Details", systemImage: BJAsset.detail.rawValue)
                 }
                 
-                Button("Edit Habit") {
+                Button {
                     // FIXME: I need to make sure this updates the isComplete state if we mess with the completion goals
                     goToEditHabit(isCompletedHabit.habit)
+                } label: {
+                    Label("Edit Habit", systemImage: BJAsset.edit.rawValue)
                 }
                 
-                Button("Archive Habit", role: .destructive) {
+                Button(role: .destructive) {
                     archiveHabit(isCompletedHabit.habit)
+                } label: {
+                    Label("Archive Habit", systemImage: BJAsset.archive.rawValue)
                 }
                 
-                Button("Delete Habit and All Data", role: .destructive) {
+                Button(role: .destructive) {
                     
                     print("`make sure your habit is up to date here` they said - \(isCompletedHabit.habit.name)")
                     
@@ -215,6 +252,8 @@ struct HabitsMenu: View {
                     ).alertData()
                     
                     showAlert = true
+                } label: {
+                    Label("Delete Habit and All Data", systemImage: BJAsset.trash.rawValue)
                 }
             }
         } else {
