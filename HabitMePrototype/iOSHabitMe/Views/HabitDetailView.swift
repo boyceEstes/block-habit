@@ -217,10 +217,9 @@ struct HabitDetailView: View {
                         DetailCompleteHabitButton(isCompletedHabit: isCompletedHabit, tapAction: {
                             
                             withAnimation {
-                                habitController.toggleHabit(
+                                habitController.completeHabit(
                                     isCompletedHabit: isCompletedHabit,
-                                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
-                                )
+                                    goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails)
                             }
                         })
                         .padding(.horizontal)
@@ -442,13 +441,14 @@ struct DetailCompleteHabitButton: View {
             tapAction()
             
         } label: {
-            Text("\(isCompletedHabit.isCompleted ? "Uncomplete Habit" : "Complete Habit")")
+            Text("\(isCompletedHabit.isCompleted ? "Complete Habit" : "Complete Habit")")
                 .font(.headline)
                 .foregroundStyle(.white)
                 .padding(.vertical)
                 .frame(maxWidth: .infinity)
                 .background(
-                    isCompletedHabit.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor,
+                    isCompletedHabit.habit.realColor,
+//                    isCompletedHabit.isCompleted ? isCompletedHabit.habit.realColor : isCompletedHabit.habit.incompleteColor,
                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                 )
         }
