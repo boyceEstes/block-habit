@@ -157,6 +157,7 @@ struct HabitsMenu: View {
                                 .padding(.top, 4)
                         }
                     }
+                    .padding(.horizontal)
                 }
             } else {
                 VStack {
@@ -173,9 +174,9 @@ struct HabitsMenu: View {
                     .buttonStyle(.borderedProminent)
                     Spacer()
                 }
+                .padding(.horizontal)
             }
         }
-        .padding(.horizontal)
         .alert(showAlert: $showAlert, alertDetail: alertDetail)
         .onChange(of: showAlert) { _, newValue in
             // Each time the showAlert is reset, nil out alertDetails
