@@ -115,6 +115,7 @@ struct HabitsMenu: View {
                         if !completedHabits.isEmpty {
                             
                             TipView(HabitMenuOptionsTip(), arrowEdge: .bottom)
+                                .tipBackground(Color.secondaryBackground)
 
                             if !dynamicTypeSize.isAccessibilitySize {
                                 LazyVGrid(columns: columns, spacing: 8) {
