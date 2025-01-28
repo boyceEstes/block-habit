@@ -175,19 +175,19 @@ struct HomeView: View {
                     .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     
                     
-                    HStack {
-                        Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay)")
-                        Text("\(selectedDayCompletionStatus ? "🌟" : "⭐️")")
-//                            .particleModifier(
-//                                systemImage: "star.fill",
-//                                font: .headline, // ??
-//                                status: selectedDayCompletionStatus,
-//                                activeTint: .yellow,
-//                                inactiveTint: .gray
-//                            )
-                    }
-                        .foregroundStyle(.primary)
-                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+//                    HStack {
+//                        Text("\(completedNumberOfHabitsOnSelectedDay)/\(goalNumberOfHabitCompletionsOnSelectedDay)")
+//                        Text("\(selectedDayCompletionStatus ? "🌟" : "⭐️")")
+////                            .particleModifier(
+////                                systemImage: "star.fill",
+////                                font: .headline, // ??
+////                                status: selectedDayCompletionStatus,
+////                                activeTint: .yellow,
+////                                inactiveTint: .gray
+////                            )
+//                    }
+//                        .foregroundStyle(.primary)
+//                        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
             }
             
