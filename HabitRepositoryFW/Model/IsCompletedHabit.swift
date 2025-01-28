@@ -26,7 +26,8 @@ public struct IsCompletedHabit: Hashable {
     }
     
     
-    public func nextState() -> HabitState {
+    /// Meant to be used when toggling the habit back to an incomplete state
+    public func nextStateWithUncompletion() -> HabitState {
         
         guard let habitGoal = habit.goalCompletionsPerDay, habitGoal > 0 else {
             return .incomplete
@@ -54,6 +55,40 @@ public struct IsCompletedHabit: Hashable {
         case .complete:
             // Even if there are multiple, if we are tapping a competed habit, it should loop back around.
             return .incomplete
+            
+        case .eternallyIncomplete:
+            return .eternallyIncomplete
+        }
+    }
+    
+    
+    public func nextStateWithCompletePastGoal() -> HabitState {
+        
+        guard let habitGoal = habit.goalCompletionsPerDay, habitGoal > 0 else {
+            return .incomplete
+        }
+        
+        switch status {
+        case .incomplete:
+            if habitGoal > 1 {
+                return .partiallyComplete(count: 1, goal: habitGoal)
+            } else if habitGoal == 1 {
+                return .complete
+            } else {
+                // habitGoal is 0, leave on incomplete forever
+                return .incomplete
+            }
+            
+        case let .partiallyComplete(count, goal):
+            if count + 1 >= goal {
+                return .complete
+            } else {
+                return .partiallyComplete(count: count + 1, goal: goal)
+            }
+            
+        case .complete:
+            // If we're already complete, we stay complete!
+            return .complete
             
         case .eternallyIncomplete:
             return .eternallyIncomplete

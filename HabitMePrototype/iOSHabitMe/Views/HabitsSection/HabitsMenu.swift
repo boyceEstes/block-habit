@@ -41,7 +41,8 @@ struct HabitsMenu: View {
     let goToCreateHabit: () -> Void
     let goToHabitDetail: (Habit) -> Void
     let goToEditHabit: (Habit) -> Void
-    let didTapHabitButton: (IsCompletedHabit) -> Void
+    let toggleHabitAction: (IsCompletedHabit) -> Void
+    let completeHabitAction: (IsCompletedHabit) -> Void
     let archiveHabit: (Habit) -> Void
     let destroyHabit: (Habit) -> Void
     // MARK: View Properties
@@ -173,10 +174,21 @@ struct HabitsMenu: View {
             
             SelectableHabitView2(
                 isCompletedHabit: isCompletedHabitBinding,
-                tapHabitAction: didTapHabitButton,
+                tapHabitAction: completeHabitAction,
                 goToHabitDetail: goToHabitDetail
             )
             .contextMenu {
+                
+                if isCompletedHabit.isCompleted {
+                    Button("Uncomplete Habit") {
+                        // This is meant to toggle the habit to be off
+                        toggleHabitAction(isCompletedHabit)
+                    }
+                } else {
+                    Button("Complete Habit") {
+                        completeHabitAction(isCompletedHabit)
+                    }
+                }
                 
                 Button("Habit Details") {
                     goToHabitDetail(isCompletedHabit.habit)
@@ -237,7 +249,8 @@ struct HabitsMenu: View {
         goToCreateHabit: { },
         goToHabitDetail: { _ in },
         goToEditHabit: { _ in },
-        didTapHabitButton: { _ in },
+        toggleHabitAction: { _ in },
+        completeHabitAction: { _ in },
         archiveHabit: { _ in },
         destroyHabit: { _ in }
     )

@@ -613,20 +613,21 @@ extension HabitController {
                 }
                 
                 // Uncomplete Habit
-                updateStateAndUncomplete(habit: isCompletedHabit.habit)
+                updateStateAndUncomplete(isCompletedHabit: isCompletedHabit)
             } else {
                 
                 // Uncomplete habit
-                updateStateAndUncomplete(habit: isCompletedHabit.habit)
+                updateStateAndUncomplete(isCompletedHabit: isCompletedHabit)
             }
         }
     }
     
     
-    private func updateStateAndUncomplete(habit: Habit) {
+    private func updateStateAndUncomplete(isCompletedHabit: IsCompletedHabit) {
         
-        moveToNextState(for: habit)
-        uncompleteHabit(habit: habit)
+        let nextState = isCompletedHabit.nextStateWithUncompletion()
+        moveToNextState(for: isCompletedHabit.habit, nextState: nextState)
+        uncompleteHabit(habit: isCompletedHabit.habit)
     }
     
     
@@ -645,7 +646,7 @@ extension HabitController {
         
         switch isCompletedHabit.status {
         case .complete:
-            updateStateAndUncomplete(habit: isCompletedHabit.habit)
+            updateStateAndUncomplete(isCompletedHabit: isCompletedHabit)
             
         default: // incomplete OR partially complete
             createRecordOrNavigateToRecordWithDetails(
@@ -656,7 +657,7 @@ extension HabitController {
     }
     
     
-    private func moveToNextState(for habit: Habit) {
+    private func moveToNextState(for habit: Habit, nextState: HabitState) {
         
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -665,7 +666,7 @@ extension HabitController {
                 
                 isCompletedHabits.remove(isCompletedHabitElement)
                 var newIsCompletedHabitElement = isCompletedHabitElement
-                newIsCompletedHabitElement.status = isCompletedHabitElement.nextState()
+                newIsCompletedHabitElement.status = nextState
                 isCompletedHabits.insert(newIsCompletedHabitElement)
             }
         }
@@ -688,6 +689,22 @@ extension HabitController {
     }
     
     
+    /// This function is specifically going to complete the habit as many times as possible. It will only change the
+    /// visibility state to complete, never to incomplete
+    public func completeHabit(
+        isCompletedHabit: IsCompletedHabit,
+        goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
+    ) {
+        
+        let nextState = isCompletedHabit.nextStateWithCompletePastGoal()
+        moveToNextState(for: isCompletedHabit.habit, nextState: nextState)
+        createRecordOrNavigateToRecordWithDetails(
+            for: isCompletedHabit.habit,
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+        )
+    }
+    
+    
     // I am moving away from using that fun protocol system that I made because this
     // logic should be pretty central and shared with everything. If I need to break it up
     // I know how, but simplicity is the name of the game for now.
@@ -695,8 +712,6 @@ extension HabitController {
         for habit: Habit,
         goToCreateActivityRecordWithDetails: @escaping (Habit, Date, @escaping () -> Void) -> Void
     ) {
-        
-        moveToNextState(for: habit)
         
         if isNavigatingToCreateRecordWithDetails(for: habit) {
             goToCreateActivityRecordWithDetails(habit, selectedDay, {

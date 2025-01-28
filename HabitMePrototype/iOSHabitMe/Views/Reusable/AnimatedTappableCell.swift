@@ -49,7 +49,8 @@ struct SelectableCell2: View {
     
     var nextState: HabitState {
         
-        isCompletedHabit.nextState()
+        // This is going to be the default completion type... I'm not sure how this will fare with uncompleting...
+        isCompletedHabit.nextStateWithCompletePastGoal()
     }
     
     // The new problem is that it is changing too fast to the completed section.
@@ -64,6 +65,12 @@ struct SelectableCell2: View {
         image()
             .scaleEffect(scale)
             .sensoryFeedback(.increase, trigger: animationTrigger) // This will happen when we tap, as it will change to something else
+            .simultaneousGesture(
+                LongPressGesture()
+                    .onEnded { _ in
+                        print("completing - LONNNGGGGGG")
+                    }
+            )
             .onTapGesture {
                 
                 if !animationTrigger {

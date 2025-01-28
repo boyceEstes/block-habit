@@ -30,6 +30,15 @@ class HabitSectionViewModel {
     }
     
     
+    func completeHabit(isCompletedHabit: IsCompletedHabit) {
+        
+        habitController.completeHabit(
+            isCompletedHabit: isCompletedHabit,
+            goToCreateActivityRecordWithDetails: goToCreateActivityRecordWithDetails
+        )
+    }
+    
+    
     func newToggleHabit(
         override: Bool = false,
         isCompletedHabit: IsCompletedHabit
@@ -174,9 +183,12 @@ struct HabitsSection: View {
                 goToCreateHabit: goToCreateHabit,
                 goToHabitDetail: goToHabitDetail,
                 goToEditHabit: goToEditHabit,
-                didTapHabitButton: { habit in
+                toggleHabitAction: { isCompleteHabit in
                     // FIXME: 2 - viewModel.createHabitRecord(for: habit)
-                    viewModel.newToggleHabit(isCompletedHabit: habit)
+                    viewModel.newToggleHabit(isCompletedHabit: isCompleteHabit)
+                },
+                completeHabitAction: { isCompleteHabit in
+                    viewModel.completeHabit(isCompletedHabit: isCompleteHabit)
                 }, archiveHabit: { habit in
                     
                     habitController.archiveHabit(habit)

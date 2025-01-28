@@ -12,7 +12,7 @@ struct SelectableHabitView2: View {
     
     // MARK: Injected Properties
     @Binding var isCompletedHabit: IsCompletedHabit
-    let tapHabitAction: (IsCompletedHabit) -> Void
+    let tapHabitAction: (IsCompletedHabit) -> Void // TODO: I might only need `(Habit) -> Void` prefer simplicity but legacy prefers IsCompletedHabit - defaulting to legacy version for now
     let goToHabitDetail: (Habit) -> Void
     
     // MARK: View Info
