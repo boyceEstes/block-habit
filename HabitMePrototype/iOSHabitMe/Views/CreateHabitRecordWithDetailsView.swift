@@ -81,46 +81,58 @@ struct CreateHabitRecordWithDetailsView: View {
     }
     
     var body: some View {
-        
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
-                
-                let activityDetailRecordsCount = activityDetailRecords.count
-                if activityDetailRecordsCount > 0 {
-
-                    ForEach(0..<activityDetailRecordsCount, id: \.self) { i in
+        VStack {
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: .vItemSpacing) {
+                    
+                    let activityDetailRecordsCount = activityDetailRecords.count
+                    if activityDetailRecordsCount > 0 {
+                        
+                        ForEach(0..<activityDetailRecordsCount, id: \.self) { i in
                             
-                        let activityDetail =
-                        activityDetailRecords[i].activityDetail
-                        let units = activityDetail.availableUnits?.lowercased()
-
-                        if activityDetail.valueType == .number {
+                            let activityDetail =
+                            activityDetailRecords[i].activityDetail
+                            let units = activityDetail.availableUnits?.lowercased()
                             
-                            NumberTextFieldRow(
-                                title: activityDetail.name,
-                                text: self.$activityDetailRecords[i].value, 
-                                units: units,
-                                focused: $focusedActivityDetail,
-                                focusID: i
-                            )
-                            
-                        } else {
-                            
-                            TextFieldRow(
-                                title: activityDetail.name,
-                                text: self.$activityDetailRecords[i].value,
-                                focused: $focusedActivityDetail,
-                                focusID: i
-                            )
+                            if activityDetail.valueType == .number {
+                                
+                                NumberTextFieldRow(
+                                    title: activityDetail.name,
+                                    text: self.$activityDetailRecords[i].value,
+                                    units: units,
+                                    focused: $focusedActivityDetail,
+                                    focusID: i
+                                )
+                                
+                            } else {
+                                
+                                TextFieldRow(
+                                    title: activityDetail.name,
+                                    text: self.$activityDetailRecords[i].value,
+                                    focused: $focusedActivityDetail,
+                                    focusID: i
+                                )
+                            }
                         }
+                    } else {
+                        Text("There are no activity record details")
                     }
-                } else {
-                    Text("There are no activity record details")
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
+
+            HabitMePrimaryButton(
+                title: "Record Completion",
+                isAbleToTap: true,
+                action: didTapCreateActivityRecord
+            )
+                .padding(.bottom)
+                .padding(.horizontal)
+                .buttonStyle(.borderedProminent)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .scrollDismissesKeyboard(.interactively)
+        
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -147,7 +159,7 @@ struct CreateHabitRecordWithDetailsView: View {
             dismissAction() // Handles cleanup in resetting the completion status
             dismiss() // Actually dismisses the view
         })
-        .sheetyBottomBarButton(title: "Record Activity", action: didTapCreateActivityRecord)
+
     }
     
     
